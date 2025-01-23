@@ -30,164 +30,29 @@
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-Light.woff2') format('woff2'),
-      url('../font/Outfit-Light.woff') format('woff');
-  font-weight: 300;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-Regular.woff2') format('woff2'),
-      url('../font/Outfit-Regular.woff') format('woff');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-Medium.woff2') format('woff2'),
-      url('../font/Outfit-Medium.woff') format('woff');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-SemiBold.woff2') format('woff2'),
-      url('../font/Outfit-SemiBold.woff') format('woff');
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-Bold.woff2') format('woff2'),
-      url('../font/Outfit-Bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-ExtraBold.woff2') format('woff2'),
-      url('../font/Outfit-ExtraBold.woff') format('woff');
-  font-weight: 800;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Outfit';
-  src: url('../font/Outfit-Black.woff2') format('woff2'),
-      url('../font/Outfit-Black.woff') format('woff');
-  font-weight: 900;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-black-webfont.woff2') format('woff2'),
-      url('../font/poppins-black-webfont.woff') format('woff');
-  font-weight: 900;
-  font-style: 900;
-
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-thin-webfont.woff2') format('woff2'),
-      url('../font/poppins-thin-webfont.woff') format('woff');
-  font-weight: 100;
-  font-style: 100;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-light-webfont.woff2') format('woff2'),
-      url('../font/poppins-light-webfont.woff') format('woff');
-  font-weight: 300;
-  font-style: 300;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-regular-webfont.woff2') format('woff2'),
-      url('../font/poppins-regular-webfont.woff') format('woff');
-  font-weight: 400;
-  font-style: 400;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-medium-webfont.woff2') format('woff2'),
-      url('../font/poppins-medium-webfont.woff') format('woff');
-  font-weight: 500;
-  font-style: 500;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-semibold-webfont.woff2') format('woff2'),
-      url('../font/poppins-semibold-webfont.woff') format('woff');
-  font-weight: 600;
-  font-style: 600;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-bold-webfont.woff2') format('woff2'),
-      url('../font/poppins-bold-webfont.woff') format('woff');
-  font-weight: 700;
-  font-style: 700;
-}
-
-@font-face {
-  font-family: 'poppins';
-  src: url('../font/poppins-extrabold-webfont.woff2') format('woff2'),
-      url('../font/poppins-extrabold-webfont.woff') format('woff');
-  font-weight: 800;
-  font-style: 800;
-}
 
 body {
-  /* font-family: 'Outfit';
-  font-family: 'inter'; */
-  font-family: 'poppins';
+  font-family: 'inter';
 }
 
 :root {
-  --dark-blue: #162F55;
-  --main-blue: #2D8CF0;
+  --main-blue: #0F91D2;
 }
 
 .font-inter {
   font-family: 'inter';
 }
 
-.text-darkblue {
-  color: #2D3748;
-}
-
 .text-blue {
   color: var(--main-blue);
-}
-
-.bg-darkblue {
-  background: var(--dark-blue);
 }
 
 .bg-blue {
   background: var(--main-blue);
 }
 
-.myblack {
-  color: #383838;
-}
-
 input::placeholder {
-  color: #A0AEC0;
+  color: #717680;
 }
 
 .focus-none {
