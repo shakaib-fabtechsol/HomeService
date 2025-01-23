@@ -8,6 +8,7 @@ import Notifications from "./Layouts/Admin/Notifications";
 import Settings from "./Layouts/Admin/Settings";
 import Conversations from "./Layouts/Admin/Conversations";
 import Support from "./Layouts/Admin/Support";
+import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
       </Routes>
     </Router>
   );
