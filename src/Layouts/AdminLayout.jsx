@@ -113,7 +113,6 @@ function AdminLayout() {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          bgcolor: "primary.main",
         }}
       >
         <Toolbar>
@@ -126,9 +125,7 @@ function AdminLayout() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive Drawer
-          </Typography>
+          <h2 className="font-bold text-3xl">My Deals</h2>
         </Toolbar>
       </AppBar>
       {/* Sidebar for Desktop */}
