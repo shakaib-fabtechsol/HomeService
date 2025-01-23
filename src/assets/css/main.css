@@ -59,3 +59,7 @@ input::placeholder {
   box-shadow: none;
   outline: none;
 }
+
+.myblack {
+  color: #535862;
+}

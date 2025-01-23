@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Test() {
+function Settings() {
   return (
     <div>
-      sss
+      Settings
     </div>
   )
 }
 
-export default Test
+export default Settings
