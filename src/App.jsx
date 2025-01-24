@@ -9,6 +9,7 @@ import Settings from "./Layouts/Admin/Settings";
 import Conversations from "./Layouts/Admin/Conversations";
 import Support from "./Layouts/Admin/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
+import Signup from "./Layouts/Auth/Signup";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
       </Routes>
     </Router>
