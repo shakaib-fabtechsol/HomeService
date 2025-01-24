@@ -65,6 +65,10 @@ input::placeholder {
   color: #535862;
 }
 
+.myhead {
+  color: #181D27;
+}
+
 .mycontainer {
   width: 100%;
   max-width: 1440px;
