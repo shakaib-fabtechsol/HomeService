@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -31,6 +31,11 @@ function NewDeals() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+  const [selectedRate, setSelectedRate] = useState(""); // State to track selected pricing model
+
+  const handleRateChange = (event) => {
+    setSelectedRate(event.target.value); // Update state based on selected radio button
   };
 
   return (
@@ -189,17 +194,20 @@ function NewDeals() {
           </form>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <form action="#">
+          <form>
             <div className="grid grid-cols-12">
               <div className="col-span-12 md:col-span-10 mt-4">
                 <p className="font-semibold">Pricing Model</p>
                 <div className="flex justify-between mt-4">
-                  <div className="flex ">
+                  <div className="flex">
                     <input
                       type="radio"
                       id="Flat"
                       name="Rate"
+                      value="Flat"
                       className="myinput me-4"
+                      onChange={handleRateChange}
+                      checked={selectedRate === "Flat"}
                     />
                     <label htmlFor="Flat">Flat Rate</label>
                   </div>
@@ -208,80 +216,183 @@ function NewDeals() {
                       type="radio"
                       id="Hourly"
                       name="Rate"
+                      value="Hourly"
                       className="myinput me-4"
+                      onChange={handleRateChange}
+                      checked={selectedRate === "Hourly"}
                     />
                     <label htmlFor="Hourly">Hourly Rate</label>
                   </div>
                   <div className="flex ms-8">
                     <input
                       type="radio"
-                      id="Package"
+                      id="Custom"
                       name="Rate"
+                      value="Custom"
                       className="myinput me-4"
+                      onChange={handleRateChange}
+                      checked={selectedRate === "Custom"}
                     />
-                    <label htmlFor="Package">Custom Package</label>
+                    <label htmlFor="Custom">Custom Package</label>
                   </div>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Hourlyr" className="font-semibold">
-                  Hourly Rate
-                  </label>
-                  <input
-                    type="text"
-                    id="Hourlyr"
-                    placeholder="$25/hour"
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Discount" className="font-semibold">
-                  Discount 
-                  </label>
-                  <input
-                    type="text"
-                    id="Discount"
-                    placeholder="10 %"
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Final" className="font-semibold">
-                  Final List Price
-                  </label>
-                  <input
-                    type="text"
-                    id="Final"
-                    placeholder="USD: 40"
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Estimated" className="font-semibold">
-                  Estimated Service Time
-                  </label>
-                  <input
-                    type="text"
-                    id="Estimated"
-                    placeholder="2 Hours"
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
+
+              {/* Flat Rate Fields */}
+              {selectedRate === "Flat" && (
+                <>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Flatr" className="font-semibold">
+                        Flat Rate Price
+                      </label>
+                      <input
+                        type="text"
+                        id="Flatr"
+                        placeholder="$100"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="BuyNow" className="font-semibold">
+                        Buy Now Discount
+                      </label>
+                      <input
+                        type="text"
+                        id="BuyNow"
+                        placeholder="10 %"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Finalp" className="font-semibold">
+                        Final List Price
+                      </label>
+                      <input
+                        type="text"
+                        id="Finalp"
+                        placeholder="10 %"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Estimated" className="font-semibold">
+                        Estimated Service Time
+                      </label>
+                      <input
+                        type="text"
+                        id="Estimated"
+                        placeholder="01 Day"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Hourly Rate Fields */}
+              {selectedRate === "Hourly" && (
+                <>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Hourlyr" className="font-semibold">
+                        Hourly Rate
+                      </label>
+                      <input
+                        type="text"
+                        id="Hourlyr"
+                        placeholder="$25/hour"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Discount" className="font-semibold">
+                        Discount
+                      </label>
+                      <input
+                        type="text"
+                        id="Discount"
+                        placeholder="10 %"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Final" className="font-semibold">
+                        Final List Price
+                      </label>
+                      <input
+                        type="text"
+                        id="Final"
+                        placeholder="USD: 40"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="Estimated" className="font-semibold">
+                        Estimated Service Time
+                      </label>
+                      <input
+                        type="text"
+                        id="Estimated"
+                        placeholder="2 Hours"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* Custom Package Fields */}
+              {selectedRate === "Custom" && (
+                <>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="PackagePrice" className="font-semibold">
+                        Package Price
+                      </label>
+                      <input
+                        type="text"
+                        id="PackagePrice"
+                        placeholder="Enter package price"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-12 md:col-span-7 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="CustomDiscount" className="font-semibold">
+                        Custom Discount
+                      </label>
+                      <input
+                        type="text"
+                        id="CustomDiscount"
+                        placeholder="Enter custom discount"
+                        className="myinput focus-none"
+                      />
+                    </div>
+                  </div>
+                </>
+              )}
+
               <div className="col-span-12 mt-4">
                 <div className="flex justify-end">
                   <button
                     type="reset"
                     className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                    onClick={() => setSelectedRate("")}
                   >
-                    {" "}
                     Cancel
                   </button>
                   <button
