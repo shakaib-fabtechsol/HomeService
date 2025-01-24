@@ -113,6 +113,9 @@ function AdminLayout() {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          bgcolor: "transparent",
+          color: "#181D27",
+          boxShadow: "none",
         }}
       >
         <Toolbar>
@@ -125,7 +128,10 @@ function AdminLayout() {
           >
             <MenuIcon />
           </IconButton>
+          <div className="py-3">
           <h2 className="font-bold text-3xl">My Deals</h2>
+          <p className="">Stay Updated on Your Active Deals</p>
+          </div>
         </Toolbar>
       </AppBar>
       {/* Sidebar for Desktop */}

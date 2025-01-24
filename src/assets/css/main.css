@@ -33,6 +33,7 @@
 
 body {
   font-family: 'inter';
+  color: #535862;
 }
 
 :root {
@@ -76,4 +77,16 @@ input::placeholder {
   color: #000000;
   content: '● ';
   font-size: 20px;
+}
+
+.btn-blue {
+  background: #0F91D2;
+}
+
+.selected-flag {
+  background: transparent !important;
+}
+
+.scroll-0::-webkit-scrollbar {
+  width: 0px;
 }
