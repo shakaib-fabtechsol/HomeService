@@ -8,8 +8,7 @@ import "react-phone-input-2/lib/style.css";
 function Login() {
   return (
       <div className="w-full justify-center flex h-[100dvh] overflow-y-auto">
-        <div className="overflow-y-auto scroll-0 min-h-[100dvh] w-full max-w-[700px]">
-          <div className="flex flex-col justify-center">
+        <div className="overflow-y-auto scroll-0 flex flex-col justify-center min-h-[100dvh] w-full max-w-[700px]">
             <div className="px-[15px] sm:px-[30px] lg:px-[50px] xl:px-[130px] py-4">
               <div className="flex justify-center">
                 <img src={logo} alt="" className="px-5 py-4" />
@@ -49,7 +48,7 @@ function Login() {
                     className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
                   />
                 </div>
-               <div className="flex mb-3 justify-between items-center">
+               <div className="flex flex-wrap mb-3 justify-between items-center">
                 <div className="flex items-center">
                   <input type="checkbox" name="" className="me-2" id="remember" />
                   <label htmlFor="remember" className="font-medium">Remember for 30 days</label>
@@ -83,7 +82,6 @@ function Login() {
                 </Link>{" "}
               </p>
             </div>
-          </div>
         </div>
     </div>
   );
