@@ -37,6 +37,30 @@ function NewDeals() {
   const handleRateChange = (event) => {
     setSelectedRate(event.target.value); // Update state based on selected radio button
   };
+  const [file, setFile] = useState(null); // Stores the uploaded file
+  const [filePreview, setFilePreview] = useState(null); // Stores the file preview URL
+
+  const handleFileChange = (e) => {
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+      setFilePreview(URL.createObjectURL(uploadedFile)); // Generate a preview URL
+    }
+  };
+
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    const uploadedFile = e.dataTransfer.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+      setFilePreview(URL.createObjectURL(uploadedFile)); // Generate a preview URL
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFile(null);
+    setFilePreview(null);
+  };
 
   return (
     <div>
@@ -407,7 +431,70 @@ function NewDeals() {
           </form>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+        <div className="file-upload-container">
+      {/* Upload Box */}
+      <div
+        className="upload-box border-dashed border-2 border-gray-400 rounded-lg p-4 text-center cursor-pointer"
+        onDrop={handleFileDrop}
+        onDragOver={(e) => e.preventDefault()}
+        onClick={() => document.getElementById("fileInput").click()}
+      >
+        {file ? (
+          <p className="text-gray-500">File uploaded successfully!</p>
+        ) : (
+          <div className="upload-placeholder">
+            <p className="text-gray-500">
+              <strong>Click to upload</strong> or drag and drop
+            </p>
+            <p className="text-sm text-gray-400">
+              SVG, PNG, or JPG (max. 800×400px)
+            </p>
+          </div>
+        )}
+        <input
+          type="file"
+          id="fileInput"
+          accept=".svg, .png, .jpg"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+      </div>
+
+      {/* Preview Section */}
+      {file && (
+        <div className="file-preview mt-4">
+          <div className="flex items-center justify-between border rounded-lg p-2">
+            <div className="file-info flex items-center">
+              <span className="file-icon bg-blue-500 text-white p-2 rounded-md">
+                📁
+              </span>
+              <div className="file-details ml-2">
+                <p className="file-name text-sm font-medium">{file.name}</p>
+                <p className="file-size text-xs text-gray-500">
+                  {(file.size / 1024 / 1024).toFixed(2)} MB
+                </p>
+              </div>
+            </div>
+            <button
+              className="remove-file text-red-500 font-bold text-xs"
+              onClick={handleRemoveFile}
+            >
+              ✖
+            </button>
+          </div>
+          {/* Image Preview */}
+          {filePreview && (
+            <div className="image-preview mt-4">
+              <img
+                src={filePreview}
+                alt="Preview"
+                className="rounded-lg border border-gray-200 max-w-full"
+              />
+            </div>
+          )}
+        </div>
+      )}
+    </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
           Item Four
