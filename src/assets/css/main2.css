@@ -11,3 +11,21 @@
     content: '● ';
     font-size: 20px;
 }
+.myinput{
+    border: solid #cdcdcd 1px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.myselect{
+    border: solid #cdcdcd 1px;
+    padding: 10px;
+    border-radius: 10px;
+    background-image: url(../img/chevron.svg);
+    background-size: 25px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px) center;
+    appearance: none;
+}
+textarea{
+    resize: none !important;
+}
