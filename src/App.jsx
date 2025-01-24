@@ -11,6 +11,7 @@ import Support from "./Layouts/Admin/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
 import NewDeals from "./Layouts/Auth/NewDeals";
 import CreateNewDeals from "./Layouts/Auth/CreateNewDeals";
+import Signup from "./Layouts/Auth/Signup";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
       </Routes>
     </Router>
