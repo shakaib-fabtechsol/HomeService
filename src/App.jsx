@@ -9,6 +9,8 @@ import Settings from "./Layouts/Admin/Settings";
 import Conversations from "./Layouts/Admin/Conversations";
 import Support from "./Layouts/Admin/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
+import NewDeals from "./Layouts/Auth/NewDeals";
+import CreateNewDeals from "./Layouts/Auth/CreateNewDeals";
 import Signup from "./Layouts/Auth/Signup";
 import ServiceDetail from "./Layouts/Admin/ServiceDetail";
 
@@ -25,6 +27,8 @@ function App() {
           <Route path="/conversations" element={<Conversations />} />
           <Route path="/support" element={<Support />} />
           <Route path="/serviceDetails" element={<ServiceDetail />} />
+          <Route path="/NewDeals" element={<NewDeals />} />
+          <Route path="/CreateNewDeals" element={<CreateNewDeals />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
