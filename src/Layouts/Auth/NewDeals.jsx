@@ -551,7 +551,111 @@ function NewDeals() {
           </form>
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Item Four
+        <form action="#">
+            <div className="grid grid-cols-12">
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="Title" className="font-semibold">
+                    Service Title
+                  </label>
+                  <p>Service Name</p>
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <p className="font-semibold">Service Type</p>
+                <p>Residential</p>
+              </div>
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <p className="font-semibold">Service Category</p>
+                <p>Selected Category</p>
+              </div>
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <p className="font-semibold">Search Tags</p>
+                <div className="flex mt-2">
+                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
+                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
+                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
+
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="Category" className="font-semibold">
+                    Service Category
+                  </label>
+                  <select
+                    name=""
+                    id="Category"
+                    className="myselect pe-[30px] focus-none"
+                  >
+                    <option value="">Category 1</option>
+                    <option value="">Category 2</option>
+                    <option value="">Category 3</option>
+                    <option value="">Category 4</option>
+                  </select>
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="Tags" className="font-semibold">
+                    Search Tags
+                  </label>
+                  <input
+                    type="text"
+                    id="Tags"
+                    placeholder="Enter Tag"
+                    className="myinput focus-none"
+                  />
+                </div>
+              </div>
+              <div className="col-span-12 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="Description" className="font-semibold">
+                    Service Description
+                  </label>
+                  <textarea
+                    name="Description"
+                    id="Description"
+                    className="myinput focus-none"
+                    rows={6}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="col-span-12 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="Description" className="font-semibold">
+                    Fine Print{" "}
+                    <span className="text-[13px] text-[#cdcdcd]">
+                      (Optional)
+                    </span>
+                  </label>
+                  <textarea
+                    name="Description"
+                    id="Description"
+                    className="myinput focus-none"
+                    rows={6}
+                  ></textarea>
+                </div>
+              </div>
+              <div className="col-span-12 mt-4">
+                <div className="flex justify-end">
+                  <button
+                    type="reset"
+                    className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                  >
+                    {" "}
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
         </TabPanel>
       </Box>
     </div>
