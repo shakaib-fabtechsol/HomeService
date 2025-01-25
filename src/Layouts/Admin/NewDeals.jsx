@@ -104,7 +104,7 @@ function NewDeals() {
     }}
     value={value}
     onChange={handleChange}
-    variant="scrollable" // Enables scrolling
+    variant="scrollable" 
     scrollButtons="auto" // Shows scroll buttons only when needed
   >
     <Tab label="Basic Info" />
@@ -450,7 +450,7 @@ function NewDeals() {
             <div className="file-upload-container">
               {/* Upload Box */}
               <div
-                className="upload-box border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
+                className="upload-box w-full border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
                 onDrop={handleFileDrop}
                 onDragOver={(e) => e.preventDefault()}
                 onClick={() => document.getElementById("fileInput").click()}
