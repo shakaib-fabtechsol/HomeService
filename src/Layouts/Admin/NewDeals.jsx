@@ -101,6 +101,7 @@ function NewDeals() {
             }}
             value={value}
             onChange={handleChange}
+             variant="scrollable" 
             aria-label="simple tabs example"
           >
             <Tab label="Basic Info" />
@@ -112,7 +113,7 @@ function NewDeals() {
         <TabPanel value={value} index={0}>
           <form action="#">
             <div className="grid grid-cols-12">
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Title" className="font-semibold">
                     Service Title
@@ -125,7 +126,7 @@ function NewDeals() {
                   />
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 lg:col-span-7 mt-4">
                 <p className="font-semibold">Service Type</p>
                 <div className="flex mt-4">
                   <div className="flex">
@@ -148,7 +149,7 @@ function NewDeals() {
                   </div>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Category" className="font-semibold">
                     Service Category
@@ -165,7 +166,7 @@ function NewDeals() {
                   </select>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Tags" className="font-semibold">
                     Search Tags
@@ -275,7 +276,7 @@ function NewDeals() {
               {/* Flat Rate Fields */}
               {selectedRate === "Flat" && (
                 <>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Flatr" className="font-semibold">
                         Flat Rate Price
@@ -288,7 +289,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="BuyNow" className="font-semibold">
                         Buy Now Discount
@@ -301,7 +302,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Finalp" className="font-semibold">
                         Final List Price
@@ -314,7 +315,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Estimated" className="font-semibold">
                         Estimated Service Time
@@ -333,7 +334,7 @@ function NewDeals() {
               {/* Hourly Rate Fields */}
               {selectedRate === "Hourly" && (
                 <>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Hourlyr" className="font-semibold">
                         Hourly Rate
@@ -346,7 +347,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Discount" className="font-semibold">
                         Discount
@@ -359,7 +360,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Final" className="font-semibold">
                         Final List Price
@@ -372,7 +373,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Estimated" className="font-semibold">
                         Estimated Service Time
@@ -391,7 +392,7 @@ function NewDeals() {
               {/* Custom Package Fields */}
               {selectedRate === "Custom" && (
                 <>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="PackagePrice" className="font-semibold">
                         Package Price
@@ -404,7 +405,7 @@ function NewDeals() {
                       />
                     </div>
                   </div>
-                  <div className="col-span-12 md:col-span-7 mt-4">
+                  <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="CustomDiscount" className="font-semibold">
                         Custom Discount
