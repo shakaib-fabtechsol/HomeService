@@ -113,7 +113,7 @@ function AdminLayout() {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          bgcolor: "transparent",
+          bgcolor: "#fff",
           color: "#181D27",
           boxShadow: "none",
         }}
