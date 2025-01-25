@@ -99,10 +99,10 @@ select option {
 .scroll-0::-webkit-scrollbar {
   width: 0px;
 }
-
+/* 
 #simple-tabpanel-0 .css-19kzrtu{
   padding: 0 !important;
-}
+} */
 .css-1v5u2yv {
   padding: 24px !important;
   width: calc(100% - 48px)
