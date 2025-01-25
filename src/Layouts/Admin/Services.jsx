@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router";
 import { HiPlus } from "react-icons/hi";
@@ -8,6 +8,9 @@ import service3 from "../../assets/img/service3.png";
 
 // Reusable Service Box Component
 function ServiceBox({ image, title, price, description, tags }) {
+  useEffect(() => {
+    document.title = "Services";
+  }, []);
   return (
     <Link to="/serviceDetails" className="border px-3 py-3 rounded-lg">
       <img src={image} alt={title} className="rounded-lg w-full" />
@@ -87,7 +90,7 @@ function Services() {
           />
         </div>
         <Link
-          to="#"
+          to="/NewDeals"
           className="bg-blue mt-2 lg:mt-0 px-4 rounded-md py-2 text-white flex justify-center items-center"
         >
           <HiPlus className="text-white text-xl me-1 font-semibold" />

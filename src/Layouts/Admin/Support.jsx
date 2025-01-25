@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 function Support() {
-  return (
-    <div>
-      Support
-    </div>
-  )
+  useEffect(() => {
+    document.title = "Support";
+  }, []);
+  return <div>Support</div>;
 }
 
-export default Support
+export default Support;
