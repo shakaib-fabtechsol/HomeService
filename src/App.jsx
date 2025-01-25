@@ -9,8 +9,8 @@ import Settings from "./Layouts/Admin/Settings";
 import Conversations from "./Layouts/Admin/Conversations";
 import Support from "./Layouts/Admin/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
-import NewDeals from "./Layouts/Auth/NewDeals";
-import CreateNewDeals from "./Layouts/Auth/CreateNewDeals";
+import NewDeals from "./Layouts/Admin/NewDeals";
+import CreateNewDeals from "./Layouts/Admin/CreateNewDeals";
 import Signup from "./Layouts/Auth/Signup";
 import ServiceDetail from "./Layouts/Admin/ServiceDetail";
 
