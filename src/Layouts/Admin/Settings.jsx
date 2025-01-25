@@ -252,7 +252,7 @@ function Settings() {
                   <input
                     type="password"
                     id="password"
-                    placeholder="Muhammad Hussnain"
+                    placeholder=""
                     className="myinput focus-none w-full"
                   />
                 </div>
@@ -260,16 +260,16 @@ function Settings() {
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
                 <div className="col-span-12 md:col-span-4 lg:col-span-3">
                   <div className="flex">
-                    <label htmlFor="password" className="font-semibold">
-                      Current Password
+                    <label htmlFor="confirmpassword" className="font-semibold">
+                      New Password
                     </label>
                   </div>
                 </div>
                 <div className="col-span-12 md:col-span-8 lg:col-span-6">
                   <input
                     type="password"
-                    id="password"
-                    placeholder="Muhammad Hussnain"
+                    id="confirmpassword"
+                    placeholder=""
                     className="myinput focus-none w-full"
                   />
                 </div>
@@ -277,21 +277,20 @@ function Settings() {
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
                 <div className="col-span-12 md:col-span-4 lg:col-span-3">
                   <div className="flex">
-                    <label htmlFor="password" className="font-semibold">
-                      Current Password
+                    <label htmlFor="confirmnewpassword" className="font-semibold">
+                    Confirm New Password
                     </label>
                   </div>
                 </div>
                 <div className="col-span-12 md:col-span-8 lg:col-span-6">
                   <input
                     type="password"
-                    id="password"
-                    placeholder="Muhammad Hussnain"
+                    id="confirmnewpassword"
+                    placeholder=""
                     className="myinput focus-none w-full"
                   />
                 </div>
               </div>
-              
              
             </div>
           </div>
