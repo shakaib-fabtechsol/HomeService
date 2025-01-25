@@ -577,14 +577,14 @@ function NewDeals() {
               </div>
               <div className="col-span-12 mt-4">
                 <p className="font-semibold">Search Tags</p>
-                <div className="flex mt-2">
-                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                <div className="flex flex-wrap mt-2">
+                  <span className="bg-[#E7F4FB] my-2 text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
                     Cleaning
                   </span>
-                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                  <span className="bg-[#E7F4FB] my-2 text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
                     Residential
                   </span>
-                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                  <span className="bg-[#E7F4FB] my-2 text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
                     Appartment
                   </span>
                 </div>
