@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 function Settings() {
-  return (
-    <div>
-      Settings
-    </div>
-  )
+  useEffect(() => {
+    document.title = "Settings";
+  }, []);
+  return <div>Settings</div>;
 }
 
-export default Settings
+export default Settings;

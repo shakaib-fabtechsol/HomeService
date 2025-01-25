@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
 
 function ServiceDetail() {
+  useEffect(() => {
+    document.title = "Service Details";
+  }, []);
   return (
     <div>
       <div className="flex flex-col lg:flex-row justify-between">
@@ -29,7 +32,6 @@ function ServiceDetail() {
       <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
         <div className="col-span-12 xl:col-span-8">
           <img src={servicedet} alt="" className="rounded-xl w-full" />
-          
         </div>
         <div className="col-span-12 bg-[#FAFAFA] xl:col-span-4 border rounded-lg">
           <div class="py-5 lg:px-6 px-4">
@@ -65,13 +67,13 @@ function ServiceDetail() {
       </div>
       <div className="">
         <div className="flex flex-wrap mt-3">
-            <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#0F91D2] bg-[#E7F4FB]">
-              Cleaning
-            </p>
-            <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-              Residential
-            </p>
-          </div>
+          <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#0F91D2] bg-[#E7F4FB]">
+            Cleaning
+          </p>
+          <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
+            Residential
+          </p>
+        </div>
         <h2 className="mt-4 text-xl myhead font-semibold">Deal Description</h2>
         <p className="mt-2 myblack">
           Donec pulvinar consequat metus eget cursus. Donec nec quam eu arcu

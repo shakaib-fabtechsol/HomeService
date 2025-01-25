@@ -8,6 +8,9 @@ import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import { FormControl, FormHelperText } from "@mui/material";
 function Signup() {
+  React.useEffect(() => {
+    document.title = "Signup";
+  }, []);
   const [phone, setPhone] = React.useState("");
 
   return (

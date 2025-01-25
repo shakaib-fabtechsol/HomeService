@@ -3,6 +3,9 @@ import logo from "../../assets/img/logo.png";
 import { Link } from "react-router-dom";
 
 function PrivacyPolicy() {
+  React.useEffect(() => {
+    document.title = "Privacy Policy";
+  }, []);
   return (
     <div className="mycontainer">
       <div>
@@ -458,15 +461,15 @@ function PrivacyPolicy() {
         <form action="" className="mt-8">
           <div className="py-16">
             <div className="mb-8">
-            <input type="checkbox" id="agree" />
-            <label htmlFor="agree" className="ms-4">
-              Have you carefully reviewed and agreed to the{" "}
-              <span className="text-[#0F91D2] underline">
-                {" "}
-                Terms of service{" "}
-              </span>
-              ?
-            </label>
+              <input type="checkbox" id="agree" />
+              <label htmlFor="agree" className="ms-4">
+                Have you carefully reviewed and agreed to the{" "}
+                <span className="text-[#0F91D2] underline">
+                  {" "}
+                  Terms of service{" "}
+                </span>
+                ?
+              </label>
             </div>
             <button className="bg-[#0F91D2] px-16 py-2 text-[#fff] font-semibold text-xl rounded-lg">
               Continue
