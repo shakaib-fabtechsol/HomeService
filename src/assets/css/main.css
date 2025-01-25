@@ -167,3 +167,7 @@ select option {
 .def-switch .slider.round:before {
   border-radius: 50%;
 }
+
+.css-1ygil4i-MuiToolbar-root {
+  min-height: 0 !important;
+}
