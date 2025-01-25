@@ -454,10 +454,11 @@ function NewDeals() {
                   <div className="upload-placeholder flex flex-col items-center justify-center h-[250px]">
                     <img src={upload} alt="upload" className="w-[50px] mb-4" />
                     <p className="text-gray-500">
-                      <strong>File Uploaded Successfully</strong> 
+                      <strong>File Uploaded Successfully</strong>
                     </p>
                     <p className="text-gray-500">
-                      <strong>Click to upload</strong> or drag and drop to change image
+                      <strong>Click to upload</strong> or drag and drop to
+                      change image
                     </p>
                     <p className="text-sm text-gray-400">
                       SVG, PNG, or JPG (max. 800×400px)
@@ -488,7 +489,7 @@ function NewDeals() {
                 <div className="file-actions mt-4">
                   <div className="file-info flex items-center justify-between border rounded-lg p-2">
                     <div className="flex items-center">
-                      <img src={fileicon} alt="fileicon" className="w-[20px]"/>
+                      <img src={fileicon} alt="fileicon" className="w-[20px]" />
                       <div className="file-details ml-2">
                         <p className="file-name text-sm font-medium">
                           {file.name}
@@ -551,9 +552,9 @@ function NewDeals() {
           </form>
         </TabPanel>
         <TabPanel value={value} index={3}>
-        <form action="#">
+          <form action="#">
             <div className="grid grid-cols-12">
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Title" className="font-semibold">
                     Service Title
@@ -561,81 +562,92 @@ function NewDeals() {
                   <p>Service Name</p>
                 </div>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 mt-4">
                 <p className="font-semibold">Service Type</p>
                 <p>Residential</p>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 mt-4">
                 <p className="font-semibold">Service Category</p>
                 <p>Selected Category</p>
               </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
+              <div className="col-span-12 mt-4">
                 <p className="font-semibold">Search Tags</p>
                 <div className="flex mt-2">
-                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
-                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
-                <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-5xl me-4">Cleaning</span>
-
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Category" className="font-semibold">
-                    Service Category
-                  </label>
-                  <select
-                    name=""
-                    id="Category"
-                    className="myselect pe-[30px] focus-none"
-                  >
-                    <option value="">Category 1</option>
-                    <option value="">Category 2</option>
-                    <option value="">Category 3</option>
-                    <option value="">Category 4</option>
-                  </select>
-                </div>
-              </div>
-              <div className="col-span-12 md:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="Tags" className="font-semibold">
-                    Search Tags
-                  </label>
-                  <input
-                    type="text"
-                    id="Tags"
-                    placeholder="Enter Tag"
-                    className="myinput focus-none"
-                  />
+                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                    Cleaning
+                  </span>
+                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                    Residential
+                  </span>
+                  <span className="bg-[#E7F4FB] text-[#0F91D2] px-8 py-2 font-semibold rounded-full me-4">
+                    Appartment
+                  </span>
                 </div>
               </div>
               <div className="col-span-12 mt-4">
                 <div className="flex flex-col">
-                  <label htmlFor="Description" className="font-semibold">
-                    Service Description
-                  </label>
-                  <textarea
-                    name="Description"
-                    id="Description"
-                    className="myinput focus-none"
-                    rows={6}
-                  ></textarea>
+                  <p className="font-semibold">Service Description</p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque quis accumsan turpis. Phasellus tincidunt neque
+                    sed nunc mattis molestie. Praesent auctor metus sit amet
+                    elit finibus, ac sodales enim egestas. Quisque ante velit,
+                    eleifend in neque id, dapibus volutpat nisi. Suspendisse
+                    potenti. Integer viverra feugiat massa, ut accumsan sapien
+                    tincidunt sed. Nam laoreet erat scelerisque tempus
+                    vulputate. Etiam a sagittis sem.
+                  </p>
                 </div>
               </div>
               <div className="col-span-12 mt-4">
                 <div className="flex flex-col">
-                  <label htmlFor="Description" className="font-semibold">
+                  <p className="font-semibold">
                     Fine Print{" "}
                     <span className="text-[13px] text-[#cdcdcd]">
                       (Optional)
                     </span>
-                  </label>
-                  <textarea
-                    name="Description"
-                    id="Description"
-                    className="myinput focus-none"
-                    rows={6}
-                  ></textarea>
+                  </p>
+                  <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque quis accumsan turpis. Phasellus tincidunt neque
+                    sed nunc mattis molestie. Praesent auctor metus sit amet
+                    elit finibus, ac sodales enim egestas.
+                  </p>
                 </div>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">Pricing Model</p>
+                <p>Hourly Rate</p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">Hourly Rate</p>
+                <p>$25/hour</p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">Discount </p>
+                <p>10%</p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">Service Locations</p>
+                <p>Locations 01</p>
+                <p>Locations 02</p>
+                <p>Locations 03</p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">Service Location & Coverage</p>
+                <p>6 Miles</p>
+              </div>
+              <div className="col-span-12 md:col-span-9 mt-4">
+                <iframe
+                  title="Google Map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509827!2d144.96305781531895!3d-37.816279442021675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727b3f94355567!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1674678878475!5m2!1sen!2sus"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
               </div>
               <div className="col-span-12 mt-4">
                 <div className="flex justify-end">
