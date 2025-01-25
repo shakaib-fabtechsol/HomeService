@@ -129,8 +129,8 @@ function AdminLayout() {
             <MenuIcon />
           </IconButton>
           <div className="py-3">
-          <h2 className="font-bold text-3xl">My Deals</h2>
-          <p className="">Stay Updated on Your Active Deals</p>
+          <h2 className="font-bold text-3xl myhead">My Deals</h2>
+          <p className="myblack">Stay Updated on Your Active Deals</p>
           </div>
         </Toolbar>
       </AppBar>
