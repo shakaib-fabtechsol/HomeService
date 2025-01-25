@@ -13,6 +13,13 @@ import NewDeals from "./Layouts/Admin/NewDeals";
 import Signup from "./Layouts/Auth/Signup";
 import ServiceDetail from "./Layouts/Admin/ServiceDetail";
 
+import UserLayout from "./Layouts/UserLayout";
+import UserServices from "./Layouts/User/Services";
+import UserServiceDetail from "./Layouts/User/ServiceDetail";
+import UserSupport from "./Layouts/User/Support";
+import UserSettings from "./Layouts/User/Settings";
+
+
 
 function App() {
   return (
@@ -27,6 +34,12 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/serviceDetails" element={<ServiceDetail />} />
           <Route path="/NewDeals" element={<NewDeals />} />
+        </Route>
+        <Route element={<UserLayout />}>
+          <Route path="user/services" element={<UserServices />} />
+          <Route path="/user/serviceDetails" element={<UserServiceDetail />} />
+          <Route path="/user/support" element={<UserSupport />} />
+          <Route path="/user/settings" element={<UserSettings />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
