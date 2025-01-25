@@ -10,7 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MdOutlineMessage, MdOutlineSupport, MdHomeRepairService, MdLogout } from "react-icons/md";
+import {
+  MdOutlineMessage,
+  MdOutlineSupport,
+  MdHomeRepairService,
+  MdLogout,
+} from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink } from "react-router-dom";
 import logo from "../assets/img/logo.png";
@@ -26,14 +31,34 @@ function AdminLayout() {
   };
 
   const topItems = [
-    { text: "My Services", icon: <MdHomeRepairService className="text-2xl" />, link: "/services" },
+    {
+      text: "My Services",
+      icon: <MdHomeRepairService className="text-2xl" />,
+      link: "/services",
+    },
   ];
 
   const bottomItems = [
-    { text: "Conversations", icon: <MdOutlineMessage className="text-2xl" />, link: "/conversations" },
-    { text: "Notifications", icon: <IoMdNotificationsOutline className="text-2xl" />, link: "/notifications" },
-    { text: "Settings", icon: <IoIosSettings className="text-2xl" />, link: "/settings" },
-    { text: "Support", icon: <MdOutlineSupport className="text-2xl" />, link: "/support" },
+    {
+      text: "Conversations",
+      icon: <MdOutlineMessage className="text-2xl" />,
+      link: "/conversations",
+    },
+    {
+      text: "Notifications",
+      icon: <IoMdNotificationsOutline className="text-2xl" />,
+      link: "/notifications",
+    },
+    {
+      text: "Settings",
+      icon: <IoIosSettings className="text-2xl" />,
+      link: "/settings",
+    },
+    {
+      text: "Support",
+      icon: <MdOutlineSupport className="text-2xl" />,
+      link: "/support",
+    },
   ];
 
   const drawer = (
@@ -89,7 +114,11 @@ function AdminLayout() {
         </List>
         <Box>
           <div className="flex items-center px-4 py-4">
-            <img src={user} alt="logo" className="rounded-full pe-2 max-w-[70px]" />
+            <img
+              src={user}
+              alt="logo"
+              className="rounded-full pe-2 max-w-[70px]"
+            />
             <Box>
               <Box className="flex justify-between items-center">
                 <p className="font-bold">Mike Bird</p>
@@ -113,25 +142,27 @@ function AdminLayout() {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
-          bgcolor: "#fff",
+          bgcolor: "transparent",
           color: "#181D27",
           boxShadow: "none",
+          display: { sm: "none" }, // Hide AppBar for screens above 'sm'
         }}
       >
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            edge="start"
+            edge="end" // Align toggler to the right
             onClick={handleDrawerToggle}
-            sx={{ display: { sm: "none" }, mr: 2 }}
+            sx={{
+              position: "absolute",
+              right: 16, // Adjust right spacing
+              top: 18, // Optional: Adjust vertical positioning
+              display: { sm: "none" }, // Only show on small screens
+            }}
           >
             <MenuIcon />
           </IconButton>
-          <div className="py-3">
-          <h2 className="font-bold text-3xl myhead">My Deals</h2>
-          <p className="myblack">Stay Updated on Your Active Deals</p>
-          </div>
         </Toolbar>
       </AppBar>
       {/* Sidebar for Desktop */}

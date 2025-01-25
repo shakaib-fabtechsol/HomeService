@@ -77,6 +77,10 @@ function Services() {
 
   return (
     <div>
+        <div className="py-3">
+          <h2 className="font-bold text-3xl myhead">My Deals</h2>
+          <p className="myblack">Stay Updated on Your Active Deals</p>
+          </div>
       <div className="md:flex justify-between items-center">
         <div className="flex border rounded-lg items-center px-2">
           <label htmlFor="search">
