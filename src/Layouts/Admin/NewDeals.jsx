@@ -650,6 +650,97 @@ function NewDeals() {
                 ></iframe>
               </div>
               <div className="col-span-12 mt-4">
+                <p className="font-semibold">Select Days</p>
+                <p>Selected days</p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <p className="font-semibold">What Hours are your Available?</p>
+                <p>
+                  9:00 PM <span className="font-semibold">To</span> 9:00 PM
+                </p>
+              </div>
+              <div className="col-span-12 mt-4">
+                <div className="file-actions mt-4">
+                  <div className="file-info flex items-center justify-between border rounded-lg p-2">
+                    <div className="flex items-center">
+                      <img src={fileicon} alt="fileicon" className="w-[20px]" />
+                      <div className="file-details ml-2">
+                        <p className="file-name text-sm font-medium">
+                          filename
+                        </p>
+                      </div>
+                      <p className="show-preview text-[#0F91D2] mt-2 ms-8 cursor-pointer">
+                        Show Preview
+                      </p>
+                    </div>
+                    <div className="flex px-4">
+                      <p className="file-size text-xs me-2 text-gray-500">
+                        0.9 MB
+                      </p>
+                      <button className="remove-file text-red-500 font-bold text-xs">
+                        ✖
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Show Preview Button */}
+                </div>
+              </div>
+              <div className="col-span-12">
+                <div className="file-actions mt-4">
+                  <div className="file-info flex items-center justify-between border rounded-lg p-2">
+                    <div className="flex items-center">
+                      <img src={fileicon} alt="fileicon" className="w-[20px]" />
+                      <div className="file-details ml-2">
+                        <p className="file-name text-sm font-medium">
+                          filename
+                        </p>
+                      </div>
+                      <p className="show-preview text-[#0F91D2] mt-2 ms-8 cursor-pointer">
+                        Show Preview
+                      </p>
+                    </div>
+                    <div className="flex px-4">
+                      <p className="file-size text-xs me-2 text-gray-500">
+                        0.9 MB
+                      </p>
+                      <button className="remove-file text-red-500 font-bold text-xs">
+                        ✖
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Show Preview Button */}
+                </div>
+              </div>
+              <div className="col-span-12">
+                <div className="file-actions mt-4">
+                  <div className="file-info flex items-center justify-between border rounded-lg p-2">
+                    <div className="flex items-center">
+                      <img src={fileicon} alt="fileicon" className="w-[20px]" />
+                      <div className="file-details ml-2">
+                        <p className="file-name text-sm font-medium">
+                          filename
+                        </p>
+                      </div>
+                      <p className="show-preview text-[#0F91D2] mt-2 ms-8 cursor-pointer">
+                        Show Preview
+                      </p>
+                    </div>
+                    <div className="flex px-4">
+                      <p className="file-size text-xs me-2 text-gray-500">
+                        0.9 MB
+                      </p>
+                      <button className="remove-file text-red-500 font-bold text-xs">
+                        ✖
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Show Preview Button */}
+                </div>
+              </div>
+              <div className="col-span-12 mt-4">
                 <div className="flex justify-end">
                   <button
                     type="reset"
