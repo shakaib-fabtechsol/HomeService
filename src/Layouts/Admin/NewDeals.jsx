@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -9,6 +9,9 @@ import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
 
 function TabPanel(props) {
+  useEffect(() => {
+    document.title = "New Deals";
+  }, []);
   const { children, value, index, ...other } = props;
 
   return (
@@ -101,7 +104,7 @@ function NewDeals() {
             }}
             value={value}
             onChange={handleChange}
-             variant="scrollable" 
+            variant="scrollable"
             aria-label="simple tabs example"
           >
             <Tab label="Basic Info" />

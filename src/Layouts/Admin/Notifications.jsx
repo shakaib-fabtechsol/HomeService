@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 function Notifications() {
-  return (
-    <div>
-      Notifications
-    </div>
-  )
+  useEffect(() => {
+    document.title = "Notifications";
+  }, []);
+  return <div>Notifications</div>;
 }
 
-export default Notifications
+export default Notifications;

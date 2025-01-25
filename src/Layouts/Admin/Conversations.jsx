@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { useEffect } from "react";
 
 function Conversations() {
-  return (
-    <div>
-      Conversations
-    </div>
-  )
+  useEffect(() => {
+    document.title = "Conversations";
+  }, []);
+  return <div>Conversations</div>;
 }
 
-export default Conversations
+export default Conversations;
