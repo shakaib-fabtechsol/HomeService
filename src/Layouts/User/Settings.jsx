@@ -9,9 +9,10 @@ import Twitter from "../../assets/img/Twitter-icon.png";
 import Instagram from "../../assets/img/Instagram-icon.png";
 import Linkdin from "../../assets/img/Linkdin-icon.png";
 import Business from "../../assets/img/Business-icon.png";
-import { CiTrash } from "react-icons/ci";
+import visa from "../../assets/img/visa.png";
+import mastercard from "../../assets/img/mastercard.png";
+import { CiEdit, CiTrash } from "react-icons/ci";
 import { Link } from "react-router";
-
 
 function TabPanel(props) {
   useEffect(() => {
@@ -40,69 +41,6 @@ function Settings() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const Businesscategories = [
-    "Plumbing",
-    "Sewer & Septic",
-    "Electrical",
-    "HVAC / Heating & Cooling",
-    "Insulation",
-    "Concrete",
-    "Bricklayer",
-    "Windows & Doors",
-    "Flooring",
-    "Garage Doors",
-    "Concrete Floor Coatings",
-    "Mini Barns",
-    "Pole Barns",
-    "Roofing",
-    "Gutters",
-    "Siding",
-    "Exterior Trim",
-    "Landscaping",
-    "Hardscapes",
-    "Outdoor Living",
-    "Pool & Spa",
-    "Fence and Gates",
-    "Handyman Services",
-    "Security",
-    "Home Inspections",
-    "Structural Engineer",
-    "Foundation Repair",
-    "Waterproofing",
-    "Crawlspace Repair",
-    "Mold Testing",
-    "Mold Restoration",
-    "Water & Fire Restoration Service",
-    "Hazardous Waste Removal",
-    "Interior Design",
-    "Kitchen",
-    "Bath",
-    "Interior Decorating",
-    "Window and Door Coverings",
-    "Window Tinting",
-    "Interior Trim",
-    "Cleaning Service",
-    "Organizing",
-    "Painting",
-    "Drywall",
-    "Wall Coverings",
-    "Chimney Sweep",
-    "Excavation",
-    "Grading",
-    "Blacktop & Sealcoating",
-    "Lighting",
-    "Moving",
-    "Storage Containers",
-    "Piano Movers",
-    "Realtor",
-    "Home Network & Computer",
-    "Computer Repair",
-    "Appliance Repair",
-    "Nursing",
-    "Drain Services",
-    "Veterinary Service",
-  ];
 
   const socialLinks = [
     {
@@ -134,6 +72,19 @@ function Settings() {
       name: "Google Business",
       avatar: Business,
       link: "",
+    },
+  ];
+
+  const paymentmethod = [
+    {
+      name: "Visa",
+      avatar: visa,
+      expdate: "Exp. date 06/2025",
+    },
+    {
+      name: "mastercard",
+      avatar: mastercard,
+      expdate: "Exp. date 06/2025",
     },
   ];
 
@@ -317,7 +268,10 @@ function Settings() {
                     </div>
                     <div>
                       {social.link ? (
-                       <Link to=""> <CiTrash className="text-[24px]" /></Link>
+                        <Link to="">
+                          {" "}
+                          <CiTrash className="text-[24px]" />
+                        </Link>
                       ) : (
                         <button className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4">
                           Connect
@@ -407,6 +361,68 @@ function Settings() {
                   />
                 </div>
               </div>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          <div>
+            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <div>
+                <p className="text-lg font-semibold text-[#181D27]">
+                  Payment method
+                </p>
+                <p className="text-[#535862] text-sm">
+                  Update and add your payment methods.
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
+                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
+                  Cancel
+                </button>
+                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
+                  Save
+                </button>
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3 items-center ms-auto justify-end mt-4">
+              <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
+                Add New
+              </button>
+            </div>
+            <div>
+              {paymentmethod.map((method, index) => (
+                <div key={index} className="py-5 border-b border-[#E9EAEB]">
+                  <div className="flex items-center justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
+                    <div className="flex gap-3 items-center">
+                      <img
+                        className="size-6 max-w-6"
+                        src={method.avatar}
+                        alt=""
+                      />
+                      <div>
+                        <p className="font-medium text-[#343434]">
+                          {method.name}
+                        </p>
+                        {method.expdate && (
+                          <p className="text-[#535862] text-sm">
+                            {method.expdate}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <Link to="">
+                        {" "}
+                        <CiEdit className="text-[24px] me-2" />
+                      </Link>
+                      <Link to="">
+                        {" "}
+                        <CiTrash className="text-[24px]" />
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </TabPanel>
