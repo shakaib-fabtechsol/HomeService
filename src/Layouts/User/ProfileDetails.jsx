@@ -209,14 +209,14 @@ function ProfileDetails() {
         </Link>
         <h2 className="text-2xl font-semibold">Profile Details</h2>
       </div>
-      <div className="flex justify-between mt-4 items-start">
-        <div className="flex items-center">
+      <div className="flex flex-col lg:flex-row justify-between mt-4 lg:items-start">
+        <div className="flex flex-wrap items-center">
           <img
             src={provider}
             alt=""
-            className="me-2 rounded-lg max-w-[120px]"
+            className="me-2 my-2 rounded-lg max-w-[120px]"
           />
-          <div className="">
+          <div className="my-2">
             <div className="flex">
               <p className="font-semibold myhead me-2">Provider Name</p>
               <div className="flex">
@@ -226,7 +226,7 @@ function ProfileDetails() {
                 </p>
               </div>
             </div>
-            <div className="flex mt-2">
+            <div className="flex flex-wrap mt-2">
               <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
               <div className="flex items-center">
                 <IoLocationOutline className="me-2 myblack" />
@@ -245,7 +245,7 @@ function ProfileDetails() {
         </div>
         <Link
           to="#"
-          className="flex py-3 items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
         >
           <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
           <span>Contact Pro</span>
@@ -335,9 +335,9 @@ function ProfileDetails() {
                   <h3>{data.title}</h3>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4">
                     {data.images.map((image, i) => (
-                      <div key={i}>
+                      <div className="my-2 md:my-0" key={i}>
                         <img
                           src={image}
                           alt={`Accordion ${index + 1} - Image ${i + 1}`}
@@ -369,7 +369,7 @@ function ProfileDetails() {
             </div>
             <p className="text-gray-500 mt-1">(578 Reviews)</p>
           </div>
-          <div className="ms-auto lg:w-[70%]">
+          <div className="ms-auto w-full lg:w-[70%]">
             {starCounts.map(({ stars, count }) => (
               <div key={stars} className="flex items-center gap-4 mb-1">
                 <span className="text-sm text-nowrap font-medium text-gray-600">
