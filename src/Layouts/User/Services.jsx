@@ -33,6 +33,7 @@ function ServiceBox({ image, title, price, description, tags }) {
           </p>
         ))}
       </div>
+      <Link to="/user/serviceDetails" className="border-2 rounded-lg font-semibold w-full mt-4 flex justify-center px-3 py-3">View Details</Link>
     </Link>
   );
 }
@@ -60,6 +61,39 @@ function Services() {
       tags: [
         { label: "Plumbing", type: "primary" },
         { label: "Commercial", type: "secondary" },
+      ],
+    },
+    {
+      image: service3,
+      title: "Electrical Service",
+      price: 300,
+      description:
+        "Reliable electrical services for installations and repairs.",
+      tags: [
+        { label: "Electrical", type: "primary" },
+        { label: "Industrial", type: "secondary" },
+      ],
+    },
+    {
+      image: service3,
+      title: "Electrical Service",
+      price: 300,
+      description:
+        "Reliable electrical services for installations and repairs.",
+      tags: [
+        { label: "Electrical", type: "primary" },
+        { label: "Industrial", type: "secondary" },
+      ],
+    },
+    {
+      image: service3,
+      title: "Electrical Service",
+      price: 300,
+      description:
+        "Reliable electrical services for installations and repairs.",
+      tags: [
+        { label: "Electrical", type: "primary" },
+        { label: "Industrial", type: "secondary" },
       ],
     },
     {

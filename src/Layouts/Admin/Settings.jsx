@@ -1029,7 +1029,7 @@ function Settings() {
                     </div>
                     <div>
                       {social.link ? (
-                        <CiTrash className="text-[24px]" />
+                       <Link to=""> <CiTrash className="text-[24px]" /></Link>
                       ) : (
                         <button className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4">
                           Connect
