@@ -37,7 +37,6 @@ function ServiceBox({ image, title, price, description, tags }) {
   );
 }
 
-// Main Services Component
 function Services() {
   const services = [
     {

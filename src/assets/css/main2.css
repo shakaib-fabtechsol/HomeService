@@ -29,3 +29,6 @@
 textarea{
     resize: none !important;
 }
+.additional .css-1ltxtvo-MuiButtonBase-root-MuiAccordionSummary-root {
+    padding: 0 !important;
+}
