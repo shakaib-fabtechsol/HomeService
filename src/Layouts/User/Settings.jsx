@@ -13,7 +13,7 @@ import visa from "../../assets/img/visa.png";
 import mastercard from "../../assets/img/mastercard.png";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import { Link } from "react-router";
-import { Modal } from "@mui/material";
+import { InputLabel, MenuItem, Modal, Select } from "@mui/material";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -33,6 +33,7 @@ function TabPanel(props) {
     </div>
   );
 }
+
 function Settings() {
   useEffect(() => {
     document.title = "Settings";
@@ -41,6 +42,12 @@ function Settings() {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const [method, setMethod] = React.useState("mastercard");
+
+  const handlemethod = (event) => {
+    setMethod(event.target.value);
   };
 
   const socialLinks = [
@@ -453,11 +460,124 @@ function Settings() {
                 aria-describedby="modal-modal-description"
               >
                 <Box sx={style}>
-                  slksnosjdnjfbifjskfgnskhgjekgrsghbkeskjgbshgvbsdfbvjhdsvfhbvhdsf
-                  mvhsdvbjdmsvdsjbv
-                  <button onClick={handleClose} className="bg-red-500">
-                    hkbhb
-                  </button>
+                  <div className="p-4">
+                    <p className="text-lg font-semibold text-[#181D27]">
+                      Payment method
+                    </p>
+                    <p className="text-[#535862] text-sm">
+                      Update your card details.
+                    </p>
+                    <form action="">
+                      <div className="mt-4">
+                        <div>
+                          <label className="text-sm font-semibold">
+                            Select Payment Method
+                          </label>
+                          <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={method}
+                            onChange={handlemethod}
+                            sx={{ width: "100%" }}
+                          >
+                            <MenuItem value={"mastercard"}>
+                              <div className="flex">
+                                <img
+                                  src={mastercard}
+                                  alt=""
+                                  className="me-2 w-[35px]"
+                                />
+                                <p>Mastercard</p>
+                              </div>
+                            </MenuItem>
+                            <MenuItem value={"visa"}>
+                              <div className="flex">
+                                <img
+                                  src={visa}
+                                  alt=""
+                                  className="me-2 w-[35px]"
+                                />
+                                <p>Visa</p>
+                              </div>
+                            </MenuItem>
+                          </Select>
+                        </div>
+                        <div className="mt-4">
+                          <label
+                            className="text-sm font-semibold"
+                            htmlFor="fnamec"
+                          >
+                            Name on card
+                          </label>
+                          <input
+                            className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                            placeholder="Name Here"
+                            type="text"
+                            name="fnamec"
+                            id="fnamec"
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <label
+                            className="text-sm font-semibold"
+                            htmlFor="numberc"
+                          >
+                            Card number
+                          </label>
+                          <input
+                            className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                            placeholder="Card number"
+                            type="number"
+                            name="numberc"
+                            id="numberc"
+                          />
+                        </div>
+                        <div className="flex justify-between mt-4"> 
+                          <div>
+                            <label
+                              className="text-sm font-semibold"
+                              htmlFor="cvv"
+                            >
+                              CVV
+                            </label>
+                            <input
+                              className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                              placeholder="CVV"
+                              type="number"
+                              name="cvv"
+                              id="cvv"
+                            />
+                          </div>
+                          <div>
+                            <label
+                              className="text-sm font-semibold"
+                              htmlFor="exp"
+                            >
+                              Expiry
+                            </label>
+                            <input
+                              className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                              placeholder="Expiry"
+                              type="date"
+                              name="exp"
+                              id="exp"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div className="flex flex-wrap gap-3 items-center ms-auto justify-end mt-4">
+                      <button
+                        onClick={handleClose}
+                        className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4"
+                      >
+                        Cancel
+                      </button>
+                      <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
+                        Save
+                      </button>
+                    </div>
+                  </div>
                 </Box>
               </Modal>
             </div>
