@@ -3,6 +3,7 @@ import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
+import pro from "../../assets/img/pro.png";
 
 function ServiceDetail() {
   useEffect(() => {
@@ -42,7 +43,7 @@ function ServiceDetail() {
         <div className="col-span-12 xl:col-span-8">
           <img src={servicedet} alt="" className="rounded-xl w-full" />
         </div>
-        <div className="col-span-12 bg-[#FAFAFA] xl:col-span-4 border rounded-lg">
+        <div className="col-span-12 bg-[#FAFAFA] xl:col-span-4 border rounded-lg flex flex-col">
           <div class="py-5 lg:px-6 px-4">
             <div class="flex bg-[#fff] rounded-xl border justify-around mb-4">
               <button class="sm:px-2 py-2 font-semibold myhead rounded-full myhead">
@@ -71,6 +72,17 @@ function ServiceDetail() {
                 <li>Delivered Within 2 Days</li>
               </ul>
             </div>
+          </div>
+          <div className="lg:px-6 px-4 mt-auto mb-5">
+            <button className="text-[#ffffff] font-semibold text-sm border w-[100%] border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
+              Continue
+            </button>
+            <button className="text-[#ffffff] font-semibold text-sm border w-[100%] border-[#FB8803] shadow-[0px 1px_2px_0px_#0A0D120D] mt-4 bg-[#FB8803] rounded-[8px] py-3 px-4">
+              <div className="flex justify-center">
+                <img src={pro} alt="" className="me-2" />
+                Contact Pro
+              </div>
+            </button>
           </div>
         </div>
       </div>
