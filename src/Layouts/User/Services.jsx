@@ -115,8 +115,38 @@ function Services() {
         <h2 className="font-bold text-3xl myhead">My Deals</h2>
         <p className="myblack">Stay Updated on Your Active Deals</p>
       </div>
-      <div className="md:flex justify-between items-center">
-        <div className="flex border rounded-lg items-center px-2">
+      <div className="md:flex flex-col xl:flex-row justify-end lg:justify-between items-end xl:items-center">
+        <div className="lg:flex">
+          <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
+            <option value="" selected disabled hidden>Sub-Category</option>
+            <option value="Sub-Category1" >Sub-Category1</option>
+            <option value="Sub-Category2" >Sub-Category2</option>
+            <option value="Sub-Category3" >Sub-Category3</option>
+          </select>
+          <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
+            <option value="" selected disabled hidden>Category</option>
+            <option value="Category1" >Category1</option>
+            <option value="Category2" >Category2</option>
+            <option value="Category3" >Category3</option>
+
+          </select>
+          <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
+            <option value="" selected disabled hidden>Delivery</option>
+            <option value="Delivery1" >Delivery1</option>
+            <option value="Delivery2" >Delivery2</option>
+            <option value="Delivery3" >Delivery3</option>
+
+          </select>
+          <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
+            <option value="" selected disabled hidden>Workers</option>
+            <option value="Worker1" >Worker1</option>
+            <option value="Worker2" >Worker2</option>
+            <option value="Worker3" >Worker3</option>
+
+          </select>
+
+        </div>
+        <div className="flex border rounded-lg items-center mt-3 xl:mt-0 px-2">
           <label htmlFor="search">
             <CiSearch className="me-2 text-xl" />
           </label>
@@ -127,13 +157,6 @@ function Services() {
             placeholder="Search"
           />
         </div>
-        <Link
-          to="/NewDeals"
-          className="bg-blue mt-2 lg:mt-0 px-4 rounded-md py-2 text-white flex justify-center items-center"
-        >
-          <HiPlus className="text-white text-xl me-1 font-semibold" />
-          <span>Create New</span>
-        </Link>
       </div>
       <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
         {services.map((service, index) => (
