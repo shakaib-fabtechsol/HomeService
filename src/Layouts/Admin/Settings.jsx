@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Modal, Select, Typography } from "@mui/material";
 import profileImg from "../../assets/img/service3.png";
 import { FaPlus } from "react-icons/fa6";
 import SettingsPreview from "../../Components/MUI/SettingsPreview";
@@ -17,7 +17,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import location from "../../assets/img/location.png";
 import close from "../../assets/img/close.png";
 import { Link } from "react-router";
-
+import { IoIosCloseCircle } from "react-icons/io";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -402,9 +402,9 @@ function Settings() {
                   Business Location
                 </label>
                 <div class="flex items-center border py-2 rounded-lg px-3 ">
-                <img src={location} alt="" className="max-w-20px me-2"/>
+                  <img src={location} alt="" className="max-w-20px me-2" />
                   <input
-                  id="bloc"
+                    id="bloc"
                     type="text"
                     placeholder="Enter your business address."
                     class="w-full py-2 focus-none"
@@ -419,7 +419,7 @@ function Settings() {
                     Enter Service Locations
                   </label>
                   <div className="flex items-center">
-                    <input type="checkbox" name="" id="bulk" className="me-2"/>
+                    <input type="checkbox" name="" id="bulk" className="me-2" />
                     <label
                       htmlFor="bulk"
                       className="block text-sm font-semibold"
@@ -430,7 +430,7 @@ function Settings() {
                 </div>
                 <div class="flex items-center  mb-2">
                   <textarea
-                  id="sloc"
+                    id="sloc"
                     rows="4"
                     placeholder="Locations can be cities, postal codes, countries, etc. Enter one location per line."
                     class="w-full border rounded-lg px-3 py-2"
@@ -441,37 +441,48 @@ function Settings() {
 
               <div class="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
                 <label class="" htmlFor="restrict">
-                  <img src={location} alt="" className="max-w-20px me-2"/>
+                  <img src={location} alt="" className="max-w-20px me-2" />
                 </label>
-                <input type="text" id="restrict" class="w-full focus-none rounded-lg px-3 py-4" placeholder="Restrict locations within a country (optional)"/>
+                <input
+                  type="text"
+                  id="restrict"
+                  class="w-full focus-none rounded-lg px-3 py-4"
+                  placeholder="Restrict locations within a country (optional)"
+                />
               </div>
               <div className="border rounded-lg py-3">
                 <div className="px-3 py-1 flex items-center justify-between">
-                      <p className="myblack">location 01</p>
-                      <Link to="#"><img src={close} alt="" /></Link>
+                  <p className="myblack">location 01</p>
+                  <Link to="#">
+                    <img src={close} alt="" />
+                  </Link>
                 </div>
                 <div className="px-3 py-1 flex items-center justify-between">
-                      <p className="myblack">location 02</p>
-                      <Link to="#"><img src={close} alt="" /></Link>
+                  <p className="myblack">location 02</p>
+                  <Link to="#">
+                    <img src={close} alt="" />
+                  </Link>
                 </div>
                 <div className="px-3 py-1 flex items-center justify-between">
-                      <p className="myblack">location 03</p>
-                      <Link to="#"><img src={close} alt="" /></Link>
+                  <p className="myblack">location 03</p>
+                  <Link to="#">
+                    <img src={close} alt="" />
+                  </Link>
                 </div>
               </div>
             </div>
             <div className="col-span-12 mt-4">
-                <iframe
-                  title="Google Map"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509827!2d144.96305781531895!3d-37.816279442021675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727b3f94355567!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1674678878475!5m2!1sen!2sus"
-                  width="100%"
-                  height="450"
-                  style={{ border: 0 }}
-                  allowFullScreen={true}
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-              </div>
+              <iframe
+                title="Google Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509827!2d144.96305781531895!3d-37.816279442021675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727b3f94355567!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1674678878475!5m2!1sen!2sus"
+                width="100%"
+                height="450"
+                style={{ border: 0 }}
+                allowFullScreen={true}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              ></iframe>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -1029,7 +1040,10 @@ function Settings() {
                     </div>
                     <div>
                       {social.link ? (
-                       <Link to=""> <CiTrash className="text-[24px]" /></Link>
+                        <Link to="">
+                          {" "}
+                          <CiTrash className="text-[24px]" />
+                        </Link>
                       ) : (
                         <button className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4">
                           Connect

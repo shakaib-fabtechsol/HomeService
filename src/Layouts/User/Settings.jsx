@@ -13,6 +13,7 @@ import visa from "../../assets/img/visa.png";
 import mastercard from "../../assets/img/mastercard.png";
 import { CiEdit, CiTrash } from "react-icons/ci";
 import { Link } from "react-router";
+import { Modal } from "@mui/material";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -87,6 +88,23 @@ function Settings() {
       expdate: "Exp. date 06/2025",
     },
   ];
+
+  const style = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    borderRadius: "10px",
+    maxWidth: "700px",
+    width: "100%",
+  };
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   return (
     <div>
@@ -385,7 +403,10 @@ function Settings() {
               </div>
             </div>
             <div className="flex flex-wrap gap-3 items-center ms-auto justify-end mt-4">
-              <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
+              <button
+                onClick={handleOpen}
+                className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4"
+              >
                 Add New
               </button>
             </div>
@@ -423,6 +444,22 @@ function Settings() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <Box sx={style}>
+                  slksnosjdnjfbifjskfgnskhgjekgrsghbkeskjgbshgvbsdfbvjhdsvfhbvhdsf
+                  mvhsdvbjdmsvdsjbv
+                  <button onClick={handleClose} className="bg-red-500">
+                    hkbhb
+                  </button>
+                </Box>
+              </Modal>
             </div>
           </div>
         </TabPanel>
