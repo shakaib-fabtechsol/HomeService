@@ -12,7 +12,7 @@ function ServiceBox({ image, title, price, description, tags }) {
     document.title = "Services";
   }, []);
   return (
-    <Link to="/serviceDetails" className="border px-3 py-3 rounded-lg">
+    <Link to="/user/serviceDetails" className="border px-3 py-3 rounded-lg">
       <img src={image} alt={title} className="rounded-lg w-full" />
       <div className="flex justify-between items-center mt-5">
         <h2 className="text-lg font-semibold">{title}</h2>

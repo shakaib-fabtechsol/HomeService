@@ -87,32 +87,32 @@ function NewDeals() {
         Create, manage, and organize your deals effortlessly.
       </p>
       <Box sx={{ width: "100%", typography: "body1", marginTop: "20px" }}>
-      <Box>
-  <Tabs
-    TabIndicatorProps={{ sx: { display: "none" } }}
-    sx={{
-      "& .MuiTab-root": {
-        color: "#717680",
-        fontWeight: "600",
-        fontFamily: "inter",
-      },
-      "& .Mui-selected": {
-        color: "#0F91D2 !important",
-        borderBottom: "solid 4px #0F91D2",
-        fontFamily: "inter",
-      },
-    }}
-    value={value}
-    onChange={handleChange}
-    variant="scrollable" 
-    scrollButtons="auto" // Shows scroll buttons only when needed
-  >
-    <Tab label="Basic Info" />
-    <Tab label="Pricing & Packages" />
-    <Tab label="Media Uploads" />
-    <Tab label="Review & Publish" />
-  </Tabs>
-</Box>
+        <Box>
+          <Tabs
+            TabIndicatorProps={{ sx: { display: "none" } }}
+            sx={{
+              "& .MuiTab-root": {
+                color: "#717680",
+                fontWeight: "600",
+                fontFamily: "inter",
+              },
+              "& .Mui-selected": {
+                color: "#0F91D2 !important",
+                borderBottom: "solid 4px #0F91D2",
+                fontFamily: "inter",
+              },
+            }}
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto" // Shows scroll buttons only when needed
+          >
+            <Tab label="Basic Info" />
+            <Tab label="Pricing & Packages" />
+            <Tab label="Media Uploads" />
+            <Tab label="Review & Publish" />
+          </Tabs>
+        </Box>
 
         <TabPanel value={value} index={0}>
           <form action="#">
