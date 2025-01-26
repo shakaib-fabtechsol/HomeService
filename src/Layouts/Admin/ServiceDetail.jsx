@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
@@ -10,7 +10,16 @@ function ServiceDetail() {
   }, []);
   return (
     <div>
-      <div className="flex flex-col lg:flex-row justify-between">
+      <div className="flex items-center">
+        <Link to="/services">
+          <FaArrowLeft className="me-4 text-xl" />
+        </Link>
+        <h2 className="text-2xl font-semibold">Service Details</h2>
+      </div>
+      <p className="text-[#535862] mt-4 ms-8">
+        Stay Updated on Your Active Deals.
+      </p>
+      <div className="flex flex-col lg:flex-row justify-between mt-8">
         <h2 className="text-xl myhead font-semibold lg:me-2">
           Aliquam erat volutpat. Ut semper ipsum in vestibulum laoreet.
         </h2>
