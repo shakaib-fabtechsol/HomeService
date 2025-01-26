@@ -13,6 +13,11 @@ import Instagram from "../../assets/img/Instagram-icon.png";
 import Linkdin from "../../assets/img/Linkdin-icon.png";
 import Business from "../../assets/img/Business-icon.png";
 import { CiTrash } from "react-icons/ci";
+import { FaPencilAlt } from "react-icons/fa";
+import location from "../../assets/img/location.png";
+import close from "../../assets/img/close.png";
+import { Link } from "react-router";
+
 
 function TabPanel(props) {
   useEffect(() => {
@@ -374,7 +379,100 @@ function Settings() {
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
-          2
+          <div>
+            <div class="max-w-[70%]">
+              <div class="flex gap-4 items-center mb-4">
+                <label class="flex items-center ">
+                  <input
+                    type="radio"
+                    name="serviceType"
+                    class="form-radio"
+                    checked
+                  />
+                  <span className="ms-3">Service Locations</span>
+                </label>
+                <label class="flex items-center ">
+                  <input type="radio" name="serviceType" class="form-radio" />
+                  <span className="ms-3">Service Radius</span>
+                </label>
+              </div>
+
+              <div class="mb-6 ">
+                <label htmlFor="bloc" class="block text-sm font-medium mb-2">
+                  Business Location
+                </label>
+                <div class="flex items-center border py-2 rounded-lg px-3 ">
+                <img src={location} alt="" className="max-w-20px me-2"/>
+                  <input
+                  id="bloc"
+                    type="text"
+                    placeholder="Enter your business address."
+                    class="w-full py-2 focus-none"
+                  />
+                  <FaPencilAlt />
+                </div>
+              </div>
+
+              <div class="mb-6">
+                <div className="flex justify-between">
+                  <label htmlFor="sloc" class="block text-sm font-medium mb-2">
+                    Enter Service Locations
+                  </label>
+                  <div className="flex items-center">
+                    <input type="checkbox" name="" id="bulk" className="me-2"/>
+                    <label
+                      htmlFor="bulk"
+                      className="block text-sm font-semibold"
+                    >
+                      Add locations in bulk
+                    </label>
+                  </div>
+                </div>
+                <div class="flex items-center  mb-2">
+                  <textarea
+                  id="sloc"
+                    rows="4"
+                    placeholder="Locations can be cities, postal codes, countries, etc. Enter one location per line."
+                    class="w-full border rounded-lg px-3 py-2"
+                  ></textarea>
+                </div>
+                <p class="text-sm myblack text-end">0 / 1000</p>
+              </div>
+
+              <div class="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
+                <label class="" htmlFor="restrict">
+                  <img src={location} alt="" className="max-w-20px me-2"/>
+                </label>
+                <input type="text" id="restrict" class="w-full focus-none rounded-lg px-3 py-4" placeholder="Restrict locations within a country (optional)"/>
+              </div>
+              <div className="border rounded-lg py-3">
+                <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 01</p>
+                      <Link to="#"><img src={close} alt="" /></Link>
+                </div>
+                <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 02</p>
+                      <Link to="#"><img src={close} alt="" /></Link>
+                </div>
+                <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 03</p>
+                      <Link to="#"><img src={close} alt="" /></Link>
+                </div>
+              </div>
+            </div>
+            <div className="col-span-12 mt-4">
+                <iframe
+                  title="Google Map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509827!2d144.96305781531895!3d-37.816279442021675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727b3f94355567!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1674678878475!5m2!1sen!2sus"
+                  width="100%"
+                  height="450"
+                  style={{ border: 0 }}
+                  allowFullScreen={true}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                ></iframe>
+              </div>
+          </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <div>
