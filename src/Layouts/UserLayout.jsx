@@ -23,7 +23,7 @@ import user from "../assets/img/user.png";
 
 const drawerWidth = 240;
 
-function AdminLayout() {
+function UserLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -32,33 +32,23 @@ function AdminLayout() {
 
   const topItems = [
     {
-      text: "My Services",
+      text: "Explore Services",
       icon: <MdHomeRepairService className="text-2xl" />,
-      link: "/services",
+      link: "/user/services",
     },
   ];
 
   const bottomItems = [
     {
-      text: "Conversations",
-      icon: <MdOutlineMessage className="text-2xl" />,
-      link: "/conversations",
-    },
-    {
-      text: "Notifications",
-      icon: <IoMdNotificationsOutline className="text-2xl" />,
-      link: "/notifications",
-    },
-    {
-      text: "Settings",
-      icon: <IoIosSettings className="text-2xl" />,
-      link: "/settings",
-    },
-    {
       text: "Support",
       icon: <MdOutlineSupport className="text-2xl" />,
-      link: "/support",
+      link: "/user/support",
     },
+    {
+        text: "Settings",
+        icon: <IoIosSettings className="text-2xl" />,
+        link: "/user/settings",
+      },
   ];
 
   const drawer = (
@@ -217,4 +207,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout;
+export default UserLayout;
