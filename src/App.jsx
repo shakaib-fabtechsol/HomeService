@@ -12,13 +12,14 @@ import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
 import NewDeals from "./Layouts/Admin/NewDeals";
 import Signup from "./Layouts/Auth/Signup";
 import ServiceDetail from "./Layouts/Admin/ServiceDetail";
+import ProfileDetails from "./Layouts/Admin/ProfileDetails";
 
 import UserLayout from "./Layouts/UserLayout";
 import UserServices from "./Layouts/User/Services";
 import UserServiceDetail from "./Layouts/User/ServiceDetail";
 import UserSupport from "./Layouts/User/Support";
 import UserSettings from "./Layouts/User/Settings";
-import ProfileDetails from "./Layouts/User/ProfileDetails";
+import UserProfileDetails from "./Layouts/User/ProfileDetails";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/serviceDetails" element={<ServiceDetail />} />
           <Route path="/NewDeals" element={<NewDeals />} />
+          <Route path="ProfileDetails" element={<ProfileDetails />} />
 
         </Route>
         <Route element={<UserLayout />}>
@@ -40,9 +42,9 @@ function App() {
           <Route path="/user/serviceDetails" element={<UserServiceDetail />} />
           <Route path="/user/support" element={<UserSupport />} />
           <Route path="/user/settings" element={<UserSettings />} />
-          <Route path="/ProfileDetails" element={<ProfileDetails />} />
+          <Route path="user/ProfileDetails" element={<UserProfileDetails />} />
         </Route>
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />

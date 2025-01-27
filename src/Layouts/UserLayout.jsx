@@ -112,7 +112,7 @@ function UserLayout() {
             <Box>
               <Box className="flex justify-between items-center">
                 <p className="font-bold">Mike Bird</p>
-                <NavLink to="/login">
+                <NavLink to="/">
                   <MdLogout className="text-2xl" />
                 </NavLink>
               </Box>
