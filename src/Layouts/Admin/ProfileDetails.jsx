@@ -22,8 +22,13 @@ import Typography from "@mui/material/Typography";
 import random1 from "../../assets/img/random1.png";
 import random2 from "../../assets/img/random2.png";
 import random3 from "../../assets/img/random3.png";
-import { Star } from "lucide-react";
+import { Icon, Star } from "lucide-react";
 import reviewuser from "../../assets/img/reviewuser.png";
+import { Modal } from "@mui/material";
+import { FiPhone } from "react-icons/fi";
+import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
+import { TbMailDown } from "react-icons/tb";
+import { PiChats } from "react-icons/pi";
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -54,8 +59,7 @@ const AccordionSummary = styled((props) => (
   },
   ...theme.applyStyles("dark", {
     backgroundColor: "rgba(255, 255, 255, .05)",
-  border: "none",
-
+    border: "none",
   }),
 }));
 
@@ -63,7 +67,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   border: "none",
 }));
-
 
 function ServiceBox({ image, title, price, description, tags }) {
   return (
@@ -140,35 +143,35 @@ function ProfileDetails() {
   const accordionData = [
     {
       title: "Technician Photos",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Vehicle Photos",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Facility Photos",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Project Photos",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Licences",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Awards",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Insurance",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
     {
       title: "Special Hours of Operation",
-       images: [random1, random2, random3],
+      images: [random1, random2, random3],
     },
   ];
 
@@ -199,6 +202,31 @@ function ProfileDetails() {
     { stars: 3, count: 14 },
     { stars: 2, count: 0 },
     { stars: 1, count: 0 },
+  ];
+
+  const [contactopen, setcontactOpen] = React.useState(false);
+  const handlecontactOpen = () => setcontactOpen(true);
+  const handlecontactClose = () => setcontactOpen(false);
+
+  const modalContacts = [
+    { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
+    {
+      path: "#",
+      Icon: <BiMessageSquareDetail />,
+      title: "Text Pro: (708) 813-8989",
+    },
+    {
+      path: "#",
+      Icon: <BiMessageAltDetail />,
+      title: "Instant Chat",
+    },
+    { path: "#", Icon: <TbMailDown />, title: "Email Pro" },
+    { path: "#", Icon: <PiChats />, title: "Direct Form" },
+    {
+      path: "#",
+      Icon: <IoLocationOutline />,
+      title: "Get Directions",
+    },
   ];
 
   return (
@@ -243,13 +271,38 @@ function ProfileDetails() {
             </div>
           </div>
         </div>
-        <Link
-          to="#"
+        <button
+          onClick={handlecontactOpen}
           className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
         >
           <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
           <span>Contact Pro</span>
-        </Link>
+        </button>
+        <Modal
+          open={contactopen}
+          onClose={handlecontactClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{ m: 2 }}
+        >
+          <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
+            <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
+              <p className="text-lg font-semibold">Contact Pro</p>
+              <div className="flex flex-col gap-3 mt-4">
+                {modalContacts.map((contact, index) => (
+                  <Link
+                    key={index}
+                    className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
+                    to={contact.path}
+                  >
+                    <span className="text-[24px]">{contact.Icon}</span>
+                    <span>{contact.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Modal>
       </div>
       <div className="mt-6">
         <h2 className="text-lg font-medium myhead">About Me</h2>
@@ -405,7 +458,11 @@ function ProfileDetails() {
                 </div>
               </div>
               <div className="flex items-center">
-                <img src={review.userimg} alt="" className="me-2 rounded-full w-[30px] h-[30px]" />
+                <img
+                  src={review.userimg}
+                  alt=""
+                  className="me-2 rounded-full w-[30px] h-[30px]"
+                />
                 <div>
                   <h3 className="font-semibold text-lg">{review.name}</h3>
                   <p className="text-sm text-gray-400">{review.title}</p>
