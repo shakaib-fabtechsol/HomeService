@@ -44,7 +44,7 @@ function Register() {
               </div>
               <p className="text-center block mt-5">
                 Already have an account?{" "}
-                <Link to="/login" className="text-blue">
+                <Link to="/" className="text-blue">
                   Login
                 </Link>{" "}
               </p>

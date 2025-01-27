@@ -29,7 +29,7 @@ function Signup() {
                 <p className="font-normal myblack mt-2">
                   Welcome! Please enter your details.
                 </p>
-                <form action="/login">
+                <form action="/">
                   <div className="my-3">
                     <label
                       htmlFor="name"
@@ -127,7 +127,7 @@ function Signup() {
                 </Link>
                 <p className="text-center block mt-5">
                   Already have an account?{" "}
-                  <Link to="/login" className="text-blue font-semibold">
+                  <Link to="/" className="text-blue font-semibold">
                     Login
                   </Link>{" "}
                 </p>
