@@ -1110,20 +1110,20 @@ function Settings() {
                 </div>
               </div>
               <div className="flex justify-end mt-4">
-              <button
-                type="reset"
-                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-              >
-                {" "}
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-              >
-                Save
-              </button>
-            </div>
+                <button
+                  type="reset"
+                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                >
+                  {" "}
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </TabPanel>
@@ -1142,35 +1142,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Call Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your phone number visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Call Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
@@ -1194,9 +1174,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Text Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
@@ -1220,9 +1206,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Instant Chat</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
@@ -1246,9 +1238,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Email Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
@@ -1272,9 +1270,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Direct Form</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
@@ -1298,9 +1302,15 @@ function Settings() {
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                   <div className="flex items-center">
                     <p className="font-semibold me-2">Address</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
                     </label>
                   </div>
                   <p className="mt-3">
