@@ -104,7 +104,7 @@ function Signup() {
                       Must be at least 8 characters
                     </FormHelperText>
                   </div>
-                  <Link to="#" className="block underline text-blue mb-3">
+                  <Link to="/PrivacyPolicy" className="block underline text-blue mb-3">
                     Terms of service
                   </Link>
                   <button

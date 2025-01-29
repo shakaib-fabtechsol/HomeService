@@ -74,7 +74,68 @@ function NewDeals() {
   const handleShowPreview = () => {
     setShowPreview(true);
   };
-
+  const Businesscategories = [
+    "Plumbing",
+    "Sewer & Septic",
+    "Electrical",
+    "HVAC / Heating & Cooling",
+    "Insulation",
+    "Concrete",
+    "Bricklayer",
+    "Windows & Doors",
+    "Flooring",
+    "Garage Doors",
+    "Concrete Floor Coatings",
+    "Mini Barns",
+    "Pole Barns",
+    "Roofing",
+    "Gutters",
+    "Siding",
+    "Exterior Trim",
+    "Landscaping",
+    "Hardscapes",
+    "Outdoor Living",
+    "Pool & Spa",
+    "Fence and Gates",
+    "Handyman Services",
+    "Security",
+    "Home Inspections",
+    "Structural Engineer",
+    "Foundation Repair",
+    "Waterproofing",
+    "Crawlspace Repair",
+    "Mold Testing",
+    "Mold Restoration",
+    "Water & Fire Restoration Service",
+    "Hazardous Waste Removal",
+    "Interior Design",
+    "Kitchen",
+    "Bath",
+    "Interior Decorating",
+    "Window and Door Coverings",
+    "Window Tinting",
+    "Interior Trim",
+    "Cleaning Service",
+    "Organizing",
+    "Painting",
+    "Drywall",
+    "Wall Coverings",
+    "Chimney Sweep",
+    "Excavation",
+    "Grading",
+    "Blacktop & Sealcoating",
+    "Lighting",
+    "Moving",
+    "Storage Containers",
+    "Piano Movers",
+    "Realtor",
+    "Home Network & Computer",
+    "Computer Repair",
+    "Appliance Repair",
+    "Nursing",
+    "Drain Services",
+    "Veterinary Service",
+  ];
   return (
     <div>
       <div className="flex items-center">
@@ -135,18 +196,18 @@ function NewDeals() {
                 <div className="flex mt-4">
                   <div className="flex">
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="Commercial"
-                      name="type"
+                      name="Commercial"
                       className="myinput me-4"
                     />
                     <label htmlFor="Commercial">Commercial</label>
                   </div>
                   <div className="flex ms-8">
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="Residential"
-                      name="type"
+                      name="Residential"
                       className="myinput me-4"
                     />
                     <label htmlFor="Residential">Residential</label>
@@ -163,10 +224,14 @@ function NewDeals() {
                     id="Category"
                     className="myselect pe-[30px] focus-none"
                   >
-                    <option value="">Category 1</option>
-                    <option value="">Category 2</option>
-                    <option value="">Category 3</option>
-                    <option value="">Category 4</option>
+                    <option value="" hidden>
+                        Select an option
+                      </option>
+                      {Businesscategories.map((option, index) => (
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
+                      ))}
                   </select>
                 </div>
               </div>
