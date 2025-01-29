@@ -173,6 +173,10 @@ function ProfileDetails() {
       title: "Special Hours of Operation",
       images: [random1, random2, random3],
     },
+    {
+      title: "Social",
+      images: [random1, random2, random3],
+    },
   ];
 
   const reviews = [
