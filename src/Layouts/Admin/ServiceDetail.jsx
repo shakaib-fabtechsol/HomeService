@@ -3,11 +3,49 @@ import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
+import { Box, Tab, Tabs, TabScrollButton } from "@mui/material";
+import PropTypes from "prop-types";
+
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 function ServiceDetail() {
   useEffect(() => {
     document.title = "Service Details";
   }, []);
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <div>
       <div className="flex items-center">
@@ -43,34 +81,85 @@ function ServiceDetail() {
           <img src={servicedet} alt="" className="rounded-xl w-full" />
         </div>
         <div className="col-span-12 bg-[#FAFAFA] xl:col-span-4 border rounded-lg">
-          <div class="py-5 lg:px-6 px-4">
-            <div class="flex bg-[#fff] rounded-xl border justify-around mb-4">
-              <button class="sm:px-2 py-2 font-semibold myhead rounded-full myhead">
-                Basic
-              </button>
-              <button class="sm:px-2 py-2 myblack rounded-full font-medium myblack">
-                Standard
-              </button>
-              <button class="sm:px-2 py-2 myblack rounded-full font-medium myblack">
-                Premium
-              </button>
-            </div>
-            <div>
-              <div className="flex justify-between">
-                <h2 class="text-2xl font-medium myhead">Plan Title</h2>
-                <p className="text-3xl myhead font-bold">$200</p>
-              </div>
-              <p class="text-sm myblack mt-2">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
-                tellus diam, dignissim tincidunt quam vel, rutrum egestas lacus.
-                Phasellus accumsan fermentum dolor eu gravida. Vivamus dignissim
-                augue sed orci interdum vehicula.
-              </p>
-              <ul class="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                <li>3 Workers</li>
-                <li>Delivered Within 2 Days</li>
-              </ul>
-            </div>
+          <div className="py-5 lg:px-6 px-4">
+            <Box sx={{ width: "100%" }}>
+              <Box
+                sx={{
+                  border: "1px solid #E9EAEB",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                }}
+              >
+                <Tabs
+                  value={value}
+                  onChange={handleChange}
+                  aria-label="basic tabs example"
+                  variant="scrollable"
+                  TabIndicatorProps={{ sx: { display: "none" } }}
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    "& .MuiTab-root": {
+                      color: "#535862",
+                      textTransform: "capitalize",
+                      fontFamily: "inter",
+                    },
+                    "& .Mui-selected": { color: "#181D27", fontWeight: "700" },
+                  }}
+                >
+                  <Tab label="Basic" {...a11yProps(0)} />
+                  <Tab label="Standard" {...a11yProps(1)} />
+                  <Tab label="Premium" {...a11yProps(2)} />
+                </Tabs>
+              </Box>
+              <CustomTabPanel value={value} index={0}>
+                <div className="flex justify-between">
+                  <h2 className="text-2xl font-medium myhead">Plan Title</h2>
+                  <p className="text-3xl myhead font-bold">$200</p>
+                </div>
+                <p className="text-sm myblack mt-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  tellus diam, dignissim tincidunt quam vel, rutrum egestas
+                  lacus. Phasellus accumsan fermentum dolor eu gravida. Vivamus
+                  dignissim augue sed orci interdum vehicula.
+                </p>
+                <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                  <li>3 Workers</li>
+                  <li>Delivered Within 2 Days</li>
+                </ul>
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={1}>
+                <div className="flex justify-between">
+                  <h2 className="text-2xl font-medium myhead">Plan Title</h2>
+                  <p className="text-3xl myhead font-bold">$400</p>
+                </div>
+                <p className="text-sm myblack mt-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  tellus diam, dignissim tincidunt quam vel, rutrum egestas
+                  lacus. Phasellus accumsan fermentum dolor eu gravida. Vivamus
+                  dignissim augue sed orci interdum vehicula.
+                </p>
+                <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                  <li>3 Workers</li>
+                  <li>Delivered Within 2 Days</li>
+                </ul>
+              </CustomTabPanel>
+              <CustomTabPanel value={value} index={2}>
+                <div className="flex justify-between">
+                  <h2 className="text-2xl font-medium myhead">Plan Title</h2>
+                  <p className="text-3xl myhead font-bold">$600</p>
+                </div>
+                <p className="text-sm myblack mt-2">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi
+                  tellus diam, dignissim tincidunt quam vel, rutrum egestas
+                  lacus. Phasellus accumsan fermentum dolor eu gravida. Vivamus
+                  dignissim augue sed orci interdum vehicula.
+                </p>
+                <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                  <li>3 Workers</li>
+                  <li>Delivered Within 2 Days</li>
+                </ul>
+              </CustomTabPanel>
+            </Box>
           </div>
         </div>
       </div>
@@ -96,7 +185,7 @@ function ServiceDetail() {
           leo efficitur vel. Vestibulum nec elementum lacus.
         </p>
         <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-        <ul class="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
           <li>Pellentesque maximus augue in tellus fermentum viverra.</li>
           <li>Nunc euismod erat et volutpat tincidunt.</li>
           <li>In sit amet enim in nisl fermentum venenatis et ut dui.</li>
