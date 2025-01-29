@@ -273,7 +273,7 @@ function ProfileDetails() {
         </div>
         <button
           onClick={handlecontactOpen}
-          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+          className="flex mt-3 lg:mt-0 py-4 justify-center right-5 z-[199999] fixed items-center px-16 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
         >
           <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
           <span>Contact Pro</span>
