@@ -1165,7 +1165,7 @@ function Settings() {
                   <input
                     type="text"
                     id="Title"
-                    placeholder="Enter contact here"
+                    placeholder="Enter Call Number"
                     className="myinput focus-none w-full"
                   />
                 </div>
@@ -1197,7 +1197,7 @@ function Settings() {
                   <input
                     type="text"
                     id="Title"
-                    placeholder="Enter contact here"
+                    placeholder="Enter Text Number"
                     className="myinput focus-none w-full"
                   />
                 </div>
@@ -1226,12 +1226,7 @@ function Settings() {
                   </p>
                 </div>
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
+                  
                 </div>
               </div>
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
@@ -1259,9 +1254,9 @@ function Settings() {
                 </div>
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
                   <input
-                    type="text"
+                    type="email"
                     id="Title"
-                    placeholder="Enter email here"
+                    placeholder="Enter Email here"
                     className="myinput focus-none w-full"
                   />
                 </div>
@@ -1290,12 +1285,7 @@ function Settings() {
                   </p>
                 </div>
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter email here"
-                    className="myinput focus-none w-full"
-                  />
+                  
                 </div>
               </div>
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
@@ -1322,7 +1312,7 @@ function Settings() {
                   <input
                     type="text"
                     id="Title"
-                    placeholder="Enter contact here"
+                    placeholder="Enter Address here"
                     className="myinput focus-none w-full"
                   />
                 </div>
