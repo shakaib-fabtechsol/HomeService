@@ -14,7 +14,7 @@ function Login() {
       <div className="overflow-y-auto scroll-0 flex flex-col justify-center min-h-[100dvh] w-full max-w-[700px]">
         <div className="px-[15px] sm:px-[30px] lg:px-[50px] xl:px-[130px] py-4">
           <div className="flex justify-center">
-            <img src={logo} alt="" className="px-5 py-4" />
+            <img src={logo} alt="" className="px-5 py-4 w-[270px]" />
           </div>
           <h2 className="font-semibold text-center text-[#181D27] text-darkblue text-3xl">
             Log in to your account
