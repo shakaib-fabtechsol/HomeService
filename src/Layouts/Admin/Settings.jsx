@@ -209,23 +209,13 @@ function Settings() {
 
         <TabPanel value={value} index={0}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Personal Profile
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your personal profile details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Personal Profile
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your personal profile details.
+              </p>
             </div>
             <div className="max-w-[1000px]">
               <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
@@ -381,11 +371,30 @@ function Settings() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={1}>
           <div>
-            <div class="max-w-[70%]">
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">Location</p>
+              <p className="text-[#535862] text-sm">update your location.</p>
+            </div>
+            <div class="max-w-[70%] mt-8">
               <div class="flex gap-4 items-center mb-4">
                 <label class="flex items-center ">
                   <input
@@ -488,27 +497,32 @@ function Settings() {
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={2}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Business Profile
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your business details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Business Profile
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your business details.
+              </p>
             </div>
             <div>
               <div className="py-8 border-b">
@@ -657,28 +671,33 @@ function Settings() {
                   </div>
                 </div>
               </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  type="reset"
+                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                >
+                  {" "}
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Certifications & Hours
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your certifications & hours details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Certifications & Hours
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your certifications & hours details.
+              </p>
             </div>
             <div className="py-8 border-b">
               <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
@@ -814,31 +833,32 @@ function Settings() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">
-                  Payment/Payout Info
-                </h2>
-                <p className="myblack">update your payment details</p>
-              </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Payment/Payout Info
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your payment detail
+              </p>
             </div>
             <div className="">
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
@@ -930,27 +950,32 @@ function Settings() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={5}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Additional Photos
-                </p>
-                <p className="text-[#535862] text-sm">
-                  upload additional photos.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Additional Photos
+              </p>
+              <p className="text-[#535862] text-sm">
+                upload additional photos.
+              </p>
             </div>
             <div className="py-8 border-b">
               <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
@@ -1000,68 +1025,34 @@ function Settings() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={6}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Additional Photos
-                </p>
-                <p className="text-[#535862] text-sm">
-                  upload additional photos.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Connect Your Social
+              </p>
+              <p className="text-[#535862] text-sm">
+                update and connect your social profile links.
+              </p>
             </div>
             <div>
-              {/* {socialLinks.map((social, index) => (
-                <div key={index} className="py-5 border-b border-[#E9EAEB]">
-                  <div className="flex items-center justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                    <div className="flex gap-3 items-center">
-                      <img
-                        className="size-6 max-w-6"
-                        src={social.avatar}
-                        alt=""
-                      />
-                      <div>
-                        <p className="font-medium text-[#343434]">
-                          {social.name}
-                        </p>
-                        {social.link && (
-                          <p className="text-[#535862] text-sm">
-                            {social.link}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      {social.link ? (
-                        <Link to="">
-                          <CiTrash className="text-[24px]" />
-                        </Link>
-                      ) : (
-                        <button
-                          onClick={
-                            social.name === "Twitter" ? handleConnectOpen : ""
-                          }
-                          className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
-                        >
-                          Connect
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))} */}
               {socialLinks.map((social, index) => (
                 <div key={index} className="py-5 border-b border-[#E9EAEB]">
                   <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
@@ -1103,6 +1094,21 @@ function Settings() {
                   </div>
                 </div>
               ))}
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
             </div>
             <div>
               <Modal
@@ -1159,25 +1165,11 @@ function Settings() {
         </TabPanel>
         <TabPanel value={value} index={7}>
           <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">Password</h2>
-                <p className="myblack">update your account password</p>
-              </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">Password</p>
+              <p className="text-[#535862] text-sm">
+                update your account password.
+              </p>
             </div>
             <div className="">
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
@@ -1234,32 +1226,33 @@ function Settings() {
                   />
                 </div>
               </div>
+              <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={8}>
           <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">
-                  Channels for Conversations
-                </h2>
-                <p className="myblack">Update your Channels details.</p>
-              </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Channels for Conversations
+              </p>
+              <p className="text-[#535862] text-sm">
+                Update your Channels details.
+              </p>
             </div>
             <div className="">
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
@@ -1441,6 +1434,21 @@ function Settings() {
                   />
                 </div>
               </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
             </div>
           </div>
         </TabPanel>
