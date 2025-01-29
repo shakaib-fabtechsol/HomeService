@@ -269,7 +269,7 @@ function Settings() {
               <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
                 <div>
                   <p className="text-sm font-semibold text-[#414651]">
-                    Your photo
+                    Personal Profile Photo
                   </p>
                   <p className="text-[#535862] text-sm">
                     This will be displayed on your profile.
@@ -546,7 +546,7 @@ function Settings() {
                 <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
                   <div>
                     <p className="text-sm font-semibold text-[#414651]">
-                      Your photo
+                      Your Logo
                     </p>
                     <p className="text-[#535862] text-sm">
                       This will be displayed on your profile.
