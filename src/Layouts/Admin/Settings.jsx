@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { MenuItem, Modal, Select, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import profileImg from "../../assets/img/service3.png";
 import { FaPlus } from "react-icons/fa6";
 import SettingsPreview from "../../Components/MUI/SettingsPreview";
@@ -637,7 +644,7 @@ function Settings() {
                     </label>
                   </div>
                   <div className="sm:col-span-2">
-                    <select
+                    {/* <select
                       className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
                       name="SecondaryCat"
                       id="SecondaryCat"
@@ -650,7 +657,28 @@ function Settings() {
                           {option}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={Businesscategories}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          border: "1px solid #D5D7DA",
+                          outline: "none",
+                          paddingTop: "3px",
+                          paddingBottom: "3px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                      }}
+                      filterSelectedOptions
+                      renderInput={(params) => (
+                        <TextField {...params} placeholder="Select" />
+                      )}
+                    />
                   </div>
                 </div>
               </div>
@@ -1225,9 +1253,7 @@ function Settings() {
                     past 60 day period.
                   </p>
                 </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  
-                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6"></div>
               </div>
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
@@ -1284,9 +1310,7 @@ function Settings() {
                     past 60 day period.
                   </p>
                 </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  
-                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6"></div>
               </div>
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
                 <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
