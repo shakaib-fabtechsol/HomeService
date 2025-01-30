@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import { MenuItem, Modal, Select, Typography } from "@mui/material";
+import {
+  Autocomplete,
+  MenuItem,
+  Modal,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
 import profileImg from "../../assets/img/service3.png";
 import { FaPlus } from "react-icons/fa6";
 import SettingsPreview from "../../Components/MUI/SettingsPreview";
@@ -17,6 +24,7 @@ import { FaPencilAlt } from "react-icons/fa";
 import location from "../../assets/img/location.png";
 import close from "../../assets/img/close.png";
 import { Link } from "react-router";
+import twitter48px from "../../assets/img/twitter48px.png";
 import { IoIosCloseCircle } from "react-icons/io";
 import Slider from "@mui/material/Slider";
 function valueLabelFormat(value) {
@@ -169,6 +177,7 @@ function Settings() {
     },
   ];
 
+
   const [serviceType, setServiceType] = useState("location");
 
   const [value2, setValue2] = React.useState(10);
@@ -178,6 +187,11 @@ function Settings() {
       setValue2(newValue);
     }
   };
+
+  const [Connectopen, setConnectOpen] = React.useState(false);
+  const handleConnectOpen = () => setConnectOpen(true);
+  const handleConnectClose = () => setConnectOpen(false);
+
   return (
     <div>
       <div className="flex items-center">
@@ -211,33 +225,23 @@ function Settings() {
             <Tab label="Location" />
             <Tab label="Business Profile " />
             <Tab label="Certifications & Hours" />
-            <Tab label="Payment/Payout Info" />
             <Tab label="Additional Photos" />
             <Tab label="Social Profiles" />
             <Tab label="Password" />
             <Tab label="Channels for Conversations" />
+            <Tab label="Payment/Payout Info" />
           </Tabs>
         </Box>
 
         <TabPanel value={value} index={0}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Personal Profile
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your personal profile details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Personal Profile
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your personal profile details.
+              </p>
             </div>
             <div className="max-w-[1000px]">
               <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
@@ -291,7 +295,7 @@ function Settings() {
               <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
                 <div>
                   <p className="text-sm font-semibold text-[#414651]">
-                    Your photo
+                    Personal Profile Photo
                   </p>
                   <p className="text-[#535862] text-sm">
                     This will be displayed on your profile.
@@ -392,6 +396,21 @@ function Settings() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
             </div>
           </div>
         </TabPanel>
@@ -586,23 +605,13 @@ function Settings() {
         </TabPanel>
         <TabPanel value={value} index={2}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Business Profile
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your business details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Business Profile
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your business details.
+              </p>
             </div>
             <div>
               <div className="py-8 border-b">
@@ -626,7 +635,7 @@ function Settings() {
                 <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
                   <div>
                     <p className="text-sm font-semibold text-[#414651]">
-                      Your photo
+                      Your Logo
                     </p>
                     <p className="text-[#535862] text-sm">
                       This will be displayed on your profile.
@@ -717,7 +726,7 @@ function Settings() {
                     </label>
                   </div>
                   <div className="sm:col-span-2">
-                    <select
+                    {/* <select
                       className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
                       name="SecondaryCat"
                       id="SecondaryCat"
@@ -730,7 +739,28 @@ function Settings() {
                           {option}
                         </option>
                       ))}
-                    </select>
+                    </select> */}
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={Businesscategories}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "8px",
+                          border: "1px solid #D5D7DA",
+                          outline: "none",
+                          paddingTop: "3px",
+                          paddingBottom: "3px",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                      }}
+                      filterSelectedOptions
+                      renderInput={(params) => (
+                        <TextField {...params} placeholder="Select" />
+                      )}
+                    />
                   </div>
                 </div>
               </div>
@@ -751,28 +781,33 @@ function Settings() {
                   </div>
                 </div>
               </div>
+              <div className="flex justify-end mt-4">
+                <button
+                  type="reset"
+                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                >
+                  {" "}
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={3}>
           <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Certifications & Hours
-                </p>
-                <p className="text-[#535862] text-sm">
-                  update your certifications & hours details.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Certifications & Hours
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your certifications & hours details.
+              </p>
             </div>
             <div className="py-8 border-b">
               <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
@@ -908,31 +943,513 @@ function Settings() {
                 </div>
               </div>
             </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </TabPanel>
         <TabPanel value={value} index={4}>
           <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">
-                  Payment/Payout Info
-                </h2>
-                <p className="myblack">update your payment details</p>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Additional Photos
+              </p>
+              <p className="text-[#535862] text-sm">
+                upload additional photos.
+              </p>
+            </div>
+            <div className="py-8 border-b">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Technician Photos
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview />
+                </div>
               </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
+            </div>
+            <div className="py-8 border-b">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Vehicle Photos
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview />
+                </div>
+              </div>
+            </div>
+            <div className="py-8 border-b">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Facility Photos
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview />
+                </div>
+              </div>
+            </div>
+            <div className="py-8 border-b">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Project Photos
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Connect Your Social
+              </p>
+              <p className="text-[#535862] text-sm">
+                update and connect your social profile links.
+              </p>
+            </div>
+            <div>
+              {socialLinks.map((social, index) => (
+                <div key={index} className="py-5 border-b border-[#E9EAEB]">
+                  <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
+                    <div className="flex gap-3 items-center">
+                      <img
+                        className="size-6 max-w-6"
+                        src={social.avatar}
+                        alt=""
+                      />
+                      <div>
+                        <p className="font-medium text-[#343434]">
+                          {social.name}
+                        </p>
+                        {social.link && (
+                          <p className="text-[#535862] text-sm break-all">
+                            {social.link}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className="ms-auto">
+                      {social.link ? (
+                        <Link to="">
+                          <CiTrash className="text-[24px]" />
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={
+                            social.name === "Twitter"
+                              ? handleConnectOpen
+                              : () => {}
+                          }
+                          className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
+                        >
+                          Connect
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
+            <div>
+              <Modal
+                open={Connectopen}
+                onClose={handleConnectClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{ m: 2 }}
+              >
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
+                  <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
+                    <form action="">
+                      <div className="flex flex-col items-center mt-5 gap-5">
+                        <img
+                          className="size-12 max-w-12"
+                          src={twitter48px}
+                          alt=""
+                        />
+                        <p className="text-lg text-[#181D27] text-center font-semibold">
+                          Connect Your Twitter Account
+                        </p>
+                        <p className="text-[#535862] text-center">
+                          Enter your profile url to connect.
+                        </p>
+                        <input
+                          className="border border-[#D5D7DA] w-full p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                          defaultValue={"https://www.twitter.com/username"}
+                          type="url"
+                          name=""
+                          id=""
+                        />
+                        <div className="w-full grid grid-cols-2 gap-3 mt-6">
+                          <button
+                            onClick={handleConnectClose}
+                            type="button"
+                            className="text-[#414651] border border-[#D5D7DA] p-3 rounded-[8px] font-semibold w-full"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            className="text-white border-[#0F91D2] bg-[#0F91D2] p-3 rounded-[8px] font-semibold w-full"
+                            type="submit"
+                          >
+                            Connect
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </Modal>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">Password</p>
+              <p className="text-[#535862] text-sm">
+                update your account password.
+              </p>
+            </div>
+            <div className="">
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                  <div className="flex">
+                    <label htmlFor="password" className="font-semibold">
+                      Current Password
+                    </label>
+                  </div>
+                </div>
+                <div className="col-span-12 md:col-span-8 lg:col-span-6">
+                  <input
+                    type="password"
+                    id="password"
+                    placeholder=""
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                  <div className="flex">
+                    <label htmlFor="confirmpassword" className="font-semibold">
+                      New Password
+                    </label>
+                  </div>
+                </div>
+                <div className="col-span-12 md:col-span-8 lg:col-span-6">
+                  <input
+                    type="password"
+                    id="confirmpassword"
+                    placeholder=""
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
+                <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                  <div className="flex">
+                    <label
+                      htmlFor="confirmnewpassword"
+                      className="font-semibold"
+                    >
+                      Confirm New Password
+                    </label>
+                  </div>
+                </div>
+                <div className="col-span-12 md:col-span-8 lg:col-span-6">
+                  <input
+                    type="password"
+                    id="confirmnewpassword"
+                    placeholder=""
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end mt-4">
                 <button
                   type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
                 >
+                  {" "}
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
                 >
                   Save
                 </button>
               </div>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={7}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Channels for Conversations
+              </p>
+              <p className="text-[#535862] text-sm">
+                Update your Channels details.
+              </p>
+            </div>
+            <div className="">
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Call Pro</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your phone number visible to the
+                    public. Each time a customer (only one time per customer)
+                    uses this channel will incur a charge of $xxx. This charge
+                    is waived if your average deal revenue is above $xxx for the
+                    past 60 day period.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
+                  <input
+                    type="text"
+                    id="Title"
+                    placeholder="Enter Call Number"
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Text Pro</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your text number visible to the
+                    public. Each time a customer (only one time per customer)
+                    uses this channel will incur a charge of $xxx. This charge
+                    is waived if your average deal revenue is above $xxx for the
+                    past 60 day period.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
+                  <input
+                    type="text"
+                    id="Title"
+                    placeholder="Enter Text Number"
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Instant Chat</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your instant chat visible to the
+                    public. Each time a customer (only one time per customer)
+                    uses this channel will incur a charge of $xxx. This charge
+                    is waived if your average deal revenue is above $xxx for the
+                    past 60 day period.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6"></div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Email Pro</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your email address visible to the
+                    public. Each time a customer (only one time per customer)
+                    uses this channel will incur a charge of $xxx. This charge
+                    is waived if your average deal revenue is above $xxx for the
+                    past 60 day period.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
+                  <input
+                    type="email"
+                    id="Title"
+                    placeholder="Enter Email here"
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Direct Form</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your direct form visible to the
+                    public. Each time a customer (only one time per customer)
+                    uses this channel will incur a charge of $xxx. This charge
+                    is waived if your average deal revenue is above $xxx for the
+                    past 60 day period.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6"></div>
+              </div>
+              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
+                  <div className="flex items-center">
+                    <p className="font-semibold me-2">Address</p>
+                    <label className="switch def-switch relative flex items-center">
+                      <input type="checkbox" className="hidden peer" />
+                      <span className="slider round"></span>
+                      <span className="absolute left-[70px] text-sm mt-1 font-semibold text-gray-700 peer-checked:hidden">
+                        Off
+                      </span>
+                      <span className="absolute right-[-35px] text-sm mt-1 font-semibold text-gray-700 hidden peer-checked:inline">
+                        On
+                      </span>
+                    </label>
+                  </div>
+                  <p className="mt-3">
+                    Enable the toggle to make your address visible to the
+                    public.
+                  </p>
+                </div>
+                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
+                  <input
+                    type="text"
+                    id="Title"
+                    placeholder="Enter Address here"
+                    className="myinput focus-none w-full"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </TabPanel>
+        <TabPanel value={value} index={8}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Payment/Payout Info
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your payment detail
+              </p>
             </div>
             <div className="">
               <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
@@ -1024,421 +1541,20 @@ function Settings() {
                 </div>
               </div>
             </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={5}>
-          <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Additional Photos
-                </p>
-                <p className="text-[#535862] text-sm">
-                  upload additional photos.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
-            </div>
-            <div className="py-8 border-b">
-              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-                <div>
-                  <p className="text-sm font-semibold text-[#414651]">
-                    Upload Technician Photos
-                  </p>
-                </div>
-                <div className="md:col-span-2">
-                  <SettingsPreview />
-                </div>
-              </div>
-            </div>
-            <div className="py-8 border-b">
-              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-                <div>
-                  <p className="text-sm font-semibold text-[#414651]">
-                    Upload Vehicle Photos
-                  </p>
-                </div>
-                <div className="md:col-span-2">
-                  <SettingsPreview />
-                </div>
-              </div>
-            </div>
-            <div className="py-8 border-b">
-              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-                <div>
-                  <p className="text-sm font-semibold text-[#414651]">
-                    Upload Facility Photos
-                  </p>
-                </div>
-                <div className="md:col-span-2">
-                  <SettingsPreview />
-                </div>
-              </div>
-            </div>
-            <div className="py-8 border-b">
-              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-                <div>
-                  <p className="text-sm font-semibold text-[#414651]">
-                    Upload Project Photos
-                  </p>
-                </div>
-                <div className="md:col-span-2">
-                  <SettingsPreview />
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={6}>
-          <div>
-            <div className="flex justify-between border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-              <div>
-                <p className="text-lg font-semibold text-[#181D27]">
-                  Additional Photos
-                </p>
-                <p className="text-[#535862] text-sm">
-                  upload additional photos.
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-3 items-center ms-auto justify-end">
-                <button className="text-[#414651] font-semibold text-sm border border-[#D5D7DA] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#FFFFFF] rounded-[8px] py-3 px-4">
-                  Cancel
-                </button>
-                <button className="text-[#ffffff] font-semibold text-sm border border-[#0F91D2] shadow-[0px 1px_2px_0px_#0A0D120D] bg-[#0F91D2] rounded-[8px] py-3 px-4">
-                  Save
-                </button>
-              </div>
-            </div>
-            <div>
-              {socialLinks.map((social, index) => (
-                <div key={index} className="py-5 border-b border-[#E9EAEB]">
-                  <div className="flex items-center justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                    <div className="flex gap-3 items-center">
-                      <img
-                        className="size-6 max-w-6"
-                        src={social.avatar}
-                        alt=""
-                      />
-                      <div>
-                        <p className="font-medium text-[#343434]">
-                          {social.name}
-                        </p>
-                        {social.link && (
-                          <p className="text-[#535862] text-sm">
-                            {social.link}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                    <div>
-                      {social.link ? (
-                        <Link to="">
-                          {" "}
-                          <CiTrash className="text-[24px]" />
-                        </Link>
-                      ) : (
-                        <button className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4">
-                          Connect
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={7}>
-          <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">Password</h2>
-                <p className="myblack">update your account password</p>
-              </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-            <div className="">
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
-                <div className="col-span-12 md:col-span-4 lg:col-span-3">
-                  <div className="flex">
-                    <label htmlFor="password" className="font-semibold">
-                      Current Password
-                    </label>
-                  </div>
-                </div>
-                <div className="col-span-12 md:col-span-8 lg:col-span-6">
-                  <input
-                    type="password"
-                    id="password"
-                    placeholder=""
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
-                <div className="col-span-12 md:col-span-4 lg:col-span-3">
-                  <div className="flex">
-                    <label htmlFor="confirmpassword" className="font-semibold">
-                      New Password
-                    </label>
-                  </div>
-                </div>
-                <div className="col-span-12 md:col-span-8 lg:col-span-6">
-                  <input
-                    type="password"
-                    id="confirmpassword"
-                    placeholder=""
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
-                <div className="col-span-12 md:col-span-4 lg:col-span-3">
-                  <div className="flex">
-                    <label
-                      htmlFor="confirmnewpassword"
-                      className="font-semibold"
-                    >
-                      Confirm New Password
-                    </label>
-                  </div>
-                </div>
-                <div className="col-span-12 md:col-span-8 lg:col-span-6">
-                  <input
-                    type="password"
-                    id="confirmnewpassword"
-                    placeholder=""
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={8}>
-          <div>
-            <div className="flex flex-col lg:flex-row items-center border-b pb-4 justify-between mt-4">
-              <div className="">
-                <h2 className="font-bold text-xl myhead">
-                  Channels for Conversations
-                </h2>
-                <p className="myblack">Update your Channels details.</p>
-              </div>
-              <div className="flex justify-end mt-3 lg:mt-0">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[100px] sm:w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[100px] sm:w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
-              </div>
-            </div>
-            <div className="">
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Call Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your phone number visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Call Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your phone number visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Text Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your text number visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Instant Chat</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your instant chat visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Email Pro</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your email address visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter email here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Direct Form</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your direct form visible to the
-                    public. Each time a customer (only one time per customer)
-                    uses this channel will incur a charge of $xxx. This charge
-                    is waived if your average deal revenue is above $xxx for the
-                    past 60 day period.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter email here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
-              <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
-                  <div className="flex items-center">
-                    <p className="font-semibold me-2">Address</p>
-                    <label class="switch def-switch">
-                      <input type="checkbox" checked />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                  <p className="mt-3">
-                    Enable the toggle to make your address visible to the
-                    public.
-                  </p>
-                </div>
-                <div className="col-span-12 lg:col-span-6 2xl:col-span-6">
-                  <input
-                    type="text"
-                    id="Title"
-                    placeholder="Enter contact here"
-                    className="myinput focus-none w-full"
-                  />
-                </div>
-              </div>
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
             </div>
           </div>
         </TabPanel>

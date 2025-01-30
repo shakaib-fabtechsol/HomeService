@@ -7,6 +7,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
+import { HiOutlineTrash } from "react-icons/hi2";
+import down from "../../assets/img/chevronDown.png";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -23,21 +25,19 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
+        <Box sx={{ py: 3, fontFamily: "inter" }}>{children}</Box>
       )}
     </div>
   );
 }
 
 function NewDeals() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [selectedRate, setSelectedRate] = useState(""); // State to track selected pricing model
+  const [selectedRate, setSelectedRate] = useState("Custom"); // State to track selected pricing model
 
   const handleRateChange = (event) => {
     setSelectedRate(event.target.value); // Update state based on selected radio button
@@ -74,7 +74,68 @@ function NewDeals() {
   const handleShowPreview = () => {
     setShowPreview(true);
   };
-
+  const Businesscategories = [
+    "Plumbing",
+    "Sewer & Septic",
+    "Electrical",
+    "HVAC / Heating & Cooling",
+    "Insulation",
+    "Concrete",
+    "Bricklayer",
+    "Windows & Doors",
+    "Flooring",
+    "Garage Doors",
+    "Concrete Floor Coatings",
+    "Mini Barns",
+    "Pole Barns",
+    "Roofing",
+    "Gutters",
+    "Siding",
+    "Exterior Trim",
+    "Landscaping",
+    "Hardscapes",
+    "Outdoor Living",
+    "Pool & Spa",
+    "Fence and Gates",
+    "Handyman Services",
+    "Security",
+    "Home Inspections",
+    "Structural Engineer",
+    "Foundation Repair",
+    "Waterproofing",
+    "Crawlspace Repair",
+    "Mold Testing",
+    "Mold Restoration",
+    "Water & Fire Restoration Service",
+    "Hazardous Waste Removal",
+    "Interior Design",
+    "Kitchen",
+    "Bath",
+    "Interior Decorating",
+    "Window and Door Coverings",
+    "Window Tinting",
+    "Interior Trim",
+    "Cleaning Service",
+    "Organizing",
+    "Painting",
+    "Drywall",
+    "Wall Coverings",
+    "Chimney Sweep",
+    "Excavation",
+    "Grading",
+    "Blacktop & Sealcoating",
+    "Lighting",
+    "Moving",
+    "Storage Containers",
+    "Piano Movers",
+    "Realtor",
+    "Home Network & Computer",
+    "Computer Repair",
+    "Appliance Repair",
+    "Nursing",
+    "Drain Services",
+    "Veterinary Service",
+  ];
   return (
     <div>
       <div className="flex items-center">
@@ -135,18 +196,18 @@ function NewDeals() {
                 <div className="flex mt-4">
                   <div className="flex">
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="Commercial"
-                      name="type"
+                      name="Commercial"
                       className="myinput me-4"
                     />
                     <label htmlFor="Commercial">Commercial</label>
                   </div>
                   <div className="flex ms-8">
                     <input
-                      type="radio"
+                      type="checkbox"
                       id="Residential"
-                      name="type"
+                      name="Residential"
                       className="myinput me-4"
                     />
                     <label htmlFor="Residential">Residential</label>
@@ -163,10 +224,14 @@ function NewDeals() {
                     id="Category"
                     className="myselect pe-[30px] focus-none"
                   >
-                    <option value="">Category 1</option>
-                    <option value="">Category 2</option>
-                    <option value="">Category 3</option>
-                    <option value="">Category 4</option>
+                    <option value="" hidden>
+                      Select an option
+                    </option>
+                    {Businesscategories.map((option, index) => (
+                      <option key={index} value={option}>
+                        {option}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -396,35 +461,317 @@ function NewDeals() {
               {/* Custom Package Fields */}
               {selectedRate === "Custom" && (
                 <>
-                  <div className="col-span-12 lg:col-span-7 mt-4">
-                    <div className="flex flex-col">
-                      <label htmlFor="PackagePrice" className="font-semibold">
-                        Package Price
-                      </label>
-                      <input
-                        type="text"
-                        id="PackagePrice"
-                        placeholder="Enter package price"
-                        className="myinput focus-none"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-span-12 lg:col-span-7 mt-4">
-                    <div className="flex flex-col">
-                      <label htmlFor="CustomDiscount" className="font-semibold">
-                        Custom Discount
-                      </label>
-                      <input
-                        type="text"
-                        id="CustomDiscount"
-                        placeholder="Enter custom discount"
-                        className="myinput focus-none"
-                      />
+                  <div className="col-span-12 mt-6">
+                    <p className="text-lg font-semibold">Pricing Packages</p>
+                    <div className="bg-[#FAFAFA] rounded-[12px] p-5 mt-6">
+                      <div>
+                        <div className="grid lg:grid-cols-3 gap-5">
+                          <div>
+                            <div className="flex justify-between items-center">
+                              <p className="text-lg font-medium">Tier 1</p>
+                              <HiOutlineTrash className="text-[20px]" />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier1Title"
+                              >
+                                Title
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="Title"
+                                id="tier1Title"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier1Deliverables"
+                              >
+                                Deliverables
+                              </label>
+                              <textarea
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                name="tier1Deliverables"
+                                id="tier1Deliverables"
+                                placeholder="Write here.."
+                              ></textarea>
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier1Price"
+                              >
+                                Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="$50"
+                                id="tier1Price"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier1BuyNowDiscount"
+                              >
+                                Buy Now Discount
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="10 %"
+                                id="tier1BuyNowDiscount"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier1FinalListPrice"
+                              >
+                                Final List Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="USD: 43"
+                                id="tier1FinalListPrice"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2EstimatedTiming"
+                              >
+                                Estimated Service Timing
+                              </label>
+                              <select
+                                style={{
+                                  backgroundImage: `url(${down})`,
+                                  backgroundPosition:
+                                    "calc(100% - 10px) center",
+                                  backgroundRepeat: "no-repeat",
+                                }}
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
+                                name="tier2EstimatedTiming"
+                                id="tier2EstimatedTiming"
+                              >
+                                <option value="">1 Day</option>
+                                <option value="">2 Day</option>
+                                <option value="">3 Day</option>
+                                <option value="">4 Day</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex justify-between items-center">
+                              <p className="text-lg font-medium">Tier 2</p>
+                              <HiOutlineTrash className="text-[20px]" />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2Title"
+                              >
+                                Title
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="Title"
+                                id="tier2Title"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2Deliverables"
+                              >
+                                Deliverables
+                              </label>
+                              <textarea
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                name="tier2Deliverables"
+                                id="tier2Deliverables"
+                                placeholder="Write here.."
+                              ></textarea>
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2Price"
+                              >
+                                Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="$50"
+                                id="tier2Price"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2BuyNowDiscount"
+                              >
+                                Buy Now Discount
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="10 %"
+                                id="tier2BuyNowDiscount"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2FinalListPrice"
+                              >
+                                Final List Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="USD: 43"
+                                id="tier2FinalListPrice"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier2EstimatedTiming"
+                              >
+                                Estimated Service Timing
+                              </label>
+                              <select
+                                style={{
+                                  backgroundImage: `url(${down})`,
+                                  backgroundPosition:
+                                    "calc(100% - 10px) center",
+                                  backgroundRepeat: "no-repeat",
+                                }}
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
+                                name="tier2EstimatedTiming"
+                                id="tier2EstimatedTiming"
+                              >
+                                <option value="">1 Day</option>
+                                <option value="">2 Day</option>
+                                <option value="">3 Day</option>
+                                <option value="">4 Day</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="flex justify-between items-center">
+                              <p className="text-lg font-medium">Tier 3</p>
+                              <HiOutlineTrash className="text-[20px]" />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3Title"
+                              >
+                                Title
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="Title"
+                                id="tier3Title"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3Deliverables"
+                              >
+                                Deliverables
+                              </label>
+                              <textarea
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                name="tier3Deliverables"
+                                id="tier3Deliverables"
+                                placeholder="Write here.."
+                              ></textarea>
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3Price"
+                              >
+                                Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="$50"
+                                id="tier3Price"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3BuyNowDiscount"
+                              >
+                                Buy Now Discount
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="10 %"
+                                id="tier3BuyNowDiscount"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3FinalListPrice"
+                              >
+                                Final List Price
+                              </label>
+                              <input
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
+                                type="text"
+                                placeholder="USD: 43"
+                                id="tier3FinalListPrice"
+                              />
+                            </div>
+                            <div className="flex flex-col mt-4">
+                              <label
+                                className="text-sm font-medium ps-2"
+                                htmlFor="tier3EstimatedTiming"
+                              >
+                                Estimated Service Timing
+                              </label>
+                              <select
+                                style={{
+                                  backgroundImage: `url(${down})`,
+                                  backgroundPosition:
+                                    "calc(100% - 10px) center",
+                                  backgroundRepeat: "no-repeat",
+                                }}
+                                className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
+                                name="tier3EstimatedTiming"
+                                id="tier3EstimatedTiming"
+                              >
+                                <option value="">1 Day</option>
+                                <option value="">2 Day</option>
+                                <option value="">3 Day</option>
+                                <option value="">4 Day</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
               )}
-
               <div className="col-span-12 mt-4">
                 <div className="flex justify-end">
                   <button

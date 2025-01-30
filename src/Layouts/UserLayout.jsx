@@ -17,7 +17,7 @@ import {
   MdLogout,
 } from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import user from "../assets/img/user.png";
 
@@ -45,10 +45,10 @@ function UserLayout() {
       link: "/user/support",
     },
     {
-        text: "Settings",
-        icon: <IoIosSettings className="text-2xl" />,
-        link: "/user/settings",
-      },
+      text: "Settings",
+      icon: <IoIosSettings className="text-2xl" />,
+      link: "/user/settings",
+    },
   ];
 
   const drawer = (
@@ -104,11 +104,13 @@ function UserLayout() {
         </List>
         <Box>
           <div className="flex items-center px-4 py-4">
-            <img
-              src={user}
-              alt="logo"
-              className="rounded-full pe-2 max-w-[70px]"
-            />
+            <Link to="/user/ProfileDetails">
+              <img
+                src={user}
+                alt="logo"
+                className="rounded-full pe-2 max-w-[70px]"
+              />
+            </Link>
             <Box>
               <Box className="flex justify-between items-center">
                 <p className="font-bold">Mike Bird</p>
@@ -142,7 +144,7 @@ function UserLayout() {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            edge="end" 
+            edge="end"
             onClick={handleDrawerToggle}
             sx={{
               position: "absolute",
