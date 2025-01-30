@@ -150,7 +150,7 @@ function AdminLayout() {
           display: { sm: "none" },
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" } }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -212,7 +212,7 @@ function AdminLayout() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
+        {/* <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" } }} /> */}
         <Outlet />
       </Box>
     </Box>
