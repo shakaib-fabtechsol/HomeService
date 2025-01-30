@@ -139,7 +139,7 @@ function AdminLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
+      {/* <AppBar
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -147,26 +147,23 @@ function AdminLayout() {
           bgcolor: "transparent",
           color: "#181D27",
           boxShadow: "none",
-          display: { sm: "none" },
+          // display: { sm: "none" },
         }}
       >
-        <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" } }}>
+        <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" },display:"flex",justifyContent:"end" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             edge="end"
             onClick={handleDrawerToggle}
             sx={{
-              position: "absolute",
-              right: 16,
-              top: 18,
               display: { sm: "none" },
             }}
           >
             <MenuIcon />
           </IconButton>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       {/* Sidebar for Desktop */}
       <Box
         component="nav"
@@ -212,7 +209,14 @@ function AdminLayout() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {/* <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" } }} /> */}
+        {/* <Toolbar /> */}
+        <Box sx={{display:{xs:"block",sm:"none"}}}>
+          <div className="pb-2 flex justify-end">
+            <button onClick={handleDrawerToggle}>
+              <MenuIcon />
+            </button>
+          </div>
+        </Box>
         <Outlet />
       </Box>
     </Box>
