@@ -3,7 +3,6 @@ import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaRegCalendarAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
-import pro from "../../assets/img/pro.png";
 import PropTypes from "prop-types";
 import { Box, Modal, Tab, Tabs } from "@mui/material";
 import { FiPhone } from "react-icons/fi";
