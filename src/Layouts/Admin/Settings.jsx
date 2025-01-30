@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import profileImg from "../../assets/img/service3.png";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import SettingsPreview from "../../Components/MUI/SettingsPreview";
 import Facebook from "../../assets/img/Facebook-icon.png";
 import Youtube from "../../assets/img/Youtube-icon.png";
@@ -20,7 +20,7 @@ import Instagram from "../../assets/img/Instagram-icon.png";
 import Linkdin from "../../assets/img/Linkdin-icon.png";
 import Business from "../../assets/img/Business-icon.png";
 import { CiTrash } from "react-icons/ci";
-import { FaPencilAlt } from "react-icons/fa";
+import { FaPencilAlt, FaPlusCircle } from "react-icons/fa";
 import location from "../../assets/img/location.png";
 import close from "../../assets/img/close.png";
 import { Link } from "react-router";
@@ -190,6 +190,20 @@ function Settings() {
   const [Connectopen, setConnectOpen] = React.useState(false);
   const handleConnectOpen = () => setConnectOpen(true);
   const handleConnectClose = () => setConnectOpen(false);
+
+  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const [schedule, setSchedule] = useState(days.map(day => ({ day, closed: false, slots: [{ start: "", end: "" }] })));
+
+  const updateSchedule = (dayIndex, update) => {
+    setSchedule(prev => prev.map((item, i) => (i === dayIndex ? { ...item, ...update } : item)));
+  };
+
+  const specialdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const [specialSchedule, setspecialSchedule] = useState(specialdays.map(day => ({ day, closed: false, slots: [{ start: "", end: "" }] })));
+
+  const updatespecialSchedule = (dayIndex, update) => {
+    setspecialSchedule(prev => prev.map((item, i) => (i === dayIndex ? { ...item, ...update } : item)));
+  };
 
   return (
     <div>
@@ -852,43 +866,39 @@ function Settings() {
                   </p>
                 </div>
                 <div className="sm:col-span-2">
-                  <div>
-                    <select
-                      className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                      name=""
-                      id=""
-                    >
-                      <option value="" hidden>
-                        Select days
-                      </option>
-                      <option value="">Monday</option>
-                      <option value="">Tuesday</option>
-                      <option value="">Wednesday</option>
-                      <option value="">Thursday</option>
-                      <option value="">Friday</option>
-                      <option value="">Saturday</option>
-                      <option value="">Sunday</option>
-                    </select>
-                  </div>
-                  <div className="grid md:grid-cols-2 mt-4 gap-4">
-                    <div>
-                      <input
-                        className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Start Time"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="End Time"
-                      />
-                    </div>
+                  <div className="">
+                    {schedule.map((item, dayIndex) => (
+                      <div key={item.day} className="mb-4 grid grid-cols-3 gap-2">
+                         <div>
+                          <p>{item.day}</p>
+                          <label className="flex gap-2 mt-2">
+                            <input type="checkbox" checked={item.closed} onChange={() => updateSchedule(dayIndex, { closed: !item.closed })} /> Closed
+                          </label>
+                         </div>
+                        {!item.closed && (
+                          <div className="col-start-2 col-end-4">
+                            {item.slots.map((slot, slotIndex) => (
+                              <div key={slotIndex} className="flex items-center gap-2 mt-2">
+                                <input type="time" className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none" value={slot.start} onChange={(e) => {
+                                  const slots = [...item.slots];
+                                  slots[slotIndex].start = e.target.value;
+                                  updateSchedule(dayIndex, { slots });
+                                }} />
+                                <input type="time" className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none" value={slot.end} onChange={(e) => {
+                                  const slots = [...item.slots];
+                                  slots[slotIndex].end = e.target.value;
+                                  updateSchedule(dayIndex, { slots });
+                                }} />
+                                <button onClick={() => updateSchedule(dayIndex, { slots: item.slots.filter((_, i) => i !== slotIndex) })}><FaTrash /></button>
+                              </div>
+                            ))}
+                            <button className="py-2" onClick={() => updateSchedule(dayIndex, { slots: [...item.slots, { start: "", end: "" }] })}>
+                              <FaPlusCircle />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -901,43 +911,39 @@ function Settings() {
                   </p>
                 </div>
                 <div className="sm:col-span-2">
-                  <div>
-                    <select
-                      className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                      name=""
-                      id=""
-                    >
-                      <option value="" hidden>
-                        Select days
-                      </option>
-                      <option value="">Monday</option>
-                      <option value="">Tuesday</option>
-                      <option value="">Wednesday</option>
-                      <option value="">Thursday</option>
-                      <option value="">Friday</option>
-                      <option value="">Saturday</option>
-                      <option value="">Sunday</option>
-                    </select>
-                  </div>
-                  <div className="grid md:grid-cols-2 mt-4 gap-4">
-                    <div>
-                      <input
-                        className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="Start Time"
-                      />
-                    </div>
-                    <div>
-                      <input
-                        className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                        type="text"
-                        name=""
-                        id=""
-                        placeholder="End Time"
-                      />
-                    </div>
+                <div className="">
+                    {specialSchedule.map((item, dayIndex) => (
+                      <div key={item.day} className="mb-4 grid grid-cols-3 gap-2">
+                         <div>
+                          <p>{item.day}</p>
+                          <label className="flex gap-2 mt-2">
+                            <input type="checkbox" checked={item.closed} onChange={() => updatespecilaSchedule(dayIndex, { closed: !item.closed })} /> Closed
+                          </label>
+                         </div>
+                        {!item.closed && (
+                          <div className="col-start-2 col-end-4">
+                            {item.slots.map((slot, slotIndex) => (
+                              <div key={slotIndex} className="flex items-center gap-2 mt-2">
+                                <input type="time" className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none" value={slot.start} onChange={(e) => {
+                                  const slots = [...item.slots];
+                                  slots[slotIndex].start = e.target.value;
+                                  updateSchedule(dayIndex, { slots });
+                                }} />
+                                <input type="time" className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none" value={slot.end} onChange={(e) => {
+                                  const slots = [...item.slots];
+                                  slots[slotIndex].end = e.target.value;
+                                  updatespecialSchedule(dayIndex, { slots });
+                                }} />
+                                <button onClick={() => updatespecialSchedule(dayIndex, { slots: item.slots.filter((_, i) => i !== slotIndex) })}><FaTrash /></button>
+                              </div>
+                            ))}
+                            <button className="py-2" onClick={() => updatespecialSchedule(dayIndex, { slots: [...item.slots, { start: "", end: "" }] })}>
+                              <FaPlusCircle />
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -1075,7 +1081,7 @@ function Settings() {
                           onClick={
                             social.name === "Twitter"
                               ? handleConnectOpen
-                              : () => {}
+                              : () => { }
                           }
                           className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
                         >
