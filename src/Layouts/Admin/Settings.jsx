@@ -18,6 +18,14 @@ import location from "../../assets/img/location.png";
 import close from "../../assets/img/close.png";
 import { Link } from "react-router";
 import { IoIosCloseCircle } from "react-icons/io";
+import Slider from "@mui/material/Slider";
+function valueLabelFormat(value) {
+  return `${value} Miles`;
+}
+
+function calculateValue(value) {
+  return value; // Return the value as is
+}
 
 function TabPanel(props) {
   useEffect(() => {
@@ -161,6 +169,15 @@ function Settings() {
     },
   ];
 
+  const [serviceType, setServiceType] = useState("location");
+
+  const [value2, setValue2] = React.useState(10);
+
+  const handleChange2 = (event, newValue) => {
+    if (typeof newValue === "number") {
+      setValue2(newValue);
+    }
+  };
   return (
     <div>
       <div className="flex items-center">
@@ -380,96 +397,163 @@ function Settings() {
         </TabPanel>
         <TabPanel value={value} index={1}>
           <div>
-            <div class="max-w-[70%]">
-              <div class="flex gap-4 items-center mb-4">
-                <label class="flex items-center ">
+            <div class="lg:max-w-[65%] xl:max-w-[45%]">
+              <div className="flex flex-wrap gap-4 items-center mb-4">
+                <label className="flex items-center">
                   <input
                     type="radio"
                     name="serviceType"
-                    class="form-radio"
-                    checked
+                    className="form-radio"
+                    checked={serviceType === "location"}
+                    onChange={() => setServiceType("location")}
                   />
                   <span className="ms-3">Service Locations</span>
                 </label>
-                <label class="flex items-center ">
-                  <input type="radio" name="serviceType" class="form-radio" />
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="serviceType"
+                    className="form-radio"
+                    checked={serviceType === "radius"}
+                    onChange={() => setServiceType("radius")}
+                  />
                   <span className="ms-3">Service Radius</span>
                 </label>
               </div>
-
-              <div class="mb-6 ">
-                <label htmlFor="bloc" class="block text-sm font-medium mb-2">
-                  Business Location
-                </label>
-                <div class="flex items-center border py-2 rounded-lg px-3 ">
-                  <img src={location} alt="" className="max-w-20px me-2" />
-                  <input
-                    id="bloc"
-                    type="text"
-                    placeholder="Enter your business address."
-                    class="w-full py-2 focus-none"
-                  />
-                  <FaPencilAlt />
-                </div>
-              </div>
-
-              <div class="mb-6">
-                <div className="flex justify-between">
-                  <label htmlFor="sloc" class="block text-sm font-medium mb-2">
-                    Enter Service Locations
-                  </label>
-                  <div className="flex items-center">
-                    <input type="checkbox" name="" id="bulk" className="me-2" />
+              {/* Service Locations Section */}
+              {serviceType === "location" && (
+                <div className="ser-location">
+                  <div class="mb-6 ">
                     <label
-                      htmlFor="bulk"
-                      className="block text-sm font-semibold"
+                      htmlFor="bloc"
+                      class="block text-sm font-medium mb-2"
                     >
-                      Add locations in bulk
+                      Business Location
                     </label>
+                    <div class="flex items-center border py-2 rounded-lg px-3 ">
+                      <img src={location} alt="" className="max-w-20px me-2" />
+                      <input
+                        id="bloc"
+                        type="text"
+                        placeholder="Enter your business address."
+                        class="w-full py-2 focus-none"
+                      />
+                      <FaPencilAlt />
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div className="flex flex-wrap justify-between">
+                      <label
+                        htmlFor="sloc"
+                        class="block text-sm font-medium my-2"
+                      >
+                        Enter Service Locations
+                      </label>
+                      <div className="flex my-2 items-center">
+                        <input
+                          type="checkbox"
+                          name=""
+                          id="bulk"
+                          className="me-2 focus-none focus:outline-none"
+                        />
+                        <label
+                          htmlFor="bulk"
+                          className="block text-sm font-semibold"
+                        >
+                          Add locations in bulk
+                        </label>
+                      </div>
+                    </div>
+                    <div class="flex items-center  mb-2">
+                      <textarea
+                        id="sloc"
+                        rows="4"
+                        placeholder="Locations can be cities, postal codes, countries, etc. Enter one location per line."
+                        class="w-full border focus-none rounded-lg px-3 py-2"
+                      ></textarea>
+                    </div>
+                    <p class="text-sm myblack text-end">0 / 1000</p>
+                  </div>
+                  <div class="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
+                    <label class="" htmlFor="restrict">
+                      <img src={location} alt="" className="max-w-20px me-2" />
+                    </label>
+                    <input
+                      type="text"
+                      id="restrict"
+                      class="w-full focus-none rounded-lg px-3 py-4"
+                      placeholder="Restrict locations within a country (optional)"
+                    />
+                  </div>
+                  <div className="border rounded-lg py-3">
+                    <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 01</p>
+                      <Link to="#">
+                        <img src={close} alt="" />
+                      </Link>
+                    </div>
+                    <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 02</p>
+                      <Link to="#">
+                        <img src={close} alt="" />
+                      </Link>
+                    </div>
+                    <div className="px-3 py-1 flex items-center justify-between">
+                      <p className="myblack">location 03</p>
+                      <Link to="#">
+                        <img src={close} alt="" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
-                <div class="flex items-center  mb-2">
-                  <textarea
-                    id="sloc"
-                    rows="4"
-                    placeholder="Locations can be cities, postal codes, countries, etc. Enter one location per line."
-                    class="w-full border rounded-lg px-3 py-2"
-                  ></textarea>
-                </div>
-                <p class="text-sm myblack text-end">0 / 1000</p>
-              </div>
+              )}
 
-              <div class="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
-                <label class="" htmlFor="restrict">
-                  <img src={location} alt="" className="max-w-20px me-2" />
-                </label>
-                <input
-                  type="text"
-                  id="restrict"
-                  class="w-full focus-none rounded-lg px-3 py-4"
-                  placeholder="Restrict locations within a country (optional)"
-                />
-              </div>
-              <div className="border rounded-lg py-3">
-                <div className="px-3 py-1 flex items-center justify-between">
-                  <p className="myblack">location 01</p>
-                  <Link to="#">
-                    <img src={close} alt="" />
-                  </Link>
+              {/* Service Radius Section */}
+              {serviceType === "radius" && (
+                <div className="ser-radius">
+                  <div class="mb-6 ">
+                    <label
+                      htmlFor="bloc"
+                      class="block text-sm font-medium mb-2"
+                    >
+                      Enter Service Locations
+                    </label>
+                    <div class="flex items-center border py-2 rounded-lg px-3 ">
+                      <img src={location} alt="" className="max-w-20px me-2" />
+                      <input
+                        id="bloc"
+                        type="text"
+                        placeholder="Enter your State and Zip code service address."
+                        class="w-full py-2 focus-none"
+                      />
+                      <FaPencilAlt />
+                    </div>
+                  </div>
+                  <div class=" ">
+                    <label htmlFor="" class="block text-sm font-medium mb-2">
+                      Coverage from Service Location
+                    </label>
+                    <div className="flex justify-between">
+                      <p className="text-sm">0 Miles</p>
+                      <p className="text-sm">60 Miles</p>
+                    </div>
+                  </div>
+                  <Box>
+                    <Slider
+                      value={value2}
+                      min={0}
+                      step={1}
+                      max={60}
+                      scale={calculateValue}
+                      getAriaValueText={valueLabelFormat}
+                      valueLabelFormat={valueLabelFormat}
+                      onChange={handleChange2}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="non-linear-slider"
+                    />
+                  </Box>
                 </div>
-                <div className="px-3 py-1 flex items-center justify-between">
-                  <p className="myblack">location 02</p>
-                  <Link to="#">
-                    <img src={close} alt="" />
-                  </Link>
-                </div>
-                <div className="px-3 py-1 flex items-center justify-between">
-                  <p className="myblack">location 03</p>
-                  <Link to="#">
-                    <img src={close} alt="" />
-                  </Link>
-                </div>
-              </div>
+              )}
             </div>
             <div className="col-span-12 mt-4">
               <iframe
@@ -482,6 +566,21 @@ function Settings() {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
+            </div>
+            <div className="flex justify-end mt-12">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                {" "}
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
             </div>
           </div>
         </TabPanel>
