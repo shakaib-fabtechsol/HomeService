@@ -26,6 +26,13 @@ import { FiPhone } from "react-icons/fi";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
+import Facebook from "../../assets/img/Facebook-icon.png";
+import Youtube from "../../assets/img/Youtube-icon.png";
+import Twitter from "../../assets/img/Twitter-icon.png";
+import Instagram from "../../assets/img/Instagram-icon.png";
+import Linkdin from "../../assets/img/Linkdin-icon.png";
+import Business from "../../assets/img/Business-icon.png";
+import down from "../../assets/img/chevronDown.png";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -167,10 +174,6 @@ function ProfileDetails() {
       title: "Insurance",
       images: [random1, random2, random3],
     },
-    {
-      title: "Special Hours of Operation",
-      images: [random1, random2, random3],
-    },
   ];
 
   const reviews = [
@@ -232,6 +235,49 @@ function ProfileDetails() {
   const handlereviewClose = () => setreviewOpen(false);
 
   const [value, setValue] = React.useState(2);
+
+  const socialLinks = [
+    {
+      name: "Facebook",
+      avatar: Facebook,
+      link: "#",
+    },
+    {
+      name: "Twitter",
+      avatar: Twitter,
+      link: "#",
+    },
+    {
+      name: "Instagram",
+      avatar: Instagram,
+      link: "#",
+    },
+    {
+      name: "LinkedIn",
+      avatar: Linkdin,
+      link: "#",
+    },
+    {
+      name: "YouTube",
+      avatar: Youtube,
+      link: "#",
+    },
+    {
+      name: "Google Business",
+      avatar: Business,
+      link: "#",
+    },
+  ];
+
+  const SpecialHours = [
+    { day: "Monday", time: "9AM - 5PM" },
+    { day: "Tuesday", time: "9AM - 5PM" },
+    { day: "Wednesday", time: "9AM - 5PM" },
+    { day: "Thursday", time: "9AM - 5PM" },
+    { day: "Friday", time: "9AM - 5PM" },
+    { day: "Saturday", time: "10AM - 4PM" },
+    { day: "Sunday", time: "Closed" },
+  ];
 
   return (
     <div>
@@ -454,12 +500,122 @@ function ProfileDetails() {
               </Accordion>
             );
           })}
+          <Accordion
+            expanded={expanded === "SpecialHour"}
+            onChange={handleChange("SpecialHour")}
+          >
+            <AccordionSummary
+              aria-controls={`SpecialHourd-content`}
+              id={`SpecialHourd-header`}
+            >
+              <h3>Special Hours of Operation</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div>
+                {SpecialHours.map((row, index) => (
+                  <div key={index} className="py-5 border-b border-[#E9EAEB]">
+                    <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
+                      <div className="flex gap-3 items-center">
+                        <div>
+                          <p className="font-medium text-[#343434]">
+                            {row.day}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="ms-auto">
+                        <p>{row.time}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "Socials"}
+            onChange={handleChange("Socials")}
+          >
+            <AccordionSummary
+              aria-controls={`Socialsd-content`}
+              id={`Socialsd-header`}
+            >
+              <h3>Socials</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div>
+                {socialLinks.map((social, index) => (
+                  <div key={index} className="py-5 border-b border-[#E9EAEB]">
+                    <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
+                      <div className="flex gap-3 items-center">
+                        <img
+                          className="size-6 max-w-6 object-contain"
+                          src={social.avatar}
+                          alt=""
+                        />
+                        <div>
+                          <p className="font-medium text-[#343434]">
+                            {social.name}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="ms-auto">
+                        <Link
+                          to={social.link}
+                          className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
+                        >
+                          Visit
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </AccordionDetails>
+          </Accordion>
         </div>
       </div>
       {/* --------reviews--------- */}
       <div className="mt-5">
-        <h2 className="text-2xl font-bold mb-4">Reviews</h2>
-        <div className="flex flex-col md:flex-row items-center gap-10 xl:px-10">
+        <div className="flex gap-4 flex-wrap">
+          <h2 className="text-2xl font-bold">Reviews</h2>
+          <div className="flex flex-wrap justify-end items-center gap-3 ms-auto">
+            <select
+              style={{
+                backgroundImage: `url(${down})`,
+                backgroundPosition: "5px",
+              }}
+              className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat"
+              name="byRate"
+              id="byRate"
+            >
+              <option value="" hidden>
+                Filter by Rate
+              </option>
+              <option value="">0$ to 99$</option>
+              <option value="">100$ to 199$</option>
+              <option value="">200$ to 299$</option>
+              <option value="">300$ to 399$</option>
+            </select>
+            <select
+              style={{
+                backgroundImage: `url(${down})`,
+                backgroundPosition: "5px",
+              }}
+              className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat"
+              name="byService"
+              id="byService"
+            >
+              <option value="" hidden>
+                Filter by Service
+              </option>
+              <option value="">Service 1</option>
+              <option value="">Service 2</option>
+              <option value="">Service 3</option>
+              <option value="">Service 4</option>
+            </select>
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row items-center gap-10 xl:px-10 mt-6">
           <div className="text-center md:text-left">
             <p className="text-5xl font-bold">4.7</p>
             <div className="flex items-center justify-center md:justify-start mt-2">
