@@ -266,6 +266,16 @@ function ProfileDetails() {
     },
   ];
 
+  const SpecialHours = [
+    { day: "Monday", time: "9AM - 5PM" },
+    { day: "Tuesday", time: "9AM - 5PM" },
+    { day: "Wednesday", time: "9AM - 5PM" },
+    { day: "Thursday", time: "9AM - 5PM" },
+    { day: "Friday", time: "9AM - 5PM" },
+    { day: "Saturday", time: "10AM - 4PM" },
+    { day: "Sunday", time: "Closed" },
+  ];
+
   return (
     <div>
       <div className="flex items-center">
@@ -452,28 +462,18 @@ function ProfileDetails() {
             </AccordionSummary>
             <AccordionDetails>
               <div>
-                {socialLinks.map((social, index) => (
+                {SpecialHours.map((row, index) => (
                   <div key={index} className="py-5 border-b border-[#E9EAEB]">
                     <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
                       <div className="flex gap-3 items-center">
-                        <img
-                          className="size-6 max-w-6"
-                          src={social.avatar}
-                          alt=""
-                        />
                         <div>
                           <p className="font-medium text-[#343434]">
-                            {social.name}
+                            {row.day}
                           </p>
                         </div>
                       </div>
                       <div className="ms-auto">
-                        <Link
-                          to={social.link}
-                          className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
-                        >
-                          Visit
-                        </Link>
+                        <p>{row.time}</p>
                       </div>
                     </div>
                   </div>
@@ -498,7 +498,7 @@ function ProfileDetails() {
                     <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
                       <div className="flex gap-3 items-center">
                         <img
-                          className="size-6 max-w-6"
+                          className="size-6 max-w-6 object-contain"
                           src={social.avatar}
                           alt=""
                         />

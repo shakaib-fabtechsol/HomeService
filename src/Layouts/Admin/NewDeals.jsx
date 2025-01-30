@@ -32,12 +32,12 @@ function TabPanel(props) {
 }
 
 function NewDeals() {
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [selectedRate, setSelectedRate] = useState("Custom"); // State to track selected pricing model
+  const [selectedRate, setSelectedRate] = useState("Flat"); // State to track selected pricing model
 
   const handleRateChange = (event) => {
     setSelectedRate(event.target.value); // Update state based on selected radio button

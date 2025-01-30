@@ -280,7 +280,7 @@ function Settings() {
                   <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
                     <div className="flex gap-3 items-center">
                       <img
-                        className="size-6 max-w-6"
+                        className="size-6 max-w-6 object-contain"
                         src={social.avatar}
                         alt=""
                       />
