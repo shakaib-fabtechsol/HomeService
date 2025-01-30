@@ -129,7 +129,7 @@ function UserLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
+      {/* <AppBar
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
@@ -156,7 +156,7 @@ function UserLayout() {
             <MenuIcon />
           </IconButton>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       {/* Sidebar for Desktop */}
       <Box
         component="nav"
@@ -202,7 +202,14 @@ function UserLayout() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        <Toolbar />
+        {/* <Toolbar /> */}
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
+          <div className="pb-2 flex justify-end">
+            <button onClick={handleDrawerToggle}>
+              <MenuIcon />
+            </button>
+          </div>
+        </Box>
         <Outlet />
       </Box>
     </Box>

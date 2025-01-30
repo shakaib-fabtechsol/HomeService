@@ -314,8 +314,8 @@ function ProfileDetails() {
             <div className="flex mt-2">
               <div className="flex me-2">
                 <FaRegCalendarAlt className="me-2" />
-                <p className="text-sm myblack">Hours:</p>
-                <p className="text-sm text-[#34A853]"> Available</p>
+                <p className="text-sm myblack">Hours:&nbsp;</p>
+                <p className="text-sm text-[#34A853]">Available</p>
               </div>
               <p className="text-sm myblack">Close 6PM</p>
             </div>
@@ -323,7 +323,7 @@ function ProfileDetails() {
         </div>
         <button
           onClick={handlecontactOpen}
-          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803] w-full lg:max-w-[300px] lg:fixed right-[20px] z-[99]"
         >
           <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
           <span>Contact Pro</span>

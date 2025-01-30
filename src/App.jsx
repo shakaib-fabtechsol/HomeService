@@ -38,7 +38,7 @@ function App() {
 
         </Route>
         <Route element={<UserLayout />}>
-          <Route path="user/services" element={<UserServices />} />
+          <Route path="/user/services" element={<UserServices />} />
           <Route path="/user/serviceDetails" element={<UserServiceDetail />} />
           <Route path="/user/support" element={<UserSupport />} />
           <Route path="/user/settings" element={<UserSettings />} />
