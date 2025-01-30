@@ -95,7 +95,7 @@ function ServiceDetail() {
         Stay Updated on Your Active Deals.
       </p>
       <div className="flex flex-col lg:flex-row justify-between mt-8">
-        <h2 className="text-xl myhead font-semibold lg:me-2">
+        <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
           Aliquam erat volutpat. Ut semper ipsum in vestibulum laoreet.
         </h2>
         <div className="flex items-center justify-end mt-3 lg:mt-0">
