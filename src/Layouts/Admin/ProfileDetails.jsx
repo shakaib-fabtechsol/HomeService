@@ -418,7 +418,7 @@ function ProfileDetails() {
       </div>
       {/* ----------photos accordian------ */}
       <div className="additional">
-        <h2 className="text-lg mt-4 font-medium myhead">Additional Photos</h2>
+        <h2 className="text-lg mt-4 font-semibold myhead">Additional Photos</h2>
         <div>
           {accordionData.map((data, index) => {
             const panelId = `panel${index + 1}`;

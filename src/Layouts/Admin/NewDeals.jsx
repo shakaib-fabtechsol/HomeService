@@ -225,7 +225,7 @@ function NewDeals() {
                     className="myselect pe-[30px] focus-none"
                   >
                     <option value="" hidden>
-                      Select an option
+                      Select a category
                     </option>
                     {Businesscategories.map((option, index) => (
                       <option key={index} value={option}>
@@ -257,6 +257,7 @@ function NewDeals() {
                     name="Description"
                     id="Description"
                     className="myinput focus-none"
+                    placeholder="Type detail here..."
                     rows={6}
                   ></textarea>
                 </div>
@@ -273,6 +274,7 @@ function NewDeals() {
                     name="Description"
                     id="Description"
                     className="myinput focus-none"
+                    placeholder="Type detail here..."
                     rows={6}
                   ></textarea>
                 </div>
@@ -379,7 +381,7 @@ function NewDeals() {
                       <input
                         type="text"
                         id="Finalp"
-                        placeholder="10 %"
+                        placeholder="$90"
                         className="myinput focus-none"
                       />
                     </div>
@@ -389,12 +391,14 @@ function NewDeals() {
                       <label htmlFor="Estimated" className="font-semibold">
                         Estimated Service Time
                       </label>
-                      <input
-                        type="text"
-                        id="Estimated"
-                        placeholder="01 Day"
-                        className="myinput focus-none"
-                      />
+                      <select name="" className="myselect pe-[30px] focus-none" id="">
+                        <option value="" selected hidden>How soon can you get it scheduled?</option>
+                        <option value="">Same day</option>
+                        <option value="">2 days</option>
+                        <option value="">3 days</option>
+                        <option value="">1 week</option>
+                        <option value="">2 week</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -437,7 +441,7 @@ function NewDeals() {
                       <input
                         type="text"
                         id="Final"
-                        placeholder="USD: 40"
+                        placeholder="$90"
                         className="myinput focus-none"
                       />
                     </div>
@@ -447,12 +451,14 @@ function NewDeals() {
                       <label htmlFor="Estimated" className="font-semibold">
                         Estimated Service Time
                       </label>
-                      <input
-                        type="text"
-                        id="Estimated"
-                        placeholder="2 Hours"
-                        className="myinput focus-none"
-                      />
+                      <select name="" className="myselect pe-[30px] focus-none" id="">
+                        <option value="" selected hidden>How soon can you get it scheduled?</option>
+                        <option value="">Same day</option>
+                        <option value="">2 days</option>
+                        <option value="">3 days</option>
+                        <option value="">1 week</option>
+                        <option value="">2 week</option>
+                      </select>
                     </div>
                   </div>
                 </>
@@ -537,7 +543,7 @@ function NewDeals() {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="USD: 43"
+                                placeholder="$90"
                                 id="tier1FinalListPrice"
                               />
                             </div>
@@ -559,6 +565,7 @@ function NewDeals() {
                                 name="tier2EstimatedTiming"
                                 id="tier2EstimatedTiming"
                               >
+                                <option value="" selected hidden>How soon can you get it scheduled?</option>
                                 <option value="">1 Day</option>
                                 <option value="">2 Day</option>
                                 <option value="">3 Day</option>
@@ -637,7 +644,7 @@ function NewDeals() {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="USD: 43"
+                                placeholder="$90"
                                 id="tier2FinalListPrice"
                               />
                             </div>
@@ -659,6 +666,7 @@ function NewDeals() {
                                 name="tier2EstimatedTiming"
                                 id="tier2EstimatedTiming"
                               >
+                                <option value="" selected hidden>How soon can you get it scheduled?</option>
                                 <option value="">1 Day</option>
                                 <option value="">2 Day</option>
                                 <option value="">3 Day</option>
@@ -737,7 +745,7 @@ function NewDeals() {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="USD: 43"
+                                placeholder="$90"
                                 id="tier3FinalListPrice"
                               />
                             </div>
@@ -759,6 +767,7 @@ function NewDeals() {
                                 name="tier3EstimatedTiming"
                                 id="tier3EstimatedTiming"
                               >
+                                <option value="" selected hidden>How soon can you get it scheduled?</option>
                                 <option value="">1 Day</option>
                                 <option value="">2 Day</option>
                                 <option value="">3 Day</option>
