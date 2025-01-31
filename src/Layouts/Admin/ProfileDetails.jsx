@@ -267,13 +267,8 @@ function ProfileDetails() {
   ];
 
   const SpecialHours = [
-    { day: "Monday", time: "9AM - 5PM" },
-    { day: "Tuesday", time: "9AM - 5PM" },
-    { day: "Wednesday", time: "9AM - 5PM" },
-    { day: "Thursday", time: "9AM - 5PM" },
-    { day: "Friday", time: "9AM - 5PM" },
-    { day: "Saturday", time: "10AM - 4PM" },
-    { day: "Sunday", time: "Closed" },
+    { Dates: "24 Dec 2025", time: "9AM - 5PM", dayName: "Chrismas Eve" },
+    { Dates: "25 Dec 2025", time: "9AM - 5PM", dayName: "Christmas" },
   ];
 
   return (
@@ -418,7 +413,7 @@ function ProfileDetails() {
       </div>
       {/* ----------photos accordian------ */}
       <div className="additional">
-        <h2 className="text-lg mt-4 font-medium myhead">Additional Photos</h2>
+        <h2 className="text-lg mt-4 font-semibold myhead">Additional Photos</h2>
         <div>
           {accordionData.map((data, index) => {
             const panelId = `panel${index + 1}`;
@@ -468,11 +463,12 @@ function ProfileDetails() {
                       <div className="flex gap-3 items-center">
                         <div>
                           <p className="font-medium text-[#343434]">
-                            {row.day}
+                            {row.Dates}
                           </p>
                         </div>
                       </div>
                       <div className="ms-auto">
+                        <p>{row.dayName}</p>
                         <p>{row.time}</p>
                       </div>
                     </div>

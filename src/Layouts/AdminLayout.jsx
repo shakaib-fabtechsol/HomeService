@@ -74,7 +74,7 @@ function AdminLayout() {
       {/* Top Section: Logo and Services */}
       <Box>
         <div className="flex justify-center py-3">
-          <img src={logo} alt="logo" />
+          <img src={logo} alt="logo" className="w-[120px] object-contain"/>
         </div>
         <List>
           {topItems.map((item) => (
