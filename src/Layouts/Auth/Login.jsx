@@ -28,7 +28,17 @@ function Login() {
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token); // Store token
-        navigate("/admin/services"); // Redirect after login
+
+        // Check user role and redirect accordingly
+        const userRole = response.data.user.role; // Assuming the role is in the response
+
+        if (userRole === 1) {
+          navigate("/admin/services"); // Redirect to admin services
+        } else if (userRole === 2) {
+          navigate("/user/services"); // Redirect to user services
+        } else {
+          navigate("/"); // Default redirect if role is unrecognized
+        }
       } else {
         setError("Invalid credentials"); // Handle missing token
       }
