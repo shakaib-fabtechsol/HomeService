@@ -53,13 +53,13 @@ function Signup() {
       if (response.data.user) {
         Swal.fire({
           icon: "success",
-          title: "User successfully registered!",
-          text: "You can now log in.",
+          title: "Good Job",
+          text: "User Registered Successfully",
           timer: 3000,
           showConfirmButton: false,
         });
 
-        navigate("/"); // Redirect to login
+        navigate("/");
       }
     } catch (err) {
       setError("Registration failed. Please check your details.");
