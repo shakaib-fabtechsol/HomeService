@@ -67,18 +67,16 @@ function BasicInfo() {
     "Veterinary Service",
   ];
 
-  // Function to handle adding tags
   const handleAddTag = (e) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
       if (!tags.includes(inputValue.trim())) {
         setTags([...tags, inputValue.trim()]);
       }
-      setInputValue(""); // Clear input field after adding tag
+      setInputValue(""); 
     }
   };
 
-  // Function to remove a tag
   const handleRemoveTag = (index) => {
     setTags(tags.filter((_, i) => i !== index));
   };

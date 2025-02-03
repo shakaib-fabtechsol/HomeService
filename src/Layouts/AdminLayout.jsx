@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  Drawer,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  IconButton,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   MdOutlineMessage,
@@ -17,7 +8,7 @@ import {
   MdLogout,
 } from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
-import { Outlet, NavLink, Link } from "react-router-dom";
+import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import user from "../assets/img/user.png";
 
@@ -34,7 +25,7 @@ function AdminLayout() {
     {
       text: "My Services",
       icon: <MdHomeRepairService className="text-2xl" />,
-      link: "/services",
+      link: "/admin/services",
     },
   ];
 
@@ -42,24 +33,31 @@ function AdminLayout() {
     {
       text: "Conversations",
       icon: <MdOutlineMessage className="text-2xl" />,
-      link: "/conversations",
+      link: "/admin/conversations",
     },
     {
       text: "Notifications",
       icon: <IoMdNotificationsOutline className="text-2xl" />,
-      link: "/notifications",
+      link: "/admin/notifications",
     },
     {
       text: "Settings",
       icon: <IoIosSettings className="text-2xl" />,
-      link: "/settings",
+      link: "/admin/settings",
     },
     {
       text: "Support",
       icon: <MdOutlineSupport className="text-2xl" />,
-      link: "/support",
+      link: "/admin/support",
     },
   ];
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
 
   const drawer = (
     <Box
@@ -71,10 +69,9 @@ function AdminLayout() {
         justifyContent: "space-between",
       }}
     >
-      {/* Top Section: Logo and Services */}
       <Box>
         <div className="flex justify-center py-3">
-          <img src={logo} alt="logo" className="w-[120px] object-contain"/>
+          <img src={logo} alt="logo" className="w-[120px] object-contain" />
         </div>
         <List>
           {topItems.map((item) => (
@@ -94,7 +91,6 @@ function AdminLayout() {
         </List>
       </Box>
 
-      {/* Bottom Section: Other Links */}
       <Box>
         <List className="border-b-2">
           {bottomItems.map((item) => (
@@ -114,7 +110,7 @@ function AdminLayout() {
         </List>
         <Box>
           <div className="flex items-center px-4 py-4">
-            <Link to="/ProfileDetails">
+            <Link to="/admin/ProfileDetails">
               <img
                 src={user}
                 alt="logo"
@@ -124,9 +120,9 @@ function AdminLayout() {
             <Box>
               <Box className="flex justify-between items-center">
                 <p className="font-bold">Mike Bird</p>
-                <NavLink to="/">
+                <button onClick={handleLogout}>
                   <MdLogout className="text-2xl" />
-                </NavLink>
+                </button>
               </Box>
               <p className="mb-0 text-sm">mikebird@untitledui.com</p>
             </Box>
@@ -139,37 +135,10 @@ function AdminLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          bgcolor: "transparent",
-          color: "#181D27",
-          boxShadow: "none",
-          // display: { sm: "none" },
-        }}
-      >
-        <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" },display:"flex",justifyContent:"end" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
-            sx={{
-              display: { sm: "none" },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar> */}
-      {/* Sidebar for Desktop */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
-        {/* Drawer for Desktop */}
         <Drawer
           variant="permanent"
           open
@@ -183,7 +152,6 @@ function AdminLayout() {
         >
           {drawer}
         </Drawer>
-        {/* Drawer for Mobile */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -200,7 +168,6 @@ function AdminLayout() {
           {drawer}
         </Drawer>
       </Box>
-      {/* Main Content */}
       <Box
         component="main"
         sx={{
@@ -209,8 +176,7 @@ function AdminLayout() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {/* <Toolbar /> */}
-        <Box sx={{display:{xs:"block",sm:"none"}}}>
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />
