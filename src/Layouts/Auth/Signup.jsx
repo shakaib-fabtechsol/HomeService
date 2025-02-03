@@ -18,7 +18,7 @@ function Signup() {
       <div className="w-full grid md:grid-cols-2 h-[100dvh] overflow-y-auto">
         <div className="overflow-y-auto scroll-0 min-h-[100dvh]">
           <div className="">
-            <img src={logo} alt="" className="px-5 py-4" />
+            <img src={logo} alt="" className="px-5 py-4 size-48 object-contain mx-auto" />
           </div>
           <div className="">
             <div className="flex flex-col justify-center">

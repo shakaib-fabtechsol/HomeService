@@ -69,6 +69,7 @@ function AdminLayout() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        fontFamily: "inter",
       }}
     >
       {/* Top Section: Logo and Services */}
@@ -95,7 +96,7 @@ function AdminLayout() {
       </Box>
 
       {/* Bottom Section: Other Links */}
-      <Box>
+      <Box sx={{fontFamily: "inter",}}>
         <List className="border-b-2">
           {bottomItems.map((item) => (
             <NavLink
@@ -167,7 +168,7 @@ function AdminLayout() {
       {/* Sidebar for Desktop */}
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, fontFamily: "inter", }}
       >
         {/* Drawer for Desktop */}
         <Drawer
@@ -207,10 +208,11 @@ function AdminLayout() {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          fontFamily: "inter",
         }}
       >
         {/* <Toolbar /> */}
-        <Box sx={{display:{xs:"block",sm:"none"}}}>
+        <Box sx={{display:{xs:"block",sm:"none"}, fontFamily: "inter",}}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />
