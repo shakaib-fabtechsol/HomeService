@@ -453,29 +453,10 @@ function PrivacyPolicy() {
           </li>
         </ul>
 
-        <p className="mt-6 sm:mt-8">
+        <p className="my-6 sm:my-8">
           For any inquiries or assistance, please contact us at{" "}
           <Link className="text-[#0F91D2]">info@HomeProDeals.com</Link>.
         </p>
-
-        <form action="/" className="mt-8">
-          <div className="py-16">
-            <div className="mb-8">
-              <input type="checkbox" id="agree" />
-              <label htmlFor="agree" className="ms-4">
-                Have you carefully reviewed and agreed to the{" "}
-                <span className="text-[#0F91D2] underline">
-                  {" "}
-                  Terms of service{" "}
-                </span>
-                ?
-              </label>
-            </div>
-            <button className="bg-[#0F91D2] px-16 py-2 text-[#fff] font-semibold text-xl rounded-lg">
-              Sign Up
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
