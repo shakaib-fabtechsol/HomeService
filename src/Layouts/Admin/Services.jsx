@@ -16,9 +16,9 @@ function ServiceBox({ image, title, price, description, tags }) {
       <img src={image} alt={title} className="rounded-lg w-full" />
       <div className="flex justify-between items-center mt-5">
         <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="mb-0 text-2xl font-bold">${price}</p>
+        <p className="mb-0 text-lg font-extrabold">${price}</p>
       </div>
-      <p className="text-sm">{description}</p>
+      <p className="text-sm text-[#535862] mt-2 ">{description}</p>
       <div className="flex mt-7">
         {tags.map((tag, index) => (
           <p
@@ -77,7 +77,7 @@ function Services() {
   return (
     <div>
       <div className="pb-3">
-        <h2 className="font-bold text-3xl myhead">My Deals</h2>
+        <h2 className="font-semibold text-3xl myhead">My Deals</h2>
         <p className="myblack">Stay Updated on Your Active Deals</p>
       </div>
       <div className="md:flex justify-between items-center">

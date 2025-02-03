@@ -67,6 +67,7 @@ function AdminLayout() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        fontFamily: "inter",
       }}
     >
       <Box>
@@ -91,7 +92,8 @@ function AdminLayout() {
         </List>
       </Box>
 
-      <Box>
+      {/* Bottom Section: Other Links */}
+      <Box sx={{fontFamily: "inter",}}>
         <List className="border-b-2">
           {bottomItems.map((item) => (
             <NavLink
@@ -137,7 +139,7 @@ function AdminLayout() {
       <CssBaseline />
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, fontFamily: "inter", }}
       >
         <Drawer
           variant="permanent"
@@ -174,9 +176,12 @@ function AdminLayout() {
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
+          fontFamily: "inter",
         }}
       >
-        <Box sx={{ display: { xs: "block", sm: "none" } }}>
+        {/* <Toolbar /> */}
+        <Box sx={{display:{xs:"block",sm:"none"}, fontFamily: "inter",}}>
+
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />

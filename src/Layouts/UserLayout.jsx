@@ -59,6 +59,7 @@ function UserLayout() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        fontFamily: "inter",
       }}
     >
       {/* Top Section: Logo and Services */}
