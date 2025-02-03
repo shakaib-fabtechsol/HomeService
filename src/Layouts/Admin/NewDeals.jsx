@@ -79,7 +79,7 @@ function NewDeals() {
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/services">
+        <Link to="/admin/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Create New Deal</h2>
