@@ -100,13 +100,8 @@ function Login() {
               />
             </div>
 
-            <div className="flex flex-wrap mb-3 justify-between items-center">
-              <div className="flex items-center">
-                <input type="checkbox" name="" className="me-2" id="remember" />
-                <label htmlFor="remember" className="font-medium">
-                  Remember for 30 days
-                </label>
-              </div>
+            <div className="flex flex-wrap mb-3 justify-end items-center">
+              
               <Link to="#" className="block font-medium text-blue">
                 Forgot password
               </Link>
