@@ -48,7 +48,7 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/Register", userData);
+      const response = await axios.post("https://homeservice.thefabulousshow.com/api/Register", userData);
 
       if (response.data.user) {
         Swal.fire({
