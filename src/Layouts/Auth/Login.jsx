@@ -55,7 +55,10 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             <div className="my-3">
-              <label htmlFor="email" className="myblack block w-full font-medium">
+              <label
+                htmlFor="email"
+                className="myblack block w-full font-medium"
+              >
                 Email*
               </label>
               <input
@@ -70,7 +73,10 @@ function Login() {
             </div>
 
             <div className="my-3">
-              <label htmlFor="password" className="myblack block w-full font-medium">
+              <label
+                htmlFor="password"
+                className="myblack block w-full font-medium"
+              >
                 Password
               </label>
               <input
@@ -96,12 +102,18 @@ function Login() {
               </Link>
             </div>
 
-            <button type="submit" className="text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg">
+            <button
+              type="submit"
+              className="text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg"
+            >
               Sign in
             </button>
           </form>
 
-          <Link to="#" className="border rounded-lg my-2 py-3 px-3 sm:px-3 flex justify-center items-center">
+          <Link
+            to="#"
+            className="border rounded-lg my-2 py-3 px-3 sm:px-3 flex justify-center items-center"
+          >
             <div className="flex ">
               <img src={google} alt="google" className="me-2" />
               <span className="font-semibold text-xs sm:text-base">
