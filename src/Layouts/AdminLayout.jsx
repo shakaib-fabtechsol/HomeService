@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-  Box,
-  Drawer,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  IconButton,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
   MdOutlineMessage,
@@ -64,8 +55,8 @@ function AdminLayout() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Remove token
-    navigate("/"); // Redirect to login
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   const drawer = (
@@ -78,7 +69,6 @@ function AdminLayout() {
         justifyContent: "space-between",
       }}
     >
-      {/* Top Section: Logo and Services */}
       <Box>
         <div className="flex justify-center py-3">
           <img src={logo} alt="logo" className="w-[120px] object-contain" />
@@ -101,7 +91,6 @@ function AdminLayout() {
         </List>
       </Box>
 
-      {/* Bottom Section: Other Links */}
       <Box>
         <List className="border-b-2">
           {bottomItems.map((item) => (
@@ -146,37 +135,10 @@ function AdminLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          bgcolor: "transparent",
-          color: "#181D27",
-          boxShadow: "none",
-          // display: { sm: "none" },
-        }}
-      >
-        <Toolbar sx={{ "& .MuiToolbar-root": { minHeight: "0px" },display:"flex",justifyContent:"end" }}>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
-            sx={{
-              display: { sm: "none" },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar> */}
-      {/* Sidebar for Desktop */}
       <Box
         component="nav"
         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
       >
-        {/* Drawer for Desktop */}
         <Drawer
           variant="permanent"
           open
@@ -190,7 +152,6 @@ function AdminLayout() {
         >
           {drawer}
         </Drawer>
-        {/* Drawer for Mobile */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -207,7 +168,6 @@ function AdminLayout() {
           {drawer}
         </Drawer>
       </Box>
-      {/* Main Content */}
       <Box
         component="main"
         sx={{
@@ -216,7 +176,6 @@ function AdminLayout() {
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {/* <Toolbar /> */}
         <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
