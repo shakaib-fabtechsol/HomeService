@@ -128,10 +128,7 @@ function BasicInfo() {
               <label htmlFor="Category" className="font-semibold">
                 Service Category
               </label>
-              <select
-                id="Category"
-                className="myselect pe-[30px] focus-none"
-              >
+              <select id="Category" className="myselect pe-[30px] focus-none">
                 <option value="" hidden>
                   Select a category
                 </option>
@@ -144,7 +141,6 @@ function BasicInfo() {
             </div>
           </div>
 
-          {/* TAGS FIELD */}
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
               <label htmlFor="Tags" className="font-semibold">
@@ -154,12 +150,12 @@ function BasicInfo() {
                 {tags.map((tag, index) => (
                   <div
                     key={index}
-                    className="bg-blue-500 text-white rounded-full px-3 py-1 text-sm flex items-center me-2 mb-2"
+                    className="flex justify-between items-center bg-[#E7F4FB] my-2 text-[#0F91D2] px-3 py-2 font-semibold rounded-full me-4"
                   >
                     {tag}
                     <button
                       type="button"
-                      className="ml-2 text-white bg-red-500 rounded-full w-5 h-5 flex items-center justify-center text-xs"
+                      className="ml-2 text-white bg-[#0F91D2] rounded-full w-5 h-5 flex items-center justify-center text-xs"
                       onClick={() => handleRemoveTag(index)}
                     >
                       ×
