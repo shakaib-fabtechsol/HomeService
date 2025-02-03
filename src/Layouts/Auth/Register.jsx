@@ -1,6 +1,7 @@
 import * as React from "react";
 import service from "../../assets/img/service.png";
 import { Link } from "react-router-dom"; // Corrected import
+import logo from "../../assets/img/logo.png";
 
 function Register() {
   React.useEffect(() => {
@@ -12,6 +13,13 @@ function Register() {
       <div className="w-full grid md:grid-cols-2 h-[100dvh] overflow-y-auto">
         <div className="min-h-[100dvh] flex flex-col justify-center">
           <div className="overflow-y-auto">
+            <div className="">
+              <img
+                src={logo}
+                alt=""
+                className="px-5 py-4 size-48 object-contain mx-auto"
+              />
+            </div>
             <div className="px-[15px] sm:px-[30px] lg:px-[50px] xl:px-[80px] py-4">
               <h2 className="font-semibold text-[#181D27] text-darkblue text-3xl">
                 Sign up
@@ -46,14 +54,20 @@ function Register() {
 
               <p className="text-center block mt-5">
                 Already have an account?{" "}
-                <Link to="/" className="text-blue">Login</Link>{" "}
+                <Link to="/" className="text-blue">
+                  Login
+                </Link>{" "}
               </p>
             </div>
           </div>
         </div>
 
         <div className="hidden md:block">
-          <img src={service} alt="" className="w-full h-[100dvh] object-cover object-top" />
+          <img
+            src={service}
+            alt=""
+            className="w-full h-[100dvh] object-cover object-top"
+          />
         </div>
       </div>
     </div>

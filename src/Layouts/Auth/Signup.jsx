@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom"; // Corrected imports
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2"; // Import SweetAlert
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import service from "../../assets/img/service.png";
@@ -14,12 +15,10 @@ function Signup() {
   }, []);
 
   const location = useLocation();
-  const navigate = useNavigate(); // For redirection
+  const navigate = useNavigate();
 
-  // Get user type from navigation state, default to "1" (customer)
   const userType = location.state?.userType || "1";
 
-  // Form state
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -28,25 +27,22 @@ function Signup() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
 
-    // Validate Terms of Service
     if (!termsAccepted) {
       setError("You must accept the Terms of Service.");
       setLoading(false);
       return;
     }
 
-    // Prepare data for API
     const userData = {
       name,
       email,
       phone,
-      role: userType, // Role from button click
+      role: userType,
       terms: termsAccepted ? "1" : "0",
       password,
     };
@@ -55,8 +51,15 @@ function Signup() {
       const response = await axios.post("http://127.0.0.1:8000/api/Register", userData);
 
       if (response.data.user) {
-        alert("User successfully registered!");
-        navigate("/"); // Redirect to login after success
+        Swal.fire({
+          icon: "success",
+          title: "User successfully registered!",
+          text: "You can now log in.",
+          timer: 3000,
+          showConfirmButton: false,
+        });
+
+        navigate("/"); // Redirect to login
       }
     } catch (err) {
       setError("Registration failed. Please check your details.");
@@ -75,43 +78,31 @@ function Signup() {
           <div className="">
             <div className="flex flex-col justify-center">
               <div className="px-[15px] sm:px-[30px] lg:px-[50px] xl:px-[130px] py-4">
-                <h2 className="font-semibold text-[#181D27] text-darkblue text-3xl">
-                  Sign up
-                </h2>
-                <p className="font-normal myblack mt-2">
-                  Welcome! Please enter your details.
-                </p>
+                <h2 className="font-semibold text-[#181D27] text-darkblue text-3xl">Sign up</h2>
+                <p className="font-normal myblack mt-2">Welcome! Please enter your details.</p>
 
                 {error && <p className="text-red-500 text-center">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="my-3">
-                    <label htmlFor="role" className="myblack block w-full font-medium">
-                      Role
-                    </label>
+                  <div className="my-3 hidden">
+                    <label htmlFor="role" className="myblack block w-full font-medium">Role</label>
                     <input type="text" id="role" value={userType} readOnly className="mt-1 w-full border px-3 rounded-lg py-3" />
                   </div>
 
                   <div className="my-3">
-                    <label htmlFor="name" className="myblack block w-full font-medium">
-                      Full Name*
-                    </label>
+                    <label htmlFor="name" className="myblack block w-full font-medium">Full Name*</label>
                     <input type="text" id="name" placeholder="Enter your name" className="mt-1 w-full border px-3 rounded-lg py-3"
                       value={name} onChange={(e) => setName(e.target.value)} required />
                   </div>
 
                   <div className="my-3">
-                    <label htmlFor="email" className="myblack block w-full font-medium">
-                      Email*
-                    </label>
+                    <label htmlFor="email" className="myblack block w-full font-medium">Email*</label>
                     <input type="email" id="email" placeholder="user123@gmail.com" className="mt-1 w-full border px-3 rounded-lg py-3"
                       value={email} onChange={(e) => setEmail(e.target.value)} required />
                   </div>
 
                   <div className="my-3">
-                    <label htmlFor="phone" className="myblack block w-full font-medium">
-                      Phone*
-                    </label>
+                    <label htmlFor="phone" className="myblack block w-full font-medium">Phone*</label>
                     <PhoneInput country={"pk"} value={phone} onChange={(phone) => setPhone(phone)} inputStyle={{
                       width: "calc(100% - 55px)",
                       marginLeft: "55px",
@@ -129,9 +120,7 @@ function Signup() {
                   </div>
 
                   <div className="my-3">
-                    <label htmlFor="password" className="myblack block w-full font-medium">
-                      Password
-                    </label>
+                    <label htmlFor="password" className="myblack block w-full font-medium">Password</label>
                     <input type="password" id="password" className="mt-1 w-full border px-3 rounded-lg py-3"
                       value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <FormHelperText>Must be at least 8 characters</FormHelperText>
