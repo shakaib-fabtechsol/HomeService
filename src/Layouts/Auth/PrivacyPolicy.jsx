@@ -458,7 +458,7 @@ function PrivacyPolicy() {
           <Link className="text-[#0F91D2]">info@HomeProDeals.com</Link>.
         </p>
 
-        <form action="/signup" className="mt-8">
+        <form action="/" className="mt-8">
           <div className="py-16">
             <div className="mb-8">
               <input type="checkbox" id="agree" />
@@ -472,7 +472,7 @@ function PrivacyPolicy() {
               </label>
             </div>
             <button className="bg-[#0F91D2] px-16 py-2 text-[#fff] font-semibold text-xl rounded-lg">
-              Continue
+              Sign Up
             </button>
           </div>
         </form>

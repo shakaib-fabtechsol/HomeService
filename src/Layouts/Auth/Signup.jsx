@@ -38,7 +38,7 @@ function Signup() {
                   Welcome! Please enter your details.
                 </p>
 
-                <form action="/">
+                <form action="/PrivacyPolicy">
                   <div className="my-3">
                     <label
                       htmlFor="role"
