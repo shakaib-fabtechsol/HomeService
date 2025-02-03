@@ -8,9 +8,9 @@ function PrivacyPolicy() {
   }, []);
   return (
     <div className="mycontainer">
-      <div>
-        <img src={logo} alt="logo" className="p-[20px] size-48 object-contain" />
-      </div>
+      <Link to='/signup'>
+        <img src={logo} alt="logo" className="p-[20px] size-48 object-contain cursor-pointer" />
+      </Link>
       <div className="max-w-[650px] justify-self-center">
         <p className="text-center font-semibold text-[#0F91D2]">
           Last Updated: December 27, 2024
