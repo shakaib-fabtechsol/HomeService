@@ -50,7 +50,21 @@ function UserLayout() {
       link: "/user/settings",
     },
   ];
-
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#0F91D2",
+      confirmButtonText: "Yes, log me out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    });
+  };
   const drawer = (
     <Box
       sx={{
@@ -115,9 +129,9 @@ function UserLayout() {
             <Box>
               <Box className="flex justify-between items-center">
                 <p className="font-bold">Mike Bird</p>
-                <NavLink to="/">
+                <button onClick={handleLogout}>
                   <MdLogout className="text-2xl" />
-                </NavLink>
+                </button>
               </Box>
               <p className="mb-0 text-sm">mikebird@untitledui.com</p>
             </Box>
