@@ -12,8 +12,8 @@ function Login() {
   return (
     <div className="w-full justify-center flex h-[100dvh]">
       <div className="flex flex-col justify-center min-h-[100dvh] w-full max-w-[700px]">
-        <div className="px-[15px] sm:px-[30px] lg:px-[50px] xl:px-[130px] py-4">
-          <div className="flex justify-center">
+        <div className="px-[15px] sm:px-[30px] py-3 lg:px-[50px] xl:px-[130px]">
+          <div className="flex justify-center pt-10">
             <img src={logo} alt="" className="px-5 py-4 w-[270px]" />
           </div>
           <h2 className="font-semibold text-center text-[#181D27] text-darkblue text-3xl">
