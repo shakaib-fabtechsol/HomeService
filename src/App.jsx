@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Layouts/Auth/Login";
 import Register from "./Layouts/Auth/Register";
 import Test from "./Layouts/Auth/Test";
@@ -21,35 +21,57 @@ import UserSupport from "./Layouts/User/Support";
 import UserSettings from "./Layouts/User/Settings";
 import UserProfileDetails from "./Layouts/User/ProfileDetails";
 
+import { AuthProvider } from "./Layouts/Auth/AuthContext";
+import PrivateRoute from "./Layouts/Auth/PrivateRoute";
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route element={<AdminLayout />}>
-          <Route path="/test" element={<Test />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/conversations" element={<Conversations />} />
-          <Route path="/support" element={<Support />} />
-          <Route path="/serviceDetails" element={<ServiceDetail />} />
-          <Route path="/NewDeals" element={<NewDeals />} />
-          <Route path="ProfileDetails" element={<ProfileDetails />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
 
-        </Route>
-        <Route element={<UserLayout />}>
-          <Route path="/user/services" element={<UserServices />} />
-          <Route path="/user/serviceDetails" element={<UserServiceDetail />} />
-          <Route path="/user/support" element={<UserSupport />} />
-          <Route path="/user/settings" element={<UserSettings />} />
-          <Route path="/user/ProfileDetails" element={<UserProfileDetails />} />
-        </Route>
-        <Route path="/" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
-      </Routes>
-    </Router>
+          {/* Private Routes for Admin */}
+          <Route
+            path="/admin/*"
+            element={
+              <PrivateRoute>
+                <AdminLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="test" element={<Test />} />
+            <Route path="services" element={<Services />} />
+            <Route path="notifications" element={<Notifications />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="conversations" element={<Conversations />} />
+            <Route path="support" element={<Support />} />
+            <Route path="serviceDetails" element={<ServiceDetail />} />
+            <Route path="NewDeals" element={<NewDeals />} />
+            <Route path="ProfileDetails" element={<ProfileDetails />} />
+          </Route>
+
+          <Route
+            path="/user/*"
+            element={
+              <PrivateRoute>
+                <UserLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="services" element={<UserServices />} />
+            <Route path="serviceDetails" element={<UserServiceDetail />} />
+            <Route path="support" element={<UserSupport />} />
+            <Route path="settings" element={<UserSettings />} />
+            <Route path="ProfileDetails" element={<UserProfileDetails />} />
+          </Route>
+        </Routes>
+      </Router>
+    </AuthProvider>
   );
 }
 
