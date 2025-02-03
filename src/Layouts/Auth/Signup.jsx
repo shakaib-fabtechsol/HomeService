@@ -3,7 +3,7 @@ import * as React from "react";
 import service from "../../assets/img/service.png";
 import google from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import { FormControl, FormHelperText } from "@mui/material";
@@ -11,6 +11,10 @@ function Signup() {
   React.useEffect(() => {
     document.title = "Signup";
   }, []);
+
+  const location = useLocation();
+  const userType = location.state?.userType || "1";
+
   const [phone, setPhone] = React.useState("");
 
   return (
@@ -18,7 +22,11 @@ function Signup() {
       <div className="w-full grid md:grid-cols-2 h-[100dvh] overflow-y-auto">
         <div className="overflow-y-auto scroll-0 min-h-[100dvh]">
           <div className="">
-            <img src={logo} alt="" className="px-5 py-4 size-48 object-contain mx-auto" />
+            <img
+              src={logo}
+              alt=""
+              className="px-5 py-4 size-48 object-contain mx-auto"
+            />
           </div>
           <div className="">
             <div className="flex flex-col justify-center">
@@ -29,7 +37,24 @@ function Signup() {
                 <p className="font-normal myblack mt-2">
                   Welcome! Please enter your details.
                 </p>
+
                 <form action="/">
+                  <div className="my-3">
+                    <label
+                      htmlFor="role"
+                      className="myblack block w-full font-medium"
+                    >
+                      Role
+                    </label>
+                    <input
+                      type="text"
+                      id="role"
+                      value={userType}
+                      readOnly
+                      placeholder="role"
+                      className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
+                    />
+                  </div>
                   <div className="my-3">
                     <label
                       htmlFor="name"
@@ -104,7 +129,10 @@ function Signup() {
                       Must be at least 8 characters
                     </FormHelperText>
                   </div>
-                  <Link to="/PrivacyPolicy" className="block underline text-blue mb-3">
+                  <Link
+                    to="/PrivacyPolicy"
+                    className="block underline text-blue mb-3"
+                  >
                     Terms of service
                   </Link>
                   <button
