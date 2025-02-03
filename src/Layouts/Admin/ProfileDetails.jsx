@@ -78,7 +78,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 function ServiceBox({ image, title, price, description, tags }) {
   return (
-    <Link to="/serviceDetails" className="border px-3 py-3 rounded-lg shadow">
+    <Link to="/admin/serviceDetails" className="border px-3 py-3 rounded-lg">
       <img src={image} alt={title} className="rounded-lg w-full" />
       <div className="flex justify-between items-center mt-5">
         <h2 className="text-lg font-semibold">{title}</h2>
@@ -274,7 +274,7 @@ function ProfileDetails() {
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/services">
+        <Link to="/admin/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Profile Details</h2>
