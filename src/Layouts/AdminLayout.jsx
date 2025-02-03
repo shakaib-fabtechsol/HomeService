@@ -1,14 +1,10 @@
 import * as React from "react";
 import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  MdOutlineMessage,
-  MdOutlineSupport,
-  MdHomeRepairService,
-  MdLogout,
-} from "react-icons/md";
+import { MdOutlineMessage, MdOutlineSupport, MdHomeRepairService, MdLogout } from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // Import SweetAlert
 import logo from "../assets/img/logo.png";
 import user from "../assets/img/user.png";
 
@@ -16,6 +12,7 @@ const drawerWidth = 240;
 
 function AdminLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -52,11 +49,20 @@ function AdminLayout() {
     },
   ];
 
-  const navigate = useNavigate();
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#0F91D2",
+      confirmButtonText: "Yes, log me out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        navigate("/"); 
+      }
+    });
   };
 
   const drawer = (
@@ -93,7 +99,7 @@ function AdminLayout() {
       </Box>
 
       {/* Bottom Section: Other Links */}
-      <Box sx={{fontFamily: "inter",}}>
+      <Box sx={{ fontFamily: "inter" }}>
         <List className="border-b-2">
           {bottomItems.map((item) => (
             <NavLink
@@ -139,7 +145,11 @@ function AdminLayout() {
       <CssBaseline />
       <Box
         component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }, fontFamily: "inter", }}
+        sx={{
+          width: { sm: drawerWidth },
+          flexShrink: { sm: 0 },
+          fontFamily: "inter",
+        }}
       >
         <Drawer
           variant="permanent"
@@ -179,9 +189,7 @@ function AdminLayout() {
           fontFamily: "inter",
         }}
       >
-        {/* <Toolbar /> */}
-        <Box sx={{display:{xs:"block",sm:"none"}, fontFamily: "inter",}}>
-
+        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter" }}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />
