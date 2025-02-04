@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import service from "../../assets/img/service.png";
 import google from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
-import { Link, useNavigate } from "react-router-dom"; // Corrected import
+import { Link, useNavigate } from "react-router-dom"; 
 import axios from "axios";
 import "react-phone-input-2/lib/style.css";
 
@@ -10,7 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     document.title = "Login";
@@ -18,7 +17,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); // Clear previous errors
+    setError(null); 
 
     try {
       const response = await axios.post("https://homeservice.thefabulousshow.com/api/Userlogin", {
@@ -27,20 +26,19 @@ function Login() {
       });
 
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token); // Store token
+        localStorage.setItem("token", response.data.token); 
 
-        // Check user role and redirect accordingly
-        const userRole = response.data.user.role; // Assuming the role is in the response
+        const userRole = response.data.user.role;
 
-        if (userRole === 1) {
-          navigate("/provider/services"); // Redirect to admin services
-        } else if (userRole === 2) {
-          navigate("/customer/services"); // Redirect to user services
+        if (userRole === 2) {
+          navigate("/provider/services"); 
+        } else if (userRole === 1) {
+          navigate("/customer/services"); 
         } else {
-          navigate("/"); // Default redirect if role is unrecognized
+          navigate("/"); 
         }
       } else {
-        setError("Invalid credentials"); // Handle missing token
+        setError("Invalid credentials"); 
       }
     } catch (err) {
       setError("Login failed. Check your credentials.");
