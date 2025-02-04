@@ -1,78 +1,69 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { CiSearch } from "react-icons/ci";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
-import service1 from "../../assets/img/service1.png";
-import service2 from "../../assets/img/service2.png";
-import service3 from "../../assets/img/service3.png";
+import service2 from "../../assets/img/random3.png";
 
-// Reusable Service Box Component
-function ServiceBox({ image, title, price, description, tags }) {
+function ServiceBox({ tags = [], image, publish, title, price, description }) {
   useEffect(() => {
     document.title = "Services";
   }, []);
+
   return (
-    <Link to="/provider/serviceDetails" className="border px-3 py-3 rounded-lg">
-      <img src={image} alt={title} className="rounded-lg w-full" />
-      <div className="flex justify-between items-center mt-5">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="mb-0 text-lg font-extrabold">${price}</p>
+
+    <div className="border px-3 py-3 rounded-lg">
+      <img src={service2 ?? "N/A"} alt={title} className="rounded-lg w-full" />
+      <p
+        className={
+          publish === 1
+            ? "text-[#1dbd15] font-semibold text-end mt-5"
+            : "text-[#f50202] font-semibold text-end mt-5"
+        }
+      >
+        {publish === 1 ? "Published" : "Draft"}
+      </p>
+      <div className="flex justify-between items-center mt-2">
+        <Link to="/provider/serviceDetails">
+          <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
+        </Link>
+        <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
+
       </div>
-      <p className="text-sm text-[#535862] mt-2 ">{description}</p>
-      <div className="flex mt-7">
-        {tags.map((tag, index) => (
-          <p
-            key={index}
-            className={`px-3 py-1 font-semibold text-sm rounded-full me-2 ${
-              tag.type === "primary"
-                ? "text-[#0F91D2] bg-[#E7F4FB]"
-                : "text-[#343434] bg-[#EBEBEB]"
-            }`}
-          >
-            {tag.label}
-          </p>
-        ))}
-      </div>
-    </Link>
+      
+      <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
+    </div>
   );
 }
 
 function Services() {
-  const services = [
-    {
-      image: service1,
-      title: "Cleaning Service",
-      price: 200,
-      description:
-        "Professional cleaning services for residential and commercial spaces.",
-      tags: [
-        { label: "Cleaning", type: "primary" },
-        { label: "Residential", type: "secondary" },
-      ],
-    },
-    {
-      image: service2,
-      title: "Plumbing Service",
-      price: 150,
-      description:
-        "Expert plumbing solutions for your home and business needs.",
-      tags: [
-        { label: "Plumbing", type: "primary" },
-        { label: "Commercial", type: "secondary" },
-      ],
-    },
-    {
-      image: service3,
-      title: "Electrical Service",
-      price: 300,
-      description:
-        "Reliable electrical services for installations and repairs.",
-      tags: [
-        { label: "Electrical", type: "primary" },
-        { label: "Industrial", type: "secondary" },
-      ],
-    },
-  ];
+  const [services, setServices] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true); // New loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem("token"); // Get token from local storage
+    setLoading(true); // Start loading
+
+    axios
+      .get("https://homeservice.thefabulousshow.com/api/Deals", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setServices(response.data.deals);
+        setLoading(false); // Stop loading after data is received
+      })
+      .catch((error) => {
+        console.error("Error fetching deals:", error);
+        setLoading(false); // Stop loading even if there's an error
+      });
+  }, []);
+
+  const filteredServices = services.filter((service) =>
+    service.service_title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div>
@@ -80,6 +71,8 @@ function Services() {
         <h2 className="font-semibold text-3xl myhead">My Deals</h2>
         <p className="myblack">Stay Updated on Your Active Deals</p>
       </div>
+
+      {/* Search Input */}
       <div className="md:flex justify-between items-center">
         <div className="flex border rounded-lg items-center px-2">
           <label htmlFor="search">
@@ -88,6 +81,8 @@ function Services() {
           <input
             id="search"
             type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="py-2 w-full focus-none"
             placeholder="Search"
           />
@@ -100,18 +95,32 @@ function Services() {
           <span>Create New</span>
         </Link>
       </div>
-      <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-        {services.map((service, index) => (
-          <ServiceBox
-            key={index}
-            image={service.image}
-            title={service.title}
-            price={service.price}
-            description={service.description}
-            tags={service.tags}
-          />
-        ))}
-      </div>
+
+      {/* Show Loader While Fetching Data */}
+      {loading ? (
+        <div className="flex justify-center items-center my-10">
+          <div className="loader border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+        </div>
+      ) : (
+        // Show Data Once Loaded
+        <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {filteredServices.length > 0 ? (
+            filteredServices.map((service) => (
+              <ServiceBox
+                key={service.id}
+                title={service.service_title}
+                price={service.flat_rate_price}
+                description={service.service_description}
+                tags={service.tags}
+                image={service.image_url}
+                publish={service.publish}
+              />
+            ))
+          ) : (
+            <p>No services found</p>
+          )}
+        </div>
+      )}
     </div>
   );
 }
