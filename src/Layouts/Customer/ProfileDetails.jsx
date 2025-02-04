@@ -2,13 +2,15 @@ import React, { useEffect } from "react";
 import { IoIosStar } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
-import { FaArrowLeft, FaRegCalendarAlt } from "react-icons/fa";
+import { FaArrowLeft, FaChevronDown, FaRegCalendarAlt } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { CiSearch } from "react-icons/ci";
+import { CiSearch, CiTrash } from "react-icons/ci";
+import { HiPlus } from "react-icons/hi";
 import provider from "../../assets/img/provider.png";
 import service1 from "../../assets/img/service1.png";
 import service2 from "../../assets/img/service2.png";
 import service3 from "../../assets/img/service3.png";
+
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
@@ -16,23 +18,26 @@ import MuiAccordionSummary, {
   accordionSummaryClasses,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
 import random1 from "../../assets/img/random1.png";
 import random2 from "../../assets/img/random2.png";
 import random3 from "../../assets/img/random3.png";
-import { Star } from "lucide-react";
+import { Icon, Star } from "lucide-react";
 import reviewuser from "../../assets/img/reviewuser.png";
-import { Modal, Rating } from "@mui/material";
+import { Modal } from "@mui/material";
 import { FiPhone } from "react-icons/fi";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
+import down from "../../assets/img/chevronDown.png";
 import Facebook from "../../assets/img/Facebook-icon.png";
 import Youtube from "../../assets/img/Youtube-icon.png";
 import Twitter from "../../assets/img/Twitter-icon.png";
 import Instagram from "../../assets/img/Instagram-icon.png";
 import Linkdin from "../../assets/img/Linkdin-icon.png";
 import Business from "../../assets/img/Business-icon.png";
-import down from "../../assets/img/chevronDown.png";
+import Deals from "../../Components/ServiceProvider/Deals";
+import ServiceBox from "../../Components/Profile/ServiceBox";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -48,16 +53,16 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
+    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem",}} />}
     {...props}
   />
 ))(({ theme }) => ({
   backgroundColor: "transparent",
+  width:"auto",
   border: "none",
-  flexDirection: "row-reverse",
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
     {
-      transform: "rotate(90deg)",
+      transform: "rotate(180deg)",
     },
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(1),
@@ -73,32 +78,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   border: "none",
 }));
 
-function ServiceBox({ image, title, price, description, tags }) {
-  return (
-    <Link to="/serviceDetails" className="border px-3 py-3 rounded-lg">
-      <img src={image} alt={title} className="rounded-lg w-full" />
-      <div className="flex justify-between items-center mt-5">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="mb-0 text-2xl font-bold">${price}</p>
-      </div>
-      <p className="text-sm">{description}</p>
-      <div className="flex mt-7">
-        {tags.map((tag, index) => (
-          <p
-            key={index}
-            className={`px-3 py-1 font-semibold text-sm rounded-full me-2 ${
-              tag.type === "primary"
-                ? "text-[#0F91D2] bg-[#E7F4FB]"
-                : "text-[#343434] bg-[#EBEBEB]"
-            }`}
-          >
-            {tag.label}
-          </p>
-        ))}
-      </div>
-    </Link>
-  );
-}
 
 function ProfileDetails() {
   const [expanded, setExpanded] = React.useState("panel1");
@@ -115,7 +94,7 @@ function ProfileDetails() {
       image: service1,
       title: "Service 1",
       price: 50,
-      description: "This is a description for Service 1.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
       tags: [
         { label: "Primary", type: "primary" },
         { label: "Secondary", type: "secondary" },
@@ -125,7 +104,7 @@ function ProfileDetails() {
       image: service2,
       title: "Service 2",
       price: 75,
-      description: "This is a description for Service 2.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
       tags: [
         { label: "New", type: "primary" },
         { label: "Popular", type: "secondary" },
@@ -135,7 +114,7 @@ function ProfileDetails() {
       image: service3,
       title: "Service 3",
       price: 100,
-      description: "This is a description for Service 3.",
+      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
       tags: [
         { label: "Featured", type: "primary" },
         { label: "Limited", type: "secondary" },
@@ -230,12 +209,6 @@ function ProfileDetails() {
     },
   ];
 
-  const [reviewopen, setreviewOpen] = React.useState(true);
-  const handlereviewOpen = () => setreviewOpen(true);
-  const handlereviewClose = () => setreviewOpen(false);
-
-  const [value, setValue] = React.useState(2);
-
   const socialLinks = [
     {
       name: "Facebook",
@@ -270,19 +243,14 @@ function ProfileDetails() {
   ];
 
   const SpecialHours = [
-    { day: "Monday", time: "9AM - 5PM" },
-    { day: "Tuesday", time: "9AM - 5PM" },
-    { day: "Wednesday", time: "9AM - 5PM" },
-    { day: "Thursday", time: "9AM - 5PM" },
-    { day: "Friday", time: "9AM - 5PM" },
-    { day: "Saturday", time: "10AM - 4PM" },
-    { day: "Sunday", time: "Closed" },
+    { Dates: "24 Dec 2025", time: "9AM - 5PM", dayName: "Chrismas Eve" },
+    { Dates: "25 Dec 2025", time: "9AM - 5PM", dayName: "Christmas" },
   ];
 
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/services">
+        <Link to="/customer/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Profile Details</h2>
@@ -295,13 +263,16 @@ function ProfileDetails() {
             className="me-2 my-2 rounded-lg max-w-[120px]"
           />
           <div className="my-2">
-            <div className="flex">
+            <div className="flex items-center">
               <p className="font-semibold myhead me-2">Provider Name</p>
-              <div className="flex">
-                <IoIosStar className="me-2 text-[#F8C600]" />
-                <p className="myblack text-sm">
-                  <span className="myhead font-semibold">4.9</span>(457)
+              <div className="flex ms-3">
+                <IoIosStar className="me-1 text-[#F8C600]" />
+                <div className="flex flex-wrap">
+                <span className="myhead text-xs font-semibold me-1">4.9</span>
+                <p className="text-[#181D2766] underline text-xs">
+                  (457)
                 </p>
+                </div>
               </div>
             </div>
             <div className="flex flex-wrap mt-2">
@@ -311,13 +282,18 @@ function ProfileDetails() {
                 <p className="myblack ">Address of the provider here</p>
               </div>
             </div>
-            <div className="flex mt-2">
+            <div className="flex mt-2 items-center">
               <div className="flex me-2">
                 <FaRegCalendarAlt className="me-2" />
                 <p className="text-sm myblack">Hours:&nbsp;</p>
-                <p className="text-sm text-[#34A853]">Available</p>
+                <p className="text-sm text-[#34A853] font-[300]">Available</p>
               </div>
-              <p className="text-sm myblack">Close 6PM</p>
+              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2">
+
+              </div>
+              <select name="" id="" className="text-sm myblack bg-transparent">
+                <option value="">Close 6PM</option>
+              </select>
             </div>
           </div>
         </div>
@@ -335,7 +311,7 @@ function ProfileDetails() {
           aria-describedby="modal-modal-description"
           sx={{ m: 2 }}
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
+          <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
             <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
               <p className="text-lg font-semibold">Contact Pro</p>
               <div className="flex flex-col gap-3 mt-4">
@@ -350,53 +326,6 @@ function ProfileDetails() {
                   </Link>
                 ))}
               </div>
-            </div>
-          </div>
-        </Modal>
-        <Modal
-          open={reviewopen}
-          onClose={handlereviewClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ m: 2 }}
-        >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] outline-none">
-            <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
-              <form action="">
-                <div className="flex flex-col items-center gap-5">
-                  <p className="text-[24px] text-[#181D27] text-center font-medium">
-                    Leave a Review
-                  </p>
-                  <p className="text-[#535862] text-center">
-                    How would you rate working?
-                  </p>
-                  <Rating
-                    name="simple-controlled"
-                    value={value}
-                    onChange={(event, newValue) => {
-                      setValue(newValue);
-                    }}
-                    sx={{
-                      display: "flex !important",
-                      gap: "15px",
-                      fontSize: "36px",
-                    }}
-                  />
-                  <textarea
-                    className="bg-[#F6F6F6] border-[#F6F6F6] p-3 w-full rounded-[10px] placeholder:text-[#858585]"
-                    rows={6}
-                    name=""
-                    id=""
-                    placeholder="Write a review...."
-                  />
-                  <button
-                    className="text-white bg-[#0F91D2] p-3 rounded-[8px] font-semibold w-full mt-6"
-                    type="submit"
-                  >
-                    Submit Review
-                  </button>
-                </div>
-              </form>
             </div>
           </div>
         </Modal>
@@ -419,7 +348,7 @@ function ProfileDetails() {
         <h2 className="text-lg font-medium myhead">
           Secondary Business Categories
         </h2>
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap mt-3">
           <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
             Category 01
           </p>
@@ -440,7 +369,7 @@ function ProfileDetails() {
       {/* ----------deal-boxes------ */}
       <div className="mt-4">
         <div className="md:flex justify-between items-center">
-          <h2 className="text-lg font-medium myhead">My Deals</h2>
+          <h2 className="text-2xl font-semibold myhead">My Deals</h2>
           <div className="flex border rounded-lg items-center px-2">
             <label htmlFor="search">
               <CiSearch className="me-2 text-xl" />
@@ -468,7 +397,7 @@ function ProfileDetails() {
       </div>
       {/* ----------photos accordian------ */}
       <div className="additional">
-        <h2 className="text-lg mt-4 font-medium myhead">Additional Photos</h2>
+        <h2 className="text-2xl mt-4 font-semibold myhead">Additional Photos</h2>
         <div>
           {accordionData.map((data, index) => {
             const panelId = `panel${index + 1}`;
@@ -482,7 +411,7 @@ function ProfileDetails() {
                   aria-controls={`${panelId}d-content`}
                   id={`${panelId}d-header`}
                 >
-                  <h3>{data.title}</h3>
+                  <h3 className="text-lg me-4">{data.title}</h3>
                 </AccordionSummary>
                 <AccordionDetails>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4">
@@ -508,7 +437,7 @@ function ProfileDetails() {
               aria-controls={`SpecialHourd-content`}
               id={`SpecialHourd-header`}
             >
-              <h3>Special Hours of Operation</h3>
+              <h3 className="me-3">Special Hours of Operation</h3>
             </AccordionSummary>
             <AccordionDetails>
               <div>
@@ -518,11 +447,12 @@ function ProfileDetails() {
                       <div className="flex gap-3 items-center">
                         <div>
                           <p className="font-medium text-[#343434]">
-                            {row.day}
+                            {row.Dates}
                           </p>
                         </div>
                       </div>
                       <div className="ms-auto">
+                        <p>{row.dayName}</p>
                         <p>{row.time}</p>
                       </div>
                     </div>
@@ -539,7 +469,7 @@ function ProfileDetails() {
               aria-controls={`Socialsd-content`}
               id={`Socialsd-header`}
             >
-              <h3>Socials</h3>
+              <h3 className="me-3">Socials</h3>
             </AccordionSummary>
             <AccordionDetails>
               <div>
@@ -617,7 +547,7 @@ function ProfileDetails() {
         </div>
         <div className="flex flex-col md:flex-row items-center gap-10 xl:px-10 mt-6">
           <div className="text-center md:text-left">
-            <p className="text-5xl font-bold">4.7</p>
+            <p className="text-[40px] leading-normal font-bold">4.7</p>
             <div className="flex items-center justify-center md:justify-start mt-2">
               {[...Array(5)].map((_, index) => (
                 <Star
@@ -627,12 +557,12 @@ function ProfileDetails() {
                 />
               ))}
             </div>
-            <p className="text-gray-500 mt-1">(578 Reviews)</p>
+            <p className="text-[#535862] mt-4 font-bold text-xs">(578 Reviews)</p>
           </div>
           <div className="ms-auto w-full lg:w-[70%]">
             {starCounts.map(({ stars, count }) => (
               <div key={stars} className="flex items-center gap-4 mb-1">
-                <span className="text-sm text-nowrap font-medium text-gray-600">
+                <span className="text-[10px] text-nowrap font-bold text-[#181D27]">
                   {stars} stars
                 </span>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -641,9 +571,11 @@ function ProfileDetails() {
                     style={{ width: `${(count / 578) * 100}%` }}
                   ></div>
                 </div>
-                <span className="text-sm font-medium text-gray-600">
-                  {count}
-                </span>
+                <div>
+                  <span className="text-[10px] font-medium text-[#181D27]">
+                    {count}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
@@ -653,7 +585,7 @@ function ProfileDetails() {
           {reviews.map((review, index) => (
             <div key={index} className="border-t pt-4">
               <div className="">
-                <p className="text-sm text-gray-500 mb-2">{review.date}</p>
+                <p className="text-xs text-[#535862] mb-2 font-semibold">{review.date}</p>
                 <div className="flex items-center mb-2">
                   {[...Array(review.rating)].map((_, index) => (
                     <Star
@@ -671,11 +603,11 @@ function ProfileDetails() {
                   className="me-2 rounded-full w-[30px] h-[30px]"
                 />
                 <div>
-                  <h3 className="font-semibold text-lg">{review.name}</h3>
-                  <p className="text-sm text-gray-400">{review.title}</p>
+                  <h3 className="font-bold text-sm">{review.name}</h3>
+                  <p className="text-[10px] text-[#535862]">{review.title}</p>
                 </div>
               </div>
-              <p className="text-gray-600 mt-2">{review.review}</p>
+              <p className="text-sm text-[#181D27] mt-2">{review.review}</p>
             </div>
           ))}
         </div>

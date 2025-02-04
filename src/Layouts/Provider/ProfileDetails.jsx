@@ -4,38 +4,26 @@ import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaChevronDown, FaRegCalendarAlt } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
-import { CiSearch, CiTrash } from "react-icons/ci";
-import { HiPlus } from "react-icons/hi";
 import provider from "../../assets/img/provider.png";
-import service1 from "../../assets/img/service1.png";
-import service2 from "../../assets/img/service2.png";
-import service3 from "../../assets/img/service3.png";
 
 import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary, {
   accordionSummaryClasses,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import random1 from "../../assets/img/random1.png";
 import random2 from "../../assets/img/random2.png";
 import random3 from "../../assets/img/random3.png";
-import { Icon, Star } from "lucide-react";
-import reviewuser from "../../assets/img/reviewuser.png";
 import { Modal } from "@mui/material";
 import { FiPhone } from "react-icons/fi";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
 import down from "../../assets/img/chevronDown.png";
-import Facebook from "../../assets/img/Facebook-icon.png";
-import Youtube from "../../assets/img/Youtube-icon.png";
-import Twitter from "../../assets/img/Twitter-icon.png";
-import Instagram from "../../assets/img/Instagram-icon.png";
-import Linkdin from "../../assets/img/Linkdin-icon.png";
-import Business from "../../assets/img/Business-icon.png";
+import Review from "../../Components/Profile/Review";
+import ProfileDeal from "../../Components/Profile/ProfileDeal";
+import Social from "../../Components/Profile/AdditionalPhoto/Social";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -76,32 +64,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   border: "none",
 }));
 
-function ServiceBox({ image, title, price, description, tags }) {
-  return (
-    <Link to="/admin/serviceDetails" className="border px-3 py-3 rounded-lg">
-      <img src={image} alt={title} className="rounded-lg w-full" />
-      <div className="flex justify-between items-center mt-5">
-        <h2 className="text-lg font-semibold">{title}</h2>
-        <p className="mb-0 text-lg font-extrabold">${price}</p>
-      </div>
-      <p className="text-sm text-[#535862] mt-3">{description}</p>
-      <div className="flex mt-7">
-        {tags.map((tag, index) => (
-          <p
-            key={index}
-            className={`px-3 py-1 font-semibold text-sm rounded-full me-2 ${
-              tag.type === "primary"
-                ? "text-[#0F91D2] bg-[#E7F4FB]"
-                : "text-[#343434] bg-[#EBEBEB]"
-            }`}
-          >
-            {tag.label}
-          </p>
-        ))}
-      </div>
-    </Link>
-  );
-}
 
 function ProfileDetails() {
   const [expanded, setExpanded] = React.useState("panel1");
@@ -113,38 +75,7 @@ function ProfileDetails() {
     document.title = "Profile Details";
   }, []);
 
-  const services = [
-    {
-      image: service1,
-      title: "Service 1",
-      price: 50,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
-      tags: [
-        { label: "Primary", type: "primary" },
-        { label: "Secondary", type: "secondary" },
-      ],
-    },
-    {
-      image: service2,
-      title: "Service 2",
-      price: 75,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
-      tags: [
-        { label: "New", type: "primary" },
-        { label: "Popular", type: "secondary" },
-      ],
-    },
-    {
-      image: service3,
-      title: "Service 3",
-      price: 100,
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed mollis.",
-      tags: [
-        { label: "Featured", type: "primary" },
-        { label: "Limited", type: "secondary" },
-      ],
-    },
-  ];
+  
 
   const categories = ["Category 01", "Category 02", "Category 03"];
 
@@ -179,34 +110,6 @@ function ProfileDetails() {
     },
   ];
 
-  const reviews = [
-    {
-      name: "Patricia Sanders",
-      userimg: [reviewuser],
-      title: "Service Title",
-      date: "Jan 20, 2024",
-      rating: 5,
-      review:
-        "Sed mollis porttitor mauris eu egestas. Sed vel augue non massa maximus suscipit. Nulla a pharetra leo, eget cursus diam. Phasellus ultrices in urna in faucibus. Aliquam vulputate enim finibus condimentum tincidunt.",
-    },
-    {
-      name: "Katie Sims",
-      userimg: [reviewuser],
-      title: "Service Title",
-      date: "Jan 20, 2024",
-      rating: 5,
-      review:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis accumsan turpis. Phasellus tincidunt neque sed nunc mattis molestie. Praesent auctor metus sit amet elit finibus, ac sodales enim egestas.",
-    },
-  ];
-
-  const starCounts = [
-    { stars: 5, count: 488 },
-    { stars: 4, count: 74 },
-    { stars: 3, count: 14 },
-    { stars: 2, count: 0 },
-    { stars: 1, count: 0 },
-  ];
 
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
@@ -233,38 +136,6 @@ function ProfileDetails() {
     },
   ];
 
-  const socialLinks = [
-    {
-      name: "Facebook",
-      avatar: Facebook,
-      link: "#",
-    },
-    {
-      name: "Twitter",
-      avatar: Twitter,
-      link: "#",
-    },
-    {
-      name: "Instagram",
-      avatar: Instagram,
-      link: "#",
-    },
-    {
-      name: "LinkedIn",
-      avatar: Linkdin,
-      link: "#",
-    },
-    {
-      name: "YouTube",
-      avatar: Youtube,
-      link: "#",
-    },
-    {
-      name: "Google Business",
-      avatar: Business,
-      link: "#",
-    },
-  ];
 
   const SpecialHours = [
     { Dates: "24 Dec 2025", time: "9AM - 5PM", dayName: "Chrismas Eve" },
@@ -274,7 +145,7 @@ function ProfileDetails() {
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/admin/services">
+        <Link to="/provider/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Profile Details</h2>
@@ -391,34 +262,7 @@ function ProfileDetails() {
         </div>
       </div>
       {/* ----------deal-boxes------ */}
-      <div className="mt-4">
-        <div className="md:flex justify-between items-center">
-          <h2 className="text-2xl font-medium myhead">My Deals</h2>
-          <div className="flex border rounded-lg items-center px-2">
-            <label htmlFor="search">
-              <CiSearch className="me-2 text-xl" />
-            </label>
-            <input
-              id="search"
-              type="search"
-              className="py-2 w-full focus:outline-none"
-              placeholder="Search"
-            />
-          </div>
-        </div>
-        <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-          {services.map((service, index) => (
-            <ServiceBox
-              key={index}
-              image={service.image}
-              title={service.title}
-              price={service.price}
-              description={service.description}
-              tags={service.tags}
-            />
-          ))}
-        </div>
-      </div>
+      <ProfileDeal/>
       {/* ----------photos accordian------ */}
       <div className="additional">
         <h2 className="text-2xl mt-4 font-semibold myhead">Additional Photos</h2>
@@ -496,34 +340,7 @@ function ProfileDetails() {
               <h3 className="me-3">Socials</h3>
             </AccordionSummary>
             <AccordionDetails>
-              <div>
-                {socialLinks.map((social, index) => (
-                  <div key={index} className="py-5 border-b border-[#E9EAEB]">
-                    <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                      <div className="flex gap-3 items-center">
-                        <img
-                          className="size-6 max-w-6 object-contain"
-                          src={social.avatar}
-                          alt=""
-                        />
-                        <div>
-                          <p className="font-medium text-[#343434]">
-                            {social.name}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="ms-auto">
-                        <Link
-                          to={social.link}
-                          className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
-                        >
-                          Visit
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Social/>
             </AccordionDetails>
           </Accordion>
         </div>
@@ -569,72 +386,8 @@ function ProfileDetails() {
             </select>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row items-center gap-10 xl:px-10 mt-6">
-          <div className="text-center md:text-left">
-            <p className="text-[40px] leading-normal font-bold">4.7</p>
-            <div className="flex items-center justify-center md:justify-start mt-2">
-              {[...Array(5)].map((_, index) => (
-                <Star
-                  key={index}
-                  className="text-yellow-500 w-6 h-6"
-                  fill="currentColor"
-                />
-              ))}
-            </div>
-            <p className="text-[#535862] mt-4 font-bold text-xs">(578 Reviews)</p>
-          </div>
-          <div className="ms-auto w-full lg:w-[70%]">
-            {starCounts.map(({ stars, count }) => (
-              <div key={stars} className="flex items-center gap-4 mb-1">
-                <span className="text-[10px] text-nowrap font-bold text-[#181D27]">
-                  {stars} stars
-                </span>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div
-                    className="bg-yellow-500 h-2.5 rounded-full"
-                    style={{ width: `${(count / 578) * 100}%` }}
-                  ></div>
-                </div>
-                <div>
-                  <span className="text-[10px] font-medium text-[#181D27]">
-                    {count}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
         {/* Individual Reviews */}
-        <div className="mt-8 space-y-8">
-          {reviews.map((review, index) => (
-            <div key={index} className="border-t pt-4">
-              <div className="">
-                <p className="text-xs text-[#535862] mb-2 font-semibold">{review.date}</p>
-                <div className="flex items-center mb-2">
-                  {[...Array(review.rating)].map((_, index) => (
-                    <Star
-                      key={index}
-                      className="text-yellow-500 w-5 h-5"
-                      fill="currentColor"
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="flex items-center">
-                <img
-                  src={review.userimg}
-                  alt=""
-                  className="me-2 rounded-full w-[30px] h-[30px]"
-                />
-                <div>
-                  <h3 className="font-bold text-sm">{review.name}</h3>
-                  <p className="text-[10px] text-[#535862]">{review.title}</p>
-                </div>
-              </div>
-              <p className="text-sm text-[#181D27] mt-2">{review.review}</p>
-            </div>
-          ))}
-        </div>
+        <Review/>
       </div>
     </div>
   );

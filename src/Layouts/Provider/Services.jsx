@@ -11,6 +11,7 @@ function ServiceBox({ tags = [], image, publish, title, price, description }) {
   }, []);
 
   return (
+
     <div className="border px-3 py-3 rounded-lg">
       <img src={service2 ?? "N/A"} alt={title} className="rounded-lg w-full" />
       <p
@@ -27,6 +28,7 @@ function ServiceBox({ tags = [], image, publish, title, price, description }) {
           <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
         </Link>
         <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
+
       </div>
       
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
