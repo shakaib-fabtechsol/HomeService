@@ -3,16 +3,16 @@ import Login from "./Layouts/Auth/Login";
 import Register from "./Layouts/Auth/Register";
 import Test from "./Layouts/Auth/Test";
 import AdminLayout from "./Layouts/AdminLayout";
-import Services from "./Layouts/Admin/Services";
-import Notifications from "./Layouts/Admin/Notifications";
-import Settings from "./Layouts/Admin/Settings";
-import Conversations from "./Layouts/Admin/Conversations";
-import Support from "./Layouts/Admin/Support";
+import Services from "./Layouts/ServiceProvider/Services";
+import Notifications from "./Layouts/ServiceProvider/Notifications";
+import Settings from "./Layouts/ServiceProvider/Settings";
+import Conversations from "./Layouts/ServiceProvider/Conversations";
+import Support from "./Layouts/ServiceProvider/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
-import NewDeals from "./Layouts/Admin/NewDeals";
+import NewDeals from "./Layouts/ServiceProvider/NewDeals";
 import Signup from "./Layouts/Auth/Signup";
-import ServiceDetail from "./Layouts/Admin/ServiceDetail";
-import ProfileDetails from "./Layouts/Admin/ProfileDetails";
+import ServiceDetail from "./Layouts/ServiceProvider/ServiceDetail";
+import ProfileDetails from "./Layouts/ServiceProvider/ProfileDetails";
 
 import UserLayout from "./Layouts/UserLayout";
 import UserServices from "./Layouts/User/Services";
@@ -37,7 +37,7 @@ function App() {
 
           {/* Private Routes for Admin */}
           <Route
-            path="/admin/*"
+            path="/ServiceProvider/*"
             element={
               <PrivateRoute>
                 <AdminLayout />
