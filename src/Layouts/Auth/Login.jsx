@@ -35,7 +35,7 @@ function Login() {
         if (userRole === 1) {
           navigate("/admin/services"); // Redirect to admin services
         } else if (userRole === 2) {
-          navigate("/user/services"); // Redirect to user services
+          navigate("/customer/services"); // Redirect to user services
         } else {
           navigate("/"); // Default redirect if role is unrecognized
         }

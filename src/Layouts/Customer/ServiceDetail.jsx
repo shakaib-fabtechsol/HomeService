@@ -87,7 +87,7 @@ function ServiceDetail() {
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/services">
+        <Link to="/customer/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Service Details</h2>
@@ -119,7 +119,7 @@ function ServiceDetail() {
           <div className="">
             <div className="flex flex-wrap items-center">
               <img
-                onClick={() => navigate("/user/ProfileDetails")}
+                onClick={() => navigate("/customer/ProfileDetails")}
                 src={provider}
                 alt=""
                 className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"

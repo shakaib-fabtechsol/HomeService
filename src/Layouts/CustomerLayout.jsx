@@ -1,18 +1,30 @@
 import * as React from "react";
-import { Box, Drawer, CssBaseline, List } from "@mui/material";
+import {
+  Box,
+  Drawer,
+  CssBaseline,
+  AppBar,
+  Toolbar,
+  IconButton,
+  List,
+  Typography,
+} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MdOutlineMessage, MdOutlineSupport, MdHomeRepairService, MdLogout } from "react-icons/md";
+import {
+  MdOutlineMessage,
+  MdOutlineSupport,
+  MdHomeRepairService,
+  MdLogout,
+} from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
-import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert
+import { Outlet, NavLink, Link } from "react-router-dom";
 import logo from "../assets/img/logo.png";
 import user from "../assets/img/user.png";
 
 const drawerWidth = 240;
 
-function AdminLayout() {
+function CustomerLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -20,35 +32,24 @@ function AdminLayout() {
 
   const topItems = [
     {
-      text: "My Services",
+      text: "Explore Services",
       icon: <MdHomeRepairService className="text-2xl" />,
-      link: "/admin/services",
+      link: "/customer/services",
     },
   ];
 
   const bottomItems = [
     {
-      text: "Conversations",
-      icon: <MdOutlineMessage className="text-2xl" />,
-      link: "/admin/conversations",
-    },
-    {
-      text: "Notifications",
-      icon: <IoMdNotificationsOutline className="text-2xl" />,
-      link: "/admin/notifications",
+      text: "Support",
+      icon: <MdOutlineSupport className="text-2xl" />,
+      link: "/customer/support",
     },
     {
       text: "Settings",
       icon: <IoIosSettings className="text-2xl" />,
-      link: "/admin/settings",
-    },
-    {
-      text: "Support",
-      icon: <MdOutlineSupport className="text-2xl" />,
-      link: "/admin/support",
+      link: "/customer/settings",
     },
   ];
-
   const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -60,11 +61,10 @@ function AdminLayout() {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token");
-        navigate("/"); 
+        navigate("/");
       }
     });
   };
-
   const drawer = (
     <Box
       sx={{
@@ -78,7 +78,7 @@ function AdminLayout() {
     >
       <Box>
         <div className="flex justify-center py-3">
-          <img src={logo} alt="logo" className="w-[120px] object-contain" />
+          <img src={logo} alt="logo" className="w-[120px]"/>
         </div>
         <List>
           {topItems.map((item) => (
@@ -99,7 +99,7 @@ function AdminLayout() {
       </Box>
 
       {/* Bottom Section: Other Links */}
-      <Box sx={{ fontFamily: "inter" }}>
+      <Box>
         <List className="border-b-2">
           {bottomItems.map((item) => (
             <NavLink
@@ -118,7 +118,7 @@ function AdminLayout() {
         </List>
         <Box>
           <div className="flex items-center px-4 py-4">
-            <Link to="/admin/ProfileDetails">
+            <Link to="/customer/ProfileDetails">
               <img
                 src={user}
                 alt="logo"
@@ -143,14 +143,40 @@ function AdminLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Box
-        component="nav"
+      {/* <AppBar
+        position="fixed"
         sx={{
-          width: { sm: drawerWidth },
-          flexShrink: { sm: 0 },
-          fontFamily: "inter",
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          bgcolor: "transparent",
+          color: "#181D27",
+          boxShadow: "none",
+          display: { sm: "none" },
         }}
       >
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="end"
+            onClick={handleDrawerToggle}
+            sx={{
+              position: "absolute",
+              right: 16,
+              top: 18,
+              display: { sm: "none" },
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar> */}
+      {/* Sidebar for Desktop */}
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      >
+        {/* Drawer for Desktop */}
         <Drawer
           variant="permanent"
           open
@@ -164,6 +190,7 @@ function AdminLayout() {
         >
           {drawer}
         </Drawer>
+        {/* Drawer for Mobile */}
         <Drawer
           variant="temporary"
           open={mobileOpen}
@@ -180,16 +207,17 @@ function AdminLayout() {
           {drawer}
         </Drawer>
       </Box>
+      {/* Main Content */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          fontFamily: "inter",
         }}
       >
-        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter" }}>
+        {/* <Toolbar /> */}
+        <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />
@@ -202,4 +230,4 @@ function AdminLayout() {
   );
 }
 
-export default AdminLayout;
+export default CustomerLayout;
