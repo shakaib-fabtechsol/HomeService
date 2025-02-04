@@ -28,24 +28,22 @@ function Register() {
                 Welcome! Please enter your details.
               </p>
 
-              {/* Customer Button */}
               <div className="border px-3 mt-4 py-3 rounded-lg">
                 <p className="font-medium">Looking for Service?</p>
                 <Link
                   to="/signup"
-                  state={{ userType: "1" }} // Passing data
+                  state={{ userType: "1" }} 
                   className="btn-blue font-semibold rounded-lg px-3 py-2 w-full text-[#fff] mt-3 flex justify-center"
                 >
                   Register as a Customer
                 </Link>
               </div>
 
-              {/* Service Provider Button */}
               <div className="border px-3 mt-4 py-3 rounded-lg">
                 <p className="font-medium">Looking for Work?</p>
                 <Link
                   to="/signup"
-                  state={{ userType: "2" }} // Passing data
+                  state={{ userType: "2" }} 
                   className="btn-blue font-semibold rounded-lg px-3 py-2 w-full text-[#fff] mt-3 flex justify-center"
                 >
                   Register as a Service Provider
