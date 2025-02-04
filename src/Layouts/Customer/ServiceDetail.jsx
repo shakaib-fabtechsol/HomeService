@@ -15,6 +15,9 @@ import {
 } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
 import provider from "../../assets/img/provider.png";
+import Basic from "../../Components/CustomerPlan/Basic";
+import Standard from "../../Components/CustomerPlan/Standard";
+import Premium from "../../Components/CustomerPlan/Premium";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -222,82 +225,13 @@ function ServiceDetail() {
                   </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                  <div className="flex flex-col justify-between h-full">
-                    <div>
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">
-                          Plan Title
-                        </h2>
-                        <p className="text-3xl myhead font-bold">$200</p>
-                      </div>
-                      <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
-                      </p>
-                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>3 Workers</li>
-                        <li>Delivered Within 2 Days</li>
-                      </ul>
-                    </div>
-                    <button className="bg-[#0F91D2] text-white border border-[#D5D7DA] shadow-[0px_1px_2px_0px_#0A0D120D] p-2 rounded-[8px] text-sm font-semibold">
-                      Continue
-                    </button>
-                  </div>
+                  <Basic/>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                  <div className="flex flex-col justify-between h-full">
-                    <div>
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">
-                          Plan Title
-                        </h2>
-                        <p className="text-3xl myhead font-bold">$400</p>
-                      </div>
-                      <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
-                      </p>
-                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>3 Workers</li>
-                        <li>Delivered Within 2 Days</li>
-                      </ul>
-                    </div>
-                    <button className="bg-[#0F91D2] text-white border border-[#D5D7DA] shadow-[0px_1px_2px_0px_#0A0D120D] p-2 rounded-[8px] text-sm font-semibold">
-                      Continue
-                    </button>
-                  </div>
+                  <Standard/>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={2}>
-                  <div className="flex flex-col justify-between h-full">
-                    <div>
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">
-                          Plan Title
-                        </h2>
-                        <p className="text-3xl myhead font-bold">$600</p>
-                      </div>
-                      <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
-                      </p>
-                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>3 Workers</li>
-                        <li>Delivered Within 2 Days</li>
-                      </ul>
-                    </div>
-                    <button className="bg-[#0F91D2] text-white border border-[#D5D7DA] shadow-[0px_1px_2px_0px_#0A0D120D] p-2 rounded-[8px] text-sm font-semibold">
-                      Continue
-                    </button>
-                  </div>
+                  <Premium/>
                 </CustomTabPanel>
               </Box>
             </div>

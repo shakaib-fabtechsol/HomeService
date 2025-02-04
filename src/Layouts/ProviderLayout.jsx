@@ -185,11 +185,11 @@ function ProviderLayout() {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          width: {  xs: '100%',sm: `calc(100% - ${drawerWidth}px)` },
           fontFamily: "inter",
         }}
       >
-        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter" }}>
+        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter", }}>
           <div className="pb-2 flex justify-end">
             <button onClick={handleDrawerToggle}>
               <MenuIcon />

@@ -33,7 +33,7 @@ function Login() {
         const userRole = response.data.user.role; // Assuming the role is in the response
 
         if (userRole === 1) {
-          navigate("/admin/services"); // Redirect to admin services
+          navigate("/provider/services"); // Redirect to admin services
         } else if (userRole === 2) {
           navigate("/customer/services"); // Redirect to user services
         } else {

@@ -15,6 +15,9 @@ import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { FiPhone } from "react-icons/fi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
+import Basic from "../../Components/Plan/Basic";
+import Standard from "../../Components/Plan/Standard";
+import Premium from "../../Components/Plan/Premium";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -86,7 +89,7 @@ function ServiceDetail() {
   return (
     <div>
       <div className="flex items-center">
-        <Link to="/admin/services">
+        <Link to="/provider/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
         <h2 className="text-2xl font-semibold">Service Details</h2>
@@ -118,7 +121,7 @@ function ServiceDetail() {
           <div className="">
             <div className="flex flex-wrap items-center">
               <img
-                onClick={() => navigate("/admin/ProfileDetails")}
+                onClick={() => navigate("/provider/ProfileDetails")}
                 src={provider}
                 alt=""
                 className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
@@ -205,6 +208,7 @@ function ServiceDetail() {
                       "& .Mui-selected": {
                         color: "#181D27",
                         fontWeight: "700",
+                        fontFamily: "inter",
                       },
                     }}
                   >
@@ -214,52 +218,13 @@ function ServiceDetail() {
                   </Tabs>
                 </Box>
                 <CustomTabPanel value={value} index={0}>
-                  <div className="flex justify-between">
-                    <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-                    <p className="text-3xl myhead font-bold">$200</p>
-                  </div>
-                  <p className="text-sm myblack mt-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                    egestas lacus. Phasellus accumsan fermentum dolor eu
-                    gravida. Vivamus dignissim augue sed orci interdum vehicula.
-                  </p>
-                  <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                    <li>3 Workers</li>
-                    <li>Delivered Within 2 Days</li>
-                  </ul>
+                    <Basic/>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={1}>
-                  <div className="flex justify-between">
-                    <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-                    <p className="text-3xl myhead font-bold">$400</p>
-                  </div>
-                  <p className="text-sm myblack mt-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                    egestas lacus. Phasellus accumsan fermentum dolor eu
-                    gravida. Vivamus dignissim augue sed orci interdum vehicula.
-                  </p>
-                  <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                    <li>3 Workers</li>
-                    <li>Delivered Within 2 Days</li>
-                  </ul>
+                  <Standard/>
                 </CustomTabPanel>
                 <CustomTabPanel value={value} index={2}>
-                  <div className="flex justify-between">
-                    <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-                    <p className="text-3xl myhead font-bold">$600</p>
-                  </div>
-                  <p className="text-sm myblack mt-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                    egestas lacus. Phasellus accumsan fermentum dolor eu
-                    gravida. Vivamus dignissim augue sed orci interdum vehicula.
-                  </p>
-                  <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                    <li>3 Workers</li>
-                    <li>Delivered Within 2 Days</li>
-                  </ul>
+                  <Premium/>
                 </CustomTabPanel>
               </Box>
             </div>

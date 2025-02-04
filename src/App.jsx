@@ -37,7 +37,7 @@ function App() {
 
           {/* Private Routes for Admin */}
           <Route
-            path="/Provider/*"
+            path="/provider/*"
             element={
               <PrivateRoute>
                 <ProviderLayout />
