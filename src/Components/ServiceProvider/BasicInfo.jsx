@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function BasicInfo() {
   const [tags, setTags] = useState([]);
@@ -67,23 +68,68 @@ function BasicInfo() {
     "Veterinary Service",
   ];
 
+  // Handle adding tags
   const handleAddTag = (e) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
       if (!tags.includes(inputValue.trim())) {
         setTags([...tags, inputValue.trim()]);
       }
-      setInputValue(""); 
+      setInputValue(""); // Reset input after adding tag
     }
   };
 
+  // Handle removing tags
   const handleRemoveTag = (index) => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Check if the token exists
+    const token = localStorage.getItem("token");
+    console.log("Token:", token); // Log token to make sure it's available
+  
+    if (!token) {
+      alert("No token found. Please log in.");
+      return;
+    }
+  
+    // Prepare the data from the form
+    const formData = {
+      service_title: e.target.Title.value,
+      commercial: e.target.Commercial.checked ? 1 : 0,
+      residential: e.target.Residential.checked ? 1 : 0,
+      service_category: e.target.Category.value,
+      search_tags: tags.join(","),
+      service_description: e.target.Description.value,
+      fine_print: e.target.FinePrint ? e.target.FinePrint.value : "",
+    };
+  
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/BasicInfo",
+        formData,
+        {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Success:", response.data);
+    } catch (error) {
+      console.error("Error:", error);
+      if (error.response && error.response.status === 401) {
+        alert("Unauthorized! Please log in again.");
+      }
+    }
+  };
+  
+
   return (
     <div>
-      <form action="#">
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-12">
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
@@ -98,6 +144,7 @@ function BasicInfo() {
               />
             </div>
           </div>
+
           <div className="col-span-12 lg:col-span-7 mt-4">
             <p className="font-semibold">Service Type</p>
             <div className="flex mt-4">
@@ -121,6 +168,7 @@ function BasicInfo() {
               </div>
             </div>
           </div>
+
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
               <label htmlFor="Category" className="font-semibold">
@@ -187,21 +235,23 @@ function BasicInfo() {
               ></textarea>
             </div>
           </div>
+
           <div className="col-span-12 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Description" className="font-semibold">
-                Fine Print{" "}
+              <label htmlFor="FinePrint" className="font-semibold">
+                Fine Print
                 <span className="text-[13px] text-[#cdcdcd]">(Optional)</span>
               </label>
               <textarea
-                name="Description"
-                id="Description"
+                name="FinePrint"
+                id="FinePrint"
                 className="myinput focus-none"
                 placeholder="Type detail here..."
                 rows={6}
               ></textarea>
             </div>
           </div>
+
           <div className="col-span-12 mt-4">
             <div className="flex justify-end">
               <button
