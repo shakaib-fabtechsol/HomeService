@@ -2,27 +2,27 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./Layouts/Auth/Login";
 import Register from "./Layouts/Auth/Register";
 import Test from "./Layouts/Auth/Test";
-import AdminLayout from "./Layouts/AdminLayout";
-import Services from "./Layouts/ServiceProvider/Services";
-import Notifications from "./Layouts/ServiceProvider/Notifications";
-import Settings from "./Layouts/ServiceProvider/Settings";
-import Conversations from "./Layouts/ServiceProvider/Conversations";
-import Support from "./Layouts/ServiceProvider/Support";
+import Services from "./Layouts/Provider/Services";
+import Notifications from "./Layouts/Provider/Notifications";
+import Settings from "./Layouts/Provider/Settings";
+import Conversations from "./Layouts/Provider/Conversations";
+import Support from "./Layouts/Provider/Support";
 import PrivacyPolicy from "./Layouts/Auth/PrivacyPolicy";
-import NewDeals from "./Layouts/ServiceProvider/NewDeals";
+import NewDeals from "./Layouts/Provider/NewDeals";
 import Signup from "./Layouts/Auth/Signup";
-import ServiceDetail from "./Layouts/ServiceProvider/ServiceDetail";
-import ProfileDetails from "./Layouts/ServiceProvider/ProfileDetails";
+import ServiceDetail from "./Layouts/Provider/ServiceDetail";
+import ProfileDetails from "./Layouts/Provider/ProfileDetails";
 
-import UserLayout from "./Layouts/UserLayout";
-import UserServices from "./Layouts/User/Services";
-import UserServiceDetail from "./Layouts/User/ServiceDetail";
-import UserSupport from "./Layouts/User/Support";
-import UserSettings from "./Layouts/User/Settings";
-import UserProfileDetails from "./Layouts/User/ProfileDetails";
+import UserLayout from "./Layouts/CustomerLayout";
+import UserServices from "./Layouts/Customer/Services";
+import UserServiceDetail from "./Layouts/Customer/ServiceDetail";
+import UserSupport from "./Layouts/Customer/Support";
+import UserSettings from "./Layouts/Customer/Settings";
+import UserProfileDetails from "./Layouts/Customer/ProfileDetails";
 
 import { AuthProvider } from "./Layouts/Auth/AuthContext";
 import PrivateRoute from "./Layouts/Auth/PrivateRoute";
+import ProviderLayout from "./Layouts/ProviderLayout";
 
 function App() {
   return (
@@ -37,10 +37,10 @@ function App() {
 
           {/* Private Routes for Admin */}
           <Route
-            path="/ServiceProvider/*"
+            path="/Provider/*"
             element={
               <PrivateRoute>
-                <AdminLayout />
+                <ProviderLayout />
               </PrivateRoute>
             }
           >
@@ -56,7 +56,7 @@ function App() {
           </Route>
 
           <Route
-            path="/user/*"
+            path="/customer/*"
             element={
               <PrivateRoute>
                 <UserLayout />
