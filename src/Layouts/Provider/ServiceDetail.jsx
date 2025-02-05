@@ -20,6 +20,7 @@ import Standard from "../../Components/Plan/Standard";
 import Premium from "../../Components/Plan/Premium";
 import axios from "axios"; // Import axios
 import Swal from "sweetalert2";
+import Loader from "../../Components/MUI/Loader";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -161,13 +162,7 @@ function ServiceDetail() {
 
   if (loading) {
     return (
-      <section class="dots-container">
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-        <div class="dot"></div>
-      </section>
+      <Loader/>
     ); // Show loading while fetching data
   }
 

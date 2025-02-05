@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
 import service2 from "../../assets/img/random3.png";
+import Loader from "../../Components/MUI/Loader";
 
 function ServiceBox({
   tags = [],
@@ -105,13 +106,7 @@ function Services() {
 
         {/* Show Loader While Fetching Data */}
         {loading ? (
-          <section class="dots-container">
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-          </section>
+          <Loader/>
         ) : (
           // Show Data Once Loaded
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
