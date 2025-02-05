@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, { useState, useEffect } from "react";
 import google from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
 import { Link, useNavigate } from "react-router-dom"; 
@@ -9,7 +9,6 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false); // Loading state
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -18,8 +17,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setLoading(true); // Start loading
+    setError(null); 
 
     try {
       const response = await axios.post("https://homeservice.thefabulousshow.com/api/Userlogin", {
@@ -28,23 +26,22 @@ function Login() {
       });
 
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("token", response.data.token); 
 
         const userRole = response.data.user.role;
+
         if (userRole === 2) {
-          navigate("/provider/services");
+          navigate("/provider/services"); 
         } else if (userRole === 1) {
-          navigate("/customer/services");
+          navigate("/customer/services"); 
         } else {
-          navigate("/");
+          navigate("/"); 
         }
       } else {
-        setError("Invalid credentials");
+        setError("Invalid credentials"); 
       }
     } catch (err) {
       setError("Login failed. Check your credentials.");
-    } finally {
-      setLoading(false); // Stop loading
     }
   };
 
@@ -66,14 +63,17 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             <div className="my-3">
-              <label htmlFor="email" className="myblack block w-full font-medium">
+              <label
+                htmlFor="email"
+                className="myblack block w-full font-medium"
+              >
                 Email*
               </label>
               <input
                 type="email"
                 id="email"
                 placeholder="user123@gmail.com"
-                className="mt-1 w-full border px-3 rounded-lg py-3 focus-none"
+                className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -81,14 +81,17 @@ function Login() {
             </div>
 
             <div className="my-3">
-              <label htmlFor="password" className="myblack block w-full font-medium">
+              <label
+                htmlFor="password"
+                className="myblack block w-full font-medium"
+              >
                 Password
               </label>
               <input
                 type="password"
                 id="password"
                 placeholder=""
-                className="mt-1 w-full border px-3 rounded-lg py-3 focus-none"
+                className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -96,6 +99,7 @@ function Login() {
             </div>
 
             <div className="flex flex-wrap mb-3 justify-end items-center">
+              
               <Link to="#" className="block font-medium text-blue">
                 Forgot password
               </Link>
@@ -104,14 +108,16 @@ function Login() {
             <button
               type="submit"
               className="text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg"
-              disabled={loading}
             >
-              {loading ? "Signing in..." : "Sign in"}
+              Sign in
             </button>
           </form>
 
-          <Link to="#" className="border rounded-lg my-2 py-3 px-3 sm:px-3 flex justify-center items-center">
-            <div className="flex">
+          <Link
+            to="#"
+            className="border rounded-lg my-2 py-3 px-3 sm:px-3 flex justify-center items-center"
+          >
+            <div className="flex ">
               <img src={google} alt="google" className="me-2" />
               <span className="font-semibold text-xs sm:text-base">
                 Sign in with Google
@@ -131,13 +137,4 @@ function Login() {
   );
 }
 
-// Lazy load the Login component
-const LazyLogin = lazy(() => import("./Login"));
-
-export default function LoginWrapper() {
-  return (
-    <Suspense fallback={<div className="text-center mt-10">Loading...</div>}>
-      <LazyLogin />
-    </Suspense>
-  );
-}
+export default Login;
