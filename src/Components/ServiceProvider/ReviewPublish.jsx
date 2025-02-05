@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaRegCalendarAlt } from "react-icons/fa";
 import { Link, useNavigate } from "react-router";
@@ -47,7 +47,8 @@ function a11yProps(index) {
 }
 
 
-const ReviewPublish = () => {
+
+const ReviewPublish = ({ serviceId }) => {
       const [value, setValue] = React.useState(0);
     
       const handleChange = (event, newValue) => {
@@ -79,9 +80,18 @@ const ReviewPublish = () => {
     ];
 
     const navigate = useNavigate();
-
+    useEffect(() => {
+        console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
+      }, [serviceId]);
+    
     return (
         <div>
+              <input
+              type="text"
+              id="Flatr"
+              defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+              className="focus-none border"
+            />
             <div className="flex flex-col lg:flex-row justify-between mt-8">
                 <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
                     Aliquam erat volutpat. Ut semper ipsum in vestibulum laoreet.
