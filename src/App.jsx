@@ -39,7 +39,9 @@ function App() {
           <Route
             path="/provider/*"
             element={
-              <PrivateRoute>
+              <PrivateRoute allowedRoles={[2]}>
+                {" "}
+                {/* Only role 2 (Provider) allowed */}
                 <ProviderLayout />
               </PrivateRoute>
             }
@@ -58,7 +60,9 @@ function App() {
           <Route
             path="/customer/*"
             element={
-              <PrivateRoute>
+              <PrivateRoute allowedRoles={[1]}>
+                {" "}
+                {/* Only role 1 (Customer) allowed */}
                 <UserLayout />
               </PrivateRoute>
             }
