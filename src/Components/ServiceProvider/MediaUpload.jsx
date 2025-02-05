@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
 
-const MediaUpload = () => {
+const MediaUpload = ({ serviceId, setValue }) => {
     const [file, setFile] = useState(null); // Stores the uploaded file
     const [filePreview, setFilePreview] = useState(null); // Stores the file preview URL
     const [showPreview, setShowPreview] = useState(false); // Toggles the preview display
@@ -35,12 +35,21 @@ const MediaUpload = () => {
     const handleShowPreview = () => {
         setShowPreview(true);
     };
-
+    useEffect(() => {
+        console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
+      }, [serviceId]);
+    
     return (
         <div>
             <form action="#">
                 <div className="file-upload-container">
                     {/* Upload Box */}
+                    <input
+              type="text"
+              id="Flatr"
+              defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+              className="focus-none border"
+            />
                     <div
                         className="upload-box w-full border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
                         onDrop={handleFileDrop}

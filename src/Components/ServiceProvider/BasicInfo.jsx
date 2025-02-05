@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function BasicInfo() {
+function BasicInfo({ setServiceId,setValue  }) { 
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false); // Lazy loading state
@@ -59,12 +59,16 @@ function BasicInfo() {
       );
 
       if (response.status === 200) {
+        console.log("Service ID:", response.data.deal.id); // Log the ID to console
+        setServiceId(response.data.deal.id);
         Swal.fire({
           icon: "success",
           title: "Success!",
           text: "Your data has been saved successfully.",
           confirmButtonColor: "#0F91D2",
-        });
+      }).then(() => {
+          setValue(1); // Switch to Pricing & Packages tab (index 1)
+      });
         e.target.reset(); // Reset form fields
         setTags([]); // Clear tags
       }

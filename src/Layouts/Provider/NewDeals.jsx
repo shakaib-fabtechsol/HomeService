@@ -32,10 +32,11 @@ function TabPanel(props) {
 
 function NewDeals() {
   const [value, setValue] = React.useState(0);
+  const [serviceId, setServiceId] = useState(null); // Store Service ID
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    console.log("🔄 NewDeals Updated Service ID:", serviceId); // ✅ Logging Service ID update
+  }, [serviceId]);
 
   return (
     <div className="pmain">
@@ -68,7 +69,7 @@ function NewDeals() {
                 },
               }}
               value={value}
-              onChange={handleChange}
+              onChange={(event, newValue) => setValue(newValue)}
               variant="scrollable"
               scrollButtons="auto"
             >
@@ -80,16 +81,17 @@ function NewDeals() {
           </Box>
 
           <TabPanel value={value} index={0}>
-            <BasicInfo />
+            <BasicInfo setValue={setValue} setServiceId={setServiceId} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <PricingPackaging />
+            <PricingPackaging setValue={setValue} serviceId={serviceId} />
           </TabPanel>
+
           <TabPanel value={value} index={2}>
-            <MediaUpload />
+            <MediaUpload  serviceId={serviceId}/>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <ReviewPublish />
+            <ReviewPublish serviceId={serviceId}/>
           </TabPanel>
         </Box>
       </div>
