@@ -102,7 +102,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl  font-semibold mt-6 sm:mt-8">
           Key Responsibilities:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers are solely responsible for fulfilling Deals purchased by
             Clients.
@@ -118,7 +118,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must maintain all necessary licenses and permits for their services.
           </li>
@@ -136,7 +136,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Clients:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must ensure that all payment information provided is accurate and
             valid.
@@ -154,7 +154,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Earning Pro Bucks:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             <span className="font-semibold">Transaction Rewards:</span> Clients
             earn Pro Bucks as a percentage of their purchases on the platform.
@@ -169,7 +169,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Using Pro Bucks:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Pro Bucks can be applied to eligible Deals and services available on
             the platform.
@@ -182,7 +182,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must ensure the accuracy of Deal descriptions, pricing, and terms.
           </li>
@@ -208,7 +208,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Clients:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must pay the full listed price for Deals, including applicable taxes
             or fees.
@@ -233,7 +233,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Payments are processed through Home Pro Deals' secure payment
             system.
@@ -264,7 +264,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Provider Warranties:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers affirm they have the legal authority and licenses to offer
             the services or goods listed.
@@ -289,7 +289,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Client Warranties:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Clients affirm they will use the platform responsibly and for lawful
             purposes.
@@ -326,7 +326,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers agree to:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Use best efforts to deliver high-quality goods or services as
             described in their Deals.
@@ -365,7 +365,7 @@ function PrivacyPolicy() {
           agents from any claims, damages, losses, liabilities, costs, or
           expenses arising out of:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>Breach of these Terms and Conditions.</li>
           <li>
             The provision or receipt of services or goods listed on the
@@ -408,7 +408,7 @@ function PrivacyPolicy() {
         <p className="text-[#535862] mt-6 sm:mt-8">
           Home Pro Deals is not liable for:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Direct, indirect, incidental, or consequential damages arising from
             transactions.
@@ -452,7 +452,7 @@ function PrivacyPolicy() {
         <h2 className="text-xl sm:text-2xl font-semibold mt-6 sm:mt-8">
           18. TAX COMPLIANCE
         </h2>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers are responsible for collecting and remitting any
             applicable taxes for their services.
@@ -469,7 +469,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Users may not:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>Post inaccurate or deceptive information.</li>
           <li>Engage in fraudulent or harmful activity.</li>
           <li>Use the platform for unlawful purposes.</li>
@@ -506,7 +506,7 @@ function PrivacyPolicy() {
         <p className="text-[#535862] mt-6 sm:mt-8">
           Home Pro Deals is not liable for:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers may use approved marketing tools to promote their Deals on
             the platform.
