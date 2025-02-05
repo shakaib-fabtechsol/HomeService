@@ -39,6 +39,15 @@ function ServiceBox({
       </div>
 
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
+      <p className="text-sm text-[#535862] mt-4">
+        {tags && tags.length > 0
+          ? tags.map((tag, index) => (
+              <span key={index} className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2">
+                {tag}
+              </span>
+            ))
+          : "No tags available"}
+      </p>
     </div>
   );
 }
@@ -106,7 +115,7 @@ function Services() {
 
         {/* Show Loader While Fetching Data */}
         {loading ? (
-          <Loader/>
+          <Loader />
         ) : (
           // Show Data Once Loaded
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
@@ -117,7 +126,9 @@ function Services() {
                   title={service.service_title}
                   price={service.flat_rate_price}
                   description={service.service_description}
-                  tags={service.tags}
+                  tags={
+                    service.search_tags ? service.search_tags.split(",") : []
+                  } // Split the string into an array
                   image={service.image_url}
                   publish={service.publish}
                   dealid={service.id}
