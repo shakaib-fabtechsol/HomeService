@@ -57,7 +57,6 @@ function ServiceDetail() {
 
   const [value, setValue] = React.useState(0);
   const [serviceDetails, setServiceDetails] = useState(null); // State for service details
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -91,12 +90,14 @@ function ServiceDetail() {
   ];
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true); // New loading state
 
   // Fetch service details using axios when the component mounts
   useEffect(() => {
     if (dealid) {
       // Assuming token is stored in localStorage
       const token = localStorage.getItem("token");
+      setLoading(true); // Start loading
 
       if (token) {
         axios
@@ -107,6 +108,11 @@ function ServiceDetail() {
           })
           .then((response) => {
             setServiceDetails(response.data.deal); // Set fetched data to state
+            setLoading(false); // Stop loading
+          })
+          .catch((error) => {
+            setLoading(false); // Stop loading if there's an error
+            console.error("Error fetching service details:", error);
           });
       }
     }
@@ -146,14 +152,6 @@ function ServiceDetail() {
           .then(() => {
             navigate("/provider/services"); // Redirect after success
           })
-          .then(() => {
-            Swal.fire({
-              title: "Deleted!",
-              text: "Service Deleted Successfully",
-              icon: "success",
-              showConfirmButton: false,
-            });
-          })
           .catch((error) => {
             Swal.fire("Error!", "Failed to delete the deal.", "error");
           });
@@ -161,8 +159,20 @@ function ServiceDetail() {
     });
   };
 
+  if (loading) {
+    return (
+      <section class="dots-container">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </section>
+    ); // Show loading while fetching data
+  }
+
   if (!serviceDetails) {
-    return <div>Loading...</div>; // Show loading until data is fetched
+    return <div>No service details available.</div>; 
   }
 
   return (
@@ -333,10 +343,8 @@ function ServiceDetail() {
             Deal Description
           </h2>
           <p className="mt-2 myblack">
-            {serviceDetails[0]?.service_description || "N/A"}
+            {serviceDetails[0]?.service_desc || "No description available."}
           </p>
-          <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-          <p>{serviceDetails[0]?.fine_print || "N/A"}</p>
         </div>
       </div>
     </div>

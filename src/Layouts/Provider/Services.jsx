@@ -5,7 +5,15 @@ import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
 import service2 from "../../assets/img/random3.png";
 
-function ServiceBox({ tags = [], image, publish, title, price, description, dealid }) {
+function ServiceBox({
+  tags = [],
+  image,
+  publish,
+  title,
+  price,
+  description,
+  dealid,
+}) {
   useEffect(() => {
     document.title = "Services";
   }, []);
@@ -27,7 +35,7 @@ function ServiceBox({ tags = [], image, publish, title, price, description, deal
           <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
         </Link>
         <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
-        </div>
+      </div>
 
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
     </div>
@@ -97,9 +105,13 @@ function Services() {
 
         {/* Show Loader While Fetching Data */}
         {loading ? (
-          <div className="flex justify-center items-center my-10">
-            <div className="loader border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 animate-spin"></div>
-          </div>
+          <section class="dots-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </section>
         ) : (
           // Show Data Once Loaded
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
