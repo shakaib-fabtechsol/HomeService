@@ -32,7 +32,7 @@ function Login() {
 
       if (response.data.token) {
         localStorage.setItem("token", response.data.token);
-
+        localStorage.setItem("role", response.data.user.role);
         const userRole = response.data.user.role;
 
         if (userRole === 2) {
