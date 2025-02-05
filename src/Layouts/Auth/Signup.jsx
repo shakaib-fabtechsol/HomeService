@@ -20,55 +20,51 @@ function Signup () {
   const [email, setEmail] = useState ('');
   const [phone, setPhone] = useState ('');
   const [password, setPassword] = useState ('');
-  const [termsAccepted, setTermsAccepted] = useState (false);
   const [error, setError] = useState (null);
   const [loading, setLoading] = useState (false);
   const userType = location.state?.userType || "";
 
 
   const handleSubmit = async e => {
-    e.preventDefault ();
-    setError (null);
-    setLoading (true);
-
-    if (!termsAccepted) {
-      setError ('You must accept the Terms of Service.');
-      setLoading (false);
-      return;
-    }
-
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+  
     const userData = {
       name,
       email,
       phone,
       role: userType,
-      terms: termsAccepted ? '1' : '0',
       password,
     };
-
+  
     try {
-      const response = await axios.post (
+      const response = await axios.post(
         'https://homeservice.thefabulousshow.com/api/Register',
         userData
       );
-
+  
       if (response.data.user) {
-        Swal.fire ({
+        const userId = response.data.user.id; // Extract the user ID from the API response
+  
+        Swal.fire({
           icon: 'success',
           title: 'Good Job',
           text: 'User Registered Successfully',
           timer: 3000,
           showConfirmButton: false,
         });
-
-        navigate ('/');
+  
+        // Navigate to PrivacyPolicy page with the user ID
+        navigate('/PrivacyPolicy', { state: { userId } });
       }
     } catch (err) {
-      setError ('Registration failed. Please check your details.');
+      setError('Registration failed. Please check your details.');
     } finally {
-      setLoading (false);
+      setLoading(false);
     }
   };
+  
 
   return (
     <div className="">
@@ -94,7 +90,7 @@ function Signup () {
                 {error && <p className="text-red-500 text-center">{error}</p>}
 
                 <form onSubmit={handleSubmit}>
-                  <div className="my-3">
+                  <div className="my-3 hidden">
                     <label
                       htmlFor="role"
                       className="myblack block w-full font-medium"
@@ -193,23 +189,6 @@ function Signup () {
                     <FormHelperText>
                       Must be at least 8 characters
                     </FormHelperText>
-                  </div>
-
-                  <div className="flex items-center mt-3">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      className="me-2"
-                      checked={termsAccepted}
-                      onChange={e => setTermsAccepted (e.target.checked)}
-                    />
-                    <label htmlFor="terms" className="font-medium">
-                      I accept the
-                      {' '}
-                      <Link to="/PrivacyPolicy" className="text-blue underline">
-                        Terms of Service
-                      </Link>
-                    </label>
                   </div>
 
                   <button

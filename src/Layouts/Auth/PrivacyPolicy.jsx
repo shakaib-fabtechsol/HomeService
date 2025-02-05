@@ -1,15 +1,78 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/img/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation ,useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function PrivacyPolicy() {
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Privacy Policy";
   }, []);
+  const location = useLocation();
+  const userId = location.state?.userId;
+  const navigate = useNavigate ();
+
+  useEffect(() => {}, [userId]);
+
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!termsAccepted) {
+      Swal.fire({
+        icon: "error",
+        title: "Terms Not Accepted",
+        text: "You must accept the Terms of Service before continuing.",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `https://homeservice.thefabulousshow.com/api/UpdateUser?id=${userId}&terms=${
+          termsAccepted ? 1 : 0
+        }`
+      );
+
+      if (response.data) {
+        Swal.fire({
+          icon: "success",
+          title: "User Updated!",
+          text: "Your account has been successfully updated.",
+        });
+        navigate('/');
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text:
+            response.data.message ||
+            "An error occurred while updating the user.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: error.message || "An error occurred while updating the user.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="mycontainer">
-      <Link to='/signup'>
-        <img src={logo} alt="logo" className="p-[20px] size-48 object-contain cursor-pointer" />
+      <Link to="/signup">
+        <img
+          src={logo}
+          alt="logo"
+          className="p-[20px] size-48 object-contain cursor-pointer"
+        />
       </Link>
       <div className="max-w-[650px] justify-self-center">
         <p className="text-center font-semibold text-[#0F91D2]">
@@ -457,6 +520,50 @@ function PrivacyPolicy() {
           For any inquiries or assistance, please contact us at{" "}
           <Link className="text-[#0F91D2]">info@HomeProDeals.com</Link>.
         </p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="my-3 hidden">
+            <label
+              htmlFor="userid"
+              className="myblack block w-full font-medium"
+            >
+              User ID
+            </label>
+            <input
+              type="text"
+              id="userid"
+              value={userId || "Loading..."} // Handle case if userId is not yet set
+              readOnly
+              className="mt-1 w-full border px-3 rounded-lg py-3"
+            />
+          </div>
+
+          <div className="flex items-center mt-3">
+            <input
+              type="checkbox"
+              id="terms"
+              className="me-2"
+              checked={termsAccepted} // Use state to manage the checkbox
+              onChange={(e) => setTermsAccepted(e.target.checked)} // Update state on change
+            />
+            <label htmlFor="terms" className="font-medium">
+              I accept the{" "}
+              <Link to="/PrivacyPolicy" className="text-blue underline">
+                Terms of Service
+              </Link>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className={`text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Update User"}
+          </button>
+        </form>
       </div>
     </div>
   );
