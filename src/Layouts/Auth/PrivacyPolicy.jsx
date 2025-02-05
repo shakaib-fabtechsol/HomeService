@@ -43,6 +43,7 @@ function PrivacyPolicy() {
           icon: "success",
           title: "User Created",
           text: "Your account has been created successfully.",
+          showConfirmButton: false,
         });
         navigate('/');
       } else {
