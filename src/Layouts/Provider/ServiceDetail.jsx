@@ -161,13 +161,11 @@ function ServiceDetail() {
   };
 
   if (loading) {
-    return (
-      <Loader/>
-    ); // Show loading while fetching data
+    return <Loader />; // Show loading while fetching data
   }
 
   if (!serviceDetails) {
-    return <div>No service details available.</div>; 
+    return <div>No service details available.</div>;
   }
 
   return (
@@ -327,18 +325,33 @@ function ServiceDetail() {
         </div>
         <div className="">
           <div className="flex flex-wrap mt-3">
-            <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#0F91D2] bg-[#E7F4FB]">
-              Cleaning
-            </p>
-            <p className="px-3 py-1 font-semibold text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-              Residential
-            </p>
+            <div className="flex flex-wrap mt-3">
+              {serviceDetails[0]?.search_tags &&
+              serviceDetails[0]?.search_tags.length > 0
+                ? serviceDetails[0]?.search_tags
+                    .split(",")
+                    .map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+                      >
+                        {tag.trim()} {/* Remove extra spaces */}
+                      </span>
+                    ))
+                : "No tags available"}
+            </div>
           </div>
           <h2 className="mt-4 text-xl myhead font-semibold">
             Deal Description
           </h2>
           <p className="mt-2 myblack">
             {serviceDetails[0]?.service_desc || "No description available."}
+          </p>
+          <h2 className="mt-4 text-xl myhead font-semibold">
+            Fine Print
+          </h2>
+          <p className="mt-2 myblack">
+            {serviceDetails[0]?.fine_print || "No description available."}
           </p>
         </div>
       </div>
