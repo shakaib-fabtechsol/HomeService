@@ -53,7 +53,7 @@ function CustomerLayout() {
       confirmButtonText: "Yes, log me out!",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem("token"); 
+        localStorage.removeItem("token");
         navigate("/");
       }
     });
@@ -184,7 +184,7 @@ function CustomerLayout() {
       >
         <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <div className="pb-2 flex justify-end">
-            <button onClick={handleDrawerToggle}>
+            <button className="absolute mt-2" onClick={handleDrawerToggle}>
               <MenuIcon />
             </button>
           </div>

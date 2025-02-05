@@ -171,3 +171,52 @@ select option {
 /* .MuiToolbar-root {
   min-height: 0 !important;
 } */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  border-radius: 50px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+  border-radius: 50px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.navv {
+  height: 100px;
+  overflow: hidden;
+  padding: 0 10px;
+}
+
+.btm {
+  height: calc(100dvh - 135px);
+  overflow: auto;
+  padding: 0 10px;;
+}
+
+.css-1csaadc {
+  margin-top: 0 !important;
+}
+
+.MuiBox-root.css-p0oxrk,
+.css-noghqw {
+  padding: 12px 12px !important;
+}
+
+.css-19kzrtu {
+  padding: 24px 0px 0px !important;
+}
+.css-1aap3sj {
+  padding: 0 !important;
+}
