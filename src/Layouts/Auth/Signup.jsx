@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, useLocation, useNavigate} from 'react-router-dom';
 import 'react-phone-input-2/lib/style.css';
 import axios from 'axios';
@@ -143,7 +143,7 @@ function Signup () {
 
                   <div className="my-3">
                     <label
-                      for="phone"
+                      htmlFor="phone"
                       className="myblack block w-full font-medium"
                     >
                       Phone*
