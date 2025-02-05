@@ -231,7 +231,7 @@ function ServiceDetail() {
                   <div className="flex mt-2">
                     <div className="flex me-2">
                       <FaRegCalendarAlt className="me-2" />
-                      <p className="text-sm myblack">Hours:</p>
+                      <p className="text-sm myblack me-2">Hours: </p>
                       <p className="text-sm text-[#34A853]"> Available</p>
                     </div>
                     <p className="text-sm myblack">Close 6PM</p>
@@ -264,7 +264,7 @@ function ServiceDetail() {
                 </div>
               </Modal>
             </div>
-            <img src={servicedet} alt="" className="rounded-xl w-full" />
+            <img src={servicedet} alt="" className="rounded-xl w-full mt-4" />
           </div>
           <div className="col-span-12 xl:col-span-4">
             <div className="flex flex-col h-full gap-5">
