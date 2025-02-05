@@ -19,6 +19,7 @@ import Basic from "../../Components/Plan/Basic";
 import Standard from "../../Components/Plan/Standard";
 import Premium from "../../Components/Plan/Premium";
 import axios from "axios"; // Import axios
+import Swal from "sweetalert2";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,6 +112,55 @@ function ServiceDetail() {
     }
   }, [dealid]);
 
+  const handleDelete = (dealId) => {
+    if (!dealId) {
+      console.error("Deal ID is missing!");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("No token found, cannot delete deal.");
+      return;
+    }
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      showLoaderOnConfirm: true, // Shows loader on confirm button
+      allowOutsideClick: false, // Prevents closing on outside click
+      preConfirm: () => {
+        return axios
+          .get(
+            `https://homeservice.thefabulousshow.com/api/DeleteDeal/${dealId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          )
+          .then(() => {
+            navigate("/provider/services"); // Redirect after success
+          })
+          .then(() => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Service Deleted Successfully",
+              icon: "success",
+              showConfirmButton: false,
+            });
+          })
+          .catch((error) => {
+            Swal.fire("Error!", "Failed to delete the deal.", "error");
+          });
+      },
+    });
+  };
+
   if (!serviceDetails) {
     return <div>Loading...</div>; // Show loading until data is fetched
   }
@@ -134,12 +184,12 @@ function ServiceDetail() {
             {serviceDetails[0]?.service_title || "N/A"}
           </h2>
           <div className="flex items-center justify-end mt-3 lg:mt-0">
-            <Link
-              to="#"
+            <button
               className="bg-[#FA2841] px-3 py-3 text-[#fff] rounded-md me-2"
+              onClick={() => handleDelete(dealid)}
             >
               <FaRegTrashCan />
-            </Link>
+            </button>
             <Link
               to="#"
               className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
