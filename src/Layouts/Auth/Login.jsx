@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import google from "../../assets/img/google.png";
 import logo from "../../assets/img/logo.png";
-import { Link, useNavigate } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "react-phone-input-2/lib/style.css";
 
@@ -9,7 +9,8 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); 
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.title = "Login";
@@ -17,31 +18,37 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
+    setLoading(true);
 
     try {
-      const response = await axios.post("https://homeservice.thefabulousshow.com/api/Userlogin", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://homeservice.thefabulousshow.com/api/Userlogin",
+        {
+          email,
+          password,
+        }
+      );
 
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token); 
+        localStorage.setItem("token", response.data.token);
 
         const userRole = response.data.user.role;
 
         if (userRole === 2) {
-          navigate("/provider/services"); 
+          navigate("/provider/services");
         } else if (userRole === 1) {
-          navigate("/customer/services"); 
+          navigate("/customer/services");
         } else {
-          navigate("/"); 
+          navigate("/");
         }
       } else {
-        setError("Invalid credentials"); 
+        setError("Invalid credentials");
       }
     } catch (err) {
       setError("Login failed. Check your credentials.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,17 +106,17 @@ function Login() {
             </div>
 
             <div className="flex flex-wrap mb-3 justify-end items-center">
-              
               <Link to="#" className="block font-medium text-blue">
                 Forgot password
               </Link>
             </div>
 
             <button
+              disabled={loading}
               type="submit"
               className="text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg"
             >
-              Sign in
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 
