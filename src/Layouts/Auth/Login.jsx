@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import google from "../../assets/img/google.png";
-import logo from "../../assets/img/logo.png";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "react-phone-input-2/lib/style.css";
+import React, {useState, useEffect} from 'react';
+import google from '../../assets/img/google.png';
+import logo from '../../assets/img/logo.png';
+import {Link, useNavigate} from 'react-router-dom';
+import axios from 'axios';
+import 'react-phone-input-2/lib/style.css';
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+function Login () {
+  const [email, setEmail] = useState ('');
+  const [password, setPassword] = useState ('');
+  const [error, setError] = useState (null);
+  const [loading, setLoading] = useState (false);
+  const navigate = useNavigate ();
 
-  useEffect(() => {
-    document.title = "Login";
+  useEffect (() => {
+    document.title = 'Login';
   }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+  const handleSubmit = async e => {
+    e.preventDefault ();
+    setError (null);
+    setLoading (true);
 
     try {
-      const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/Userlogin",
+      const response = await axios.post (
+        'https://homeservice.thefabulousshow.com/api/Userlogin',
         {
           email,
           password,
@@ -31,24 +31,24 @@ function Login() {
       );
 
       if (response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("role", response.data.user.role);
+        localStorage.setItem ('token', response.data.token);
+        localStorage.setItem ('role', response.data.user.role);
         const userRole = response.data.user.role;
 
         if (userRole === 2) {
-          navigate("/provider/services");
+          navigate ('/provider/services');
         } else if (userRole === 1) {
-          navigate("/customer/services");
+          navigate ('/customer/services');
         } else {
-          navigate("/");
+          navigate ('/');
         }
       } else {
-        setError("Invalid credentials");
+        setError ('Invalid credentials');
       }
     } catch (err) {
-      setError("Login failed. Check your credentials.");
+      setError ('Login failed. Check your credentials.');
     } finally {
-      setLoading(false);
+      setLoading (false);
     }
   };
 
@@ -82,7 +82,7 @@ function Login() {
                 placeholder="user123@gmail.com"
                 className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail (e.target.value)}
                 required
               />
             </div>
@@ -100,7 +100,7 @@ function Login() {
                 placeholder=""
                 className="mt-1 w-full border px-3 rounded-lg py-3 focus-none rounded-3"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword (e.target.value)}
                 required
               />
             </div>
@@ -114,9 +114,9 @@ function Login() {
             <button
               disabled={loading}
               type="submit"
-              className="text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg"
+              className={`text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
-              {loading ? "Signing in..." : "Sign in"}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </form>
 
@@ -133,7 +133,7 @@ function Login() {
           </Link>
 
           <p className="text-center block mt-5">
-            Don't have an account?{" "}
+            Don't have an account?{' '}
             <Link to="/register" className="text-blue font-semibold">
               Sign up
             </Link>
