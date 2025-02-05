@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaArrowLeft, FaRegTrashCan } from "react-icons/fa6";
 import { FaPencilAlt, FaRegCalendarAlt } from "react-icons/fa";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import servicedet from "../../assets/img/service-det.png";
 import { Box, Modal, Tab, Tabs, TabScrollButton } from "@mui/material";
 import PropTypes from "prop-types";
@@ -18,6 +18,7 @@ import { PiChats } from "react-icons/pi";
 import Basic from "../../Components/Plan/Basic";
 import Standard from "../../Components/Plan/Standard";
 import Premium from "../../Components/Plan/Premium";
+import axios from "axios"; // Import axios
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -54,10 +55,14 @@ function ServiceDetail() {
   }, []);
 
   const [value, setValue] = React.useState(0);
+  const [serviceDetails, setServiceDetails] = useState(null); // State for service details
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const location = useLocation();
+  const dealid = location.state?.dealid || "";
 
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
@@ -86,6 +91,30 @@ function ServiceDetail() {
 
   const navigate = useNavigate();
 
+  // Fetch service details using axios when the component mounts
+  useEffect(() => {
+    if (dealid) {
+      // Assuming token is stored in localStorage
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        axios
+          .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+            headers: {
+              Authorization: `Bearer ${token}`, // Add token to headers
+            },
+          })
+          .then((response) => {
+            setServiceDetails(response.data.deal); // Set fetched data to state
+          });
+      }
+    }
+  }, [dealid]);
+
+  if (!serviceDetails) {
+    return <div>Loading...</div>; // Show loading until data is fetched
+  }
+
   return (
     <div className="pmain">
       <div className="navv">
@@ -102,7 +131,7 @@ function ServiceDetail() {
       <div className="btm">
         <div className="flex flex-col lg:flex-row justify-between ">
           <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
-            Aliquam erat volutpat. Ut semper ipsum in vestibulum laoreet.
+            {serviceDetails[0]?.service_title || "N/A"}
           </h2>
           <div className="flex items-center justify-end mt-3 lg:mt-0">
             <Link
@@ -254,30 +283,10 @@ function ServiceDetail() {
             Deal Description
           </h2>
           <p className="mt-2 myblack">
-            Donec pulvinar consequat metus eget cursus. Donec nec quam eu arcu
-            elementum tempor eu pharetra mauris. Morbi et gravida purus, nec
-            sagittis risus. Nulla placerat justo ut dui aliquam efficitur.
-            Mauris aliquet mattis odio nec malesuada. Morbi at dui tristique,
-            dignissim enim ac, varius nulla. Donec venenatis libero nec ligula
-            laoreet laoreet. Sed quis lorem in mi suscipit dictum id nec diam.
-            Orci varius natoque penatibus et magnis dis parturient montes,
-            nascetur ridiculus mus. Nam at vehicula neque. Proin molestie
-            venenatis sem, ut imperdiet leo efficitur vel. Vestibulum nec
-            elementum lacus.
+            {serviceDetails[0]?.service_description || "N/A"}
           </p>
           <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            <li>Pellentesque maximus augue in tellus fermentum viverra.</li>
-            <li>Nunc euismod erat et volutpat tincidunt.</li>
-            <li>In sit amet enim in nisl fermentum venenatis et ut dui.</li>
-            <li>
-              Phasellus vel orci pretium, tristique magna at, porttitor neque.
-            </li>
-            <li>
-              Integer mollis ligula eu tortor porttitor, sit amet elementum
-              dolor feugiat.
-            </li>
-          </ul>
+          <p>{serviceDetails[0]?.fine_print || "N/A"}</p>
         </div>
       </div>
     </div>

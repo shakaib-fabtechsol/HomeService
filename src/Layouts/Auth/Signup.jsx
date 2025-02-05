@@ -15,6 +15,7 @@ function Signup () {
   }, []);
 
   const location = useLocation ();
+  const userType = location.state?.userType || "";
   const navigate = useNavigate ();
   const [name, setName] = useState ('');
   const [email, setEmail] = useState ('');
@@ -22,7 +23,6 @@ function Signup () {
   const [password, setPassword] = useState ('');
   const [error, setError] = useState (null);
   const [loading, setLoading] = useState (false);
-  const userType = location.state?.userType || "";
 
 
   const handleSubmit = async e => {

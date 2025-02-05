@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
 import service2 from "../../assets/img/random3.png";
 
-function ServiceBox({ tags = [], image, publish, title, price, description }) {
+function ServiceBox({ tags = [], image, publish, title, price, description, dealid }) {
   useEffect(() => {
     document.title = "Services";
   }, []);
@@ -23,11 +23,11 @@ function ServiceBox({ tags = [], image, publish, title, price, description }) {
         {publish === 1 ? "Published" : "Draft"}
       </p>
       <div className="flex justify-between items-center mt-2">
-        <Link to="/provider/serviceDetails">
+        <Link to="/provider/serviceDetails" state={{ dealid }}>
           <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
         </Link>
         <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
-      </div>
+        </div>
 
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
     </div>
@@ -113,6 +113,7 @@ function Services() {
                   tags={service.tags}
                   image={service.image_url}
                   publish={service.publish}
+                  dealid={service.id}
                 />
               ))
             ) : (
