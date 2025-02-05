@@ -50,7 +50,7 @@ function Signup () {
         Swal.fire({
           icon: 'success',
           title: 'Good Job',
-          text: 'User Registered Successfully',
+          text: 'You must accept the terms of service to sign up.',
           timer: 3000,
           showConfirmButton: false,
         });

@@ -41,8 +41,8 @@ function PrivacyPolicy() {
       if (response.data) {
         Swal.fire({
           icon: "success",
-          title: "User Updated!",
-          text: "Your account has been successfully updated.",
+          title: "User Created",
+          text: "Your account has been created successfully.",
         });
         navigate('/');
       } else {
