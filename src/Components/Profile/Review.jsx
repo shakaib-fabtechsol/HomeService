@@ -1,6 +1,7 @@
 import React from 'react'
 import reviewuser from "../../assets/img/reviewuser.png";
 import { Icon, Star } from "lucide-react";
+import down from "../../assets/img/chevronDown.png";
 
 const Review = () => {
     const starCounts = [
@@ -9,7 +10,7 @@ const Review = () => {
         { stars: 3, count: 14 },
         { stars: 2, count: 0 },
         { stars: 1, count: 0 },
-      ];
+    ];
     const reviews = [
         {
             name: "Patricia Sanders",
@@ -32,6 +33,37 @@ const Review = () => {
     ];
     return (
         <div>
+            <div className="flex gap-4 flex-wrap">
+                <h2 className="text-2xl font-bold">Reviews</h2>
+                <div className="flex flex-wrap justify-end items-center gap-3 ms-auto">
+                    <select
+                        style={{
+                            backgroundImage: `url(${down})`,
+                            backgroundPosition: "5px",
+                        }}
+                        className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat"
+                        name="byRate"
+                        id="byRate"
+                    >
+                        <option value="" hidden>
+                            Filter by Rate
+                        </option>
+                        <option value="">0$ to 99$</option>
+                        <option value="">100$ to 199$</option>
+                        <option value="">200$ to 299$</option>
+                        <option value="">300$ to 399$</option>
+                    </select>
+                    <select
+                        style={{ backgroundImage: `url(${down})`, backgroundPosition: "5px", }}
+                        className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat" name="byService" id="byService">
+                        <option value="" hidden>Filter by Service</option>
+                        <option value="">Service 1</option>
+                        <option value="">Service 2</option>
+                        <option value="">Service 3</option>
+                        <option value="">Service 4</option>
+                    </select>
+                </div>
+            </div>
             <div className="flex flex-col md:flex-row items-center gap-10 xl:px-10 mt-6">
                 <div className="text-center md:text-left">
                     <p className="text-[40px] leading-normal font-bold">4.7</p>

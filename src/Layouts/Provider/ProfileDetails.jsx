@@ -5,25 +5,28 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft, FaChevronDown, FaRegCalendarAlt } from "react-icons/fa";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import provider from "../../assets/img/provider.png";
-
 import { styled } from "@mui/material/styles";
 import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary, {
   accordionSummaryClasses,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import random1 from "../../assets/img/random1.png";
-import random2 from "../../assets/img/random2.png";
-import random3 from "../../assets/img/random3.png";
 import { Modal } from "@mui/material";
 import { FiPhone } from "react-icons/fi";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
-import down from "../../assets/img/chevronDown.png";
 import Review from "../../Components/Profile/Review";
-import ProfileDeal from "../../Components/Profile/ProfileDeal";
 import Social from "../../Components/Profile/AdditionalPhoto/Social";
+import SpecialHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
+import Insurance from "../../Components/Profile/AdditionalPhoto/Insurance";
+import VehiclePhoto from "../../Components/Profile/AdditionalPhoto/VehiclePhoto";
+import FacilityPhoto from "../../Components/Profile/AdditionalPhoto/FacilityPhoto";
+import ProjectPhoto from "../../Components/Profile/AdditionalPhoto/ProjectPhoto";
+import License from "../../Components/Profile/AdditionalPhoto/License";
+import Award from "../../Components/Profile/AdditionalPhoto/Award";
+import TechniciansPhoto from "../../Components/Profile/AdditionalPhoto/TechniciansPhoto";
+import ProfileDeal from "../../Components/Profile/ProfileDeal";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -39,17 +42,17 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem",}} />}
+    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem", }} />}
     {...props}
   />
 ))(({ theme }) => ({
   backgroundColor: "transparent",
-  width:"auto",
+  width: "auto",
   border: "none",
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-    {
-      transform: "rotate(180deg)",
-    },
+  {
+    transform: "rotate(180deg)",
+  },
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(1),
   },
@@ -75,40 +78,9 @@ function ProfileDetails() {
     document.title = "Profile Details";
   }, []);
 
-  
+
 
   const categories = ["Category 01", "Category 02", "Category 03"];
-
-  const accordionData = [
-    {
-      title: "Technician Photos",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Vehicle Photos",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Facility Photos",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Project Photos",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Licences",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Awards",
-      images: [random1, random2, random3],
-    },
-    {
-      title: "Insurance",
-      images: [random1, random2, random3],
-    },
-  ];
 
 
   const [contactopen, setcontactOpen] = React.useState(false);
@@ -137,10 +109,6 @@ function ProfileDetails() {
   ];
 
 
-  const SpecialHours = [
-    { Dates: "24 Dec 2025", time: "9AM - 5PM", dayName: "Chrismas Eve" },
-    { Dates: "25 Dec 2025", time: "9AM - 5PM", dayName: "Christmas" },
-  ];
 
   return (
     <div>
@@ -163,10 +131,10 @@ function ProfileDetails() {
               <div className="flex ms-3">
                 <IoIosStar className="me-1 text-[#F8C600]" />
                 <div className="flex flex-wrap">
-                <span className="myhead text-xs font-semibold me-1">4.9</span>
-                <p className="text-[#181D2766] underline text-xs">
-                  (457)
-                </p>
+                  <span className="myhead text-xs font-semibold me-1">4.9</span>
+                  <p className="text-[#181D2766] underline text-xs">
+                    (457)
+                  </p>
                 </div>
               </div>
             </div>
@@ -239,155 +207,87 @@ function ProfileDetails() {
           leo efficitur vel. Vestibulum nec elementum lacus.
         </p>
       </div>
-      <div className="mt-4">
-        <h2 className="text-lg font-medium myhead">
-          Secondary Business Categories
-        </h2>
-        <div className="flex flex-wrap mt-3">
-          <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-            Category 01
-          </p>
-          <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-            Category 02
-          </p>
-          <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-            Category 03
-          </p>
-          <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-            Category 04
-          </p>
-          <p className="px-3 my-1 py-1 font-medium text-sm rounded-full me-2 text-[#343434] bg-[#EBEBEB]">
-            Category 05
-          </p>
-        </div>
-      </div>
-      {/* ----------deal-boxes------ */}
       <ProfileDeal/>
-      {/* ----------photos accordian------ */}
       <div className="additional">
         <h2 className="text-2xl mt-4 font-semibold myhead">Additional Photos</h2>
         <div>
-          {accordionData.map((data, index) => {
-            const panelId = `panel${index + 1}`;
-            return (
-              <Accordion
-                key={panelId}
-                expanded={expanded === panelId}
-                onChange={handleChange(panelId)}
-              >
-                <AccordionSummary
-                  aria-controls={`${panelId}d-content`}
-                  id={`${panelId}d-header`}
-                >
-                  <h3 className="text-lg me-4">{data.title}</h3>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-4">
-                    {data.images.map((image, i) => (
-                      <div className="my-2 md:my-0" key={i}>
-                        <img
-                          src={image}
-                          alt={`Accordion ${index + 1} - Image ${i + 1}`}
-                          className="w-full rounded-lg"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-            );
-          })}
-          <Accordion
-            expanded={expanded === "SpecialHour"}
-            onChange={handleChange("SpecialHour")}
-          >
-            <AccordionSummary
-              aria-controls={`SpecialHourd-content`}
-              id={`SpecialHourd-header`}
-            >
+          <Accordion expanded={expanded === "Technicians"} onChange={handleChange("Technicians")}>
+            <AccordionSummary aria-controls={`Techniciansd-content`} id={`Techniciansd-header`}>
+              <h3 className="me-3">Technicians Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <TechniciansPhoto />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "Vehicle"} onChange={handleChange("Vehicle")}>
+            <AccordionSummary aria-controls={`Vehicled-content`} id={`Vehicled-header`}>
+              <h3 className="me-3">Vehicle Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <VehiclePhoto />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "Facilty"} onChange={handleChange("Facilty")}>
+            <AccordionSummary aria-controls={`Faciltyd-content`} id={`Faciltyd-header`}>
+              <h3 className="me-3">Facilty Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <FacilityPhoto />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "Project"} onChange={handleChange("Project")}>
+            <AccordionSummary aria-controls={`Projectd-content`} id={`Projectd-header`}>
+              <h3 className="me-3">Project Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ProjectPhoto />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "License"} onChange={handleChange("License")}>
+            <AccordionSummary aria-controls={`Licensed-content`} id={`Licensed-header`}>
+              <h3 className="me-3">License Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <License />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "Award"} onChange={handleChange("Award")}>
+            <AccordionSummary aria-controls={`Awardd-content`} id={`Awardd-header`}>
+              <h3 className="me-3">Award Photo</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Award />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "Insurance"} onChange={handleChange("Insurance")}>
+            <AccordionSummary aria-controls={`Insuranced-content`} id={`Insuranced-header`}>
+              <h3 className="me-3">Insurance</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Insurance />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion expanded={expanded === "SpecialHour"} onChange={handleChange("SpecialHour")}>
+            <AccordionSummary aria-controls={`SpecialHourd-content`} id={`SpecialHourd-header`}>
               <h3 className="me-3">Special Hours of Operation</h3>
             </AccordionSummary>
             <AccordionDetails>
-              <div>
-                {SpecialHours.map((row, index) => (
-                  <div key={index} className="py-5 border-b border-[#E9EAEB]">
-                    <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                      <div className="flex gap-3 items-center">
-                        <div>
-                          <p className="font-medium text-[#343434]">
-                            {row.Dates}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="ms-auto">
-                        <p>{row.dayName}</p>
-                        <p>{row.time}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <SpecialHour />
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            expanded={expanded === "Socials"}
-            onChange={handleChange("Socials")}
-          >
-            <AccordionSummary
-              aria-controls={`Socialsd-content`}
-              id={`Socialsd-header`}
-            >
+          <Accordion expanded={expanded === "Socials"} onChange={handleChange("Socials")}>
+            <AccordionSummary aria-controls={`Socialsd-content`} id={`Socialsd-header`}>
               <h3 className="me-3">Socials</h3>
             </AccordionSummary>
             <AccordionDetails>
-              <Social/>
+              <Social />
             </AccordionDetails>
           </Accordion>
         </div>
       </div>
       {/* --------reviews--------- */}
       <div className="mt-5">
-        <div className="flex gap-4 flex-wrap">
-          <h2 className="text-2xl font-bold">Reviews</h2>
-          <div className="flex flex-wrap justify-end items-center gap-3 ms-auto">
-            <select
-              style={{
-                backgroundImage: `url(${down})`,
-                backgroundPosition: "5px",
-              }}
-              className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat"
-              name="byRate"
-              id="byRate"
-            >
-              <option value="" hidden>
-                Filter by Rate
-              </option>
-              <option value="">0$ to 99$</option>
-              <option value="">100$ to 199$</option>
-              <option value="">200$ to 299$</option>
-              <option value="">300$ to 399$</option>
-            </select>
-            <select
-              style={{
-                backgroundImage: `url(${down})`,
-                backgroundPosition: "5px",
-              }}
-              className="ps-6 text-[#414651] text-sm font-semibold focus:outline-none border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] back appearance-none bg-no-repeat"
-              name="byService"
-              id="byService"
-            >
-              <option value="" hidden>
-                Filter by Service
-              </option>
-              <option value="">Service 1</option>
-              <option value="">Service 2</option>
-              <option value="">Service 3</option>
-              <option value="">Service 4</option>
-            </select>
-          </div>
-        </div>
-        {/* Individual Reviews */}
-        <Review/>
+        <Review />
       </div>
     </div>
   );
