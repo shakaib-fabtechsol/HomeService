@@ -1,163 +1,228 @@
 import React, { useEffect, useState } from "react";
+import { HiOutlineTrash } from "react-icons/hi";
+import Swal from "sweetalert2";
 import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
 
 const MediaUpload = ({ serviceId, setValue }) => {
-    const [file, setFile] = useState(null); // Stores the uploaded file
-    const [filePreview, setFilePreview] = useState(null); // Stores the file preview URL
-    const [showPreview, setShowPreview] = useState(false); // Toggles the preview display
+  const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 
-    const handleFileChange = (e) => {
-        const uploadedFile = e.target.files[0];
-        if (uploadedFile) {
-            setFile(uploadedFile);
-            setFilePreview(URL.createObjectURL(uploadedFile)); // Generate a preview URL
-            setShowPreview(false); // Reset preview display
+  const handleFileChange = (e) => {
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      console.log("File selected:", uploadedFile);
+      setFile(uploadedFile);
+      setFilePreview(URL.createObjectURL(uploadedFile));
+      setShowPreview(false);
+    }
+  };
+
+  const handleFileDrop = (e) => {
+    e.preventDefault();
+    const uploadedFile = e.dataTransfer.files[0];
+    if (uploadedFile) {
+      console.log("File dropped:", uploadedFile);
+      setFile(uploadedFile);
+      setFilePreview(URL.createObjectURL(uploadedFile));
+      setShowPreview(false);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setFile(null);
+    setFilePreview(null);
+    setShowPreview(false);
+    document.getElementById("image").value = ""; // Reset file input
+  };
+
+  const handleShowPreview = () => {
+    setShowPreview(true);
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({ icon: "error", title: "No token found. Please log in." });
+      setLoading(false);
+      return;
+    }
+
+    // Validate file type
+    if (
+      file &&
+      !["image/svg+xml", "image/png", "image/jpeg"].includes(file.type)
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Invalid file type",
+        text: "Only SVG, PNG, and JPG are allowed.",
+      });
+      setLoading(false);
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("id", serviceId);
+    if (file) {
+      console.log("File being uploaded:", file);
+      formData.append("image", file); // This will send the file
+      formData.append("image_name", file.name); // Add the file name to the form data
+    }
+
+    try {
+      const response = await fetch(
+        "https://homeservice.thefabulousshow.com/api/UpdateMediaUpload",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            // Do not set Content-Type header here, browser will handle it
+          },
+          body: formData,
         }
-    };
+      );
 
-    const handleFileDrop = (e) => {
-        e.preventDefault();
-        const uploadedFile = e.dataTransfer.files[0];
-        if (uploadedFile) {
-            setFile(uploadedFile);
-            setFilePreview(URL.createObjectURL(uploadedFile)); // Generate a preview URL
-            setShowPreview(false); // Reset preview display
-        }
-    };
+      const result = await response.json();
+      console.log("Response:", result);
 
-    const handleRemoveFile = () => {
-        setFile(null);
-        setFilePreview(null);
-        setShowPreview(false);
-    };
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Media updated successfully.",
+        }).then(() => {
+          if (typeof setValue === "function") {
+            setValue(3);
+          }
+        });
+        handleRemoveFile(); // Reset file input
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: result.message || "Failed to update media.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "An error occurred while updating media. Please try again.",
+      });
+      console.error("Error during media upload:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleShowPreview = () => {
-        setShowPreview(true);
-    };
-    useEffect(() => {
-        console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
-      }, [serviceId]);
-    
-    return (
-        <div>
-            <form action="#">
-                <div className="file-upload-container">
-                    {/* Upload Box */}
-                    <input
-              type="text"
-              id="Flatr"
-              defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
-              className="focus-none border"
+  useEffect(() => {
+    console.log("📦 MediaUpload Received Service ID:", serviceId);
+  }, [serviceId]);
+
+  return (
+    <div>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          id="Flatr"
+          defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+          className="focus-none border"
+          readOnly
+        />
+        <div
+          className="upload-box border rounded-lg p-4 text-center cursor-pointer"
+          onDrop={handleFileDrop}
+          onDragOver={(e) => e.preventDefault()}
+          onClick={() => document.getElementById("image").click()}
+        >
+          <div className="upload-placeholder flex flex-col items-center justify-center h-[250px]">
+            <img
+              src={upload}
+              alt="upload"
+              className="w-[50px] mx-auto flex justify-center mb-4"
             />
-                    <div
-                        className="upload-box w-full border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
-                        onDrop={handleFileDrop}
-                        onDragOver={(e) => e.preventDefault()}
-                        onClick={() => document.getElementById("fileInput").click()}
-                    >
-                        {file ? (
-                            <div className="upload-placeholder flex flex-col items-center justify-center h-[250px]">
-                                <img src={upload} alt="upload" className="w-[50px] mb-4" />
-                                <p className="text-gray-500">
-                                    <strong>File Uploaded Successfully</strong>
-                                </p>
-                                <p className="text-gray-500">
-                                    <strong>Click to upload</strong> or drag and drop to
-                                    change image
-                                </p>
-                                <p className="text-sm text-gray-400">
-                                    SVG, PNG, or JPG (max. 800×400px)
-                                </p>
-                            </div>
-                        ) : (
-                            <div className="upload-placeholder flex flex-col items-center justify-center h-[250px]">
-                                <img src={upload} alt="upload" className="w-[50px] mb-4" />
-                                <p className="text-gray-500">
-                                    <strong>Click to upload</strong> or drag and drop
-                                </p>
-                                <p className="text-sm text-gray-400">
-                                    SVG, PNG, or JPG (max. 800×400px)
-                                </p>
-                            </div>
-                        )}
-                        <input
-                            type="file"
-                            id="fileInput"
-                            accept=".svg, .png, .jpg"
-                            className="hidden"
-                            onChange={handleFileChange}
-                        />
-                    </div>
-
-                    {/* File Details and Actions */}
-                    {file && (
-                        <div className="file-actions mt-4">
-                            <div className="file-info flex items-center justify-between border rounded-lg p-2">
-                                <div className="flex items-center">
-                                    <img src={fileicon} alt="fileicon" className="w-[20px]" />
-                                    <div className="file-details ml-2">
-                                        <p className="file-name text-sm font-medium">
-                                            {file.name}
-                                        </p>
-                                    </div>
-                                    <p
-                                        className="show-preview text-[#0F91D2] mt-2 ms-8 cursor-pointer"
-                                        onClick={handleShowPreview}
-                                    >
-                                        Show Preview
-                                    </p>
-                                </div>
-                                <div className="flex px-4">
-                                    <p className="file-size text-xs me-2 text-gray-500">
-                                        {(file.size / 1024 / 1024).toFixed(2)} MB
-                                    </p>
-                                    <button
-                                        className="remove-file text-red-500 font-bold text-xs"
-                                        onClick={handleRemoveFile}
-                                    >
-                                        ✖
-                                    </button>
-                                </div>
-                            </div>
-
-                            {/* Show Preview Button */}
-                        </div>
-                    )}
-
-                    {/* Image Preview */}
-                    {showPreview && filePreview && (
-                        <div className="image-preview mt-4">
-                            <img
-                                src={filePreview}
-                                alt="Preview"
-                                className="rounded-lg border border-gray-200 w-[200px]"
-                            />
-                        </div>
-                    )}
-                </div>
-                <div>
-                    <div className="col-span-12 mt-4">
-                        <div className="flex justify-end">
-                            <button
-                                type="reset"
-                                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                                onClick={() => setSelectedRate("")}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                type="submit"
-                                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                            >
-                                Save
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
+            <p className="text-gray-500">
+              <strong>
+                {file
+                  ? "File Uploaded Successfully"
+                  : "Click to upload or drag and drop"}
+              </strong>
+            </p>
+            <p className="text-sm text-gray-400">
+              SVG, PNG, or JPG (max. 800×400px)
+            </p>
+            <input
+              type="file"
+              id="image"
+              accept=".svg, .png, .jpg"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </div>
         </div>
-    )
-}
 
-export default MediaUpload
+        {file && (
+          <div className="file-actions mt-4 flex items-center justify-between border rounded-lg p-2">
+            <div className="flex items-center">
+              <img src={fileicon} alt="fileicon" className="w-[20px]" />
+              <p className="file-name text-sm font-medium ml-2">{file.name}</p>
+              <p
+                className="text-[#0F91D2] ml-8 cursor-pointer"
+                onClick={handleShowPreview}
+              >
+                Show Preview
+              </p>
+            </div>
+            <div className="flex px-4">
+              <p className="file-size text-xs mr-2 text-gray-500">
+                {(file.size / 1024 / 1024).toFixed(2)} MB
+              </p>
+              <button
+                type="button"
+                className="text-red-500 font-bold text-xs"
+                onClick={handleRemoveFile}
+              >
+                ✖
+              </button>
+            </div>
+          </div>
+        )}
+
+        {showPreview && filePreview && (
+          <div className="image-preview mt-4">
+            <img
+              src={filePreview}
+              alt="Preview"
+              className="rounded-lg border w-[200px]"
+            />
+          </div>
+        )}
+
+        <div className="col-span-12 mt-4 flex justify-end">
+          <button
+            type="button"
+            className="border rounded-lg w-[150px] py-[10px] mr-4 font-semibold bg-white"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={loading}
+            className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
+          >
+            {loading ? "Updating..." : "Update Media"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default MediaUpload;

@@ -88,10 +88,10 @@ function NewDeals() {
           </TabPanel>
 
           <TabPanel value={value} index={2}>
-            <MediaUpload  serviceId={serviceId}/>
+            <MediaUpload setValue={setValue} serviceId={serviceId} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <ReviewPublish serviceId={serviceId}/>
+            <ReviewPublish setValue={setValue} serviceId={serviceId}/>
           </TabPanel>
         </Box>
       </div>
