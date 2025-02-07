@@ -1,23 +1,14 @@
 import * as React from "react";
-import {
-  Box,
-  Drawer,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  IconButton,
-  List,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  MdOutlineMessage,
   MdOutlineSupport,
   MdHomeRepairService,
   MdLogout,
 } from "react-icons/md";
-import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
-import { Outlet, NavLink, Link } from "react-router-dom";
+import { IoIosSettings } from "react-icons/io";
+import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2"; // ✅ Fixed: Import Swal
 import logo from "../assets/img/logo.png";
 import user from "../assets/img/user.png";
 
@@ -25,6 +16,7 @@ const drawerWidth = 240;
 
 function CustomerLayout() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -50,6 +42,7 @@ function CustomerLayout() {
       link: "/customer/settings",
     },
   ];
+
   const handleLogout = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -65,6 +58,7 @@ function CustomerLayout() {
       }
     });
   };
+
   const drawer = (
     <Box
       sx={{
@@ -78,7 +72,7 @@ function CustomerLayout() {
     >
       <Box>
         <div className="flex justify-center py-3">
-          <img src={logo} alt="logo" className="w-[120px]"/>
+          <img src={logo} alt="logo" className="w-[120px]" />
         </div>
         <List>
           {topItems.map((item) => (
@@ -143,34 +137,6 @@ function CustomerLayout() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          bgcolor: "transparent",
-          color: "#181D27",
-          boxShadow: "none",
-          display: { sm: "none" },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="end"
-            onClick={handleDrawerToggle}
-            sx={{
-              position: "absolute",
-              right: 16,
-              top: 18,
-              display: { sm: "none" },
-            }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar> */}
       {/* Sidebar for Desktop */}
       <Box
         component="nav"
@@ -213,13 +179,12 @@ function CustomerLayout() {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: { xs: '100%',sm: `calc(100% - ${drawerWidth}px)` },
+          width: { xs: "100%", sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >
-        {/* <Toolbar /> */}
         <Box sx={{ display: { xs: "block", sm: "none" } }}>
           <div className="pb-2 flex justify-end">
-            <button onClick={handleDrawerToggle}>
+            <button className="absolute mt-2" onClick={handleDrawerToggle}>
               <MenuIcon />
             </button>
           </div>

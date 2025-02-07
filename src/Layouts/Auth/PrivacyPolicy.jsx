@@ -1,15 +1,79 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../../assets/img/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation ,useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function PrivacyPolicy() {
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = "Privacy Policy";
   }, []);
+  const location = useLocation();
+  const userId = location.state?.userId;
+  const navigate = useNavigate ();
+
+  useEffect(() => {}, [userId]);
+
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!termsAccepted) {
+      Swal.fire({
+        icon: "error",
+        title: "Terms Not Accepted",
+        text: "You must accept the Terms of Service before continuing.",
+      });
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `https://homeservice.thefabulousshow.com/api/UpdateUser?id=${userId}&terms=${
+          termsAccepted ? 1 : 0
+        }`
+      );
+
+      if (response.data) {
+        Swal.fire({
+          icon: "success",
+          title: "User Created",
+          text: "Your account has been created successfully.",
+          showConfirmButton: false,
+        });
+        navigate('/');
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Update Failed",
+          text:
+            response.data.message ||
+            "An error occurred while updating the user.",
+        });
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: error.message || "An error occurred while updating the user.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="mycontainer">
-      <Link to='/signup'>
-        <img src={logo} alt="logo" className="p-[20px] size-48 object-contain cursor-pointer" />
+      <Link to="/signup">
+        <img
+          src={logo}
+          alt="logo"
+          className="p-[20px] size-48 object-contain cursor-pointer"
+        />
       </Link>
       <div className="max-w-[650px] justify-self-center">
         <p className="text-center font-semibold text-[#0F91D2]">
@@ -38,7 +102,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl  font-semibold mt-6 sm:mt-8">
           Key Responsibilities:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers are solely responsible for fulfilling Deals purchased by
             Clients.
@@ -54,7 +118,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must maintain all necessary licenses and permits for their services.
           </li>
@@ -72,7 +136,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Clients:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must ensure that all payment information provided is accurate and
             valid.
@@ -90,7 +154,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Earning Pro Bucks:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             <span className="font-semibold">Transaction Rewards:</span> Clients
             earn Pro Bucks as a percentage of their purchases on the platform.
@@ -105,7 +169,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Using Pro Bucks:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Pro Bucks can be applied to eligible Deals and services available on
             the platform.
@@ -118,7 +182,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must ensure the accuracy of Deal descriptions, pricing, and terms.
           </li>
@@ -144,7 +208,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Clients:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Must pay the full listed price for Deals, including applicable taxes
             or fees.
@@ -169,7 +233,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Payments are processed through Home Pro Deals' secure payment
             system.
@@ -200,7 +264,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Provider Warranties:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers affirm they have the legal authority and licenses to offer
             the services or goods listed.
@@ -225,7 +289,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Client Warranties:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Clients affirm they will use the platform responsibly and for lawful
             purposes.
@@ -262,7 +326,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Providers agree to:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Use best efforts to deliver high-quality goods or services as
             described in their Deals.
@@ -301,7 +365,7 @@ function PrivacyPolicy() {
           agents from any claims, damages, losses, liabilities, costs, or
           expenses arising out of:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>Breach of these Terms and Conditions.</li>
           <li>
             The provision or receipt of services or goods listed on the
@@ -344,7 +408,7 @@ function PrivacyPolicy() {
         <p className="text-[#535862] mt-6 sm:mt-8">
           Home Pro Deals is not liable for:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Direct, indirect, incidental, or consequential damages arising from
             transactions.
@@ -388,7 +452,7 @@ function PrivacyPolicy() {
         <h2 className="text-xl sm:text-2xl font-semibold mt-6 sm:mt-8">
           18. TAX COMPLIANCE
         </h2>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers are responsible for collecting and remitting any
             applicable taxes for their services.
@@ -405,7 +469,7 @@ function PrivacyPolicy() {
         <h3 className="text-lg sm:text-xl font-semibold mt-6 sm:mt-8">
           Users may not:
         </h3>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>Post inaccurate or deceptive information.</li>
           <li>Engage in fraudulent or harmful activity.</li>
           <li>Use the platform for unlawful purposes.</li>
@@ -442,7 +506,7 @@ function PrivacyPolicy() {
         <p className="text-[#535862] mt-6 sm:mt-8">
           Home Pro Deals is not liable for:
         </p>
-        <ul class="custom-list ms-4 text-[#535862]">
+        <ul className="custom-list ms-4 text-[#535862]">
           <li>
             Providers may use approved marketing tools to promote their Deals on
             the platform.
@@ -457,6 +521,50 @@ function PrivacyPolicy() {
           For any inquiries or assistance, please contact us at{" "}
           <Link className="text-[#0F91D2]">info@HomeProDeals.com</Link>.
         </p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="my-3 hidden">
+            <label
+              htmlFor="userid"
+              className="myblack block w-full font-medium"
+            >
+              User ID
+            </label>
+            <input
+              type="text"
+              id="userid"
+              value={userId || "Loading..."} // Handle case if userId is not yet set
+              readOnly
+              className="mt-1 w-full border px-3 rounded-lg py-3"
+            />
+          </div>
+
+          <div className="flex items-center mt-3">
+            <input
+              type="checkbox"
+              id="terms"
+              className="me-2"
+              checked={termsAccepted} // Use state to manage the checkbox
+              onChange={(e) => setTermsAccepted(e.target.checked)} // Update state on change
+            />
+            <label htmlFor="terms" className="font-medium">
+              I accept the{" "}
+              <Link to="/PrivacyPolicy" className="text-blue underline">
+                Terms of Service
+              </Link>
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className={`text-white font-semibold px-3 py-3 bg-blue w-full mt-3 rounded-lg ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Updating..." : "Update User"}
+          </button>
+        </form>
       </div>
     </div>
   );

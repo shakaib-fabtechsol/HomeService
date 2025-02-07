@@ -81,64 +81,95 @@ function Services() {
   ];
 
   return (
-    <div>
-      <div className="pb-3">
+    <div className="pmain">
+      <div className="pb-3 navv">
         <h2 className="font-bold text-3xl myhead">My Deals</h2>
         <p className="myblack">Stay Updated on Your Active Deals</p>
       </div>
-      <div className="md:flex flex-col xl:flex-row justify-end lg:justify-between items-end xl:items-center">
-        <div className="lg:flex">
-          <div>
-            <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
-              <option value="" selected disabled hidden>Sub-Category</option>
-              <option value="Sub-Category1" >Sub-Category1</option>
-              <option value="Sub-Category2" >Sub-Category2</option>
-              <option value="Sub-Category3" >Sub-Category3</option>
-            </select>
+      <div className="btm">
+        <div className="md:flex flex-col xl:flex-row justify-end lg:justify-between items-end xl:items-center">
+          <div className="lg:flex">
+            <div>
+              <select
+                name=""
+                id=""
+                className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg"
+              >
+                <option value="" selected disabled hidden>
+                  Sub-Category
+                </option>
+                <option value="Sub-Category1">Sub-Category1</option>
+                <option value="Sub-Category2">Sub-Category2</option>
+                <option value="Sub-Category3">Sub-Category3</option>
+              </select>
+            </div>
+            <div>
+              <select
+                name=""
+                id=""
+                className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg"
+              >
+                <option value="" selected disabled hidden>
+                  Category
+                </option>
+                <option value="Category1">Category1</option>
+                <option value="Category2">Category2</option>
+                <option value="Category3">Category3</option>
+              </select>
+            </div>
+            <div>
+              <select
+                name=""
+                id=""
+                className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg"
+              >
+                <option value="" selected disabled hidden>
+                  Delivery
+                </option>
+                <option value="Delivery1">Delivery1</option>
+                <option value="Delivery2">Delivery2</option>
+                <option value="Delivery3">Delivery3</option>
+              </select>
+            </div>
+            <div>
+              <select
+                name=""
+                id=""
+                className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg"
+              >
+                <option value="" selected disabled hidden>
+                  Workers
+                </option>
+                <option value="Worker1">Worker1</option>
+                <option value="Worker2">Worker2</option>
+                <option value="Worker3">Worker3</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
-              <option value="" selected disabled hidden>Category</option>
-              <option value="Category1" >Category1</option>
-              <option value="Category2" >Category2</option>
-              <option value="Category3" >Category3</option>
-            </select>
-          </div>
-          <div>
-            <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
-              <option value="" selected disabled hidden>Delivery</option>
-              <option value="Delivery1" >Delivery1</option>
-              <option value="Delivery2" >Delivery2</option>
-              <option value="Delivery3" >Delivery3</option>
-            </select>
-          </div>
-          <div>
-            <select name="" id="" className="focus-none w-full md:w-auto my-1 me-2 py-3 px-2 border rounded-lg">
-              <option value="" selected disabled hidden>Workers</option>
-              <option value="Worker1" >Worker1</option>
-              <option value="Worker2" >Worker2</option>
-              <option value="Worker3" >Worker3</option>
-            </select>
+          <div className="flex border rounded-lg items-center mt-3 xl:mt-0 px-2">
+            <label htmlFor="search">
+              <CiSearch className="me-2 text-xl" />
+            </label>
+            <input
+              id="search"
+              type="search"
+              className="py-2 w-full focus-none"
+              placeholder="Search"
+            />
           </div>
         </div>
-        <div className="flex border rounded-lg items-center mt-3 xl:mt-0 px-2">
-          <label htmlFor="search">
-            <CiSearch className="me-2 text-xl" />
-          </label>
-          <input id="search" type="search" className="py-2 w-full focus-none" placeholder="Search"/>
+        <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+          {services.map((service, index) => (
+            <Deals
+              key={index}
+              image={service.image}
+              title={service.title}
+              price={service.price}
+              description={service.description}
+              tags={service.tags}
+            />
+          ))}
         </div>
-      </div>
-      <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-        {services.map((service, index) => (
-          <Deals
-            key={index}
-            image={service.image}
-            title={service.title}
-            price={service.price}
-            description={service.description}
-            tags={service.tags}
-          />
-        ))}
       </div>
     </div>
   );

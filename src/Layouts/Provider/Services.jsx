@@ -4,14 +4,22 @@ import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
 import service2 from "../../assets/img/random3.png";
+import Loader from "../../Components/MUI/Loader";
 
-function ServiceBox({ tags = [], image, publish, title, price, description }) {
+function ServiceBox({
+  tags = [],
+  image,
+  publish,
+  title,
+  price,
+  description,
+  dealid,
+}) {
   useEffect(() => {
     document.title = "Services";
   }, []);
 
   return (
-
     <div className="border px-3 py-3 rounded-lg">
       <img src={service2 ?? "N/A"} alt={title} className="rounded-lg w-full" />
       <p
@@ -24,14 +32,22 @@ function ServiceBox({ tags = [], image, publish, title, price, description }) {
         {publish === 1 ? "Published" : "Draft"}
       </p>
       <div className="flex justify-between items-center mt-2">
-        <Link to="/provider/serviceDetails">
+        <Link to="/provider/serviceDetails" state={{ dealid }}>
           <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
         </Link>
         <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
-
       </div>
-      
+
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
+      <p className="text-sm text-[#535862] mt-4">
+        {tags && tags.length > 0
+          ? tags.map((tag, index) => (
+              <span key={index} className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2">
+                {tag}
+              </span>
+            ))
+          : "No tags available"}
+      </p>
     </div>
   );
 }
@@ -66,61 +82,64 @@ function Services() {
   );
 
   return (
-    <div>
-      <div className="pb-3">
+    <div className="pmain">
+      <div className="pb-3 navv">
         <h2 className="font-semibold text-3xl myhead">My Deals</h2>
         <p className="myblack">Stay Updated on Your Active Deals</p>
       </div>
 
-      {/* Search Input */}
-      <div className="md:flex justify-between items-center">
-        <div className="flex border rounded-lg items-center px-2">
-          <label htmlFor="search">
-            <CiSearch className="me-2 text-xl" />
-          </label>
-          <input
-            id="search"
-            type="search"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="py-2 w-full focus-none"
-            placeholder="Search"
-          />
+      <div className="btm">
+        {/* Search Input */}
+        <div className="md:flex justify-between items-center">
+          <div className="flex border rounded-lg items-center px-2">
+            <label htmlFor="search">
+              <CiSearch className="me-2 text-xl" />
+            </label>
+            <input
+              id="search"
+              type="search"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="py-2 w-full focus-none"
+              placeholder="Search"
+            />
+          </div>
+          <Link
+            to="/provider/NewDeals"
+            className="bg-blue mt-2 lg:mt-0 px-4 rounded-md py-2 text-white flex justify-center items-center"
+          >
+            <HiPlus className="text-white text-xl me-1 font-semibold" />
+            <span>Create New</span>
+          </Link>
         </div>
-        <Link
-          to="/provider/NewDeals"
-          className="bg-blue mt-2 lg:mt-0 px-4 rounded-md py-2 text-white flex justify-center items-center"
-        >
-          <HiPlus className="text-white text-xl me-1 font-semibold" />
-          <span>Create New</span>
-        </Link>
-      </div>
 
-      {/* Show Loader While Fetching Data */}
-      {loading ? (
-        <div className="flex justify-center items-center my-10">
-          <div className="loader border-4 border-gray-300 border-t-blue-500 rounded-full w-12 h-12 animate-spin"></div>
-        </div>
-      ) : (
-        // Show Data Once Loaded
-        <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-          {filteredServices.length > 0 ? (
-            filteredServices.map((service) => (
-              <ServiceBox
-                key={service.id}
-                title={service.service_title}
-                price={service.flat_rate_price}
-                description={service.service_description}
-                tags={service.tags}
-                image={service.image_url}
-                publish={service.publish}
-              />
-            ))
-          ) : (
-            <p>No services found</p>
-          )}
-        </div>
-      )}
+        {/* Show Loader While Fetching Data */}
+        {loading ? (
+          <Loader />
+        ) : (
+          // Show Data Once Loaded
+          <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
+            {filteredServices.length > 0 ? (
+              filteredServices.map((service) => (
+                <ServiceBox
+                  key={service.id}
+                  title={service.service_title}
+                  price={service.flat_rate_price}
+                  description={service.service_description}
+                  tags={
+                    service.search_tags ? service.search_tags.split(",") : []
+                  } // Split the string into an array
+                  image={service.image_url}
+                  publish={service.publish}
+                  dealid={service.id}
+                />
+              ))
+            ) : (
+              <p>No services found</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

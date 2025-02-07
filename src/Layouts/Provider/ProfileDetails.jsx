@@ -43,6 +43,7 @@ const Accordion = styled((props) => (
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
     expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem", }} />}
+
     {...props}
   />
 ))(({ theme }) => ({
@@ -67,7 +68,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   border: "none",
 }));
 
-
 function ProfileDetails() {
   const [expanded, setExpanded] = React.useState("panel1");
 
@@ -78,10 +78,7 @@ function ProfileDetails() {
     document.title = "Profile Details";
   }, []);
 
-
-
   const categories = ["Category 01", "Category 02", "Category 03"];
-
 
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
@@ -108,11 +105,9 @@ function ProfileDetails() {
     },
   ];
 
-
-
   return (
-    <div>
-      <div className="flex items-center">
+    <div className="pmain">
+      <div className="flex items-center navv">
         <Link to="/provider/services">
           <FaArrowLeft className="me-4 text-xl" />
         </Link>
@@ -141,53 +136,70 @@ function ProfileDetails() {
             <div className="flex flex-wrap mt-2">
               <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
               <div className="flex items-center">
-                <IoLocationOutline className="me-2 myblack" />
-                <p className="myblack ">Address of the provider here</p>
+                <p className="font-semibold myhead me-2">Provider Name</p>
+                <div className="flex ms-3">
+                  <IoIosStar className="me-1 text-[#F8C600]" />
+                  <div className="flex flex-wrap">
+                    <span className="myhead text-xs font-semibold me-1">
+                      4.9
+                    </span>
+                    <p className="text-[#181D2766] underline text-xs">(457)</p>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="flex mt-2 items-center">
-              <div className="flex me-2">
-                <FaRegCalendarAlt className="me-2" />
-                <p className="text-sm myblack">Hours:&nbsp;</p>
-                <p className="text-sm text-[#34A853] font-[300]">Available</p>
+              <div className="flex flex-wrap mt-2">
+                <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
+                <div className="flex items-center">
+                  <IoLocationOutline className="me-2 myblack" />
+                  <p className="myblack ">Address of the provider here</p>
+                </div>
               </div>
-              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2">
-
+              <div className="flex mt-2 items-center">
+                <div className="flex me-2">
+                  <FaRegCalendarAlt className="me-2" />
+                  <p className="text-sm myblack">Hours:&nbsp;</p>
+                  <p className="text-sm text-[#34A853] font-[300]">Available</p>
+                </div>
+                <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2"></div>
+                <select
+                  name=""
+                  id=""
+                  className="text-sm myblack bg-transparent"
+                >
+                  <option value="">Close 6PM</option>
+                </select>
               </div>
-              <select name="" id="" className="text-sm myblack bg-transparent">
-                <option value="">Close 6PM</option>
-              </select>
             </div>
           </div>
-        </div>
-        <button
-          onClick={handlecontactOpen}
-          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803] w-full lg:max-w-[300px] lg:fixed right-[20px] z-[99]"
-        >
-          <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
-          <span>Contact Pro</span>
-        </button>
-        <Modal
-          open={contactopen}
-          onClose={handlecontactClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ m: 2 }}
-        >
-          <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
-            <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
-              <p className="text-lg font-semibold">Contact Pro</p>
-              <div className="flex flex-col gap-3 mt-4">
-                {modalContacts.map((contact, index) => (
-                  <Link
-                    key={index}
-                    className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
-                    to={contact.path}
-                  >
-                    <span className="text-[24px]">{contact.Icon}</span>
-                    <span>{contact.title}</span>
-                  </Link>
-                ))}
+          <button
+            onClick={handlecontactOpen}
+            className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803] w-full lg:max-w-[300px] lg:fixed right-[38px] z-[99]"
+          >
+            <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
+            <span>Contact Pro</span>
+          </button>
+          <Modal
+            open={contactopen}
+            onClose={handlecontactClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+            sx={{ m: 2 }}
+          >
+            <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
+              <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
+                <p className="text-lg font-semibold">Contact Pro</p>
+                <div className="flex flex-col gap-3 mt-4">
+                  {modalContacts.map((contact, index) => (
+                    <Link
+                      key={index}
+                      className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
+                      to={contact.path}
+                    >
+                      <span className="text-[24px]">{contact.Icon}</span>
+                      <span>{contact.title}</span>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

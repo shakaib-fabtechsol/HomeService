@@ -1,102 +1,46 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function BasicInfo() {
+function BasicInfo({ setServiceId,setValue  }) { 
   const [tags, setTags] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [loading, setLoading] = useState(false); // Lazy loading state
 
   const Businesscategories = [
-    "Plumbing",
-    "Sewer & Septic",
-    "Electrical",
-    "HVAC / Heating & Cooling",
-    "Insulation",
-    "Concrete",
-    "Bricklayer",
-    "Windows & Doors",
-    "Flooring",
-    "Garage Doors",
-    "Concrete Floor Coatings",
-    "Mini Barns",
-    "Pole Barns",
-    "Roofing",
-    "Gutters",
-    "Siding",
-    "Exterior Trim",
-    "Landscaping",
-    "Hardscapes",
-    "Outdoor Living",
-    "Pool & Spa",
-    "Fence and Gates",
-    "Handyman Services",
-    "Security",
-    "Home Inspections",
-    "Structural Engineer",
-    "Foundation Repair",
-    "Waterproofing",
-    "Crawlspace Repair",
-    "Mold Testing",
-    "Mold Restoration",
-    "Water & Fire Restoration Service",
-    "Hazardous Waste Removal",
-    "Interior Design",
-    "Kitchen",
-    "Bath",
-    "Interior Decorating",
-    "Window and Door Coverings",
-    "Window Tinting",
-    "Interior Trim",
-    "Cleaning Service",
-    "Organizing",
-    "Painting",
-    "Drywall",
-    "Wall Coverings",
-    "Chimney Sweep",
-    "Excavation",
-    "Grading",
-    "Blacktop & Sealcoating",
-    "Lighting",
-    "Moving",
-    "Storage Containers",
-    "Piano Movers",
-    "Realtor",
-    "Home Network & Computer",
-    "Computer Repair",
-    "Appliance Repair",
-    "Nursing",
-    "Drain Services",
-    "Veterinary Service",
+    "Plumbing", "Electrical", "HVAC / Heating & Cooling", "Landscaping",
+    "Roofing", "Painting", "Moving", "Security", "Cleaning Service", "Appliance Repair"
   ];
 
-  // Handle adding tags
   const handleAddTag = (e) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
       if (!tags.includes(inputValue.trim())) {
         setTags([...tags, inputValue.trim()]);
       }
-      setInputValue(""); // Reset input after adding tag
+      setInputValue("");
     }
   };
 
-  // Handle removing tags
   const handleRemoveTag = (index) => {
     setTags(tags.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Check if the token exists
+    if (loading) return; // Prevent multiple submissions
+
+    setLoading(true); // Show loading state
+
     const token = localStorage.getItem("token");
-    console.log("Token:", token); // Log token to make sure it's available
-  
     if (!token) {
-      alert("No token found. Please log in.");
+      toast.error("No token found. Please log in.");
+      setLoading(false);
       return;
     }
-  
-    // Prepare the data from the form
+
     const formData = {
       service_title: e.target.Title.value,
       commercial: e.target.Commercial.checked ? 1 : 0,
@@ -104,84 +48,75 @@ function BasicInfo() {
       service_category: e.target.Category.value,
       search_tags: tags.join(","),
       service_description: e.target.Description.value,
-      fine_print: e.target.FinePrint ? e.target.FinePrint.value : "",
+      fine_print: e.target.FinePrint?.value || "",
     };
-  
+
     try {
       const response = await axios.post(
         "https://homeservice.thefabulousshow.com/api/BasicInfo",
         formData,
-        {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Success:", response.data);
+
+      if (response.status === 200) {
+        console.log("Service ID:", response.data.deal.id); // Log the ID to console
+        setServiceId(response.data.deal.id);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Your data has been saved successfully.",
+          confirmButtonColor: "#0F91D2",
+      }).then(() => {
+          setValue(1); // Switch to Pricing & Packages tab (index 1)
+      });
+        e.target.reset(); // Reset form fields
+        setTags([]); // Clear tags
+      }
     } catch (error) {
       console.error("Error:", error);
-      if (error.response && error.response.status === 401) {
-        alert("Unauthorized! Please log in again.");
-      }
+      Swal.fire({
+        icon: "error",
+        title: "Submission Failed",
+        text: "Something went wrong. Please try again.",
+      });
+    } finally {
+      setLoading(false); // Hide loading state
     }
   };
-  
 
   return (
     <div>
+      <ToastContainer position="top-right" autoClose={3000} />
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-12">
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Title" className="font-semibold">
-                Service Title
-              </label>
-              <input
-                type="text"
-                id="Title"
-                placeholder="Enter service name"
-                className="myinput focus-none"
-              />
+              <label htmlFor="Title" className="font-semibold">Service Title</label>
+              <input type="text" id="Title" placeholder="Enter service name" className="myinput" required />
             </div>
           </div>
 
           <div className="col-span-12 lg:col-span-7 mt-4">
             <p className="font-semibold">Service Type</p>
             <div className="flex mt-4">
-              <div className="flex">
-                <input
-                  type="checkbox"
-                  id="Commercial"
-                  name="Commercial"
-                  className="myinput me-4"
-                />
-                <label htmlFor="Commercial">Commercial</label>
-              </div>
-              <div className="flex ms-8">
-                <input
-                  type="checkbox"
-                  id="Residential"
-                  name="Residential"
-                  className="myinput me-4"
-                />
-                <label htmlFor="Residential">Residential</label>
-              </div>
+              <label className="flex me-4">
+                <input type="checkbox" id="Commercial" name="Commercial" className="me-2" />
+                Commercial
+              </label>
+              <label className="flex">
+                <input type="checkbox" id="Residential" name="Residential" className="me-2" />
+                Residential
+              </label>
             </div>
           </div>
 
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Category" className="font-semibold">
-                Service Category
-              </label>
-              <select id="Category" className="myselect pe-[30px] focus-none">
-                <option value="" hidden>
-                  Select a category
-                </option>
+              <label htmlFor="Category" className="font-semibold">Service Category</label>
+              <select id="Category" className="myselect" required>
+                <option value="" hidden>Select a category</option>
                 {Businesscategories.map((option, index) => (
-                  <option key={index} value={option}>
-                    {option}
-                  </option>
+                  <option key={index} value={option}>{option}</option>
                 ))}
               </select>
             </div>
@@ -189,84 +124,38 @@ function BasicInfo() {
 
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Tags" className="font-semibold">
-                Search Tags
-              </label>
+              <label htmlFor="Tags" className="font-semibold">Search Tags</label>
               <div className="border rounded-lg p-2 myinput flex flex-wrap min-h-[40px]">
                 {tags.map((tag, index) => (
-                  <div
-                    key={index}
-                    className="flex justify-between items-center bg-[#E7F4FB] my-2 text-[#0F91D2] px-3 py-2 font-semibold rounded-full me-4"
-                  >
+                  <div key={index} className="flex items-center bg-[#E7F4FB] text-[#0F91D2] px-3 py-2 rounded-full me-2">
                     {tag}
-                    <button
-                      type="button"
-                      className="ml-2 text-white bg-[#0F91D2] rounded-full w-5 h-5 flex items-center justify-center text-xs"
-                      onClick={() => handleRemoveTag(index)}
-                    >
-                      ×
-                    </button>
+                    <button type="button" className="ml-2 text-white bg-[#0F91D2] rounded-full w-5 h-5 flex items-center justify-center text-xs" onClick={() => handleRemoveTag(index)}>×</button>
                   </div>
                 ))}
-                <input
-                  type="text"
-                  id="Tags"
-                  placeholder="Enter tag and press Enter"
-                  className="outline-none flex-grow"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyDown={handleAddTag}
-                />
+                <input type="text" id="Tags" placeholder="Enter tag and press Enter" className="outline-none flex-grow" value={inputValue} onChange={(e) => setInputValue(e.target.value)} onKeyDown={handleAddTag} />
               </div>
             </div>
           </div>
 
           <div className="col-span-12 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Description" className="font-semibold">
-                Service Description
-              </label>
-              <textarea
-                name="Description"
-                id="Description"
-                className="myinput focus-none"
-                placeholder="Type detail here..."
-                rows={6}
-              ></textarea>
+              <label htmlFor="Description" className="font-semibold">Service Description</label>
+              <textarea id="Description" className="myinput" placeholder="Type details here..." rows={4} required></textarea>
             </div>
           </div>
 
           <div className="col-span-12 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="FinePrint" className="font-semibold">
-                Fine Print
-                <span className="text-[13px] text-[#cdcdcd]">(Optional)</span>
-              </label>
-              <textarea
-                name="FinePrint"
-                id="FinePrint"
-                className="myinput focus-none"
-                placeholder="Type detail here..."
-                rows={6}
-              ></textarea>
+              <label htmlFor="FinePrint" className="font-semibold">Fine Print <span className="text-[13px] text-[#cdcdcd]">(Optional)</span></label>
+              <textarea id="FinePrint" className="myinput" placeholder="Type details here..." rows={4}></textarea>
             </div>
           </div>
 
-          <div className="col-span-12 mt-4">
-            <div className="flex justify-end">
-              <button
-                type="reset"
-                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-              >
-                Save
-              </button>
-            </div>
+          <div className="col-span-12 mt-4 flex justify-end">
+            <button type="reset" className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white me-4">Cancel</button>
+            <button type="submit" className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${loading ? "opacity-50 cursor-not-allowed" : ""}`} disabled={loading}>
+              {loading ? "Saving..." : "Save"}
+            </button>
           </div>
         </div>
       </form>

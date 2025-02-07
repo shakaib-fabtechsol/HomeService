@@ -1,7 +1,12 @@
 import * as React from "react";
 import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { MdOutlineMessage, MdOutlineSupport, MdHomeRepairService, MdLogout } from "react-icons/md";
+import {
+  MdOutlineMessage,
+  MdOutlineSupport,
+  MdHomeRepairService,
+  MdLogout,
+} from "react-icons/md";
 import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert
@@ -60,7 +65,7 @@ function ProviderLayout() {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("token");
-        navigate("/"); 
+        navigate("/");
       }
     });
   };
@@ -185,13 +190,13 @@ function ProviderLayout() {
         sx={{
           flexGrow: 1,
           p: 3,
-          width: {  xs: '100%',sm: `calc(100% - ${drawerWidth}px)` },
+          width: { xs: "100%", sm: `calc(100% - ${drawerWidth}px)` },
           fontFamily: "inter",
         }}
       >
-        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter", }}>
+        <Box sx={{ display: { xs: "block", sm: "none" }, fontFamily: "inter" }}>
           <div className="pb-2 flex justify-end">
-            <button onClick={handleDrawerToggle}>
+            <button className="absolute mt-2" onClick={handleDrawerToggle}>
               <MenuIcon />
             </button>
           </div>
