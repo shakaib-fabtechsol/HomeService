@@ -149,7 +149,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Pricing details updated successfully.",
+          text: "Deal published successfully.",
           confirmButtonColor: "#0F91D2",
         }).then(() => {
           setValue(2); // Switch to Pricing & Packages tab (index 1)
@@ -182,20 +182,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
     Aliquam erat volutpat. Ut semper ipsum in vestibulum laoreet.
   </h2>
-  <div className="flex items-center justify-end mt-3 lg:mt-0">
-    <Link
-      to="#"
-      className="bg-[#FA2841] px-3 py-3 text-[#fff] rounded-md me-2"
-    >
-      <FaRegTrashCan />
-    </Link>
-    <Link
-      to="#"
-      className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
-    >
-      <FaPencilAlt />
-    </Link>
-  </div>
 </div>
 <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
   <div className="col-span-12 xl:col-span-8">
@@ -411,13 +397,14 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             type="text"
             id="Flatr"
             defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
-            className="focus-none border"
+            className="focus-none border hidden"
+            readOnly
           />
           <input
             type="text"
             id="publish"
             value={publishValue} // Set value for the publish input
-            className="focus-none border"
+            className="focus-none border hidden"
             readOnly
           />
           <button
@@ -432,7 +419,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             disabled={loading}
             className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
           >
-            {loading ? "Updating..." : "Update Media"}
+            {loading ? "Publishing..." : "Publish"}
           </button>
         </div>
       </form>
