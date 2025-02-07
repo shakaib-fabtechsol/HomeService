@@ -39,7 +39,7 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem" }} />}
+    expandIcon={<FaChevronDown className="text-sm" />}
     {...props}
   />
 ))(({ theme }) => ({
