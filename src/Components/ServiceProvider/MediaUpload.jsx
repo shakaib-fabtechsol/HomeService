@@ -96,7 +96,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Media updated successfully.",
+          text: "Media saved successfully.",
         }).then(() => {
           if (typeof setValue === "function") {
             setValue(3);
@@ -133,11 +133,11 @@ const MediaUpload = ({ serviceId, setValue }) => {
           type="text"
           id="Flatr"
           defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
-          className="focus-none border"
+          className="focus-none border hidden"
           readOnly
         />
         <div
-          className="upload-box border rounded-lg p-4 text-center cursor-pointer"
+          className="upload-box border  mt-5 rounded-lg p-4 text-center cursor-pointer"
           onDrop={handleFileDrop}
           onDragOver={(e) => e.preventDefault()}
           onClick={() => document.getElementById("image").click()}
@@ -217,7 +217,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
             disabled={loading}
             className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
           >
-            {loading ? "Updating..." : "Update Media"}
+            {loading ? "Saving..." : "Save"}
           </button>
         </div>
       </form>

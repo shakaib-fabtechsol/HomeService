@@ -144,7 +144,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Pricing details updated successfully.",
+          text: "Pricing details saved successfully.",
           confirmButtonColor: "#0F91D2",
         }).then(() => {
           setValue(2); // Switch to Pricing & Packages tab (index 1)
@@ -178,12 +178,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       <form onSubmit={handleFormSubmit}>
         <div className="grid grid-cols-12">
           <div className="col-span-12 md:col-span-10 mt-4">
-            <p className="font-semibold">Pricing Model</p>
             <input
               type="text"
               id="Flatr"
               defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
-              className="focus-none border"
+              className="focus-none border hidden"
               readOnly
             />
             <div className="flex flex-wrap justify-between mt-4">
@@ -765,7 +764,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                 disabled={loading}
                 className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
               >
-                {loading ? "Updating..." : "Update Pricing"}
+                {loading ? "Saving..." : "Save"}
               </button>
             </div>
           </div>
