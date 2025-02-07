@@ -3,7 +3,7 @@ import axios from "axios";
 import { CiSearch } from "react-icons/ci";
 import { Link } from "react-router-dom";
 import { HiPlus } from "react-icons/hi";
-import service2 from "../../assets/img/random3.png";
+import service2 from "../../assets/img/service2.png";
 import Loader from "../../Components/MUI/Loader";
 
 function ServiceBox({
@@ -18,10 +18,25 @@ function ServiceBox({
   useEffect(() => {
     document.title = "Services";
   }, []);
+  const imageUrl = image
+    ? `https://homeservice.thefabulousshow.com/uploads/${image}`
+    : null;
+
+  const defaultimg = "/vite.svg";
+
+  const imageToShow = imageUrl || defaultimg;
 
   return (
     <div className="border px-3 py-3 rounded-lg">
-      <img src={service2 ?? "N/A"} alt={title} className="rounded-lg w-full" />
+      <div className="border px-3 py-3 rounded-lg">
+        <img
+          src={imageToShow}
+         
+          alt="Service Image"
+          className="rounded-lg w-full h-40 object-cover"
+        />
+      </div>
+
       <p
         className={
           publish === 1
@@ -42,7 +57,10 @@ function ServiceBox({
       <p className="text-sm text-[#535862] mt-4">
         {tags && tags.length > 0
           ? tags.map((tag, index) => (
-              <span key={index} className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2">
+              <span
+                key={index}
+                className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+              >
                 {tag}
               </span>
             ))
@@ -69,6 +87,7 @@ function Services() {
       })
       .then((response) => {
         setServices(response.data.deals);
+        console.log("imagesResponse", response.data.deals);
         setLoading(false); // Stop loading after data is received
       })
       .catch((error) => {
@@ -113,7 +132,6 @@ function Services() {
           </Link>
         </div>
 
-        {/* Show Loader While Fetching Data */}
         {loading ? (
           <Loader />
         ) : (
@@ -128,8 +146,9 @@ function Services() {
                   description={service.service_description}
                   tags={
                     service.search_tags ? service.search_tags.split(",") : []
-                  } // Split the string into an array
-                  image={service.image_url}
+                  }
+                
+                  image={service.image || "/default.png"}
                   publish={service.publish}
                   dealid={service.id}
                 />

@@ -12,7 +12,6 @@ import NewDeals from "./Layouts/Provider/NewDeals";
 import Signup from "./Layouts/Auth/Signup";
 import ServiceDetail from "./Layouts/Provider/ServiceDetail";
 import ProfileDetails from "./Layouts/Provider/ProfileDetails";
-
 import UserLayout from "./Layouts/CustomerLayout";
 import UserServices from "./Layouts/Customer/Services";
 import UserServiceDetail from "./Layouts/Customer/ServiceDetail";
@@ -54,6 +53,7 @@ function App() {
             <Route path="support" element={<Support />} />
             <Route path="serviceDetails" element={<ServiceDetail />} />
             <Route path="NewDeals" element={<NewDeals />} />
+            <Route path="NewDeals/:dealid" element={<NewDeals />} />
             <Route path="ProfileDetails" element={<ProfileDetails />} />
           </Route>
 

@@ -1,19 +1,52 @@
 import React, { useEffect, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import down from "../../assets/img/chevronDown.png";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const PricingPackaging = ({ serviceId, setValue }) => {
-  const [loading, setLoading] = useState(false); // Define the loading state
+  const navigate = useNavigate();
+  const { dealid } = useParams();
+  const [loading, setLoading] = useState(false);
+  const [formdata, setFormData] = useState({
+    id: "",
+    pricing_model: "",
+    flat_rate_price: "",
+    flat_by_now_discount: "",
+    flat_final_list_price: "",
+    flat_estimated_service_time: "",
+    hourly_rate: "",
+    discount: "",
+    hourly_final_list_price: "",
+    hourly_estimated_service_time: "",
+    title1: "",
+    deliverable1: "",
+    price1: "",
+    by_now_discount1: "",
+    final_list_price1: "",
+    estimated_service_timing1: "",
+    title2: "",
+    deliverable2: "",
+    price2: "",
+    by_now_discount2: "",
+    final_list_price2: "",
+    estimated_service_timing2: "",
+    title3: "",
+    deliverable3: "",
+    price3: "",
+    by_now_discount3: "",
+    final_list_price3: "",
+    estimated_service_timing3: "",
+  });
 
-  // ✅ Receiving serviceId
   const [selectedRate, setSelectedRate] = useState("Flat");
   const [flatRatePrice, setFlatRatePrice] = useState("");
   const [buyNowDiscount, setBuyNowDiscount] = useState("");
   const [finalListPrice, setFinalListPrice] = useState("");
   const [estimatedServiceTime, setEstimatedServiceTime] = useState("");
 
-  // Hourly rate state
   const [hourlyRate, setHourlyRate] = useState("");
   const [hourlyDiscount, setHourlyDiscount] = useState("");
   const [hourlyFinalListPrice, setHourlyFinalListPrice] = useState("");
@@ -48,71 +81,153 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
   }, [serviceId]);
 
+  useEffect(() => {
+    if (dealid) {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No authentication token found. Please log in.");
+        return;
+      }
+
+      axios
+        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          const BasicInfo = response?.data?.deal[0];
+          console.log("BasicInfo:", BasicInfo);
+
+          if (BasicInfo) {
+            setFormData({
+              id: BasicInfo.id || "",
+              pricing_model: BasicInfo.pricing_model || "",
+              estimated_service_time: BasicInfo.estimated_service_time || "",
+
+              ...(BasicInfo.pricing_model === "Flat"
+                ? {
+                    flat_rate_price: BasicInfo.flat_rate_price || "",
+                    flat_by_now_discount: BasicInfo.flat_by_now_discount || "",
+                    flat_final_list_price:
+                      BasicInfo.flat_final_list_price || "",
+                    flat_estimated_service_time:
+                      BasicInfo.flat_estimated_service_time || "",
+                  }
+                : BasicInfo.pricing_model === "Hourly"
+                ? {
+                    hourly_rate: BasicInfo.hourly_rate || "",
+                    discount: BasicInfo.discount || "",
+                    hourly_final_list_price:
+                      BasicInfo.hourly_final_list_price || "",
+                    hourly_estimated_service_time:
+                      BasicInfo.hourly_estimated_service_time || "",
+                  }
+                : BasicInfo.pricing_model === "Custom"
+                ? {
+                    title1: BasicInfo.title1 || "",
+                    deliverable1: BasicInfo.deliverable1 || "",
+                    price1: BasicInfo.price1 || "",
+                    by_now_discount1: BasicInfo.by_now_discount1 || "",
+                    final_list_price1: BasicInfo.final_list_price1 || "",
+                    estimated_service_timing1:
+                      BasicInfo.estimated_service_timing1 || "",
+
+                    title2: BasicInfo.title2 || "",
+                    deliverable2: BasicInfo.deliverable2 || "",
+                    price2: BasicInfo.price2 || "",
+                    by_now_discount2: BasicInfo.by_now_discount2 || "",
+                    final_list_price2: BasicInfo.final_list_price2 || "",
+                    estimated_service_timing2:
+                      BasicInfo.estimated_service_timing2 || "",
+
+                    title3: BasicInfo.title3 || "",
+                    deliverable3: BasicInfo.deliverable3 || "",
+                    price3: BasicInfo.price3 || "",
+                    by_now_discount3: BasicInfo.by_now_discount3 || "",
+                    final_list_price3: BasicInfo.final_list_price3 || "",
+                    estimated_service_timing3:
+                      BasicInfo.estimated_service_timing3 || "",
+                  }
+                : {}),
+            });
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching deal data:", error);
+          if (error.response?.status === 401) {
+            console.error("Unauthorized. Redirecting to login...");
+          }
+        });
+    }
+  }, [dealid]);
   const handleRateChange = (event) => {
-    setSelectedRate(event.target.value);
+    const newRate = event.target.value;
+  
+    setSelectedRate(newRate);
+    setFormData((prevData) => ({
+      ...prevData,
+      pricing_model: newRate,
+    }));
   };
+  
 
   const handleFormSubmit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
-    if (loading) return; // Prevent multiple submissions
-
-    setLoading(true); // Show loading state
-
+    if (loading) return; 
+    setLoading(true); 
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("No token found. Please log in.");
       setLoading(false);
       return;
     }
-
-    // Prepare the data for the API request
+  
     let formData = {
-      id: serviceId, // Pass the service ID directly
-      pricing_model: selectedRate, // This is the model type: Flat or Hourly
+      id:formdata.id, 
+      pricing_model: selectedRate,
       estimated_service_time: estimatedServiceTime,
     };
-
-    // Prepare the specific fields based on the pricing model
+   
     if (selectedRate === "Flat") {
       formData = {
         ...formData,
-        flat_rate_price: flatRatePrice,
-        flat_by_now_discount: buyNowDiscount,
-        flat_final_list_price: finalListPrice,
-        flat_estimated_service_time: estimatedServiceTime,
+        flat_rate_price: formdata.flat_rate_price,
+        flat_by_now_discount: formdata.flat_by_now_discount,
+        flat_final_list_price: formdata.flat_final_list_price,
+        flat_estimated_service_time: formdata.flat_estimated_service_time,
       };
     } else if (selectedRate === "Hourly") {
       formData = {
         ...formData,
-        hourly_rate: hourlyRate,
-        discount: hourlyDiscount,
-        hourly_final_list_price: hourlyFinalListPrice,
-        hourly_estimated_service_time: hourlyEstimatedServiceTime,
+        hourly_rate: formdata.hourly_rate,
+        discount:formdata.discount,
+        hourly_final_list_price: formdata.hourly_final_list_price,
+        hourly_estimated_service_time: formdata.hourly_estimated_service_time,
       };
     } else if (selectedRate === "Custom") {
       formData = {
         ...formData,
-        title1: title1,
-        deliverable1: deliverable1,
-        price1: price1,
-        by_now_discount1: by_now_discount1,
-        final_list_price1: final_list_price1,
-        estimated_service_timing1: estimated_service_timing1,
+        title1: formdata.title1,
+        deliverable1: formdata.deliverable1,
+        price1: formdata.price1,
+        by_now_discount1: formdata.by_now_discount1,
+        final_list_price1: formdata.final_list_price1,
+        estimated_service_timing1: formdata.estimated_service_timing1,
 
         title2: title2,
-        deliverable2: deliverable2,
-        price2: price2,
-        by_now_discount2: by_now_discount2,
-        final_list_price2: final_list_price2,
-        estimated_service_timing2: estimated_service_timing2,
+        deliverable2: formdata.deliverable2,
+        price2: formdata.price2,
+        by_now_discount2: formdata.by_now_discount2,
+        final_list_price2: formdata.final_list_price2,
+        estimated_service_timing2: formdata.estimated_service_timing2,
 
-        title3: title3,
-        deliverable3: deliverable3,
-        price3: price3,
-        by_now_discount3: by_now_discount3,
-        final_list_price3: final_list_price3,
-        estimated_service_timing3: estimated_service_timing3,
+        title3: formdata.title3,
+        deliverable3: formdata.deliverable3,
+        price3: formdata.price3,
+        by_now_discount3: formdata.by_now_discount3,
+        final_list_price3: formdata.final_list_price3,
+        estimated_service_timing3: formdata.estimated_service_timing3,
       };
     }
 
@@ -125,16 +240,17 @@ const PricingPackaging = ({ serviceId, setValue }) => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(formData), // Send data directly without wrapping in pricingData
+          body: JSON.stringify(formdata),
         }
       );
 
-      const textResponse = await response.text(); // Get response as text
-      console.log("Response Text:", textResponse); // Log the raw response
+      const textResponse = await response.text();
+      console.log("Response Text:", textResponse);
+      console.log("formData",formData)
 
       let result;
       try {
-        result = JSON.parse(textResponse); // Try parsing it as JSON
+        result = JSON.parse(textResponse);
       } catch (error) {
         console.error("Error parsing response:", error);
         throw new Error("Response is not JSON");
@@ -173,6 +289,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
   };
 
+ 
+ 
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
@@ -181,10 +299,14 @@ const PricingPackaging = ({ serviceId, setValue }) => {
             <input
               type="text"
               id="Flatr"
-              defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+              value={formdata.id || "0"}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, id: e.target.value }))
+              }
               className="focus-none border hidden"
               readOnly
             />
+
             <div className="flex flex-wrap justify-between mt-4">
               <div className="flex me-8">
                 <input
@@ -194,10 +316,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   value="Flat"
                   className="myinput me-4"
                   onChange={handleRateChange}
-                  checked={selectedRate === "Flat"}
+                  checked={formdata.pricing_model == "Flat"}
                 />
                 <label htmlFor="Flat">Flat Rate</label>
               </div>
+
               <div className="flex me-8">
                 <input
                   type="radio"
@@ -206,10 +329,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   value="Hourly"
                   className="myinput me-4"
                   onChange={handleRateChange}
-                  checked={selectedRate === "Hourly"}
+                  checked={formdata.pricing_model == "Hourly"}
                 />
                 <label htmlFor="Hourly">Hourly Rate</label>
               </div>
+
               <div className="flex me-8">
                 <input
                   type="radio"
@@ -218,14 +342,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   value="Custom"
                   className="myinput me-4"
                   onChange={handleRateChange}
-                  checked={selectedRate === "Custom"}
+                  checked={formdata.pricing_model == "Custom"}
                 />
                 <label htmlFor="Custom">Custom Package</label>
               </div>
             </div>
           </div>
 
-          {/* Flat Rate Fields */}
           {selectedRate === "Flat" && (
             <>
               <div className="col-span-12 lg:col-span-7 mt-4">
@@ -237,12 +360,18 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     type="text"
                     id="Flatr"
                     placeholder="$100"
-                    value={flatRatePrice}
-                    onChange={(e) => setFlatRatePrice(e.target.value)}
+                    value={formdata.flat_rate_price || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        flat_rate_price: e.target.value,
+                      }))
+                    }
                     className="myinput focus-none"
                   />
                 </div>
               </div>
+
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="BuyNow" className="font-semibold">
@@ -252,12 +381,18 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     type="text"
                     id="BuyNow"
                     placeholder="10 %"
-                    value={buyNowDiscount}
-                    onChange={(e) => setBuyNowDiscount(e.target.value)}
+                    value={formdata.flat_by_now_discount || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        flat_by_now_discount: e.target.value,
+                      }))
+                    }
                     className="myinput focus-none"
                   />
                 </div>
               </div>
+
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Finalp" className="font-semibold">
@@ -267,12 +402,18 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     type="text"
                     id="Finalp"
                     placeholder="$90"
-                    value={finalListPrice}
-                    onChange={(e) => setFinalListPrice(e.target.value)}
+                    value={formdata.flat_final_list_price || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        flat_final_list_price: e.target.value,
+                      }))
+                    }
                     className="myinput focus-none"
                   />
                 </div>
               </div>
+
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Estimated" className="font-semibold">
@@ -280,86 +421,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <select
                     className="myselect pe-[30px] focus-none"
-                    value={estimatedServiceTime}
-                    onChange={(e) => setEstimatedServiceTime(e.target.value)}
-                  >
-                    <option value="" hidden>
-                      How soon can you get it scheduled?
-                    </option>
-                    <option value="Same day">Same day</option>
-                    <option value="2 days">2 days</option>
-                    <option value="3 days">3 days</option>
-                    <option value="1 week">1 week</option>
-                    <option value="2 weeks">2 weeks</option>
-                  </select>
-                </div>
-              </div>
-            </>
-          )}
-          {/* Hourly Rate Fields */}
-          {selectedRate === "Hourly" && (
-            <>
-              <div className="col-span-12 lg:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="HourlyRate" className="font-semibold">
-                    Hourly Rate
-                  </label>
-                  <input
-                    type="text"
-                    id="HourlyRate"
-                    placeholder="$25/hour"
-                    value={hourlyRate}
-                    onChange={(e) => setHourlyRate(e.target.value)}
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-
-              <div className="col-span-12 lg:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="HourlyDiscount" className="font-semibold">
-                    Discount
-                  </label>
-                  <input
-                    type="text"
-                    id="HourlyDiscount"
-                    placeholder="10 %"
-                    value={hourlyDiscount}
-                    onChange={(e) => setHourlyDiscount(e.target.value)}
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-
-              <div className="col-span-12 lg:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="HourlyFinalPrice" className="font-semibold">
-                    Final List Price
-                  </label>
-                  <input
-                    type="text"
-                    id="HourlyFinalPrice"
-                    placeholder="$90"
-                    value={hourlyFinalListPrice}
-                    onChange={(e) => setHourlyFinalListPrice(e.target.value)}
-                    className="myinput focus-none"
-                  />
-                </div>
-              </div>
-
-              <div className="col-span-12 lg:col-span-7 mt-4">
-                <div className="flex flex-col">
-                  <label
-                    htmlFor="HourlyEstimatedTime"
-                    className="font-semibold"
-                  >
-                    Estimated Service Time
-                  </label>
-                  <select
-                    className="myselect pe-[30px] focus-none"
-                    value={hourlyEstimatedServiceTime}
+                    value={formdata.flat_estimated_service_time || ""}
                     onChange={(e) =>
-                      setHourlyEstimatedServiceTime(e.target.value)
+                      setFormData((prev) => ({
+                        ...prev,
+                        flat_estimated_service_time: e.target.value,
+                      }))
                     }
                   >
                     <option value="" hidden>
@@ -376,7 +443,104 @@ const PricingPackaging = ({ serviceId, setValue }) => {
             </>
           )}
 
-          {/* Custom Package Fields */}
+          {selectedRate === "Hourly" && (
+            <>
+              <div className="col-span-12 lg:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="HourlyRate" className="font-semibold">
+                    Hourly Rate
+                  </label>
+                  <input
+                    type="text"
+                    id="HourlyRate"
+                    placeholder="$25/hour"
+                    value={formdata.hourly_rate || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        hourly_rate: e.target.value,
+                      }))
+                    }
+                    className="myinput focus-none"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-12 lg:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="HourlyDiscount" className="font-semibold">
+                    Discount
+                  </label>
+                  <input
+                    type="text"
+                    id="HourlyDiscount"
+                    placeholder="10 %"
+                    value={formdata.discount || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        discount: e.target.value,
+                      }))
+                    }
+                    className="myinput focus-none"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-12 lg:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label htmlFor="HourlyFinalPrice" className="font-semibold">
+                    Final List Price
+                  </label>
+                  <input
+                    type="text"
+                    id="HourlyFinalPrice"
+                    placeholder="$90"
+                    value={formdata.hourly_final_list_price || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        hourly_final_list_price: e.target.value,
+                      }))
+                    }
+                    className="myinput focus-none"
+                  />
+                </div>
+              </div>
+
+              <div className="col-span-12 lg:col-span-7 mt-4">
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="HourlyEstimatedTime"
+                    className="font-semibold"
+                  >
+                    Estimated Service Time
+                  </label>
+                  <select
+                    className="myselect pe-[30px] focus-none"
+                    value={formdata.hourly_estimated_service_time || ""}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        hourly_estimated_service_time: e.target.value,
+                      }))
+                    }
+                  >
+                    <option value="" hidden>
+                      How soon can you get it scheduled?
+                    </option>
+                    <option value="Same day">Same day</option>
+                    <option value="2 days">2 days</option>
+                    <option value="3 days">3 days</option>
+                    <option value="1 week">1 week</option>
+                    <option value="2 weeks">2 weeks</option>
+                  </select>
+                </div>
+              </div>
+            </>
+          )}
+
+         
           {selectedRate === "Custom" && (
             <>
               <div className="col-span-12 mt-6">
@@ -401,9 +565,16 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="Title"
                             id="title1"
-                            value={title1}
-                            onChange={(e) => settitle1(e.target.value)}
+
+                            value={formdata.title1 || ""}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                title1: e.target.value,
+                              }))
+                            }
                           />
+                            
                         </div>
                         <div className="flex flex-col mt-4">
                           <label
@@ -416,8 +587,14 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                             name="deliverable1"
                             id="deliverable1"
-                            value={deliverable1}
-                            onChange={(e) => setdeliverable1(e.target.value)}
+                          
+                            value={formdata.deliverable1}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                deliverable1: e.target.value,
+                              }))
+                            }
                             placeholder="Write here.."
                           ></textarea>
                         </div>
@@ -433,8 +610,15 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$50"
                             id="price1"
-                            value={price1}
-                            onChange={(e) => setprice1(e.target.value)}
+                           
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                price1: e.target.value,
+                              }))
+                            }
+                            value={formdata.price1}
+                           
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -449,10 +633,14 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="10 %"
                             id="by_now_discount1"
-                            value={by_now_discount1}
+
                             onChange={(e) =>
-                              setby_now_discount1(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                by_now_discount1: e.target.value,
+                              }))
                             }
+                            value={formdata.by_now_discount1}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -467,9 +655,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price1"
-                            value={final_list_price1}
+                            value={formdata.final_list_price1}
                             onChange={(e) =>
-                              setfinal_list_price1(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                final_list_price1: e.target.value,
+                              }))
                             }
                           />
                         </div>
@@ -489,9 +680,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
                             name="estimated_service_timing1"
                             id="estimated_service_timing1"
-                            value={estimated_service_timing1}
+                            value={formdata.estimated_service_timing1}
                             onChange={(e) =>
-                              setestimated_service_timing1(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                estimated_service_timing1: e.target.value,
+                              }))
                             }
                           >
                             <option value="" disabled hidden>
@@ -521,8 +715,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="Title"
                             id="title2"
-                            value={title2}
-                            onChange={(e) => settitle2(e.target.value)}
+                            value={formdata.title2 || ""}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                title2: e.target.value,
+                              }))
+                            }
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -536,8 +735,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                             name="deliverable2"
                             id="deliverable2"
-                            value={deliverable2}
-                            onChange={(e) => setdeliverable2(e.target.value)}
+                            value={formdata.deliverable2}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                deliverable2: e.target.value,
+                              }))
+                            }
                             placeholder="Write here.."
                           ></textarea>
                         </div>
@@ -553,8 +757,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$50"
                             id="price2"
-                            value={price2}
-                            onChange={(e) => setprice2(e.target.value)}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                price2: e.target.value,
+                              }))
+                            }
+                            value={formdata.price2}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -569,10 +778,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="10 %"
                             id="by_now_discount2"
-                            value={by_now_discount2}
                             onChange={(e) =>
-                              setby_now_discount2(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                by_now_discount2: e.target.value,
+                              }))
                             }
+                            value={formdata.by_now_discount2}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -587,9 +799,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price2"
-                            value={final_list_price2}
+                            value={formdata.final_list_price2}
                             onChange={(e) =>
-                              setfinal_list_price2(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                final_list_price2: e.target.value,
+                              }))
                             }
                           />
                         </div>
@@ -609,10 +824,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
                             name="estimated_service_timing2"
                             id="estimated_service_timing2"
-                            value={estimated_service_timing2} // Corrected to match state variable
+                            value={formdata.estimated_service_timing2}
                             onChange={(e) =>
-                              setestimated_service_timing2(e.target.value)
-                            } // Corrected to match state update function
+                              setFormData((prev) => ({
+                                ...prev,
+                                estimated_service_timing2: e.target.value,
+                              }))
+                            }
                           >
                             <option value="" disabled hidden>
                               How soon can you get it scheduled?
@@ -641,8 +859,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="Title"
                             id="title3"
-                            value={title3}
-                            onChange={(e) => settitle3(e.target.value)}
+                            value={formdata.title3 || ""}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                title3: e.target.value,
+                              }))
+                            }
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -656,8 +879,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                             name="deliverable3"
                             id="deliverable3"
-                            value={deliverable3}
-                            onChange={(e) => setdeliverable3(e.target.value)}
+                            value={formdata.deliverable3}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                deliverable3: e.target.value,
+                              }))
+                            }
                             placeholder="Write here.."
                           ></textarea>
                         </div>
@@ -673,8 +901,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$50"
                             id="price3"
-                            value={price3}
-                            onChange={(e) => setprice3(e.target.value)}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                price3: e.target.value,
+                              }))
+                            }
+                            value={formdata.price3}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -689,10 +922,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="10 %"
                             id="by_now_discount3"
-                            value={by_now_discount3}
                             onChange={(e) =>
-                              setby_now_discount3(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                by_now_discount3: e.target.value,
+                              }))
                             }
+                            value={formdata.by_now_discount3}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -707,9 +943,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price3"
-                            value={final_list_price3}
+                            value={formdata.final_list_price3}
                             onChange={(e) =>
-                              setfinal_list_price3(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                final_list_price3: e.target.value,
+                              }))
                             }
                           />
                         </div>
@@ -729,9 +968,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
                             name="estimated_service_timing2"
                             id="estimated_service_timing2"
-                            value={estimated_service_timing3}
+                            value={formdata.estimated_service_timing3}
                             onChange={(e) =>
-                              setestimated_service_timing3(e.target.value)
+                              setFormData((prev) => ({
+                                ...prev,
+                                estimated_service_timing3: e.target.value,
+                              }))
                             }
                           >
                             <option value="" defaultValue hidden>

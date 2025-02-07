@@ -3,11 +3,12 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { FaArrowLeft } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import BasicInfo from "../../Components/ServiceProvider/BasicInfo";
 import PricingPackaging from "../../Components/ServiceProvider/PricingPackaging";
 import MediaUpload from "../../Components/ServiceProvider/MediaUpload";
 import ReviewPublish from "../../Components/ServiceProvider/ReviewPublish";
+import axios from "axios";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -15,6 +16,7 @@ function TabPanel(props) {
   }, []);
   const { children, value, index, ...other } = props;
 
+ 
   return (
     <div
       role="tabpanel"
@@ -32,11 +34,13 @@ function TabPanel(props) {
 
 function NewDeals() {
   const [value, setValue] = React.useState(0);
-  const [serviceId, setServiceId] = useState(null); // Store Service ID
+  const [serviceId, setServiceId] = useState(null); 
 
   useEffect(() => {
-    console.log("🔄 NewDeals Updated Service ID:", serviceId); // ✅ Logging Service ID update
+    console.log("🔄 NewDeals Updated Service ID:", serviceId); 
   }, [serviceId]);
+
+
 
   return (
     <div className="pmain">

@@ -194,11 +194,12 @@ function ServiceDetail() {
               <FaRegTrashCan />
             </button>
             <Link
-              to="#"
-              className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
-            >
-              <FaPencilAlt />
-            </Link>
+  to={`/provider/NewDeals/${dealid}`}
+  className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
+>
+  <FaPencilAlt />
+</Link>
+
           </div>
         </div>
         <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">

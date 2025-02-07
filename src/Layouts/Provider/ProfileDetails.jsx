@@ -202,7 +202,6 @@ function ProfileDetails() {
                 </div>
               </div>
             </div>
-          </div>
         </Modal>
       </div>
       <div className="mt-6">
@@ -297,11 +296,11 @@ function ProfileDetails() {
           </Accordion>
         </div>
       </div>
-      {/* --------reviews--------- */}
       <div className="mt-5">
         <Review />
       </div>
-    </div>
+      </div>
+      </div>
   );
 }
 

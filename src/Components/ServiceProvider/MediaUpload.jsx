@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { HiOutlineTrash } from "react-icons/hi";
 import Swal from "sweetalert2";
 import upload from "../../assets/img/upload.png";
+import { useParams } from "react-router-dom";
 import fileicon from "../../assets/img/fileicon.png";
+import axios from "axios";
 
 const MediaUpload = ({ serviceId, setValue }) => {
+  const {dealid} =useParams()
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-
+console.log("preview",filePreview);
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
@@ -35,12 +38,52 @@ const MediaUpload = ({ serviceId, setValue }) => {
     setFile(null);
     setFilePreview(null);
     setShowPreview(false);
-    document.getElementById("image").value = ""; // Reset file input
+    document.getElementById("image").value = "";
   };
 
   const handleShowPreview = () => {
     setShowPreview(true);
   };
+
+  useEffect(() => {
+    if (dealid) {
+      const token = localStorage.getItem("token");
+  
+      if (!token) {
+        console.error("No authentication token found. Please log in.");
+        return;
+      }
+  
+      axios
+        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(async (response) => {
+          const BasicInfo = response?.data?.deal?.[0];
+  
+          if (BasicInfo?.image) {
+            try {
+             
+              const imagePath = BasicInfo?.image; 
+              const imageUrl =  `https://homeservice.thefabulousshow.com/uploads/${imagePath}`;
+              setFilePreview(imageUrl);
+              setShowPreview(true);
+            } catch (error) {
+              console.error("Error fetching or converting image:", error);
+            }
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching deal data:", error);
+          if (error.response?.status === 401) {
+            console.error("Unauthorized. Redirecting to login...");
+          }
+        });
+    }
+  }, [dealid]);
+  
+  
+
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -53,8 +96,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
       setLoading(false);
       return;
     }
-
-    // Validate file type
+   
     if (
       file &&
       !["image/svg+xml", "image/png", "image/jpeg"].includes(file.type)
