@@ -190,6 +190,7 @@ function ProfileDetails() {
                 ))}
               </div>
             </div>
+            </div>
         </Modal>
       </div>
       <div className="mt-6">
@@ -286,7 +287,6 @@ function ProfileDetails() {
       </div>
       <div className="mt-5">
         <Review />
-      </div>
       </div>
       </div>
   );
