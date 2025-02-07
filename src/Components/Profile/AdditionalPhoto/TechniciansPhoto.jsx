@@ -3,7 +3,7 @@ import random1 from "../../../assets/img/random1.png";
 import random2 from "../../../assets/img/random2.png";
 import random3 from "../../../assets/img/random3.png";
 
-const Award = () => {
+const TechniciansPhoto = () => {
     const accordionData = [
         {
             images: [random1, random2, random3],
@@ -22,4 +22,4 @@ const Award = () => {
     )
 }
 
-export default Award
+export default TechniciansPhoto
