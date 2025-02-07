@@ -148,7 +148,7 @@ function Services() {
                     service.search_tags ? service.search_tags.split(",") : []
                   }
                 
-                  image={service.image || "/default.png"}
+                  image={service.image}
                   publish={service.publish}
                   dealid={service.id}
                 />
