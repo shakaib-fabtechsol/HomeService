@@ -16,6 +16,7 @@ import {
 } from "react-icons/io5";
 import { IoIosStar } from "react-icons/io";
 
+
 import provider from "../../assets/img/provider.png";
 import axios from "axios"; // Importing axios
 import Swal from "sweetalert2";
@@ -124,7 +125,8 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       title: "Get Directions",
     },
   ];
- 
+
+  console.log("formdata", formdata);
 
   useEffect(() => {
     if (dealid) {
@@ -141,6 +143,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
+          console.log("BasicInfo:", BasicInfo);
           const imagePath = BasicInfo?.image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
@@ -213,18 +216,106 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   
 
   const [loading, setLoading] = useState(false);
-  const [publishValue, setPublishValue] = useState(1); // Default value for publish
+  const [publishValue, setPublishValue] = useState(1); 
 
   const navigate = useNavigate();
 
+  const fetchDeals = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No token found. Please log in.",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/Deals`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("API Response:", response?.data?.deals);
+
+      if (response.status === 200) {
+
+        
+        setFormData((prev) => {
+          const updatedData = {
+            id: response?.data?.deals?.[0]?.id || "", 
+            publish: response?.data?.deals?.[0]?.publish || "",
+            imagePath: response?.data?.deals?.[0]?.image || "",
+            image: response?.data?.deals?.[0]?.image
+              ? `https://homeservice.thefabulousshow.com/uploads/${response.data.deals[0].image}`
+              : "/default.png",
+            commercial: response?.data?.deals?.[0]?.commercial || 0,
+            residential: response?.data?.deals?.[0]?.residential || 0,
+            service_category: response?.data?.deals?.[0]?.service_category || "",
+            search_tags: response?.data?.deals?.[0]?.search_tags || "",
+            service_description: response?.data?.deals?.[0]?.service_description || "",
+            fine_print: response?.data?.deals?.[0]?.fine_print || "",
+            pricing_model: response?.data?.deals?.[0]?.pricing_model || "",
+            estimated_service_time: response?.data?.deals?.[0]?.estimated_service_time || "",
+
+          };
+        
+         
+          const pricingModel = response?.data?.deals?.[0]?.pricing_model;
+          if (pricingModel === "Flat") {
+            updatedData.title1 = response?.data?.deals?.[0]?.title1 || "";
+            updatedData.flat_rate_price = response?.data?.deals?.[0]?.flat_rate_price || "";
+            updatedData.flat_by_now_discount = response?.data?.deals?.[0]?.flat_by_now_discount || "";
+            updatedData.flat_final_list_price = response?.data?.deals?.[0]?.flat_final_list_price || "";
+            updatedData.flat_estimated_service_time = response?.data?.deals?.[0]?.flat_estimated_service_time || "";
+          } else if (pricingModel === "Hourly") {
+            updatedData.hourly_rate = response?.data?.deals?.[0]?.hourly_rate || "";
+            updatedData.title2 = response?.data?.deals?.[0]?.title2 || "";
+            updatedData.discount = response?.data?.deals?.[0]?.discount || "";
+            updatedData.hourly_final_list_price = response?.data?.deals?.[0]?.hourly_final_list_price || "";
+            updatedData.hourly_estimated_service_time = response?.data?.deals?.[0]?.hourly_estimated_service_time || "";
+          } else if (pricingModel === "Custom") {
+            for (let i = 1; i <= 3; i++) {
+              updatedData[`title${i}`] = response?.data?.deals?.[0]?.[`title${i}`] || "";
+              updatedData[`deliverable${i}`] = response?.data?.deals?.[0]?.[`deliverable${i}`] || "";
+              updatedData[`price${i}`] = response?.data?.deals?.[0]?.[`price${i}`] || "";
+              updatedData[`by_now_discount${i}`] = response?.data?.deals?.[0]?.[`by_now_discount${i}`] || "";
+              updatedData[`final_list_price${i}`] = response?.data?.deals?.[0]?.[`final_list_price${i}`] || "";
+              updatedData[`estimated_service_timing${i}`] = response?.data?.deals?.[0]?.[`estimated_service_timing${i}`] || "";
+            }
+          }
+        
+          return updatedData;
+        });
+      }  
+    } catch (error) {
+      console.error("Error fetching deals:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error fetching the deals.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    console.log("📦 ReviewPublish Received Service ID:", serviceId); // ✅ Debugging
-  }, [serviceId]);
+    fetchDeals(); 
+  }, []);
+
+
+  console.log("formdata",formdata)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
-    if (!serviceId) {
+  
+    if (!formdata.id) {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -232,9 +323,9 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       });
       return;
     }
-
-    setLoading(true); // Show loading state
-
+  
+    setLoading(true);
+  
     const token = localStorage.getItem("token");
     if (!token) {
       Swal.fire({
@@ -245,62 +336,46 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       setLoading(false);
       return;
     }
-
-    // const formData = {
-    //   id: serviceId,
-    //   publish: publishValue,
-    // };
-   
-    {
-      console.log("formdata111",formdata)
-    }
-    const fetchDealById = async (dealid, token, setValue, setLoading) => {
-      try {
-        setLoading(true); 
-    
-        const response = await axios.get(`https://homeservice.thefabulousshow.com/api/Deal/`, {
+  
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`, 
+        {
           headers: { Authorization: `Bearer ${token}` },
-        });
-    
-        console.log("Response:", response); 
-        setFormData(response?.deal)
-        if (response.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "Deal fetched successfully.",
-            confirmButtonColor: "#0F91D2",
-          }).then(() => {
-            setValue(2); // Switch to Pricing & Packages tab
-          });
-    
-          return response.data; // Return fetched data
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: response.data.message || "Failed to fetch deal details.",
-            confirmButtonColor: "#D33",
-          });
-          return null;
         }
-      } catch (error) {
-        console.error("Error fetching deal:", error);
-        
+      );
+  
+      console.log("API Response:", response?.data);
+  
+      if (response.status === 200) {
+        setFormData((prev) => ({ ...prev, publish: publishValue })); 
+  
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Deal updated successfully.",
+          confirmButtonColor: "#0F91D2",
+        });
+      } else {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: error.response?.data?.message || "There was an error while fetching the deal.",
+          title: "Error!",
+          text: response.data.message || "Failed to update deal.",
+          confirmButtonColor: "#D33",
         });
-    
-        return null;
-      } finally {
-        setLoading(false); // Stop loading after request completes
       }
-    };
-    fetchDealById(dealid, token, setValue, setLoading);
-  }
-    
+    } catch (error) {
+      console.error("Error updating deal:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error updating the deal.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 
   return (
     <div>
@@ -518,14 +593,14 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           <input
             type="text"
             id="Flatr"
-            defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+            defaultValue={formdata.id ? `${formdata.id}` : "0"} 
             className="focus-none border hidden"
             readOnly
           />
           <input
             type="text"
             id="publish"
-            value={publishValue} // Set value for the publish input
+            value={publishValue} 
             className="focus-none border hidden"
             readOnly
           />
