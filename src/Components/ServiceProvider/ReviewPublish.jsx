@@ -124,8 +124,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       title: "Get Directions",
     },
   ];
-
-  console.log("formdata", formdata);
+ 
 
   useEffect(() => {
     if (dealid) {
@@ -142,7 +141,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
-          console.log("BasicInfo:", BasicInfo);
           const imagePath = BasicInfo?.image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
@@ -248,58 +246,61 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       return;
     }
 
-    const formData = {
-      id: serviceId,
-      publish: publishValue,
-    };
-
-    try {
-      axios
-        .get(`https://homeservice.thefabulousshow.com/api/Deal`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-          JSON.stringify(formData),
-          console.log("data",response)
-        }
-      const textResponse = await response.text(); // Get response as text
-      console.log("Response Text:", textResponse); // Log the raw response
-
-      let result;
+    // const formData = {
+    //   id: serviceId,
+    //   publish: publishValue,
+    // };
+   
+    {
+      console.log("formdata111",formdata)
+    }
+    const fetchDealById = async (dealid, token, setValue, setLoading) => {
       try {
-        result = JSON.parse(textResponse); // Try parsing it as JSON
-      } catch (error) {
-        console.error("Error parsing response:", error);
-        throw new Error("Response is not JSON");
-      }
-
-      if (response.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Deal published successfully.",
-          confirmButtonColor: "#0F91D2",
-        }).then(() => {
-          setValue(2); // Switch to Pricing & Packages tab (index 1)
+        setLoading(true); 
+    
+        const response = await axios.get(`https://homeservice.thefabulousshow.com/api/Deal/`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-      } else {
+    
+        console.log("Response:", response); 
+        setFormData(response?.deal)
+        if (response.status === 200) {
+          Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Deal fetched successfully.",
+            confirmButtonColor: "#0F91D2",
+          }).then(() => {
+            setValue(2); // Switch to Pricing & Packages tab
+          });
+    
+          return response.data; // Return fetched data
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: response.data.message || "Failed to fetch deal details.",
+            confirmButtonColor: "#D33",
+          });
+          return null;
+        }
+      } catch (error) {
+        console.error("Error fetching deal:", error);
+        
         Swal.fire({
           icon: "error",
-          title: "Error!",
-          text: result.message || "Failed to update pricing details.",
-          confirmButtonColor: "#D33",
+          title: "Error",
+          text: error.response?.data?.message || "There was an error while fetching the deal.",
         });
+    
+        return null;
+      } finally {
+        setLoading(false); // Stop loading after request completes
       }
-    } catch (error) {
-      console.error("Error:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "There was an error while updating the record.",
-      });
-    } finally {
-      setLoading(false); // Set loading to false after the request
-    }
-  };
+    };
+    fetchDealById(dealid, token, setValue, setLoading);
+  }
+    
 
   return (
     <div>
