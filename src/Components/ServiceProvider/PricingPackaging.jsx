@@ -4,6 +4,7 @@ import down from "../../assets/img/chevronDown.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const PricingPackaging = ({ serviceId, setValue }) => {
@@ -104,7 +105,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
               pricing_model: BasicInfo.pricing_model || "",
               estimated_service_time: BasicInfo.estimated_service_time || "",
 
-              ...(BasicInfo.pricing_model === "Flat"
+              ...(BasicInfo.pricing_model ==="Flat"
                 ? {
                     flat_rate_price: BasicInfo.flat_rate_price || "",
                     flat_by_now_discount: BasicInfo.flat_by_now_discount || "",
@@ -183,53 +184,55 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       return;
     }
   
-    let formData = {
-      id:formdata.id, 
+    let formdata = {
+      id: e.target.Flatr.value,
       pricing_model: selectedRate,
-      estimated_service_time: estimatedServiceTime,
     };
-   
+    
     if (selectedRate === "Flat") {
-      formData = {
-        ...formData,
-        flat_rate_price: formdata.flat_rate_price,
-        flat_by_now_discount: formdata.flat_by_now_discount,
-        flat_final_list_price: formdata.flat_final_list_price,
-        flat_estimated_service_time: formdata.flat_estimated_service_time,
+      formdata = {
+        ...formdata,
+        flat_rate_price: e.target.flat_rate_price?.value,
+        flat_by_now_discount: e.target.flat_by_now_discount?.value,
+        flat_final_list_price: e.target.flat_final_list_price?.value,
+        flat_estimated_service_time: e.target.flat_estimated_service_time?.value,
       };
     } else if (selectedRate === "Hourly") {
-      formData = {
-        ...formData,
-        hourly_rate: formdata.hourly_rate,
-        discount:formdata.discount,
-        hourly_final_list_price: formdata.hourly_final_list_price,
-        hourly_estimated_service_time: formdata.hourly_estimated_service_time,
+      formdata = {
+        ...formdata,
+        hourly_rate: e.target.hourly_rate.value,
+        discount: e.target.discount ? e.target.discount?.value : null,  // Assuming discount might be optional
+        hourly_final_list_price: e.target.hourly_final_list_price?.value,
+        hourly_estimated_service_time: e.target.hourly_estimated_service_time?.value,
       };
     } else if (selectedRate === "Custom") {
-      formData = {
-        ...formData,
-        title1: formdata.title1,
-        deliverable1: formdata.deliverable1,
-        price1: formdata.price1,
-        by_now_discount1: formdata.by_now_discount1,
-        final_list_price1: formdata.final_list_price1,
-        estimated_service_timing1: formdata.estimated_service_timing1,
-
-        title2: title2,
-        deliverable2: formdata.deliverable2,
-        price2: formdata.price2,
-        by_now_discount2: formdata.by_now_discount2,
-        final_list_price2: formdata.final_list_price2,
-        estimated_service_timing2: formdata.estimated_service_timing2,
-
-        title3: formdata.title3,
-        deliverable3: formdata.deliverable3,
-        price3: formdata.price3,
-        by_now_discount3: formdata.by_now_discount3,
-        final_list_price3: formdata.final_list_price3,
-        estimated_service_timing3: formdata.estimated_service_timing3,
+      formdata = {
+        ...formdata,
+        title1: e.target.title1?.value,
+        deliverable1: e.target.deliverable1?.value,
+        price1: e.target.price1?.value,
+        by_now_discount1: e.target.by_now_discount1?.value,
+        final_list_price1: e.target.final_list_price1?.value,
+        estimated_service_timing1: e.target?.estimated_service_timing1?.value,
+    
+        title2: e.target.title2?.value,
+        deliverable2: e.target.deliverable2?.value,
+        price2: e.target.price2?.value,
+        by_now_discount2: e.target.by_now_discount2?.value,
+        final_list_price2: e.target.final_list_price2?.value,
+        estimated_service_timing2: e.target?.estimated_service_timing2?.value,
+    
+        title3: e.target.title3?.value,
+        deliverable3: e.target.deliverable3?.value,
+        price3: e.target.price3?.value,
+        by_now_discount3: e.target.by_now_discount3?.value,
+        final_list_price3: e.target.final_list_price3?.value,
+        estimated_service_timing3: e.target?.estimated_service_timing3?.value,
       };
     }
+    
+    console.log(formdata);
+    
 
     try {
       const response = await fetch(
@@ -246,7 +249,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
 
       const textResponse = await response.text();
       console.log("Response Text:", textResponse);
-      console.log("formData",formData)
+      console.log("formData",formdata)
 
       let result;
       try {
@@ -358,7 +361,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="Flatr"
+                    id="flat_rate_price"
                     placeholder="$100"
                     value={formdata.flat_rate_price || ""}
                     onChange={(e) =>
@@ -379,7 +382,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="BuyNow"
+                    id="flat_by_now_discount"
                     placeholder="10 %"
                     value={formdata.flat_by_now_discount || ""}
                     onChange={(e) =>
@@ -400,7 +403,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="Finalp"
+                    id="flat_final_list_price"
                     placeholder="$90"
                     value={formdata.flat_final_list_price || ""}
                     onChange={(e) =>
@@ -420,6 +423,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     Estimated Service Time
                   </label>
                   <select
+                  id="flat_estimated_service_time"
                     className="myselect pe-[30px] focus-none"
                     value={formdata.flat_estimated_service_time || ""}
                     onChange={(e) =>
@@ -452,7 +456,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="HourlyRate"
+                    id="hourly_rate"
                     placeholder="$25/hour"
                     value={formdata.hourly_rate || ""}
                     onChange={(e) =>
@@ -473,7 +477,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="HourlyDiscount"
+                    id="discount"
                     placeholder="10 %"
                     value={formdata.discount || ""}
                     onChange={(e) =>
@@ -494,7 +498,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </label>
                   <input
                     type="text"
-                    id="HourlyFinalPrice"
+                    id="hourly_final_list_price"
                     placeholder="$90"
                     value={formdata.hourly_final_list_price || ""}
                     onChange={(e) =>
@@ -517,6 +521,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     Estimated Service Time
                   </label>
                   <select
+                  id="hourly_estimated_service_time"
                     className="myselect pe-[30px] focus-none"
                     value={formdata.hourly_estimated_service_time || ""}
                     onChange={(e) =>
@@ -966,8 +971,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               backgroundRepeat: "no-repeat",
                             }}
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
-                            name="estimated_service_timing2"
-                            id="estimated_service_timing2"
+                            name="estimated_service_timing3"
+                            id="estimated_service_timing3"
                             value={formdata.estimated_service_timing3}
                             onChange={(e) =>
                               setFormData((prev) => ({

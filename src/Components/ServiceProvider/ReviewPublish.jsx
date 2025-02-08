@@ -494,28 +494,36 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       {
         console.log("valueee",formdata)
       }
-      <CustomTabPanel value={value} index={0}>
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-medium myhead">{formdata.pricing_model}</h2>
-          <p className="text-3xl myhead font-bold">$200</p>
-        </div>
-        <p className="text-sm myblack mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-          diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-          accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-          interdum vehicula.
-        </p>
-        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-          <li>{formdata.flat_estimated_service_time}</li>
-          <li>Delivered Within 2 Days</li>
-        </ul>
-      </CustomTabPanel>
+    <CustomTabPanel value={value} index={0}>
+  <div className="flex justify-between">
+    <h2 className="text-2xl font-medium myhead">{formdata.pricing_model}</h2>
+    <p className="text-3xl myhead font-bold">
+  {formdata.pricing_model === "Hourly" ? "$" + formdata.hourly_final_list_price : 
+   formdata.pricing_model === "Flat" ? "$" + formdata.flat_rate_price :formdata.pricing_model === "Custom" ? "$" + formdata. price1
+    :"$200"}
+</p>
+
+  </div>
+
+  <p className="text-sm myblack mt-2">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci interdum vehicula.
+  </p>
+
+  <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+    {formdata.pricing_model === "Hourly" && <li>{formdata.hourly_estimated_service_time}</li>}
+    {formdata.pricing_model === "Flat" && <li>{formdata.flat_estimated_service_time}</li>}
+    {formdata.pricing_model === "Custom" && <li>{formdata.estimated_service_timing1}</li>}  {/* You can add your custom logic here */}
+    <li>Delivered Within 2 Days</li>
+  </ul>
+</CustomTabPanel>
+
+
 
       {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
         <CustomTabPanel value={value} index={1}>
           <div className="flex justify-between">
-            <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-            <p className="text-3xl myhead font-bold">$400</p>
+            <h2 className="text-2xl font-medium myhead">{formdata.pricing_model}</h2>
+            <p className="text-3xl myhead font-bold">${formdata.price2}</p>
           </div>
           <p className="text-sm myblack mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
@@ -524,7 +532,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             interdum vehicula.
           </p>
           <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            <li>{formdata.flat_estimated_service_time}</li>
+            <li>{formdata.estimated_service_timing2}</li>
             <li>Delivered Within 2 Days</li>
           </ul>
         </CustomTabPanel>
@@ -533,8 +541,8 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
         <CustomTabPanel value={value} index={2}>
           <div className="flex justify-between">
-            <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-            <p className="text-3xl myhead font-bold">$600</p>
+            <h2 className="text-2xl font-medium myhead">{formdata.pricing_model}</h2>
+            <p className="text-3xl myhead font-bold">${formdata.price3}</p>
           </div>
           <p className="text-sm myblack mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
@@ -543,7 +551,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             interdum vehicula.
           </p>
           <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            <li>{formdata.flat_estimated_service_time}</li>
+            <li>{formdata.estimated_service_timing3}</li>
             <li>Delivered Within 2 Days</li>
           </ul>
         </CustomTabPanel>

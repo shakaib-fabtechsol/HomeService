@@ -57,8 +57,8 @@ function ServiceDetail() {
   }, []);
 
   const [value, setValue] = React.useState(0);
-  const [serviceDetails, setServiceDetails] = useState(null); 
-   const [pricingModel, setPricingModel] = useState('');
+  const [serviceDetails, setServiceDetails] = useState(null);
+  const [pricingModel, setPricingModel] = useState("");
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -69,8 +69,6 @@ function ServiceDetail() {
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
   const handlecontactClose = () => setcontactOpen(false);
-
-
 
   const modalContacts = [
     { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
@@ -111,10 +109,9 @@ function ServiceDetail() {
             },
           })
           .then((response) => {
-            const model = serviceDetails?.pricing_model
-             || 'Hourly';
+            const model = serviceDetails?.pricing_model || "Hourly";
             setPricingModel(model);
-            console.log("model",model)
+            console.log("model", model);
             setServiceDetails(response.data.deal); // Set fetched data to state
             setLoading(false); // Stop loading
           })
@@ -328,98 +325,129 @@ function ServiceDetail() {
                 </Box>
               </div> */}
 
-               <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
-                  <Box sx={{ width: '100%' }}>
-                    <Box
+              <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
+                <Box sx={{ width: "100%" }}>
+                  <Box
+                    sx={{
+                      border: "1px solid #E9EAEB",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Tabs
+                      value={value}
+                      onChange={handleChange}
+                      aria-label="basic tabs example"
+                      variant="scrollable"
+                      TabIndicatorProps={{ sx: { display: "none" } }}
                       sx={{
-                        border: '1px solid #E9EAEB',
-                        borderRadius: '12px',
-                        overflow: 'hidden',
+                        backgroundColor: "#ffffff",
+                        "& .MuiTab-root": {
+                          color: "#535862",
+                          textTransform: "capitalize",
+                          fontFamily: "inter",
+                        },
+                        "& .Mui-selected": {
+                          color: "#181D27",
+                          fontWeight: "700",
+                        },
                       }}
                     >
-                      <Tabs
-                        value={value}
-                        onChange={handleChange}
-                        aria-label="basic tabs example"
-                        variant="scrollable"
-                        TabIndicatorProps={{ sx: { display: 'none' } }}
-                        sx={{
-                          backgroundColor: '#ffffff',
-                          '& .MuiTab-root': {
-                            color: '#535862',
-                            textTransform: 'capitalize',
-                            fontFamily: 'inter',
-                          },
-                          '& .Mui-selected': {
-                            color: '#181D27',
-                            fontWeight: '700',
-                          },
-                        }}
-                      >
-                        <Tab label="Basic" {...a11yProps(0)} />
-                        {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Standard" {...a11yProps(1)} /> }
-                        {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Premium" {...a11yProps(2)} /> }
-                      </Tabs>
-                    </Box>
-                    {
-                      console.log("valueee",serviceDetails?.pricing_model)
-                    }
-                    <CustomTabPanel value={value} index={0}>
+                       <Tab label="Basic" {...a11yProps(0)} />
+                                {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Standard" {...a11yProps(1)} /> }
+                                {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Premium" {...a11yProps(2)} /> }
+                              </Tabs>
+                  </Box>
+                  {console.log("valueee", serviceDetails?.pricing_model)}
+                  <CustomTabPanel value={value} index={0}>
+                    <div className="flex justify-between">
+                      <h2 className="text-2xl font-medium myhead">
+                        {serviceDetails[0]?.pricing_model}
+                      </h2>
+                      <p className="text-3xl myhead font-bold">
+                        {serviceDetails[0]?.pricing_model === "Hourly"
+                          ? "$" + serviceDetails[0].hourly_final_list_price
+                          : serviceDetails[0]?.pricing_model === "Flat"
+                          ? "$" + serviceDetails[0].flat_rate_price
+                          : serviceDetails[0]?.pricing_model === "Custom"
+                          ? "$" + serviceDetails[0].price1
+                          : "$200"}
+                      </p>
+                    </div>
+                    <p className="text-sm myblack mt-2">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                      egestas lacus. Phasellus accumsan fermentum dolor eu
+                      gravida. Vivamus dignissim augue sed orci interdum
+                      vehicula.
+                    </p>
+
+                    <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                      {serviceDetails[0]?.pricing_model === "Hourly" && (
+                        <li>
+                          {serviceDetails[0]?.hourly_estimated_service_time}
+                        </li>
+                      )}
+                      {serviceDetails[0]?.pricing_model === "Flat" && (
+                        <li>
+                          {serviceDetails[0]?.flat_estimated_service_time}
+                        </li>
+                      )}
+                      {serviceDetails[0]?.pricing_model === "Custom" && (
+                        <li> {serviceDetails[0]?.estimated_service_timing1}</li>
+                      )}{" "}
+                      {/* You can add your custom logic here */}
+                      <li>Delivered Within 2 Days</li>
+                    </ul>
+                  </CustomTabPanel>
+
+                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                    <CustomTabPanel value={value} index={1}>
                       <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">{serviceDetails[0]?.pricing_model}</h2>
-                        <p className="text-3xl myhead font-bold">$200</p>
+                        <h2 className="text-2xl font-medium myhead">
+                        {serviceDetails[0]?.pricing_model}
+                        </h2>
+                        <p className="text-3xl myhead font-bold">{serviceDetails[0]?.price2}</p>
                       </div>
                       <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-                        diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-                        accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-                        interdum vehicula.
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                        egestas lacus. Phasellus accumsan fermentum dolor eu
+                        gravida. Vivamus dignissim augue sed orci interdum
+                        vehicula.
                       </p>
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>{serviceDetails[0]?.flat_estimated_service_time}</li>
+                        <li>
+                        {serviceDetails[0]?.estimated_service_timing2}
+                        </li>
                         <li>Delivered Within 2 Days</li>
                       </ul>
                     </CustomTabPanel>
-              
-                    {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
-                      <CustomTabPanel value={value} index={1}>
-                        <div className="flex justify-between">
-                          <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-                          <p className="text-3xl myhead font-bold">$400</p>
-                        </div>
-                        <p className="text-sm myblack mt-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-                          diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-                          accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-                          interdum vehicula.
-                        </p>
-                        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                          <li>{serviceDetails[0]?.flat_estimated_service_time}</li>
-                          <li>Delivered Within 2 Days</li>
-                        </ul>
-                      </CustomTabPanel>
-                    )}
-              
-                    {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
-                      <CustomTabPanel value={value} index={2}>
-                        <div className="flex justify-between">
-                          <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-                          <p className="text-3xl myhead font-bold">$600</p>
-                        </div>
-                        <p className="text-sm myblack mt-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-                          diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-                          accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-                          interdum vehicula.
-                        </p>
-                        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                          <li>{pricingModel.flat_estimated_service_time}</li>
-                          <li>Delivered Within 2 Days</li>
-                        </ul>
-                      </CustomTabPanel>
-                    )}
-                  </Box>
-                  </div>
+                  )}
+
+                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                    <CustomTabPanel value={value} index={2}>
+                      <div className="flex justify-between">
+                        <h2 className="text-2xl font-medium myhead">
+                        {serviceDetails[0]?.pricing_model}
+                        </h2>
+                        <p className="text-3xl myhead font-bold">{serviceDetails[0]?.price3}</p>
+                      </div>
+                      <p className="text-sm myblack mt-2">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                        egestas lacus. Phasellus accumsan fermentum dolor eu
+                        gravida. Vivamus dignissim augue sed orci interdum
+                        vehicula.
+                      </p>
+                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                        <li>  {serviceDetails[0]?.estimated_service_timing3}</li>
+                        <li>Delivered Within 2 Days</li>
+                      </ul>
+                    </CustomTabPanel>
+                  )}
+                </Box>
+              </div>
               <button
                 onClick={handlecontactOpen}
                 className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
@@ -452,7 +480,8 @@ function ServiceDetail() {
             Deal Description
           </h2>
           <p className="mt-2 myblack">
-            {serviceDetails[0]?.service_desc || "No description available."}
+            {serviceDetails[0]?.service_description ||
+              "No description available."}
           </p>
           <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
           <p className="mt-2 myblack">

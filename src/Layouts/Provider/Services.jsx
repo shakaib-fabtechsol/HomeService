@@ -150,12 +150,7 @@ function Services() {
               <ServiceBox
               key={service.id}
               title={service.service_title}
-              price={
-                service.pricing_model === 'Flat' ? 
-                  service.flat_rate_price : 
-                  service.pricing_model === 'Hourly' ? 
-                    service.hourly_rate_price : 
-                    service.custom_rate_price
+              price={service.pricing_model === 'Flat' ? service.flat_rate_price : service?.pricing_model == 'Hourly' ? service.hourly_final_list_price : service.custom_rate_price
               }
               description={service.service_description}
               tags={
