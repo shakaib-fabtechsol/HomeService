@@ -37,6 +37,8 @@ function ServiceBox({
         />
       </div>
 
+     
+
       <p
         className={
           publish === 1
@@ -131,6 +133,9 @@ function Services() {
             <span>Create New</span>
           </Link>
         </div>
+        {
+          console.log("value",filteredServices)
+        }
 
         {loading ? (
           <Loader />
@@ -140,18 +145,23 @@ function Services() {
             {filteredServices.length > 0 ? (
               filteredServices.map((service) => (
                 <ServiceBox
-                  key={service.id}
-                  title={service.service_title}
-                  price={service.flat_rate_price}
-                  description={service.service_description}
-                  tags={
-                    service.search_tags ? service.search_tags.split(",") : []
-                  }
-                
-                  image={service.image}
-                  publish={service.publish}
-                  dealid={service.id}
-                />
+                key={service.id}
+                title={service.service_title}
+                price={
+                  service.pricing_model === 'Flat' ? 
+                    service.flat_rate_price : 
+                    service.pricing_model === 'Hourly' ? 
+                      service.hourly_rate_price : 
+                      service.custom_rate_price
+                }
+                description={service.service_description}
+                tags={
+                  service.search_tags ? service.search_tags.split(",") : []
+                }
+                image={service.image}
+                publish={service.publish}
+                dealid={service.id}
+              />
               ))
             ) : (
               <p>No services found</p>
