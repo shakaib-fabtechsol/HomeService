@@ -242,9 +242,6 @@ function BasicInfo({ setServiceId, setValue }) {
 
           <div className="col-span-12 lg:col-span-7 mt-4">
             <div className="flex flex-col">
-              <label htmlFor="Tags" className="font-semibold">
-                Search Tags
-              </label>
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Tags" className="font-semibold">
