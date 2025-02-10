@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 const PricingPackaging = ({ serviceId, setValue }) => {
   const navigate = useNavigate();
   const { dealid } = useParams();
+
   const [loading, setLoading] = useState(false);
   const [formdata, setFormData] = useState({
     id: "",
@@ -185,7 +186,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
   
     let formdata = {
-      id: e.target.Flatr.value,
+      id: serviceId,
       pricing_model: selectedRate,
     };
     
@@ -201,7 +202,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       formdata = {
         ...formdata,
         hourly_rate: e.target.hourly_rate.value,
-        discount: e.target.discount ? e.target.discount?.value : null,  // Assuming discount might be optional
+        discount: e.target.discount ? e.target.discount?.value : null,  
         hourly_final_list_price: e.target.hourly_final_list_price?.value,
         hourly_estimated_service_time: e.target.hourly_estimated_service_time?.value,
       };
@@ -231,7 +232,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       };
     }
     
-    console.log(formdata);
+  
     
 
     try {
@@ -249,7 +250,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
 
       const textResponse = await response.text();
       console.log("Response Text:", textResponse);
-      console.log("formData",formdata)
 
       let result;
       try {

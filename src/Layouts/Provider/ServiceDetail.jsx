@@ -353,10 +353,15 @@ function ServiceDetail() {
                         },
                       }}
                     >
-                       <Tab label="Basic" {...a11yProps(0)} />
-                                {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Standard" {...a11yProps(1)} /> }
-                                {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Premium" {...a11yProps(2)} /> }
-                              </Tabs>
+                    
+                      <Tab label="Basic" {...a11yProps(0)} />
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <Tab label="Standard" {...a11yProps(1)} />
+                      )}
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <Tab label="Premium" {...a11yProps(2)} />
+                      )}
+                    </Tabs>
                   </Box>
                   {console.log("valueee", serviceDetails?.pricing_model)}
                   <CustomTabPanel value={value} index={0}>
@@ -405,9 +410,11 @@ function ServiceDetail() {
                     <CustomTabPanel value={value} index={1}>
                       <div className="flex justify-between">
                         <h2 className="text-2xl font-medium myhead">
-                        {serviceDetails[0]?.pricing_model}
+                          {serviceDetails[0]?.pricing_model}
                         </h2>
-                        <p className="text-3xl myhead font-bold">{serviceDetails[0]?.price2}</p>
+                        <p className="text-3xl myhead font-bold">
+                          {serviceDetails[0]?.price2}
+                        </p>
                       </div>
                       <p className="text-sm myblack mt-2">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -417,9 +424,7 @@ function ServiceDetail() {
                         vehicula.
                       </p>
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>
-                        {serviceDetails[0]?.estimated_service_timing2}
-                        </li>
+                        <li>{serviceDetails[0]?.estimated_service_timing2}</li>
                         <li>Delivered Within 2 Days</li>
                       </ul>
                     </CustomTabPanel>
@@ -429,9 +434,11 @@ function ServiceDetail() {
                     <CustomTabPanel value={value} index={2}>
                       <div className="flex justify-between">
                         <h2 className="text-2xl font-medium myhead">
-                        {serviceDetails[0]?.pricing_model}
+                          {serviceDetails[0]?.pricing_model}
                         </h2>
-                        <p className="text-3xl myhead font-bold">{serviceDetails[0]?.price3}</p>
+                        <p className="text-3xl myhead font-bold">
+                          {serviceDetails[0]?.price3}
+                        </p>
                       </div>
                       <p className="text-sm myblack mt-2">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -441,7 +448,7 @@ function ServiceDetail() {
                         vehicula.
                       </p>
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>  {serviceDetails[0]?.estimated_service_timing3}</li>
+                        <li> {serviceDetails[0]?.estimated_service_timing3}</li>
                         <li>Delivered Within 2 Days</li>
                       </ul>
                     </CustomTabPanel>

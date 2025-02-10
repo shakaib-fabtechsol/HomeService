@@ -1,218 +1,348 @@
-import React, { useState } from 'react'
-import { FaPencilAlt } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from "react";
+import { FaPencilAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
+import {
+  LoadScript,
+  GoogleMap,
+  Marker,
+  Autocomplete,
+} from "@react-google-maps/api";
+const GOOGLE_API_KEY = "AIzaSyAu1gwHCSzLG9ACacQqLk-LG8oJMkarNF0";
 
+const libraries = ["places"];
 const Location = () => {
-    function valueLabelFormat(value) {
-        return `${value} Miles`;
+  const [serviceType, setServiceType] = useState("location");
+  const [location, setLocation] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [isBulk, setIsBulk] = useState(false);
+  const [bulkText, setBulkText] = useState("");
+  const [locationsList, setLocationsList] = useState([]);
+  const [value2, setValue2] = useState(10);
+  const [mapUrl, setMapUrl] = useState("");
+  const [lat, setLat] = useState(0);
+  const [lng, setLng] = useState(0);
+  const autocompleteRef = useRef(null);
+
+  function valueLabelFormat(value) {
+    return `${value} Miles`;
+  }
+
+  function calculateValue(value) {
+    return value;
+  }
+
+  const handleChange2 = (event, newValue) => {
+    if (typeof newValue === "number") {
+      setValue2(newValue);
     }
+  };
 
-    function calculateValue(value) {
-        return value; 
-    }
+  const getAddressFromComponents = (place) => {
+    if (!place.address_components) return "Address not found";
 
-    const [serviceType, setServiceType] = useState("location");
+    return place.address_components
+      .map((component) => component.long_name)
+      .join(", ");
+  };
 
-    const [value2, setValue2] = React.useState(10);
+  const onPlaceSelected = () => {
+    if (autocompleteRef.current) {
+      const place = autocompleteRef.current.getPlace();
 
-    const handleChange2 = (event, newValue) => {
-        if (typeof newValue === "number") {
-            setValue2(newValue);
+      if (place && place.geometry) {
+        const lat = place.geometry.location.lat();
+        const lng = place.geometry.location.lng();
+
+        console.log("Selected Place Object:", place);
+
+        let address =
+          place.formatted_address || getAddressFromComponents(place);
+
+        if (address) {
+          setLocation(address);
+          setLat(lat);
+          setLng(lng);
+          setMapUrl(
+            `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_API_KEY}&q=${lat},${lng}`
+          );
+          if (!locationsList.includes(address)) {
+            setLocationsList((prevList) => [...prevList, address]);
+          }
+        } else {
+          console.error("Address not found");
         }
-    };
-    return (
+      } else {
+        console.error("Location data is missing.");
+      }
+    }
+  };
+
+  const handleBulkChange = (e) => {
+    setIsBulk(e.target.checked);
+    setBulkText("");
+    setLocations([]);
+  };
+
+  const handleBulkTextChange = (e) => {
+    setBulkText(e.target.value);
+  };
+
+  const handleAddLocation = (e) => {
+    if (e.key === "Enter" && inputValue.trim() !== "") {
+      e.preventDefault();
+
+      if (!locations.includes(inputValue.trim())) {
+        const updatedLocations = [...locations, inputValue.trim()];
+        setLocations(updatedLocations);
+        setInputValue("");
+      }
+    }
+  };
+
+  const handleRemoveLocation = (index) => {
+    const updatedList = locationsList.filter((_, i) => i !== index);
+    setLocationsList(updatedList);
+  };
+
+  const handleAdd = (e) => {
+    if (e.key === "Enter" && inputValue.trim() !== "") {
+      setLocationsList([...locationsList, inputValue.trim()]);
+      setInputValue("");
+    }
+  };
+
+  return (
+    <div>
+      <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
         <div>
-            <div>
-                <div class="lg:max-w-[65%] xl:max-w-[45%]">
-                    <div className="flex flex-wrap gap-4 items-center mb-4">
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="serviceType"
-                                className="form-radio"
-                                checked={serviceType === "location"}
-                                onChange={() => setServiceType("location")}
-                            />
-                            <span className="ms-3">Service Locations</span>
-                        </label>
-                        <label className="flex items-center">
-                            <input
-                                type="radio"
-                                name="serviceType"
-                                className="form-radio"
-                                checked={serviceType === "radius"}
-                                onChange={() => setServiceType("radius")}
-                            />
-                            <span className="ms-3">Service Radius</span>
-                        </label>
-                    </div>
-                    {/* Service Locations Section */}
-                    {serviceType === "location" && (
-                        <div className="ser-location">
-                            <div class="mb-6 ">
-                                <label
-                                    htmlFor="bloc"
-                                    class="block text-sm font-medium mb-2"
-                                >
-                                    Business Location
-                                </label>
-                                <div class="flex items-center border py-2 rounded-lg px-3 ">
-                                    <img src={location} alt="" className="max-w-20px me-2" />
-                                    <input
-                                        id="bloc"
-                                        type="text"
-                                        placeholder="Enter your business address."
-                                        class="w-full py-2 focus-none"
-                                    />
-                                    <FaPencilAlt />
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <div className="flex flex-wrap justify-between">
-                                    <label
-                                        htmlFor="sloc"
-                                        class="block text-sm font-medium my-2"
-                                    >
-                                        Enter Service Locations
-                                    </label>
-                                    <div className="flex my-2 items-center">
-                                        <input
-                                            type="checkbox"
-                                            name=""
-                                            id="bulk"
-                                            className="me-2 focus-none focus:outline-none"
-                                        />
-                                        <label
-                                            htmlFor="bulk"
-                                            className="block text-sm font-semibold"
-                                        >
-                                            Add locations in bulk
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="flex items-center  mb-2">
-                                    <textarea
-                                        id="sloc"
-                                        rows="4"
-                                        placeholder="Locations can be cities, postal codes, countries, etc. Enter one location per line."
-                                        class="w-full border focus-none rounded-lg px-3 py-2"
-                                    ></textarea>
-                                </div>
-                                <p class="text-sm myblack text-end">0 / 1000</p>
-                            </div>
-                            <div class="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
-                                <label class="" htmlFor="restrict">
-                                    <img src={location} alt="" className="max-w-20px me-2" />
-                                </label>
-                                <input
-                                    type="text"
-                                    id="restrict"
-                                    class="w-full focus-none rounded-lg px-3 py-4"
-                                    placeholder="Restrict locations within a country (optional)"
-                                />
-                            </div>
-                            <div className="border rounded-lg py-3">
-                                <div className="px-3 py-1 flex items-center justify-between">
-                                    <p className="myblack">location 01</p>
-                                    <Link to="#">
-                                        <img src={close} alt="" />
-                                    </Link>
-                                </div>
-                                <div className="px-3 py-1 flex items-center justify-between">
-                                    <p className="myblack">location 02</p>
-                                    <Link to="#">
-                                        <img src={close} alt="" />
-                                    </Link>
-                                </div>
-                                <div className="px-3 py-1 flex items-center justify-between">
-                                    <p className="myblack">location 03</p>
-                                    <Link to="#">
-                                        <img src={close} alt="" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Service Radius Section */}
-                    {serviceType === "radius" && (
-                        <div className="ser-radius">
-                            <div class="mb-6 ">
-                                <label
-                                    htmlFor="bloc"
-                                    class="block text-sm font-medium mb-2"
-                                >
-                                    Enter Service Locations
-                                </label>
-                                <div class="flex items-center border py-2 rounded-lg px-3 ">
-                                    <img src={location} alt="" className="max-w-20px me-2" />
-                                    <input
-                                        id="bloc"
-                                        type="text"
-                                        placeholder="Enter your State and Zip code service address."
-                                        class="w-full py-2 focus-none"
-                                    />
-                                    <FaPencilAlt />
-                                </div>
-                            </div>
-                            <div class=" ">
-                                <label htmlFor="" class="block text-sm font-medium mb-2">
-                                    Coverage from Service Location
-                                </label>
-                                <div className="flex justify-between">
-                                    <p className="text-sm">0 Miles</p>
-                                    <p className="text-sm">60 Miles</p>
-                                </div>
-                            </div>
-                            <Box>
-                                <Slider
-                                    value={value2}
-                                    min={0}
-                                    step={1}
-                                    max={60}
-                                    scale={calculateValue}
-                                    getAriaValueText={valueLabelFormat}
-                                    valueLabelFormat={valueLabelFormat}
-                                    onChange={handleChange2}
-                                    valueLabelDisplay="auto"
-                                    aria-labelledby="non-linear-slider"
-                                />
-                            </Box>
-                        </div>
-                    )}
-                </div>
-                <div className="col-span-12 mt-4">
-                    <iframe
-                        title="Google Map"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509827!2d144.96305781531895!3d-37.816279442021675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf0727b3f94355567!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sus!4v1674678878475!5m2!1sen!2sus"
-                        width="100%"
-                        height="450"
-                        style={{ border: 0 }}
-                        allowFullScreen={true}
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                    ></iframe>
-                </div>
-                <div className="flex justify-end mt-12">
-                    <button
-                        type="reset"
-                        className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                    >
-                        {" "}
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                    >
-                        Save
-                    </button>
-                </div>
+          <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+            <p className="text-lg font-semibold text-[#181D27]">Locations</p>
+            <p className="text-[#535862] text-sm">Choose Your Location</p>
+          </div>
+          <div className="lg:max-w-[65%] xl:max-w-[45%]">
+            <div className="flex flex-wrap gap-4 py-4 items-center mb-4">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="serviceType"
+                  className="form-radio"
+                  checked={serviceType === "location"}
+                  onChange={() => setServiceType("location")}
+                />
+                <span className="ms-3">Service Locations</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="serviceType"
+                  className="form-radio"
+                  checked={serviceType === "radius"}
+                  onChange={() => setServiceType("radius")}
+                />
+                <span className="ms-3">Service Radius</span>
+              </label>
             </div>
-        </div>
-    )
-}
 
-export default Location
+            {serviceType === "location" && (
+              <div className="ser-location">
+                <div className="mb-6">
+                  <label
+                    htmlFor="bloc"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Business Location
+                  </label>
+                  <div className="flex items-center border py-2 rounded-lg px-3">
+                    <Autocomplete
+                      onLoad={(auto) => (autocompleteRef.current = auto)}
+                      onPlaceChanged={onPlaceSelected}
+                    >
+                      <input
+                        type="text"
+                        value={location}
+                        onChange={(e) => setLocation(e.target.value)}
+                        placeholder="Enter your service location..."
+                        className="w-full py-2 px-3 focus-none"
+                      />
+                    </Autocomplete>
+                    <FaPencilAlt
+                      className="ml-2 cursor-pointer"
+                      onClick={() => setLocation("")}
+                    />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <div className="flex flex-wrap justify-between">
+                    <label
+                      htmlFor="sloc"
+                      className="block text-sm font-medium my-2"
+                    >
+                      Enter Service Locations
+                    </label>
+                    <div className="flex my-2 items-center">
+                      <input
+                        type="checkbox"
+                        id="bulk"
+                        className="me-2 focus-none focus:outline-none"
+                        checked={isBulk}
+                        onChange={handleBulkChange}
+                      />
+                      <label
+                        htmlFor="bulk"
+                        className="block text-sm font-semibold"
+                      >
+                        Add locations in bulk
+                      </label>
+                    </div>
+                  </div>
+
+                  {isBulk ? (
+                    <div className="relative flex flex-col mb-2 border rounded-lg px-3 py-2">
+                      <textarea
+                        id="bulkLoc"
+                        rows="4"
+                        onKeyDown={handleAddLocation}
+                        placeholder="Enter locations, one per line."
+                        className="w-full bg-transparent outline-none pt-[40px] resize-none"
+                        value={bulkText}
+                        onChange={handleBulkTextChange}
+                      ></textarea>
+                    </div>
+                  ) : (
+                    <div className="flex items-center mb-2">
+                      <Autocomplete
+                        onLoad={(auto) => (autocompleteRef.current = auto)}
+                        onPlaceChanged={onPlaceSelected}
+                      >
+                        <input
+                          type="text"
+                          placeholder="Enter service location..."
+                          className="w-full py-2 px-3 focus-none"
+                        />
+                      </Autocomplete>
+                    </div>
+                  )}
+
+                  <p className="text-sm myblack text-end">
+                    {locations.length} / 1000
+                  </p>
+                </div>
+
+                <div className="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
+                  <label htmlFor="restrict">
+                    <img src={location} alt="" className="max-w-20px me-2" />
+                  </label>
+                  <input
+                    type="text"
+                    id="restrict"
+                    className="w-full focus-none rounded-lg px-3 py-4"
+                    placeholder="Restrict locations within a country (optional)"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    onKeyDown={handleAdd}
+                  />
+                </div>
+                <div className="border rounded-lg py-3">
+                  {locationsList.map((loc, index) => (
+                    <div
+                      key={index}
+                      className="px-3 py-1 flex items-center justify-between"
+                    >
+                      <p className="myblack">{loc}</p>
+                      <Link to="#" onClick={() => handleRemoveLocation(index)}>
+                        ×
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {serviceType === "radius" && (
+              <div className="ser-radius">
+                <div className="mb-6">
+                  <label
+                    htmlFor="bloc"
+                    className="block text-sm font-medium mb-2"
+                  >
+                    Enter Service Locations
+                  </label>
+                  <div className="flex items-center border py-2 rounded-lg px-3">
+                    <img src={location} alt="" className="max-w-20px me-2" />
+                    <input
+                      id="bloc"
+                      type="text"
+                      placeholder="Enter your State and Zip code service address."
+                      className="w-full py-2 focus-none"
+                    />
+                    <FaPencilAlt />
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="" className="block text-sm font-medium mb-2">
+                    Coverage from Service Location
+                  </label>
+                  <div className="flex justify-between">
+                    <p className="text-sm">0 Miles</p>
+                    <p className="text-sm">60 Miles</p>
+                  </div>
+                </div>
+                <Box>
+                  <Slider
+                    value={value2}
+                    min={0}
+                    step={1}
+                    max={60}
+                    scale={calculateValue}
+                    getAriaValueText={valueLabelFormat}
+                    valueLabelFormat={valueLabelFormat}
+                    onChange={handleChange2}
+                    valueLabelDisplay="auto"
+                    aria-labelledby="non-linear-slider"
+                  />
+                </Box>
+              </div>
+            )}
+
+            <div className="col-span-12 mt-4">
+              {mapUrl && (
+                <div className="col-span-12 mt-4">
+                  <iframe
+                    title="Google Map"
+                    src={mapUrl}
+                    width="100%"
+                    height="450"
+                    style={{ border: 0 }}
+                    allowFullScreen={true}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                </div>
+              )}
+            </div>
+
+            <div className="flex justify-end mt-12">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      </LoadScript>
+    </div>
+  );
+};
+
+export default Location;

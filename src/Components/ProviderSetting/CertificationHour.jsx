@@ -47,7 +47,7 @@ const CertificationHour = () => {
     const uploadedFile = e.target.files[0];
     setFormData((prevState) => ({
       ...prevState,
-      [fieldName]: uploadedFile, // Store the file in the corresponding field
+      [fieldName]: uploadedFile, 
     }));
   };
 
@@ -138,7 +138,7 @@ const CertificationHour = () => {
       console.error("Error submitting form:", error);
       toast.error("Failed to update profile. Please try again.");
     } finally {
-      setLoading(false); // Stop loading state
+      setLoading(false); 
     }
   };
 
@@ -384,9 +384,12 @@ const CertificationHour = () => {
             </button>
             <button
               type="submit"
-              className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+              className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                loading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              disabled={loading}
             >
-              Save
+              {loading ? "Saving..." : "Save"}
             </button>
           </div>
         </div>
