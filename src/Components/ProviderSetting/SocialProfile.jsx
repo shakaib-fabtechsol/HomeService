@@ -15,7 +15,27 @@ const SocialProfile = () => {
   const [selectedSocial, setSelectedSocial] = useState(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({});
-
+  const [errors, setErrors] = useState({});
+  const validateUrl = (url) => {
+    const urlPattern = /^(https?:\/\/)?(www\.)?[\w-]+(\.[a-z]{2,})+\/?.*$/i;
+    return urlPattern.test(url);
+  };
+  
+  const handleChange = (e) => {
+    const socialKey = selectedSocial.name.toLowerCase().replace(" ", "_");
+    const value = e.target.value;
+  
+    setFormData({ ...formData, [socialKey]: value });
+   
+    if (value && !validateUrl(value)) {
+      setErrors({
+        ...errors,
+        [socialKey]: `Please enter a valid ${selectedSocial.name} URL`,
+      });
+    } else {
+      setErrors({ ...errors, [socialKey]: "" });
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -37,7 +57,7 @@ const SocialProfile = () => {
         [socialKey]: userInputUrl,
       };
 
-      await axios.post(
+      const response = await axios.post(
         "https://homeservice.thefabulousshow.com/api/Social",
         payload,
         {
@@ -48,10 +68,39 @@ const SocialProfile = () => {
         }
       );
 
-      toast.success(`${selectedSocial.name} URL submitted successfully!`);
-      setSelectedSocial(null);
+      console.log("Full response:", response.data); 
+
+      const errorMessages = {
+        "Invalid Facebook URL":
+          "The provided Facebook URL is invalid. Please enter a valid URL.",
+        "Invalid Instagram URL":
+          "The provided Instagram URL is invalid. Please enter a valid URL.",
+        "Invalid LinkedIn URL":
+          "The provided LinkedIn URL is invalid. Please enter a valid URL.",
+        "Invalid Google Business URL":
+          "The provided Google Business URL is invalid. Please enter a valid URL.",
+        "Invalid YouTube URL":
+          "The provided YouTube URL is invalid. Please enter a valid URL.",
+        "Invalid Twitter URL":
+          "The provided Twitter URL is invalid. Please enter a valid URL.",
+      };
+
+      const backendMessage = response.data?.message || response.data?.error;
+
+      if (backendMessage && errorMessages[backendMessage]) {
+        toast.error(errorMessages[backendMessage]);
+      } else if (backendMessage) {
+        toast.success(backendMessage);
+        setSelectedSocial(null);
+      } else {
+        toast.success(`${selectedSocial.name} URL submitted successfully!`);
+        setSelectedSocial(null);
+      }
     } catch (error) {
-      toast.error("Failed to submit. Please try again.");
+      console.error("Submission error:", error.response?.data?.message);
+      toast.error(
+        error.response?.data?.message || "Failed to submit. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -135,23 +184,37 @@ const SocialProfile = () => {
                   <p className="text-[#535862] text-center">
                     Enter your profile URL to connect.
                   </p>
-                  <input
-                    className="border border-[#D5D7DA] w-full p-3 rounded-[8px] focus:outline-none"
-                    value={
-                      formData[
-                        selectedSocial.name.toLowerCase().replace(" ", "_")
-                      ] || ""
-                    }
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        [selectedSocial.name.toLowerCase().replace(" ", "_")]:
-                          e.target.value,
-                      })
-                    }
-                    type="url"
-                    required
-                  />
+                  <div>
+                    <input
+                      className={`border w-full p-3 rounded-[8px] focus:outline-none ${
+                        errors[
+                          selectedSocial.name.toLowerCase().replace(" ", "_")
+                        ]
+                          ? "border-red-500"
+                          : "border-[#D5D7DA]"
+                      }`}
+                      value={
+                        formData[
+                          selectedSocial.name.toLowerCase().replace(" ", "_")
+                        ] || ""
+                      }
+                      onChange={handleChange}
+                      type="url"
+                      required
+                    />
+                    {errors[
+                      selectedSocial.name.toLowerCase().replace(" ", "_")
+                    ] && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {
+                          errors[
+                            selectedSocial.name.toLowerCase().replace(" ", "_")
+                          ]
+                        }
+                      </p>
+                    )}
+                  </div>
+
                   <button
                     type="submit"
                     className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${

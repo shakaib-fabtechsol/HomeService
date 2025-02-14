@@ -10,7 +10,6 @@ import {
   Autocomplete,
 } from "@react-google-maps/api";
 const GOOGLE_API_KEY = "AIzaSyAu1gwHCSzLG9ACacQqLk-LG8oJMkarNF0";
-
 const libraries = ["places"];
 const Location = () => {
   const [serviceType, setServiceType] = useState("location");
@@ -22,10 +21,53 @@ const Location = () => {
   const [locationsList, setLocationsList] = useState([]);
   const [value2, setValue2] = useState(10);
   const [mapUrl, setMapUrl] = useState("");
-  const [lat, setLat] = useState(0);
-  const [lng, setLng] = useState(0);
-  const autocompleteRef = useRef(null);
+  const [lat, setLat] = useState(null);
+  const [lng, setLng] = useState(null);
 
+  const autocompleteRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const checkGoogle = setInterval(() => {
+      if (window.google && window.google.maps && window.google.maps.places) {
+        clearInterval(checkGoogle);
+        if (!inputRef.current) return;
+
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(
+          inputRef.current,
+          { types: ["geocode"] }
+        );
+
+  
+        autocompleteRef.current.addListener("place_changed", onPlaceSelected);
+      }
+    }, 500);
+  
+    return () => clearInterval(checkGoogle);
+  }, []);
+  
+
+  const onPlaceSelected = () => {
+    if (!autocompleteRef.current) return;
+
+    const place = autocompleteRef.current.getPlace();
+
+    if (!place || !place?.geometry) {
+      console.error("No location found.");
+      return;
+    }
+
+    const latitude = place.geometry.location.lat();
+    const longitude = place.geometry.location.lng();
+    const address = place.formatted_address;
+
+    setLocation(address);
+    setLat(latitude);
+    setLng(longitude);
+    setMapUrl(
+      `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_API_KEY}&q=${latitude},${longitude}`
+    );
+  };
   function valueLabelFormat(value) {
     return `${value} Miles`;
   }
@@ -37,46 +79,6 @@ const Location = () => {
   const handleChange2 = (event, newValue) => {
     if (typeof newValue === "number") {
       setValue2(newValue);
-    }
-  };
-
-  const getAddressFromComponents = (place) => {
-    if (!place.address_components) return "Address not found";
-
-    return place.address_components
-      .map((component) => component.long_name)
-      .join(", ");
-  };
-
-  const onPlaceSelected = () => {
-    if (autocompleteRef.current) {
-      const place = autocompleteRef.current.getPlace();
-
-      if (place && place.geometry) {
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-
-        console.log("Selected Place Object:", place);
-
-        let address =
-          place.formatted_address || getAddressFromComponents(place);
-
-        if (address) {
-          setLocation(address);
-          setLat(lat);
-          setLng(lng);
-          setMapUrl(
-            `https://www.google.com/maps/embed/v1/place?key=${GOOGLE_API_KEY}&q=${lat},${lng}`
-          );
-          if (!locationsList.includes(address)) {
-            setLocationsList((prevList) => [...prevList, address]);
-          }
-        } else {
-          console.error("Address not found");
-        }
-      } else {
-        console.error("Location data is missing.");
-      }
     }
   };
 
@@ -155,7 +157,7 @@ const Location = () => {
                   >
                     Business Location
                   </label>
-                  <div className="flex items-center border py-2 rounded-lg px-3">
+                  <div className="flex items-center border py-2 rounded-lg px-3 relative w-full">
                     <Autocomplete
                       onLoad={(auto) => (autocompleteRef.current = auto)}
                       onPlaceChanged={onPlaceSelected}
@@ -165,12 +167,12 @@ const Location = () => {
                         value={location}
                         onChange={(e) => setLocation(e.target.value)}
                         placeholder="Enter your service location..."
-                        className="w-full py-2 px-3 focus-none"
+                        className="w-full py-2 px-3 focus-none pr-10"
                       />
                     </Autocomplete>
                     <FaPencilAlt
-                      className="ml-2 cursor-pointer"
                       onClick={() => setLocation("")}
+                      className="absolute right-3 text-gray-500 cursor-pointer hover:text-gray-700"
                     />
                   </div>
                 </div>
@@ -307,20 +309,25 @@ const Location = () => {
               </div>
             )}
 
-            <div className="col-span-12 mt-4">
+            {lat && lng && (
+              <div className="text-sm">
+                <p>Latitude: {lat}</p>
+                <p>Longitude: {lng}</p>
+              </div>
+            )}
+
+            {console.log("value", mapUrl)}
+            <div>
               {mapUrl && (
-                <div className="col-span-12 mt-4">
-                  <iframe
-                    title="Google Map"
-                    src={mapUrl}
-                    width="100%"
-                    height="450"
-                    style={{ border: 0 }}
-                    allowFullScreen={true}
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  ></iframe>
-                </div>
+                <iframe
+                  title="Google Map"
+                  width="100%"
+                  height="400"
+                  frameBorder="0"
+                  style={{ border: 0 }}
+                  src={mapUrl}
+                  allowFullScreen
+                ></iframe>
               )}
             </div>
 

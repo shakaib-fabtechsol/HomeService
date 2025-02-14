@@ -5,19 +5,19 @@ import profileImg from "../../assets/img/service3.png";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import {  toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 const MyDetail = () => {
   const [isSelectsalespEnabled, setIsSelectsalespEnabled] = useState(false);
   const [selectedOption, setSelectedOption] = useState("");
-  const [loading, setLoading] = useState(false); 
-  
-
+  const [loading, setLoading] = useState(false);
+  const userId = localStorage.getItem("id");
+  console.log("userID", userId);
+  const { setting } = useParams();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    personal_image: null,
     sales_referred: "No",
     sales_representative: "",
   });
@@ -40,11 +40,12 @@ const MyDetail = () => {
       sales_representative: "",
     });
   };
-  
-  const handleFileChange = (e) => {
+
+  const handleFileChange = (e, fieldName) => {
+    const uploadedFile = e.target.files[0];
     setFormData((prevState) => ({
       ...prevState,
-      personal_image: e.target.files[0],
+      [fieldName]: uploadedFile,
     }));
   };
 
@@ -67,44 +68,98 @@ const MyDetail = () => {
     }));
   };
 
+  console.log(userId);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Response Data:", response.data?.user);
+        const BasicInfo = response?.data?.user;
+
+        if (BasicInfo) {
+          const imagePath = BasicInfo?.personal_image;
+          const imageUrl = imagePath
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+            : "/default.png";
+          console.log("imageeee", imageUrl);
+          setFormData({
+            name: BasicInfo?.name || "",
+            email: BasicInfo?.email || "",
+            phone: BasicInfo?.phone || "",
+            personal_image: imageUrl, 
+            sales_referred: BasicInfo?.sales_referred || "",
+            sales_representative: BasicInfo?.sales_representative || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to fetch user details.");
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return; // Prevent multiple submissions
-  
+    if (loading) return; 
+
     const token = localStorage.getItem("token");
     console.log("token:", token);
-  
+
     if (!token) {
       toast.error("No token found. Please log in.");
       return;
     }
-  
-    setLoading(true); // Start loading state
-  
+
+    setLoading(true);
+
     try {
       const data = new FormData();
+
       Object.keys(formData).forEach((key) => {
         data.append(key, formData[key]);
       });
-  
+
+      data.append("id", userId);
+
       const response = await axios.post(
         "https://homeservice.thefabulousshow.com/api/MyDetails",
         data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // Include token in headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-  
+
       console.log("Success:", response.data);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
       toast.error("Failed to update profile. Please try again.");
     } finally {
-      setLoading(false); // Stop loading state
+      setLoading(false);
     }
   };
 
@@ -133,13 +188,13 @@ const MyDetail = () => {
                 </label>
               </div>
               <div className="sm:col-span-2">
-              <input
-              className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-            />
+                <input
+                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
@@ -149,13 +204,13 @@ const MyDetail = () => {
                 </label>
               </div>
               <div className="sm:col-span-2">
-              <input
-               className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-            />
+                <input
+                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
@@ -165,13 +220,13 @@ const MyDetail = () => {
                 </label>
               </div>
               <div className="sm:col-span-2">
-              <input
-             className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-            />
+                <input
+                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
@@ -183,8 +238,19 @@ const MyDetail = () => {
                   This will be displayed on your profile.
                 </p>
               </div>
-              <div className="md:col-span-2 " onChange={handleFileChange}>
-                <SettingsPreview />
+              {console.log("asdadadada", formData?.personal_image)}
+              <div className="md:col-span-2">
+                <SettingsPreview
+                  onFileSelect={handleFileChange}
+                  value={
+                    formData.personal_image instanceof File
+                      ? URL.createObjectURL(formData.personal_image)
+                      : formData.personal_image
+                      ? `https://homeservice.thefabulousshow.com/uploads/${formData.personal_image}`
+                      : "/default.png"
+                  }
+                  fieldName="personal_image"
+                />
               </div>
             </div>
             <div className="py-8 flex flex-col gap-4">

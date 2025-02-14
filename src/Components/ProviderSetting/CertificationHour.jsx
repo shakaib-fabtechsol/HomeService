@@ -74,6 +74,66 @@ const CertificationHour = () => {
     );
   };
 
+
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Response Data:", response.data?.businessProfile);
+        const BasicInfo = response?.data?.businessProfile;
+        console.log("BasicInformation", BasicInfo[0]?.insurance_certificate);
+        if (BasicInfo) {
+          
+          const imagePath1 = BasicInfo[0]?.insurance_certificate;
+          const imagePath2 = BasicInfo[0]?.license_certificate;
+          const imagePath3 = BasicInfo[0]?.award_certificate;
+        
+          const imageUrl = imagePath1
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath1}`
+            : "/default.png";
+            const imageUrl2 = imagePath2
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath2}`
+            : "/default.png";
+
+            const imageUrl3 = imagePath3
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath2}`
+            : "/default.png";
+
+          setFormData({
+            user_id:BasicInfo[0].user_id,
+            insurance_certificate:imageUrl,
+            license_certificate:imageUrl2,
+            award_certificate:imageUrl3,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to fetch user details.");
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;

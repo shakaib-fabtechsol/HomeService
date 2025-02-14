@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SettingsPreview from "../MUI/SettingsPreview";
 import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
@@ -14,8 +14,8 @@ import {
 } from "@mui/material";
 
 const BusinessProfile = () => {
-   const userId= localStorage.getItem("id");
-    console.log("userID",userId);
+  const userId = localStorage.getItem("id");
+  console.log("userID", userId);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -28,22 +28,74 @@ const BusinessProfile = () => {
     website: "",
   });
 
-
   const handlereset = () => {
     setFormData({
-        business_name: "",
-        business_logo: null,
-        location: "",
-        about: "",
-        business_primary_category: "",
-        business_secondary_categories: "",
-        website: "",
+      business_name: "",
+      business_logo: "",
+      location: "",
+      about: "",
+      business_primary_category: "",
+      business_secondary_categories: "",
+      website: "",
     });
   };
-  
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      console.log("Token:", token);
+
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("Response Data:", response.data?.businessProfile);
+        const BasicInfo = response?.data?.businessProfile;
+        console.log("BasicInformation", BasicInfo[0]);
+        if (BasicInfo) {
+          const imagePath = BasicInfo[0]?.business_logo;
+          const imageUrl = imagePath
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+            : "/default.png";
+
+          setFormData({
+            user_id:BasicInfo[0]?.user_id||"",
+            business_name: BasicInfo[0]?.business_name || "",
+            location: BasicInfo[0]?.location || "",
+            business_logo: imageUrl,
+            about: BasicInfo[0].about || "",
+            business_primary_category:
+              BasicInfo[0]?.business_primary_category || "",
+            business_secondary_categories:
+              BasicInfo?.business_secondary_categories
+               || "",
+            website: BasicInfo[0]?.website || "",
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        toast.error("Failed to fetch user details.");
+      }
+    };
+
+    fetchData();
+  }, [userId]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (loading) return; 
+    if (loading) return;
     const token = localStorage.getItem("token");
     console.log("token:", token);
 
@@ -66,7 +118,7 @@ const BusinessProfile = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`, // Include token in headers
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -142,12 +194,14 @@ const BusinessProfile = () => {
     "Drain Services",
     "Veterinary Service",
   ];
-  const handleFileChange = (e) => {
+  const handleFileChange = (e, fieldName) => {
+    const uploadedFile = e.target.files[0];
     setFormData((prevState) => ({
       ...prevState,
-      business_logo: e.target.files[0],
+      [fieldName]: uploadedFile,
     }));
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -155,6 +209,8 @@ const BusinessProfile = () => {
       [name]: value,
     }));
   };
+
+  console.log(formData, "formdata");
   return (
     <>
       <div>
@@ -203,8 +259,11 @@ const BusinessProfile = () => {
                       This will be displayed on your profile.
                     </p>
                   </div>
-                  <div className="md:col-span-2" onChange={handleFileChange}>
-                    <SettingsPreview />
+                  <div className="md:col-span-2">
+                    <SettingsPreview
+                      onFileSelect={handleFileChange}
+                      fieldName="business_logo"
+                    />
                   </div>
                 </div>
               </div>
@@ -278,7 +337,7 @@ const BusinessProfile = () => {
                         Select an option
                       </option>
                       {Businesscategories.length > 0 ? (
-                        Businesscategories.map((option, index) => (
+                     Array.isArray(Businesscategories) && Businesscategories?.map((option, index) => (
                           <option key={index} value={option}>
                             {option}
                           </option>
@@ -362,14 +421,14 @@ const BusinessProfile = () => {
                   Cancel
                 </button>
                 <button
-              type="submit"
-              className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
+                  type="submit"
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save"}
+                </button>
               </div>
             </div>
           </div>

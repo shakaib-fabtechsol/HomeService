@@ -114,7 +114,7 @@ console.log("preview",filePreview);
     formData.append("id", serviceId);
     if (file) {
       console.log("File being uploaded:", file);
-      formData.append("image", file); // This will send the file
+      formData.append("image", file);
       formData.append("image_name", file.name); // Add the file name to the form data
     }
 

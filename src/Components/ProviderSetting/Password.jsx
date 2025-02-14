@@ -134,7 +134,7 @@ const Password = () => {
               </div>
             </div>
 
-            {/* Buttons */}
+           
             <div className="flex justify-end mt-4">
               <button
                 type="reset"

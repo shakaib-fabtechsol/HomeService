@@ -12,6 +12,7 @@ function BasicInfo({ setServiceId, setValue }) {
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
+    id:"",
     service_title: "",
     commercial: 0,
     residential: 0,
@@ -72,6 +73,7 @@ function BasicInfo({ setServiceId, setValue }) {
           console.log("BasicInfo:", BasicInfo);
 
           setFormData({
+            id:BasicInfo.id||"",
             service_title: BasicInfo.service_title || "",
             commercial: BasicInfo.commercial || 0,
             residential: BasicInfo.residential || 0,
@@ -94,6 +96,7 @@ function BasicInfo({ setServiceId, setValue }) {
     }
   }, [dealid]);
 
+  console.log("value",formData?.id);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -118,38 +121,52 @@ function BasicInfo({ setServiceId, setValue }) {
     };
 
     try {
-      const response = await axios.post(
+      let response;
+      const updatedFormData = { ...formData };
+    
+      if (dealid) {
+        updatedFormData.id = dealid;
+      }
+      response = await axios.post(
         "https://homeservice.thefabulousshow.com/api/BasicInfo",
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
+        updatedFormData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
-
+    
+      console.log(response);
+    
       if (response.status === 200) {
         console.log("Service ID:", response.data.deal.id);
         setServiceId(response.data.deal.id);
+    
         Swal.fire({
           icon: "success",
-          title: "Success!",
-          text: "Your data has been saved successfully.",
+          title: dealid ? "Updated Successfully!" : "Created Successfully!",
+          text: dealid
+            ? "Your data has been updated successfully."
+            : "Your data has been saved successfully.",
           confirmButtonColor: "#0F91D2",
         }).then(() => {
           setValue(1);
         });
+    
         e.target.reset();
         setTags([]);
       }
     } catch (error) {
       console.error("Error:", error);
+    
       Swal.fire({
         icon: "error",
-        title: "Submission Failed",
+        title: dealid ? "Update Failed" : "Submission Failed",
         text: "Something went wrong. Please try again.",
       });
     } finally {
       setLoading(false);
     }
-  };
-
+  }    
   return (
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
