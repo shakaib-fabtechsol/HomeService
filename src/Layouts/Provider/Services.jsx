@@ -26,6 +26,10 @@ function ServiceBox({
 
   const imageToShow = imageUrl || defaultimg;
 
+  {
+    console.log("publish",publish)
+  }
+
   return (
     <div className="border px-3 py-3 rounded-lg">
       <div className="border px-3 py-3 rounded-lg">
@@ -140,33 +144,28 @@ function Services() {
         {loading ? (
           <Loader />
         ) : (
-          // Show Data Once Loaded
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {filteredServices.length > 0 ? (
-              filteredServices.map((service) => (
-                <ServiceBox
-                key={service.id}
-                title={service.service_title}
-                price={
-                  service.pricing_model === 'Flat' ? 
-                    service.flat_rate_price : 
-                    service.pricing_model === 'Hourly' ? 
-                      service.hourly_rate_price : 
-                      service.custom_rate_price
-                }
-                description={service.service_description}
-                tags={
-                  service.search_tags ? service.search_tags.split(",") : []
-                }
-                image={service.image}
-                publish={service.publish}
-                dealid={service.id}
-              />
-              ))
-            ) : (
-              <p>No services found</p>
-            )}
-          </div>
+          {filteredServices.length > 0 ? (
+            filteredServices.map((service) => (
+              <ServiceBox
+              key={service.id}
+              title={service.service_title}
+              price={service.pricing_model === 'Flat' ? service.flat_rate_price : service?.pricing_model == 'Hourly' ? service.hourly_final_list_price : service.price1
+                
+              }
+              description={service.service_description}
+              tags={
+                service.search_tags ? service.search_tags.split(",") : []
+              }
+              image={service.image}
+              publish={service.publish}
+              dealid={service.id}
+            />
+            ))
+          ) : (
+            <p>No services found</p>
+          )}
+        </div>
         )}
       </div>
     </div>

@@ -1,24 +1,52 @@
-import React from 'react'
-import random1 from "../../../assets/img/random1.png";
-import random2 from "../../../assets/img/random2.png";
-import random3 from "../../../assets/img/random3.png";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const TeacherPhoto = () => {
-    const accordionData = [
-        {
-            images: [random1, random2, random3],
-        },
-    ];
+    const [formdata, setFormData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+ 
+  const technicianPhotos = formdata?.businessProfile?.[0]?.technician_photo;
+  const images = Array.isArray(technicianPhotos)
+    ? technicianPhotos
+    : technicianPhotos?.split(",") || [];
+
     return (
-        <div>
-            <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-                {accordionData[0].images.map((image, index) => (
-                    <div key={index}>
-                        <img src={image} alt={`Image ${index + 1}`} />
-                    </div>
-                ))}
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
+        {images.length > 0 ? (
+          images.map((image, index) => (
+            <div key={index}>
+              <img
+                src={`https://homeservice.thefabulousshow.com/uploads/${image.trim()}`}
+                alt={`Technician ${index + 1}`}
+                className="w-full h-[500px] rounded-lg shadow"
+                onError={(e) => (e.target.src = "/default.png")} // If image not found, load default
+              />
             </div>
-        </div>
+          ))
+        ) : (
+          <p>No technician photos available</p>
+        )}
+      </div>
     )
 }
 

@@ -55,6 +55,7 @@ function App() {
             <Route path="NewDeals" element={<NewDeals />} />
             <Route path="NewDeals/:dealid" element={<NewDeals />} />
             <Route path="ProfileDetails" element={<ProfileDetails />} />
+            <Route path="settings/:setting" element={<Settings />} />
           </Route>
 
           <Route
@@ -72,6 +73,7 @@ function App() {
             <Route path="support" element={<UserSupport />} />
             <Route path="settings" element={<UserSettings />} />
             <Route path="ProfileDetails" element={<UserProfileDetails />} />
+           
           </Route>
         </Routes>
       </Router>

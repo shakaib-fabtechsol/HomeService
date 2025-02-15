@@ -1,28 +1,45 @@
+
+
+
 import React, { useState } from "react";
 import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
 
-export default function SettingsPreview() {
+export default function SettingsPreview({ onFileSelect, fieldName }) {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  const handleFileChange = (e) => {
-    const uploadedFile = e.target.files[0];
-    if (uploadedFile) {
-      setFile(uploadedFile);
-      setFilePreview(URL.createObjectURL(uploadedFile));
-      setShowPreview(false);
-    }
-  };
-
+  // Handle file drop from drag-and-drop
   const handleFileDrop = (e) => {
     e.preventDefault();
     const uploadedFile = e.dataTransfer.files[0];
     if (uploadedFile) {
       setFile(uploadedFile);
-      setFilePreview(URL.createObjectURL(uploadedFile));
-      setShowPreview(false);
+      setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview image
+      setShowPreview(true); // Show preview
+      // Pass the file back to the parent component
+      onFileSelect(e, fieldName);
+    }
+  };
+
+  // Handle file selection via file input
+  const handleFileClick = () => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".jpg,.png,.svg";
+    fileInput.onchange = (e) => handleFileSelect(e);
+    fileInput.click();
+  };
+
+  // Handle the file change (from file input)
+  const handleFileSelect = (e) => {
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+      setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview image
+      setShowPreview(true); // Show preview
+      onFileSelect(e, fieldName); // Pass the file back to the parent
     }
   };
 
@@ -35,13 +52,16 @@ export default function SettingsPreview() {
   const handleShowPreview = () => {
     setShowPreview(true);
   };
+
   return (
-    <div className="file-upload-container">
+    <div
+      className="file-upload-container"
+      onDrop={handleFileDrop}
+      onDragOver={(e) => e.preventDefault()}
+    >
       <div
         className="upload-box w-full border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
-        onDrop={handleFileDrop}
-        onDragOver={(e) => e.preventDefault()}
-        onClick={() => document.getElementById("fileInput").click()}
+        onClick={handleFileClick}
       >
         {file ? (
           <div className="upload-placeholder flex flex-col items-center justify-center min-h-[180px]">
@@ -52,9 +72,7 @@ export default function SettingsPreview() {
             <p className="text-gray-500">
               <strong>Click to upload</strong> or drag and drop to change image
             </p>
-            <p className="text-sm text-gray-400">
-              SVG, PNG, or JPG (max. 800×400px)
-            </p>
+            <p className="text-sm text-gray-400">SVG, PNG, or JPG (max. 800×400px)</p>
           </div>
         ) : (
           <div className="upload-placeholder flex flex-col items-center justify-center min-h-[180px]">
@@ -62,21 +80,11 @@ export default function SettingsPreview() {
             <p className="text-gray-500">
               <strong>Click to upload</strong> or drag and drop
             </p>
-            <p className="text-sm text-gray-400">
-              SVG, PNG, or JPG (max. 800×400px)
-            </p>
+            <p className="text-sm text-gray-400">SVG, PNG, or JPG (max. 800×400px)</p>
           </div>
         )}
-        <input
-          type="file"
-          id="fileInput"
-          accept=".svg, .png, .jpg"
-          className="hidden"
-          onChange={handleFileChange}
-        />
       </div>
 
-      {/* File Details and Actions */}
       {file && (
         <div className="file-actions mt-4">
           <div className="file-info flex items-center justify-between border rounded-lg p-2">
@@ -106,6 +114,7 @@ export default function SettingsPreview() {
           </div>
         </div>
       )}
+
       {showPreview && filePreview && (
         <div className="image-preview mt-4">
           <img
@@ -118,3 +127,4 @@ export default function SettingsPreview() {
     </div>
   );
 }
+

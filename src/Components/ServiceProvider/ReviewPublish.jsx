@@ -52,8 +52,8 @@ function a11yProps(index) {
 }
 
 const ReviewPublish = ({ serviceId, setValue }) => {
- const [tag, setTags] = useState([]);
-  const [pricingModel, setPricingModel] = useState('');
+  const [tag, setTags] = useState([]);
+  const [pricingModel, setPricingModel] = useState("");
   const { dealid } = useParams();
   const [value, setValued] = useState(0);
 
@@ -124,30 +124,32 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       title: "Get Directions",
     },
   ];
- 
+
+  console.log("formdata", formdata);
 
   useEffect(() => {
     if (dealid) {
       const token = localStorage.getItem("token");
-  
+
       if (!token) {
         console.error("No authentication token found. Please log in.");
         return;
       }
-  
+
       axios
         .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
+          console.log("BasicInfo:", BasicInfo);
           const imagePath = BasicInfo?.image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
-            : "/default.png";  
-            const model = BasicInfo?.pricing_model || 'Hourly';
-            setPricingModel(model);
-            console.log("model",model)
+            : "/default.png";
+          const model = BasicInfo?.pricing_model || "Hourly";
+          setPricingModel(model);
+          console.log("model", model);
           const formData = {
             service_title: BasicInfo.service_title || "",
             commercial: BasicInfo.commercial || 0,
@@ -156,51 +158,60 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             search_tags: BasicInfo.search_tags || "",
             service_description: BasicInfo.service_description || "",
             fine_print: BasicInfo.fine_print || "",
-            image: imageUrl,  
+            image: imageUrl,
             id: BasicInfo.id || "",
             pricing_model: BasicInfo.pricing_model || "",
             estimated_service_time: BasicInfo.estimated_service_time || "",
           };
-         
+
           if (BasicInfo.pricing_model === "Flat") {
-            formData.title1= BasicInfo.title1 ||"";
+            formData.title1 = BasicInfo.title1 || "";
             formData.flat_rate_price = BasicInfo.flat_rate_price || "";
-            formData.flat_by_now_discount = BasicInfo.flat_by_now_discount || "";
-            formData.flat_final_list_price = BasicInfo.flat_final_list_price || "";
-            formData.flat_estimated_service_time = BasicInfo.flat_estimated_service_time || "";
+            formData.flat_by_now_discount =
+              BasicInfo.flat_by_now_discount || "";
+            formData.flat_final_list_price =
+              BasicInfo.flat_final_list_price || "";
+            formData.flat_estimated_service_time =
+              BasicInfo.flat_estimated_service_time || "";
           } else if (BasicInfo.pricing_model === "Hourly") {
             formData.hourly_rate = BasicInfo.hourly_rate || "";
-            formData.title2= BasicInfo.title2 ||"";
+            formData.title2 = BasicInfo.title2 || "";
             formData.discount = BasicInfo.discount || "";
-            formData.hourly_final_list_price = BasicInfo.hourly_final_list_price || "";
-            formData.hourly_estimated_service_time = BasicInfo.hourly_estimated_service_time || "";
+            formData.hourly_final_list_price =
+              BasicInfo.hourly_final_list_price || "";
+            formData.hourly_estimated_service_time =
+              BasicInfo.hourly_estimated_service_time || "";
           } else if (BasicInfo.pricing_model === "Custom") {
             formData.title3 = BasicInfo.title3 || "";
             formData.deliverable1 = BasicInfo.deliverable1 || "";
             formData.price1 = BasicInfo.price1 || "";
             formData.by_now_discount1 = BasicInfo.by_now_discount1 || "";
             formData.final_list_price1 = BasicInfo.final_list_price1 || "";
-            formData.estimated_service_timing1 = BasicInfo.estimated_service_timing1 || "";
-  
+            formData.estimated_service_timing1 =
+              BasicInfo.estimated_service_timing1 || "";
+
             formData.title2 = BasicInfo.title2 || "";
             formData.deliverable2 = BasicInfo.deliverable2 || "";
             formData.price2 = BasicInfo.price2 || "";
             formData.by_now_discount2 = BasicInfo.by_now_discount2 || "";
             formData.final_list_price2 = BasicInfo.final_list_price2 || "";
-            formData.estimated_service_timing2 = BasicInfo.estimated_service_timing2 || "";
-  
+            formData.estimated_service_timing2 =
+              BasicInfo.estimated_service_timing2 || "";
+
             formData.title3 = BasicInfo.title3 || "";
             formData.deliverable3 = BasicInfo.deliverable3 || "";
             formData.price3 = BasicInfo.price3 || "";
             formData.by_now_discount3 = BasicInfo.by_now_discount3 || "";
             formData.final_list_price3 = BasicInfo.final_list_price3 || "";
-            formData.estimated_service_timing3 = BasicInfo.estimated_service_timing3 || "";
+            formData.estimated_service_timing3 =
+              BasicInfo.estimated_service_timing3 || "";
           }
-         
+
           setFormData(formData);
-  
-        
-          setTags(BasicInfo.search_tags ? BasicInfo.search_tags.split(",") : []);
+
+          setTags(
+            BasicInfo.search_tags ? BasicInfo.search_tags.split(",") : []
+          );
         })
         .catch((error) => {
           console.error("Error fetching deal data:", error);
@@ -210,21 +221,123 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         });
     }
   }, [dealid]);
-  
 
   const [loading, setLoading] = useState(false);
-  const [publishValue, setPublishValue] = useState(1); // Default value for publish
+  const [publishValue, setPublishValue] = useState(1);
 
   const navigate = useNavigate();
-
   useEffect(() => {
     console.log("📦 ReviewPublish Received Service ID:", serviceId); // ✅ Debugging
   }, [serviceId]);
 
+  const fetchDeals = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No token found. Please log in.",
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/Deals`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("API Response:", response?.data?.deals);
+
+      if (response.status === 200) {
+        setFormData((prev) => {
+          const updatedData = {
+            id: response?.data?.deals?.[0]?.id || "",
+            publish: response?.data?.deals?.[0]?.publish || "",
+            imagePath: response?.data?.deals?.[0]?.image || "",
+            image: response?.data?.deals?.[0]?.image
+              ? `https://homeservice.thefabulousshow.com/uploads/${response.data.deals[0].image}`
+              : "/default.png",
+            commercial: response?.data?.deals?.[0]?.commercial || 0,
+            residential: response?.data?.deals?.[0]?.residential || 0,
+            service_category:
+              response?.data?.deals?.[0]?.service_category || "",
+            search_tags: response?.data?.deals?.[0]?.search_tags || "",
+            service_description:
+              response?.data?.deals?.[0]?.service_description || "",
+            fine_print: response?.data?.deals?.[0]?.fine_print || "",
+            pricing_model: response?.data?.deals?.[0]?.pricing_model || "",
+            estimated_service_time:
+              response?.data?.deals?.[0]?.estimated_service_time || "",
+          };
+
+          const pricingModel = response?.data?.deals?.[0]?.pricing_model;
+          if (pricingModel === "Flat") {
+            updatedData.title1 = response?.data?.deals?.[0]?.title1 || "";
+            updatedData.flat_rate_price =
+              response?.data?.deals?.[0]?.flat_rate_price || "";
+            updatedData.flat_by_now_discount =
+              response?.data?.deals?.[0]?.flat_by_now_discount || "";
+            updatedData.flat_final_list_price =
+              response?.data?.deals?.[0]?.flat_final_list_price || "";
+            updatedData.flat_estimated_service_time =
+              response?.data?.deals?.[0]?.flat_estimated_service_time || "";
+          } else if (pricingModel === "Hourly") {
+            updatedData.hourly_rate =
+              response?.data?.deals?.[0]?.hourly_rate || "";
+            updatedData.title2 = response?.data?.deals?.[0]?.title2 || "";
+            updatedData.discount = response?.data?.deals?.[0]?.discount || "";
+            updatedData.hourly_final_list_price =
+              response?.data?.deals?.[0]?.hourly_final_list_price || "";
+            updatedData.hourly_estimated_service_time =
+              response?.data?.deals?.[0]?.hourly_estimated_service_time || "";
+          } else if (pricingModel === "Custom") {
+            for (let i = 1; i <= 3; i++) {
+              updatedData[`title${i}`] =
+                response?.data?.deals?.[0]?.[`title${i}`] || "";
+              updatedData[`deliverable${i}`] =
+                response?.data?.deals?.[0]?.[`deliverable${i}`] || "";
+              updatedData[`price${i}`] =
+                response?.data?.deals?.[0]?.[`price${i}`] || "";
+              updatedData[`by_now_discount${i}`] =
+                response?.data?.deals?.[0]?.[`by_now_discount${i}`] || "";
+              updatedData[`final_list_price${i}`] =
+                response?.data?.deals?.[0]?.[`final_list_price${i}`] || "";
+              updatedData[`estimated_service_timing${i}`] =
+                response?.data?.deals?.[0]?.[`estimated_service_timing${i}`] ||
+                "";
+            }
+          }
+
+          return updatedData;
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching deals:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error fetching the deals.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDeals();
+  }, []);
+
+  console.log("formdata", formdata);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
-    if (!serviceId) {
+
+    if (!formdata?.id) {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -233,7 +346,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       return;
     }
 
-    setLoading(true); // Show loading state
+    setLoading(true);
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -246,68 +359,52 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       return;
     }
 
-    // const formData = {
-    //   id: serviceId,
-    //   publish: publishValue,
-    // };
-   
-    {
-      console.log("formdata111",formdata)
-    }
-    const fetchDealById = async (dealid, token, setValue, setLoading) => {
-      try {
-        setLoading(true); 
-    
-        const response = await axios.get(`https://homeservice.thefabulousshow.com/api/Deal/`, {
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${formdata.id}`,
+        {
           headers: { Authorization: `Bearer ${token}` },
-        });
-    
-        console.log("Response:", response); 
-        setFormData(response?.deal)
-        if (response.status === 200) {
-          Swal.fire({
-            icon: "success",
-            title: "Success!",
-            text: "Deal fetched successfully.",
-            confirmButtonColor: "#0F91D2",
-          }).then(() => {
-            setValue(2); // Switch to Pricing & Packages tab
-          });
-    
-          return response.data; // Return fetched data
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Error!",
-            text: response.data.message || "Failed to fetch deal details.",
-            confirmButtonColor: "#D33",
-          });
-          return null;
         }
-      } catch (error) {
-        console.error("Error fetching deal:", error);
-        
+      );
+
+      console.log("API Response:", response?.data);
+
+      if (response.status === 200) {
+        setFormData((prev) => ({ ...prev, publish: publishValue }));
+        navigate("/provider/services")
+
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Deal updated successfully.",
+          confirmButtonColor: "#0F91D2",
+        });
+      } else {
         Swal.fire({
           icon: "error",
-          title: "Error",
-          text: error.response?.data?.message || "There was an error while fetching the deal.",
+          title: "Error!",
+          text: response.data.message || "Failed to update deal.",
+          confirmButtonColor: "#D33",
         });
-    
-        return null;
-      } finally {
-        setLoading(false); // Stop loading after request completes
       }
-    };
-    fetchDealById(dealid, token, setValue, setLoading);
-  }
-    
+    } catch (error) {
+      console.error("Error updating deal:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error updating the deal.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
       <div>
         <div className="flex flex-col lg:flex-row justify-between mt-8">
           <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
-          {formdata?.service_title}
+            {formdata?.service_title}
           </h2>
         </div>
         <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
@@ -382,124 +479,155 @@ const ReviewPublish = ({ serviceId, setValue }) => {
             </div>
           </div>
           <div className="col-span-12 xl:col-span-4">
-      <div className="flex flex-col h-full gap-5">
-      <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
-    <Box sx={{ width: '100%' }}>
-      <Box
-        sx={{
-          border: '1px solid #E9EAEB',
-          borderRadius: '12px',
-          overflow: 'hidden',
-        }}
-      >
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          aria-label="basic tabs example"
-          variant="scrollable"
-          TabIndicatorProps={{ sx: { display: 'none' } }}
-          sx={{
-            backgroundColor: '#ffffff',
-            '& .MuiTab-root': {
-              color: '#535862',
-              textTransform: 'capitalize',
-              fontFamily: 'inter',
-            },
-            '& .Mui-selected': {
-              color: '#181D27',
-              fontWeight: '700',
-            },
-          }}
-        >
-          <Tab label="Basic" {...a11yProps(0)} />
-          {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Standard" {...a11yProps(1)} /> }
-          {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && <Tab label="Premium" {...a11yProps(2)} /> }
-        </Tabs>
-      </Box>
-      {
-        console.log("valueee",formdata)
-      }
-      <CustomTabPanel value={value} index={0}>
-        <div className="flex justify-between">
-          <h2 className="text-2xl font-medium myhead">{formdata.pricing_model}</h2>
-          <p className="text-3xl myhead font-bold">$200</p>
-        </div>
-        <p className="text-sm myblack mt-2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-          diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-          accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-          interdum vehicula.
-        </p>
-        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-          <li>{formdata.flat_estimated_service_time}</li>
-          <li>Delivered Within 2 Days</li>
-        </ul>
-      </CustomTabPanel>
+            <div className="flex flex-col h-full gap-5">
+              <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
+                <Box sx={{ width: "100%" }}>
+                  <Box
+                    sx={{
+                      border: "1px solid #E9EAEB",
+                      borderRadius: "12px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Tabs
+                      value={value}
+                      onChange={handleChange}
+                      aria-label="basic tabs example"
+                      variant="scrollable"
+                      TabIndicatorProps={{ sx: { display: "none" } }}
+                      sx={{
+                        backgroundColor: "#ffffff",
+                        "& .MuiTab-root": {
+                          color: "#535862",
+                          textTransform: "capitalize",
+                          fontFamily: "inter",
+                        },
+                        "& .Mui-selected": {
+                          color: "#181D27",
+                          fontWeight: "700",
+                        },
+                      }}
+                    >
+                      <Tab label="Basic" {...a11yProps(0)} />
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <Tab label="Standard" {...a11yProps(1)} />
+                      )}
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <Tab label="Premium" {...a11yProps(2)} />
+                      )}
+                    </Tabs>
+                  </Box>
+                  {console.log("valueee", formdata)}
+                  <CustomTabPanel value={value} index={0}>
+                    <div className="flex justify-between">
+                      <h2 className="text-2xl font-medium myhead">
+                        {formdata.pricing_model}
+                      </h2>
+                      <p className="text-3xl myhead font-bold">
+                        {formdata.pricing_model === "Hourly"
+                          ? "$" + formdata.hourly_final_list_price
+                          : formdata.pricing_model === "Flat"
+                          ? "$" + formdata.flat_rate_price
+                          : formdata.pricing_model === "Custom"
+                          ? "$" + formdata.price1
+                          : "$200"}
+                      </p>
+                    </div>
 
-      {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
-        <CustomTabPanel value={value} index={1}>
-          <div className="flex justify-between">
-            <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-            <p className="text-3xl myhead font-bold">$400</p>
-          </div>
-          <p className="text-sm myblack mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-            diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-            accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-            interdum vehicula.
-          </p>
-          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            <li>{formdata.flat_estimated_service_time}</li>
-            <li>Delivered Within 2 Days</li>
-          </ul>
-        </CustomTabPanel>
-      )}
+                    <p className="text-sm myblack mt-2">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                      Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                      egestas lacus. Phasellus accumsan fermentum dolor eu
+                      gravida. Vivamus dignissim augue sed orci interdum
+                      vehicula.
+                    </p>
 
-      {(pricingModel !== 'Flat' && pricingModel !== 'Hourly') && (
-        <CustomTabPanel value={value} index={2}>
-          <div className="flex justify-between">
-            <h2 className="text-2xl font-medium myhead">Plan Title</h2>
-            <p className="text-3xl myhead font-bold">$600</p>
+                    <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                      {formdata.pricing_model === "Hourly" && (
+                        <li>{formdata.hourly_estimated_service_time}</li>
+                      )}
+                      {formdata.pricing_model === "Flat" && (
+                        <li>{formdata.flat_estimated_service_time}</li>
+                      )}
+                      {formdata.pricing_model === "Custom" && (
+                        <li>{formdata.estimated_service_timing1}</li>
+                      )}{" "}
+                      {/* You can add your custom logic here */}
+                      <li>Delivered Within 2 Days</li>
+                    </ul>
+                  </CustomTabPanel>
+
+                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                    <CustomTabPanel value={value} index={1}>
+                      <div className="flex justify-between">
+                        <h2 className="text-2xl font-medium myhead">
+                          {formdata.pricing_model}
+                        </h2>
+                        <p className="text-3xl myhead font-bold">
+                          ${formdata.price2}
+                        </p>
+                      </div>
+                      <p className="text-sm myblack mt-2">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                        egestas lacus. Phasellus accumsan fermentum dolor eu
+                        gravida. Vivamus dignissim augue sed orci interdum
+                        vehicula.
+                      </p>
+                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                        <li>{formdata.estimated_service_timing2}</li>
+                        <li>Delivered Within 2 Days</li>
+                      </ul>
+                    </CustomTabPanel>
+                  )}
+
+                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                    <CustomTabPanel value={value} index={2}>
+                      <div className="flex justify-between">
+                        <h2 className="text-2xl font-medium myhead">
+                          {formdata.pricing_model}
+                        </h2>
+                        <p className="text-3xl myhead font-bold">
+                          ${formdata.price3}
+                        </p>
+                      </div>
+                      <p className="text-sm myblack mt-2">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
+                        egestas lacus. Phasellus accumsan fermentum dolor eu
+                        gravida. Vivamus dignissim augue sed orci interdum
+                        vehicula.
+                      </p>
+                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                        <li>{formdata.estimated_service_timing3}</li>
+                        <li>Delivered Within 2 Days</li>
+                      </ul>
+                    </CustomTabPanel>
+                  )}
+                </Box>
+              </div>
+              <button
+                onClick={handlecontactOpen}
+                className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+              >
+                <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
+                <span>Contact Pro</span>
+              </button>
+            </div>
           </div>
-          <p className="text-sm myblack mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tellus
-            diam, dignissim tincidunt quam vel, rutrum egestas lacus. Phasellus
-            accumsan fermentum dolor eu gravida. Vivamus dignissim augue sed orci
-            interdum vehicula.
-          </p>
-          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            <li>{formdata.flat_estimated_service_time}</li>
-            <li>Delivered Within 2 Days</li>
-          </ul>
-        </CustomTabPanel>
-      )}
-    </Box>
-    </div>
-        <button
-          onClick={handlecontactOpen}
-          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
-        >
-          <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
-          <span>Contact Pro</span>
-        </button>
-      </div>
-    </div>
         </div>
         <div className="">
-        <div className="flex flex-wrap mt-3">
+          <div className="flex flex-wrap mt-3">
             <div className="flex flex-wrap mt-3">
-              {formdata?.search_tags &&
-              formdata?.search_tags.length > 0
-                ? formdata?.search_tags
-                    .split(",")
-                    .map((tag, index) => (
-                      <span
-                        key={index}
-                        className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
-                      >
-                        {tag.trim()} 
-                      </span>
-                    ))
+              {formdata?.search_tags && formdata?.search_tags.length > 0
+                ? formdata?.search_tags.split(",").map((tag, index) => (
+                    <span
+                      key={index}
+                      className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+                    >
+                      {tag.trim()}
+                    </span>
+                  ))
                 : "No tags available"}
             </div>
           </div>
@@ -518,14 +646,14 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           <input
             type="text"
             id="Flatr"
-            defaultValue={serviceId ? `${serviceId}` : "0"} // ✅ Using defaultValue instead of value
+            defaultValue={formdata?.id ? `${formdata.id}` : "0"}
             className="focus-none border hidden"
             readOnly
           />
           <input
             type="text"
             id="publish"
-            value={publishValue} // Set value for the publish input
+            value={publishValue}
             className="focus-none border hidden"
             readOnly
           />

@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosStar } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { FaArrowLeft, FaChevronDown, FaRegCalendarAlt } from "react-icons/fa";
+import { FaPencilAlt } from "react-icons/fa";
+import { FaRegTrashCan } from "react-icons/fa6";
 import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import provider from "../../assets/img/provider.png";
 import { styled } from "@mui/material/styles";
@@ -16,6 +18,7 @@ import { FiPhone } from "react-icons/fi";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
+import { useLocation } from "react-router-dom";
 import Review from "../../Components/Profile/Review";
 import Social from "../../Components/Profile/AdditionalPhoto/Social";
 import SpecialHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
@@ -27,6 +30,7 @@ import License from "../../Components/Profile/AdditionalPhoto/License";
 import Award from "../../Components/Profile/AdditionalPhoto/Award";
 import TechniciansPhoto from "../../Components/Profile/AdditionalPhoto/TechniciansPhoto";
 import ProfileDeal from "../../Components/Profile/ProfileDeal";
+import axios from "axios";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -42,7 +46,7 @@ const Accordion = styled((props) => (
 
 const AccordionSummary = styled((props) => (
   <MuiAccordionSummary
-    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem", }} />}
+    expandIcon={<FaChevronDown sx={{ fontSize: "0.9rem" }} />}
     {...props}
   />
 ))(({ theme }) => ({
@@ -50,9 +54,9 @@ const AccordionSummary = styled((props) => (
   width: "auto",
   border: "none",
   [`& .${accordionSummaryClasses.expandIconWrapper}.${accordionSummaryClasses.expanded}`]:
-  {
-    transform: "rotate(180deg)",
-  },
+    {
+      transform: "rotate(180deg)",
+    },
   [`& .${accordionSummaryClasses.content}`]: {
     marginLeft: theme.spacing(1),
   },
@@ -67,7 +71,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   border: "none",
 }));
 
-
 function ProfileDetails() {
   const [expanded, setExpanded] = React.useState("panel1");
 
@@ -78,14 +81,45 @@ function ProfileDetails() {
     document.title = "Profile Details";
   }, []);
 
-
-
   const categories = ["Category 01", "Category 02", "Category 03"];
 
-
+  const location = useLocation();
+  const dealid = location.state?.dealid || "";
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
   const handlecontactClose = () => setcontactOpen(false);
+  const [formdata, setFormData] = useState(null); 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!token || !userId) return;
+
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("API Response:", response.data);
+        setFormData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const setting =
+    formdata?.businessProfile?.[0]?.user_id || "No Data Available";
+
+  console.log("User ID:", setting);
+  console.log("Complete Data:", formdata);
 
   const modalContacts = [
     { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
@@ -107,8 +141,6 @@ function ProfileDetails() {
       title: "Get Directions",
     },
   ];
-
-
 
   return (
     <div>
@@ -132,12 +164,11 @@ function ProfileDetails() {
                 <IoIosStar className="me-1 text-[#F8C600]" />
                 <div className="flex flex-wrap">
                   <span className="myhead text-xs font-semibold me-1">4.9</span>
-                  <p className="text-[#181D2766] underline text-xs">
-                    (457)
-                  </p>
+                  <p className="text-[#181D2766] underline text-xs">(457)</p>
                 </div>
               </div>
             </div>
+
             <div className="flex flex-wrap mt-2">
               <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
               <div className="flex items-center">
@@ -151,9 +182,7 @@ function ProfileDetails() {
                 <p className="text-sm myblack">Hours:&nbsp;</p>
                 <p className="text-sm text-[#34A853] font-[300]">Available</p>
               </div>
-              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2">
-
-              </div>
+              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2"></div>
               <select name="" id="" className="text-sm myblack bg-transparent">
                 <option value="">Close 6PM</option>
               </select>
@@ -190,93 +219,160 @@ function ProfileDetails() {
                 ))}
               </div>
             </div>
-            </div>
+          </div>
         </Modal>
       </div>
+      <div className="flex items-center justify-end mt-3 lg:mt-0">
+        <button
+          className="bg-[#FA2841] px-3 py-3 text-[#fff] rounded-md me-2"
+          onClick={() => handleDelete(dealid)}
+        >
+          <FaRegTrashCan />
+        </button>
+        <Link
+          to={`/provider/settings/${setting}`}
+          className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
+        >
+          <FaPencilAlt />
+        </Link>
+      </div>
+      {/* {
+        console.log("formdata",formdata?.businessProfile[0]?.about)
+      } */}
       <div className="mt-6">
-        <h2 className="text-lg font-medium myhead">About Me</h2>
+        <h2 className="text-lg font-medium myhead">About me </h2>
         <p className="myblack mt-3">
-          Donec pulvinar consequat metus eget cursus. Donec nec quam eu arcu
-          elementum tempor eu pharetra mauris. Morbi et gravida purus, nec
-          sagittis risus. Nulla placerat justo ut dui aliquam efficitur. Mauris
-          aliquet mattis odio nec malesuada. Morbi at dui tristique, dignissim
-          enim ac, varius nulla. Donec venenatis libero nec ligula laoreet
-          laoreet. Sed quis lorem in mi suscipit dictum id nec diam. Orci varius
-          natoque penatibus et magnis dis parturient montes, nascetur ridiculus
-          mus. Nam at vehicula neque. Proin molestie venenatis sem, ut imperdiet
-          leo efficitur vel. Vestibulum nec elementum lacus.
+          {/* {
+          formdata?.businessProfile[0]?.about
+         } */}
         </p>
       </div>
-      <ProfileDeal/>
+      <ProfileDeal />
       <div className="additional">
-        <h2 className="text-2xl mt-4 font-semibold myhead">Additional Photos</h2>
+        <h2 className="text-2xl mt-4 font-semibold myhead">
+          Additional Photos
+        </h2>
         <div>
-          <Accordion expanded={expanded === "Technicians"} onChange={handleChange("Technicians")}>
-            <AccordionSummary aria-controls={`Techniciansd-content`} id={`Techniciansd-header`}>
+          <Accordion
+            expanded={expanded === "Technicians"}
+            onChange={handleChange("Technicians")}
+          >
+            <AccordionSummary
+              aria-controls={`Techniciansd-content`}
+              id={`Techniciansd-header`}
+            >
               <h3 className="me-3">Technicians Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <TechniciansPhoto />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Vehicle"} onChange={handleChange("Vehicle")}>
-            <AccordionSummary aria-controls={`Vehicled-content`} id={`Vehicled-header`}>
+          <Accordion
+            expanded={expanded === "Vehicle"}
+            onChange={handleChange("Vehicle")}
+          >
+            <AccordionSummary
+              aria-controls={`Vehicled-content`}
+              id={`Vehicled-header`}
+            >
               <h3 className="me-3">Vehicle Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <VehiclePhoto />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Facilty"} onChange={handleChange("Facilty")}>
-            <AccordionSummary aria-controls={`Faciltyd-content`} id={`Faciltyd-header`}>
+          <Accordion
+            expanded={expanded === "Facilty"}
+            onChange={handleChange("Facilty")}
+          >
+            <AccordionSummary
+              aria-controls={`Faciltyd-content`}
+              id={`Faciltyd-header`}
+            >
               <h3 className="me-3">Facilty Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <FacilityPhoto />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Project"} onChange={handleChange("Project")}>
-            <AccordionSummary aria-controls={`Projectd-content`} id={`Projectd-header`}>
+          <Accordion
+            expanded={expanded === "Project"}
+            onChange={handleChange("Project")}
+          >
+            <AccordionSummary
+              aria-controls={`Projectd-content`}
+              id={`Projectd-header`}
+            >
               <h3 className="me-3">Project Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <ProjectPhoto />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "License"} onChange={handleChange("License")}>
-            <AccordionSummary aria-controls={`Licensed-content`} id={`Licensed-header`}>
+          <Accordion
+            expanded={expanded === "License"}
+            onChange={handleChange("License")}
+          >
+            <AccordionSummary
+              aria-controls={`Licensed-content`}
+              id={`Licensed-header`}
+            >
               <h3 className="me-3">License Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <License />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Award"} onChange={handleChange("Award")}>
-            <AccordionSummary aria-controls={`Awardd-content`} id={`Awardd-header`}>
+          <Accordion
+            expanded={expanded === "Award"}
+            onChange={handleChange("Award")}
+          >
+            <AccordionSummary
+              aria-controls={`Awardd-content`}
+              id={`Awardd-header`}
+            >
               <h3 className="me-3">Award Photo</h3>
             </AccordionSummary>
             <AccordionDetails>
               <Award />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Insurance"} onChange={handleChange("Insurance")}>
-            <AccordionSummary aria-controls={`Insuranced-content`} id={`Insuranced-header`}>
+          <Accordion
+            expanded={expanded === "Insurance"}
+            onChange={handleChange("Insurance")}
+          >
+            <AccordionSummary
+              aria-controls={`Insuranced-content`}
+              id={`Insuranced-header`}
+            >
               <h3 className="me-3">Insurance</h3>
             </AccordionSummary>
             <AccordionDetails>
               <Insurance />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "SpecialHour"} onChange={handleChange("SpecialHour")}>
-            <AccordionSummary aria-controls={`SpecialHourd-content`} id={`SpecialHourd-header`}>
+          <Accordion
+            expanded={expanded === "SpecialHour"}
+            onChange={handleChange("SpecialHour")}
+          >
+            <AccordionSummary
+              aria-controls={`SpecialHourd-content`}
+              id={`SpecialHourd-header`}
+            >
               <h3 className="me-3">Special Hours of Operation</h3>
             </AccordionSummary>
             <AccordionDetails>
               <SpecialHour />
             </AccordionDetails>
           </Accordion>
-          <Accordion expanded={expanded === "Socials"} onChange={handleChange("Socials")}>
-            <AccordionSummary aria-controls={`Socialsd-content`} id={`Socialsd-header`}>
+          <Accordion
+            expanded={expanded === "Socials"}
+            onChange={handleChange("Socials")}
+          >
+            <AccordionSummary
+              aria-controls={`Socialsd-content`}
+              id={`Socialsd-header`}
+            >
               <h3 className="me-3">Socials</h3>
             </AccordionSummary>
             <AccordionDetails>
@@ -288,7 +384,7 @@ function ProfileDetails() {
       <div className="mt-5">
         <Review />
       </div>
-      </div>
+    </div>
   );
 }
 
