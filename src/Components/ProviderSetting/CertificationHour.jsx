@@ -227,7 +227,7 @@ const CertificationHour = () => {
               Certifications & Hours
             </p>
             <p className="text-[#535862] text-sm">
-              update your certifications & hours details.
+              Update your certifications & hours details.
             </p>
           </div>
           <div className="py-8 border-b">

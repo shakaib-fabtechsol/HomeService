@@ -122,7 +122,7 @@ const Location = () => {
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
             <p className="text-lg font-semibold text-[#181D27]">Service Area</p>
-            <p className="text-[#535862] text-sm">Choose Service Area For Your Deals</p>
+            <p className="text-[#535862] text-sm">Choose service area for your deals.</p>
           </div>
           <div className="lg:max-w-[65%] xl:max-w-[45%]">
             <div className="flex flex-wrap gap-4 py-4 items-center mb-4">
