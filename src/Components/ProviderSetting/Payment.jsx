@@ -71,6 +71,7 @@ const Payment = () => {
             <p className="text-lg font-semibold text-[#181D27]">
               Payment/Payout Info
             </p>
+            <br />
             <p className="text-[#535862] text-sm">update your payment detail</p>
           </div>
           <div className="">
@@ -80,7 +81,8 @@ const Payment = () => {
                   <label htmlFor="Title" className="font-semibold">
                     Business Name
                   </label>
-                  <p className="text-[#535862] text-sm">Legal business name for taxes(it will not publically shown)</p>
+                  <br />
+                  <p className="text-[#535862] text-sm">This is your legal business name for tax purposes. This will not be publicly displayed on your profile.</p>
                 </div>
               </div>
               <div className="col-span-12 md:col-span-8 lg:col-span-6">
