@@ -2,22 +2,22 @@ import React, { useState } from "react";
 import upload from "../../assets/img/upload.png";
 import fileicon from "../../assets/img/fileicon.png";
 
-export default function PreviewVideo({ onFileSelect, fieldName }) {
+export default function PreviewMedia({ onFileSelect, fieldName }) {
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 
-  // Supported video formats
-  const supportedFormats = [".mp4", ".mov", ".avi", ".mkv", ".webm"];
+  // Supported formats for video and image
+  const supportedFormats = [".mp4", ".mov", ".avi", ".mkv", ".webm", ".jpg", ".jpeg", ".png", ".gif"];
 
   // Handle file drop from drag-and-drop
   const handleFileDrop = (e) => {
     e.preventDefault();
     const uploadedFile = e.dataTransfer.files[0];
     if (uploadedFile && isFileSupported(uploadedFile)) {
-      handleFile(uploadedFile);
+      processFile(uploadedFile);
     } else {
-      alert("Unsupported file format. Please upload a video file.");
+      alert("Unsupported file format. Please upload a video or image file.");
     }
   };
 
@@ -25,32 +25,34 @@ export default function PreviewVideo({ onFileSelect, fieldName }) {
   const handleFileClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = supportedFormats.join(","); // Allow only supported formats
+    fileInput.accept = supportedFormats.join(",");
     fileInput.onchange = (e) => handleFileSelect(e);
     fileInput.click();
   };
 
-  // Handle the file change (from file input)
+  // Handle file input change
   const handleFileSelect = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile && isFileSupported(uploadedFile)) {
-      handleFile(uploadedFile);
+      processFile(uploadedFile);
     } else {
-      alert("Unsupported file format. Please upload a video file.");
+      alert("Unsupported file format. Please upload a video or image file.");
     }
   };
 
   // Check if the file is supported
   const isFileSupported = (file) => {
-    return supportedFormats.some((format) => file.name.endsWith(format));
+    return supportedFormats.some((format) =>
+      file.name.toLowerCase().endsWith(format)
+    );
   };
 
-  // Handle file processing
-  const handleFile = (uploadedFile) => {
+  // Process the file and create a preview
+  const processFile = (uploadedFile) => {
     setFile(uploadedFile);
-    setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview URL
-    setShowPreview(true); // Show preview
-    onFileSelect({ target: { files: [uploadedFile] } }, fieldName); // Pass the file back to the parent
+    setFilePreview(URL.createObjectURL(uploadedFile));
+    setShowPreview(true);
+    onFileSelect({ target: { files: [uploadedFile] } }, fieldName);
   };
 
   // Remove the file
@@ -59,6 +61,9 @@ export default function PreviewVideo({ onFileSelect, fieldName }) {
     setFilePreview(null);
     setShowPreview(false);
   };
+
+  // Determine if the file is an image
+  const isImage = file && file.type.startsWith("image/");
 
   return (
     <div
@@ -77,10 +82,10 @@ export default function PreviewVideo({ onFileSelect, fieldName }) {
               <strong>File Uploaded Successfully</strong>
             </p>
             <p className="text-gray-500">
-              <strong>Click to upload</strong> or drag and drop to change Video
+              <strong>Click to upload</strong> or drag and drop to change file
             </p>
             <p className="text-sm text-gray-400">
-              Supported formats: {supportedFormats.join(", ")} (max. 800×400px)
+              Supported formats: {supportedFormats.join(", ")}
             </p>
           </div>
         ) : (
@@ -90,7 +95,7 @@ export default function PreviewVideo({ onFileSelect, fieldName }) {
               <strong>Click to upload</strong> or drag and drop
             </p>
             <p className="text-sm text-gray-400">
-              Supported formats: {supportedFormats.join(", ")} (max. 800×400px)
+              Supported formats: {supportedFormats.join(", ")}
             </p>
           </div>
         )}
@@ -127,14 +132,22 @@ export default function PreviewVideo({ onFileSelect, fieldName }) {
       )}
 
       {showPreview && filePreview && (
-        <div className="video-preview mt-4">
-          <video
-            controls
-            src={filePreview}
-            className="rounded-lg border border-gray-200 w-full max-w-[400px]"
-          >
-            Your browser does not support the video tag.
-          </video>
+        <div className="media-preview mt-4">
+          {isImage ? (
+            <img
+              src={filePreview}
+              alt="preview"
+              className="rounded-lg border border-gray-200 w-full max-w-[400px]"
+            />
+          ) : (
+            <video
+              controls
+              src={filePreview}
+              className="rounded-lg border border-gray-200 w-full max-w-[400px]"
+            >
+              Your browser does not support the video tag.
+            </video>
+          )}
         </div>
       )}
     </div>
