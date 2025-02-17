@@ -79,13 +79,13 @@ const AdditionalPhoto = () => {
             <p className="text-lg font-semibold text-[#181D27]">
               Additional Info
             </p>
-            <p className="text-[#535862] text-sm">upload additional photos.</p>
+            <p className="text-[#535862] text-sm">Upload additional info.</p>
           </div>
           <div className="py-8 border-b">
             <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
               <div>
                 <p className="text-sm font-semibold text-[#414651]">
-                  Upload About us video 
+                  Upload About us Video 
                 </p>
               </div>
               <div className="md:col-span-2">

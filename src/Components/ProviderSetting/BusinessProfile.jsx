@@ -88,7 +88,7 @@ const BusinessProfile = () => {
             about: BasicInfo[0].about || "",
             business_primary_category:
               BasicInfo[0]?.business_primary_category || "",
-            business_secondary_categories: secondaryCategories, 
+            business_secondary_categories: secondaryCategories,
             website: BasicInfo[0]?.website || "",
           });
         }
@@ -233,7 +233,7 @@ const BusinessProfile = () => {
                 Business Profile
               </p>
               <p className="text-[#535862] text-sm">
-                update your business details.
+                Update your business details.
               </p>
             </div>
             <div>
@@ -271,7 +271,7 @@ const BusinessProfile = () => {
                       Your Logo
                     </p>
                     <p className="text-[#535862] text-sm">
-                      This will be displayed on your profile.
+                      This will be publically displayed on your profile.
                     </p>
                   </div>
                   <div className="md:col-span-2">
@@ -290,7 +290,7 @@ const BusinessProfile = () => {
                       Mailing Address
                     </label>
                     <p className="text-[#535862] text-sm">
-                      This will be your legal mailing address profile.
+                      This is your legal mailing address.This will not be publically displayed on your profile.
                     </p>
                   </div>
                   <div className="sm:col-span-2">

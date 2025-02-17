@@ -250,7 +250,7 @@ function ProfileDetails() {
       <ProfileDeal />
       <div className="additional">
         <h2 className="text-2xl mt-4 font-semibold myhead">
-          Additional Photos
+          Additional Info
         </h2>
         <div>
           <Accordion

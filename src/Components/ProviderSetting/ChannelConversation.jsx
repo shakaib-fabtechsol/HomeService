@@ -89,7 +89,7 @@ const ChannelConversation = () => {
                         Channels for Conversations
                     </p>
                     <p className="text-[#535862] text-sm">
-                        Update your Channels details.
+                        Update your channels details.
                     </p>
                 </div>
                 <div className="">
@@ -111,7 +111,7 @@ const ChannelConversation = () => {
                             <p className="mt-3">
                                 Enable the toggle to make your phone number visible to the
                                 public. Each time a customer (only one time per customer)
-                                uses this channel will incur a charge of $xxx. This charge
+                                uses this channel will incur a charge of $10. This charge
                                 is waived if your average deal revenue is above $xxx for the
                                 past 60 day period.
                             </p>
@@ -147,7 +147,7 @@ const ChannelConversation = () => {
                             <p className="mt-3">
                                 Enable the toggle to make your text number visible to the
                                 public. Each time a customer (only one time per customer)
-                                uses this channel will incur a charge of $xxx. This charge
+                                uses this channel will incur a charge of $10. This charge
                                 is waived if your average deal revenue is above $xxx for the
                                 past 60 day period.
                             </p>
@@ -183,7 +183,7 @@ const ChannelConversation = () => {
                             <p className="mt-3">
                                 Enable the toggle to make your instant chat visible to the
                                 public. Each time a customer (only one time per customer)
-                                uses this channel will incur a charge of $xxx. This charge
+                                uses this channel will incur a charge of $5. This charge
                                 is waived if your average deal revenue is above $xxx for the
                                 past 60 day period.
                             </p>
@@ -208,7 +208,7 @@ const ChannelConversation = () => {
                             <p className="mt-3">
                                 Enable the toggle to make your email address visible to the
                                 public. Each time a customer (only one time per customer)
-                                uses this channel will incur a charge of $xxx. This charge
+                                uses this channel will incur a charge of $10. This charge
                                 is waived if your average deal revenue is above $xxx for the
                                 past 60 day period.
                             </p>

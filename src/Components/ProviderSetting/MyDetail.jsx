@@ -178,7 +178,7 @@ const MyDetail = () => {
                 Personal Profile
               </p>
               <p className="text-[#535862] text-sm">
-                update your personal profile details.
+                Update your personal profile details.
               </p>
             </div>
             <div className="max-w-[1000px]">
