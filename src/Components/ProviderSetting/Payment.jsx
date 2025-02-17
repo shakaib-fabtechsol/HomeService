@@ -63,8 +63,6 @@ const Payment = () => {
     }
   };
 
-
-  
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -80,8 +78,9 @@ const Payment = () => {
               <div className="col-span-12 md:col-span-4 lg:col-span-3">
                 <div className="flex">
                   <label htmlFor="Title" className="font-semibold">
-                    Service Title
+                    Business Name
                   </label>
+                  <p className="text-[#535862] text-sm">Legal business name for taxes(it will not publically shown)</p>
                 </div>
               </div>
               <div className="col-span-12 md:col-span-8 lg:col-span-6">
@@ -127,6 +126,26 @@ const Payment = () => {
                 <div className="flex">
                   <label htmlFor="Title" className="font-semibold">
                     Branch Name/Code
+                  </label>
+                </div>
+              </div>
+              <div className="col-span-12 md:col-span-8 lg:col-span-6">
+                <input
+                  type="text"
+                  id="Title"
+                  placeholder="Enter"
+                  name="branch_name"
+                  value={formData.branch_name}
+                  onChange={handleChange}
+                  className="myinput focus-none w-full"
+                />
+              </div>
+            </div>
+            <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12">
+              <div className="col-span-12 md:col-span-4 lg:col-span-3">
+                <div className="flex">
+                  <label htmlFor="Title" className="font-semibold">
+                    SSN/TIN
                   </label>
                 </div>
               </div>

@@ -33,16 +33,6 @@ function ProviderLayout() {
 
   const bottomItems = [
     {
-      text: "Conversations",
-      icon: <MdOutlineMessage className="text-2xl" />,
-      link: "/provider/conversations",
-    },
-    {
-      text: "Notifications",
-      icon: <IoMdNotificationsOutline className="text-2xl" />,
-      link: "/provider/notifications",
-    },
-    {
       text: "Settings",
       icon: <IoIosSettings className="text-2xl" />,
       link: "/provider/settings",
