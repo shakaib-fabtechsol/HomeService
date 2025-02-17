@@ -226,7 +226,7 @@ const ChannelConversation = () => {
                             />
                         </div>
                     </div>
-                    <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
+                    {/* <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
                         <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                             <div className="flex items-center">
                                 <p className="font-semibold me-2">Direct Form</p>
@@ -250,7 +250,7 @@ const ChannelConversation = () => {
                             </p>
                         </div>
                         <div className="col-span-12 lg:col-span-6 2xl:col-span-6"></div>
-                    </div>
+                    </div> */}
                     <div className="grid border-b py-4 grid-cols-1 md:grid-cols-12 gap-6">
                         <div className="col-span-12 lg:col-span-6 2xl:col-span-5">
                             <div className="flex items-center">

@@ -76,9 +76,23 @@ const AdditionalPhoto = () => {
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
             <p className="text-lg font-semibold text-[#181D27]">
-              Additional Photos
+              Additional Info
             </p>
             <p className="text-[#535862] text-sm">upload additional photos.</p>
+          </div>
+          <div className="py-8 border-b">
+            <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+              <div>
+                <p className="text-sm font-semibold text-[#414651]">
+                  Upload Abot us video 
+                </p>
+              </div>
+              <div className="md:col-span-2">
+                <SettingsPreview
+                  
+                />
+              </div>
+            </div>
           </div>
           <div className="py-8 border-b">
             <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">

@@ -121,8 +121,8 @@ const Location = () => {
       <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-            <p className="text-lg font-semibold text-[#181D27]">Locations</p>
-            <p className="text-[#535862] text-sm">Choose Your Location</p>
+            <p className="text-lg font-semibold text-[#181D27]">Service Area</p>
+            <p className="text-[#535862] text-sm">Choose Service Area For Your Deals</p>
           </div>
           <div className="lg:max-w-[65%] xl:max-w-[45%]">
             <div className="flex flex-wrap gap-4 py-4 items-center mb-4">

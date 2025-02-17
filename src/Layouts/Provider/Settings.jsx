@@ -73,10 +73,10 @@ function Settings() {
               scrollButtons="auto"
             >
               <Tab label="My details" />
-              <Tab label="Location" />
+              <Tab label="Service Area" />
               <Tab label="Business Profile " />
               <Tab label="Certifications & Hours" />
-              <Tab label="Additional Photos" />
+              <Tab label="Additional Infol" />
               <Tab label="Social Profiles" />
               <Tab label="Password" />
               <Tab label="Channels for Conversations" />

@@ -231,6 +231,9 @@ const BusinessProfile = () => {
                     <label className="text-sm font-semibold" htmlFor="bname">
                       Business name*
                     </label>
+                    <p className="text-[#535862] text-sm">
+                      This will be publically displayed on your profile.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <input
@@ -271,8 +274,11 @@ const BusinessProfile = () => {
                 <div className="grid sm:grid-cols-3 gap-2 max-w-[1000px]">
                   <div>
                     <label className="text-sm font-semibold" htmlFor="location">
-                      Location
+                      Mailing Address
                     </label>
+                    <p className="text-[#535862] text-sm">
+                      This will be your legal mailing address profile.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <div className="border flex items-center border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D]">
