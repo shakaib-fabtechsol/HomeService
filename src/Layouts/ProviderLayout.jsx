@@ -1,26 +1,79 @@
 import * as React from "react";
+import { useEffect, useState } from "react";
 import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import {
-  MdOutlineMessage,
   MdOutlineSupport,
   MdHomeRepairService,
   MdLogout,
 } from "react-icons/md";
-import { IoMdNotificationsOutline, IoIosSettings } from "react-icons/io";
+import { IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert
+import Swal from "sweetalert2";
 import logo from "../assets/img/logo.png";
-import user from "../assets/img/user.png";
+import defaultUser from "../assets/img/user.png";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const drawerWidth = 240;
 
 function ProviderLayout() {
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("id");
+
+      if (!token) {
+        toast.error("No token found. Redirecting to login...");
+        navigate("/login"); // Redirect to login
+        return;
+      }
+
+      if (!userId) {
+        toast.error("User ID not found. Please log in.");
+        navigate("/login");
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` }, // Include token if needed
+          }
+        );
+        console.log("Fetched User Data:", response?.data?.user);
+        setUserData(response.data?.user);
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        toast.error("Failed to load user data.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account.",
+      icon: "warning",
+      confirmButtonColor: "#0F91D2",
+      confirmButtonText: "Yes, log me out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        navigate("/");
+      }
+    });
   };
 
   const topItems = [
@@ -44,21 +97,7 @@ function ProviderLayout() {
     },
   ];
 
-  const handleLogout = () => {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You will be logged out of your account.",
-      icon: "warning",
-      showCancelButton: false,
-      confirmButtonColor: "#0F91D2",
-      confirmButtonText: "Yes, log me out!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        navigate("/");
-      }
-    });
-  };
+  const imageUrl = `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`;
 
   const drawer = (
     <Box
@@ -93,7 +132,7 @@ function ProviderLayout() {
         </List>
       </Box>
 
-      {/* Bottom Section: Other Links */}
+      {/* User Info & Bottom Section */}
       <Box sx={{ fontFamily: "inter" }}>
         <List className="border-b-2">
           {bottomItems.map((item) => (
@@ -115,19 +154,21 @@ function ProviderLayout() {
           <div className="flex items-center px-4 py-4">
             <Link to="/provider/ProfileDetails">
               <img
-                src={user}
-                alt="logo"
-                className="rounded-full pe-2 max-w-[70px]"
+                src={imageUrl || defaultUser}
+                alt="User"
+                className="rounded-full pe-2 w-[100px] h-[50px]"
               />
             </Link>
             <Box>
               <Box className="flex justify-between items-center">
-                <p className="font-bold">Mike Bird</p>
+                <p className="font-bold">{userData?.name || "User Name"}</p>
                 <button onClick={handleLogout}>
                   <MdLogout className="text-2xl" />
                 </button>
               </Box>
-              <p className="mb-0 text-sm">mikebird@untitledui.com</p>
+              <p className="mb-0 text-sm">
+                {userData?.email || "user@example.com"}
+              </p>
             </Box>
           </div>
         </Box>

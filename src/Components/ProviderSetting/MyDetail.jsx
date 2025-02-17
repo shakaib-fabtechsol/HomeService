@@ -1,114 +1,127 @@
 import React, { useEffect, useState } from "react";
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, TextField, Button } from "@mui/material";
 import SettingsPreview from "../MUI/SettingsPreview";
 import profileImg from "../../assets/img/service3.png";
+import Loader from "../../Components/MUI/Loader";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
+
+const phoneRegExp = /^\+1\(\d{3}\) \d{3} \d{4}$/;
 
 const MyDetail = () => {
-  const [isSelectsalespEnabled, setIsSelectsalespEnabled] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("");
   const [loading, setLoading] = useState(false);
-  const userId = localStorage.getItem("id");
-  console.log("userID", userId);
-  const { setting } = useParams();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    sales_referred: "No",
-    sales_representative: "",
-  });
+  const [selectedOption, setSelectedOption] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const userId = localStorage.getItem("id");
+  console.log(userId);
+
+  const validate = (values) => {
+    const errors = {};
+
+    if (!values.name.trim()) {
+      errors.name = "Full Name is required";
+    }
+
+    if (!values.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+      errors.email = "Invalid email address";
+    }
+
+    if (!values.phone.trim()) {
+      errors.phone = "Phone number is required";
+    } else if (!phoneRegExp.test(values.phone)) {
+      errors.phone = "Phone number must be in the format +1(000) 000 0000";
+    }
+
+    return errors;
   };
 
-  const handlereset = () => {
-    setFormData({
+  const formik = useFormik({
+    initialValues: {
       name: "",
       email: "",
       phone: "",
-      personal_image: null,
-      sales_referred: "No",
+      personal_image: "",
+      sales_referred: "",
       sales_representative: "",
-    });
-  };
+    },
+    validate, // ✅ Custom Validation Applied
+    onSubmit: async (values) => {
+      if (loading) return;
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+      setLoading(true);
+      try {
+        const data = new FormData();
+        Object.keys(values).forEach((key) => {
+          data.append(key, values[key]);
+        });
+        data.append("id", userId);
 
-  const handleFileChange = (e, fieldName) => {
-    const uploadedFile = e.target.files[0];
-    setFormData((prevState) => ({
-      ...prevState,
-      [fieldName]: uploadedFile,
-    }));
-  };
+        await axios.post(
+          "https://homeservice.thefabulousshow.com/api/MyDetails",
+          data,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-  const handleRefferChange = (event) => {
-    const selectedValue = event.target.value;
-    setIsSelectsalespEnabled(selectedValue === "Yes");
-    setFormData((prevState) => ({
-      ...prevState,
-      sales_referred: selectedValue,
-      sales_representative:
-        selectedValue === "No" ? "" : prevState.sales_representative,
-    }));
-  };
-
-  const handleSelectChange = (event) => {
-    setSelectedOption(event.target.value);
-    setFormData((prevState) => ({
-      ...prevState,
-      sales_representative: event.target.value,
-    }));
-  };
-
-  console.log(userId);
+        toast.success("Profile updated successfully!");
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        toast.error("Failed to update profile. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    },
+  });
 
   useEffect(() => {
     if (!userId) return;
 
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
-
       if (!token) {
         toast.error("No token found. Please log in.");
         return;
       }
-
       try {
         const response = await axios.get(
           `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
-        console.log("Response Data:", response.data?.user);
         const BasicInfo = response?.data?.user;
+        console.log("value of data", BasicInfo); // Log API response to inspect the data
 
         if (BasicInfo) {
+          // Construct image URL from the API response
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
-            : "/default.png";
-          console.log("imageeee", imageUrl);
-          setFormData({
+            : "/default.png"; // Fallback to default if no image path is found
+          const selectedSalesRep = options.find(
+            (option) => option.value === BasicInfo?.sales_representative
+          );
+          formik.setValues({
             name: BasicInfo?.name || "",
             email: BasicInfo?.email || "",
             phone: BasicInfo?.phone || "",
-            personal_image: imageUrl, 
             sales_referred: BasicInfo?.sales_referred || "",
-            sales_representative: BasicInfo?.sales_representative || "",
+            personal_image: imageUrl,
           });
+          setSelectedOption(selectedSalesRep || null);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -119,47 +132,17 @@ const MyDetail = () => {
     fetchData();
   }, [userId]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (loading) return; 
+  const handleFileChange = (e, fieldName) => {
+    const file = e.target.files[0];
+    formik.setFieldValue(fieldName, file);
+  };
 
-    const token = localStorage.getItem("token");
-    console.log("token:", token);
-
-    if (!token) {
-      toast.error("No token found. Please log in.");
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const data = new FormData();
-
-      Object.keys(formData).forEach((key) => {
-        data.append(key, formData[key]);
-      });
-
-      data.append("id", userId);
-
-      const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/MyDetails",
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("Success:", response.data);
-      toast.success("Profile updated successfully!");
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      toast.error("Failed to update profile. Please try again.");
-    } finally {
-      setLoading(false);
+  const handleRefferChange = (e) => {
+    const selectedValue = e.target.value;
+    formik.setFieldValue("sales_referred", selectedValue);
+    if (selectedValue === "No") {
+      formik.setFieldValue("sales_representative", "");
+      setSelectedOption(selectedValue);
     }
   };
 
@@ -168,134 +151,210 @@ const MyDetail = () => {
     { value: "2", label: "Jane Smith", avatar: profileImg },
     { value: "3", label: "Chris Evans", avatar: profileImg },
   ];
+
+  const handleSelectChange = (e) => {
+    const selectedValue = e.target.value;
+    console.log("Selected Value:", selectedValue);
+
+    const selectedRep = options.find(
+      (option) => option.value === selectedValue
+    );
+    setSelectedOption(selectedRep);
+    formik.setFieldValue("sales_representative", selectedValue);
+  };
+
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-            <p className="text-lg font-semibold text-[#181D27]">
-              Personal Profile
-            </p>
-            <p className="text-[#535862] text-sm">
-              update your personal profile details.
-            </p>
-          </div>
-          <div className="max-w-[1000px]">
-            <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
-              <div>
-                <label className="text-sm font-semibold" htmlFor="fname">
-                  Full Name
-                </label>
-              </div>
-              <div className="sm:col-span-2">
-                <input
-                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
+    <>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
+      <div>
+        <form onSubmit={formik.handleSubmit}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Personal Profile
+              </p>
+              <p className="text-[#535862] text-sm">
+                update your personal profile details.
+              </p>
             </div>
-            <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
-              <div>
-                <label className="text-sm font-semibold" htmlFor="Email">
-                  Email address
-                </label>
-              </div>
-              <div className="sm:col-span-2">
-                <input
-                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
-              <div>
-                <label className="text-sm font-semibold" htmlFor="Phone">
-                  Phone Number
-                </label>
-              </div>
-              <div className="sm:col-span-2">
-                <input
-                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
-              <div>
-                <p className="text-sm font-semibold text-[#414651]">
-                  Personal Profile Photo
-                </p>
-                <p className="text-[#535862] text-sm">
-                  This will be displayed on your profile.
-                </p>
-              </div>
-              {console.log("asdadadada", formData?.personal_image)}
-              <div className="md:col-span-2">
-                <SettingsPreview
-                  onFileSelect={handleFileChange}
-                  value={
-                    formData.personal_image instanceof File
-                      ? URL.createObjectURL(formData.personal_image)
-                      : formData.personal_image
-                      ? `https://homeservice.thefabulousshow.com/uploads/${formData.personal_image}`
-                      : "/default.png"
-                  }
-                  fieldName="personal_image"
-                />
-              </div>
-            </div>
-            <div className="py-8 flex flex-col gap-4">
-              <div className="grid sm:grid-cols-3 gap-2">
+            <div className="max-w-[1000px]">
+              {/* Full Name */}
+              <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
                 <div>
-                  <label className="text-sm font-semibold" htmlFor="reffer">
+                  <label className="text-sm font-semibold" htmlFor="name">
+                    Full Name
+                  </label>
+                </div>
+                <div className="sm:col-span-2">
+                  <TextField
+                    fullWidth
+                    id="name"
+                    name="name"
+                    variant="outlined"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                  />
+                </div>
+              </div>
+
+              {/* Email Address */}
+              <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
+                <div>
+                  <label className="text-sm font-semibold" htmlFor="email">
+                    Email address
+                  </label>
+                </div>
+                <div className="sm:col-span-2">
+                  <TextField
+                    fullWidth
+                    id="email"
+                    name="email"
+                    variant="outlined"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.touched.email && formik.errors.email}
+                  />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
+                <div>
+                  <label className="text-sm font-semibold" htmlFor="phone">
+                    Phone Number
+                  </label>
+                </div>
+                <div className="sm:col-span-2">
+                  <TextField
+                    fullWidth
+                    id="phone"
+                    name="phone"
+                    variant="outlined"
+                    value={formik.values.phone}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    error={formik.touched.phone && Boolean(formik.errors.phone)}
+                    helperText={formik.touched.phone && formik.errors.phone}
+                    placeholder="+1(000) 000 0000"
+                  />
+                </div>
+              </div>
+
+              {console.log("formik datad", formik.values.personal_image)}
+              <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Personal Profile Photo
+                  </p>
+                  <p className="text-[#535862] text-sm">
+                    This will be displayed on your profile.
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview
+                    onFileSelect={(e) => handleFileChange(e, "personal_image")}
+                    fieldName="personal_image"
+                    existingImage={formik.values.personal_image ||profileImg} 
+                  />
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
+                <div>
+                  <label
+                    className="text-sm font-semibold"
+                    htmlFor="sales_referred"
+                  >
                     Were you referred by a Sales Representative?
                   </label>
                 </div>
                 <div className="sm:col-span-2">
                   <select
                     className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                    name="reffer"
-                    id="reffer"
-                    value={formData.sales_referred}
+                    id="sales_referred"
+                    name="sales_referred"
+                    value={formik.values.sales_referred}
                     onChange={handleRefferChange}
+                    onBlur={formik.handleBlur}
                   >
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
                   </select>
+                  {formik.touched.sales_referred &&
+                    formik.errors.sales_referred && (
+                      <div className="text-red-500 text-sm">
+                        {formik.errors.sales_referred}
+                      </div>
+                    )}
                 </div>
               </div>
-              <div className="grid sm:grid-cols-3 gap-2">
-                <div>
-                  <label
-                    className="text-sm font-semibold"
-                    htmlFor="selectsalesp"
-                  >
-                    Select Sales Representative
-                  </label>
-                </div>
-                <div className="sm:col-span-2">
-                  <Select
-                    labelId="selectsalesp"
-                    value={selectedOption}
-                    onChange={handleSelectChange}
-                    disabled={!isSelectsalespEnabled}
-                    renderValue={(selected) => {
-                      const selectedOption = options.find(
-                        (option) => option.value === selected
-                      );
-                      return (
-                        <div style={{ display: "flex", alignItems: "center" }}>
+              {console.log("formik.values.sales_referred", options[0]?.value)}
+
+              {formik.values.sales_referred === "Yes" && (
+                <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
+                  <div>
+                    <label
+                      className="text-sm font-semibold"
+                      htmlFor="sales_representative"
+                    >
+                      Select Sales Representative
+                    </label>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <Select
+                      labelId="sales_representative"
+                      value={selectedOption?.value || ""}
+                      onChange={handleSelectChange}
+                      renderValue={(selected) => {
+                        const selectedOpt = options.find(
+                          (option) => option.value === selected
+                        );
+                        return (
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            {selectedOpt && (
+                              <img
+                                src={selectedOpt.avatar}
+                                alt="img"
+                                style={{
+                                  width: "24px",
+                                  height: "24px",
+                                  borderRadius: "50%",
+                                  marginRight: "8px",
+                                }}
+                              />
+                            )}
+                            {selectedOpt ? selectedOpt.label : ""}
+                          </div>
+                        );
+                      }}
+                      sx={{
+                        border: "1px solid #D5D7DA !important",
+                        borderRadius: "8px",
+                        boxShadow: "0px 1px 2px 0px #0A0D120D",
+                        outline: "none",
+                        width: "100%",
+                        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                          border: "1px solid #D5D7DA",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#D5D7DA !important",
+                        },
+                      }}
+                    >
+                      {options.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
                           <img
-                            src={selectedOption?.avatar}
+                            className="me-2 size-8 rounded-full object-cover"
+                            src={option.avatar}
                             alt="img"
                             style={{
                               width: "24px",
@@ -304,67 +363,53 @@ const MyDetail = () => {
                               marginRight: "8px",
                             }}
                           />
-                          {selectedOption?.label}
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {formik.touched.sales_representative &&
+                      formik.errors.sales_representative && (
+                        <div className="text-red-500 text-sm">
+                          {formik.errors.sales_representative}
                         </div>
-                      );
-                    }}
-                    sx={{
-                      border: "1px solid #D5D7DA !important",
-                      borderRadius: "8px",
-                      boxShadow: "0px 1px 2px 0px #0A0D120D",
-                      outline: "none",
-                      width: "100%",
-                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                        border: "1px solid #D5D7DA",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderColor: "#D5D7DA !important",
-                      },
-                    }}
-                  >
-                    {options.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        <img
-                          className="me-2 size-8 rounded-full object-cover"
-                          src={option.avatar}
-                          alt="img"
-                          style={{
-                            width: "24px",
-                            height: "24px",
-                            borderRadius: "50%",
-                            marginRight: "8px",
-                          }}
-                        />
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                      )}
+                  </div>
                 </div>
-              </div>
+              )}
+            </div>
+
+            {/* Form Buttons */}
+            <div className="flex justify-end mt-4">
+              <Button
+                type="reset"
+                onClick={() => formik.resetForm()}
+                variant="outlined"
+                sx={{ width: "150px", py: "10px", mr: 2 }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  width: "150px",
+                  py: "10px",
+                  backgroundColor: "#0F91D2",
+                  fontWeight: "bold",
+                  "&:disabled": {
+                    opacity: 0.5,
+                    cursor: "not-allowed",
+                  },
+                }}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </Button>
             </div>
           </div>
-          <div className="flex justify-end mt-4">
-            <button
-              type="reset"
-              onClick={handlereset}
-              className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-            >
-              {" "}
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 };
 

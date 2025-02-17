@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import SettingsPreview from "../MUI/SettingsPreview";
 import { FaPlus } from "react-icons/fa6";
 import axios from "axios";
+import profileImg from "../../assets/img/service3.png";
+import Loader from "../../Components/MUI/Loader";
+
 import { toast } from "react-toastify";
 import {
   Autocomplete,
@@ -65,23 +68,27 @@ const BusinessProfile = () => {
         console.log("Response Data:", response.data?.businessProfile);
         const BasicInfo = response?.data?.businessProfile;
         console.log("BasicInformation", BasicInfo[0]);
+
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.business_logo;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
             : "/default.png";
 
+          const secondaryCategories =
+            typeof BasicInfo[0]?.business_secondary_categories === "string"
+              ? BasicInfo[0]?.business_secondary_categories.split(",")
+              : BasicInfo[0]?.business_secondary_categories || [];
+
           setFormData({
-            user_id:BasicInfo[0]?.user_id||"",
+            user_id: BasicInfo[0]?.user_id || "",
             business_name: BasicInfo[0]?.business_name || "",
             location: BasicInfo[0]?.location || "",
             business_logo: imageUrl,
             about: BasicInfo[0].about || "",
             business_primary_category:
               BasicInfo[0]?.business_primary_category || "",
-            business_secondary_categories:
-              BasicInfo?.business_secondary_categories
-               || "",
+            business_secondary_categories: secondaryCategories, 
             website: BasicInfo[0]?.website || "",
           });
         }
@@ -210,9 +217,14 @@ const BusinessProfile = () => {
     }));
   };
 
-  console.log(formData, "formdata");
+  console.log("formdata", formData?.business_secondary_categories);
   return (
     <>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <div>
         <form onSubmit={handleSubmit}>
           <div>
@@ -266,6 +278,7 @@ const BusinessProfile = () => {
                     <SettingsPreview
                       onFileSelect={handleFileChange}
                       fieldName="business_logo"
+                      existingImage={formData.personal_image || profileImg}
                     />
                   </div>
                 </div>
@@ -343,7 +356,8 @@ const BusinessProfile = () => {
                         Select an option
                       </option>
                       {Businesscategories.length > 0 ? (
-                     Array.isArray(Businesscategories) && Businesscategories?.map((option, index) => (
+                        Array.isArray(Businesscategories) &&
+                        Businesscategories?.map((option, index) => (
                           <option key={index} value={option}>
                             {option}
                           </option>
@@ -354,6 +368,10 @@ const BusinessProfile = () => {
                     </select>
                   </div>
                 </div>
+                {console.log(
+                  "valueeee",
+                  formData?.business_secondary_categories
+                )}
                 <div className="grid sm:grid-cols-3 gap-2 max-w-[1000px] mt-4">
                   <div>
                     <label
@@ -367,8 +385,8 @@ const BusinessProfile = () => {
                     <Autocomplete
                       multiple
                       id="tags-outlined"
-                      options={Businesscategories || []} // ✅ Ensure it's always an array
-                      value={formData.business_secondary_categories || []} // ✅ Prevent "some is not a function" error
+                      options={Businesscategories || []}
+                      value={formData?.business_secondary_categories || []} // ✅ Prevent "some is not a function" error
                       onChange={(event, newValue) => {
                         setFormData((prevState) => ({
                           ...prevState,

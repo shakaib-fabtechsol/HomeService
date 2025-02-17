@@ -3,6 +3,8 @@ import { FaPlusCircle } from "react-icons/fa";
 import SettingsPreview from "../MUI/SettingsPreview";
 import { FaTrash } from "react-icons/fa6";
 import axios from "axios";
+import profileImg from "../../assets/img/service3.png";
+import Loader from "../../Components/MUI/Loader";
 import { toast } from "react-toastify";
 
 const CertificationHour = () => {
@@ -78,16 +80,14 @@ const CertificationHour = () => {
 
   useEffect(() => {
     if (!userId) return;
-
+  
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
-
       if (!token) {
         toast.error("No token found. Please log in.");
         return;
       }
-
+  
       try {
         const response = await axios.get(
           `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
@@ -97,42 +97,58 @@ const CertificationHour = () => {
             },
           }
         );
-
-        console.log("Response Data:", response.data?.businessProfile);
-        const BasicInfo = response?.data?.businessProfile;
-        console.log("BasicInformation", BasicInfo[0]?.insurance_certificate);
-        if (BasicInfo) {
-          
-          const imagePath1 = BasicInfo[0]?.insurance_certificate;
-          const imagePath2 = BasicInfo[0]?.license_certificate;
-          const imagePath3 = BasicInfo[0]?.award_certificate;
-        
-          const imageUrl = imagePath1
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath1}`
+  
+        const businessProfile = response.data?.businessProfile;
+        if (businessProfile && businessProfile.length > 0) {
+          const profile = businessProfile[0];
+          let formattedSchedule = [];
+          if (profile.regular_hour) {
+            if (typeof profile.regular_hour === "string") {
+              formattedSchedule = JSON.parse(profile.regular_hour);
+            } else {
+              formattedSchedule = profile.regular_hour;
+            }
+          }
+ 
+          const transformedSchedule = formattedSchedule.map((item) => ({
+            day: item.day_name, // e.g., "Monday"
+            closed: item.day_status === "closed",
+            slots:
+              item.day_status === "closed"
+                ? []
+                : item.regular_hour.map((slot) => ({
+                    start: slot.start_time,
+                    end: slot.end_time,
+                  })),
+          }));
+          const insuranceCertificate = profile.insurance_certificate
+            ? `https://homeservice.thefabulousshow.com/uploads/${profile.insurance_certificate}`
             : "/default.png";
-            const imageUrl2 = imagePath2
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath2}`
+          const licenseCertificate = profile.license_certificate
+            ? `https://homeservice.thefabulousshow.com/uploads/${profile.license_certificate}`
             : "/default.png";
-
-            const imageUrl3 = imagePath3
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath2}`
+          const awardCertificate = profile.award_certificate
+            ? `https://homeservice.thefabulousshow.com/uploads/${profile.award_certificate}`
             : "/default.png";
-
+  
           setFormData({
-            user_id:BasicInfo[0].user_id,
-            insurance_certificate:imageUrl,
-            license_certificate:imageUrl2,
-            award_certificate:imageUrl3,
+            user_id: profile.user_id,
+            insurance_certificate: insuranceCertificate,
+            license_certificate: licenseCertificate,
+            award_certificate: awardCertificate,
+           
           });
+          setSchedule(transformedSchedule);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch user details.");
       }
     };
-
+  
     fetchData();
   }, [userId]);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -225,6 +241,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="insurance_certificate"
+                  existingImage={formData.insurance_certificate ||profileImg} 
                 />
               </div>
             </div>
@@ -240,6 +257,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="license_certificate"
+                    existingImage={formData.license_certificate ||profileImg} 
                 />
               </div>
             </div>
@@ -255,6 +273,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="award_certificate"
+                  existingImage={formData.award_certificate ||profileImg} 
                 />
               </div>
             </div>
