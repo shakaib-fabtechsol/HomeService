@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import Loader from "../../Components/MUI/Loader";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -168,6 +170,12 @@ function BasicInfo({ setServiceId, setValue }) {
     }
   }    
   return (
+    <>
+    {loading && (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <Loader />
+      </div>
+    )}
     <div>
       <ToastContainer position="top-right" autoClose={3000} />
       <form onSubmit={handleSubmit}>
@@ -356,6 +364,7 @@ function BasicInfo({ setServiceId, setValue }) {
         </div>
       </form>
     </div>
+    </>
   );
 }
 
