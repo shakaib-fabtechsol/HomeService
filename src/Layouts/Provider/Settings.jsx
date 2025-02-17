@@ -76,7 +76,7 @@ function Settings() {
               <Tab label="Service Area" />
               <Tab label="Business Profile " />
               <Tab label="Certifications & Hours" />
-              <Tab label="Additional Infol" />
+              <Tab label="Additional Info" />
               <Tab label="Social Profiles" />
               <Tab label="Password" />
               <Tab label="Channels for Conversations" />
