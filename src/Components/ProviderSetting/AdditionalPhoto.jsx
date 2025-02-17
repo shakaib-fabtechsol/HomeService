@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import PreviewVideo from "../MUI/PreviewVideo";
 
 const AdditionalPhoto = () => {
   const navigate = useNavigate();
@@ -84,11 +85,11 @@ const AdditionalPhoto = () => {
             <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
               <div>
                 <p className="text-sm font-semibold text-[#414651]">
-                  Upload Abot us video 
+                  Upload About us video 
                 </p>
               </div>
               <div className="md:col-span-2">
-                <SettingsPreview
+                <PreviewVideo
                   
                 />
               </div>
