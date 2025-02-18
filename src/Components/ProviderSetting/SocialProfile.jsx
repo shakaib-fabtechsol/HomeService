@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal } from "@mui/material";
 import Facebook from "../../assets/img/Facebook-icon.png";
 import Youtube from "../../assets/img/Youtube-icon.png";
@@ -6,6 +6,7 @@ import Twitter from "../../assets/img/Twitter-icon.png";
 import Instagram from "../../assets/img/Instagram-icon.png";
 import Linkedin from "../../assets/img/Linkdin-icon.png";
 import Business from "../../assets/img/Business-icon.png";
+import Loader from "../../Components/MUI/Loader";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -14,19 +15,28 @@ import { CiTrash } from "react-icons/ci";
 const SocialProfile = () => {
   const [selectedSocial, setSelectedSocial] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    user_id: '', // Initialize with an empty string or a default value
+    facebook: '',
+    twitter: '',
+    instagram: '',
+    linkedin: '',
+    youtube: '',
+    google_business: '',
+  });
   const [errors, setErrors] = useState({});
+
   const validateUrl = (url) => {
     const urlPattern = /^(https?:\/\/)?(www\.)?[\w-]+(\.[a-z]{2,})+\/?.*$/i;
     return urlPattern.test(url);
   };
-  
+
   const handleChange = (e) => {
     const socialKey = selectedSocial.name.toLowerCase().replace(" ", "_");
     const value = e.target.value;
-  
+
     setFormData({ ...formData, [socialKey]: value });
-   
+
     if (value && !validateUrl(value)) {
       setErrors({
         ...errors,
@@ -36,6 +46,7 @@ const SocialProfile = () => {
       setErrors({ ...errors, [socialKey]: "" });
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -68,8 +79,6 @@ const SocialProfile = () => {
         }
       );
 
-      console.log("Full response:", response.data); 
-
       const errorMessages = {
         "Invalid Facebook URL":
           "The provided Facebook URL is invalid. Please enter a valid URL.",
@@ -97,7 +106,6 @@ const SocialProfile = () => {
         setSelectedSocial(null);
       }
     } catch (error) {
-      console.error("Submission error:", error.response?.data?.message);
       toast.error(
         error.response?.data?.message || "Failed to submit. Please try again."
       );
@@ -107,16 +115,62 @@ const SocialProfile = () => {
   };
 
   const socialLinks = [
-    { name: "Facebook", avatar: Facebook, link: "" },
-    { name: "Twitter", avatar: Twitter, link: "" },
-    { name: "Instagram", avatar: Instagram, link: "" },
-    { name: "LinkedIn", avatar: Linkedin, link: "" },
-    { name: "YouTube", avatar: Youtube, link: "" },
-    { name: "Google Business", avatar: Business, link: "" },
+    { name: "Facebook", avatar: Facebook, link: formData.facebook },
+    { name: "Twitter", avatar: Twitter, link: formData.twitter },
+    { name: "Instagram", avatar: Instagram, link: formData.instagram },
+    { name: "LinkedIn", avatar: Linkedin, link: formData.linkedin },
+    { name: "YouTube", avatar: Youtube, link: formData.youtube },
+    { name: "Google Business", avatar: Business, link: formData.google_business },
   ];
 
+  const handleConnect = (social) => {
+    setSelectedSocial(social);
+  };
+
+
+  const handleDelete = async (social) => {
+    try {
+      // Extract social platform name (e.g., 'facebook', 'twitter', etc.)
+      const socialName = social.link ? new URL(social.link).hostname.replace('www.', '').split('.')[0] : '';
+  
+      // Prepare the data object to send
+      const data = {
+        id: localStorage.getItem("id"),
+        [socialName]: social.link 
+      };
+     
+      const response = await axios.post(
+        `https://homeservice.thefabulousshow.com/api/SocialDelete`,
+        data, // Pass data directly in the body of the POST request
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, 
+          },
+        }
+      );
+  
+      if (response.data?.message) {
+        toast.success(response.data.message);
+      }
+  
+      setFormData((prevState) => ({ ...prevState, [socialName]: "" }));
+  
+    } catch (error) {
+      // Handle error
+      toast.error("Failed to delete. Please try again.");
+      console.error("Error deleting social link:", error);
+    }
+  };
+  
+  
+  
   return (
     <div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
         <p className="text-lg font-semibold text-[#181D27]">
           Connect Your Social
@@ -138,20 +192,23 @@ const SocialProfile = () => {
                 <div>
                   <p className="font-medium text-[#343434]">{social.name}</p>
                   {social.link && (
-                    <p className="text-[#535862] text-sm break-all">
-                      {social.link}
-                    </p>
+                    <div className="text-[#535862] text-sm break-all">
+                      <p>{social.link}</p>
+                    </div>
                   )}
                 </div>
               </div>
               <div className="ms-auto">
                 {social.link ? (
-                  <Link to="">
-                    <CiTrash className="text-[24px]" />
-                  </Link>
+                  <button
+                    onClick={() => handleDelete(social)}
+                    className="text-[24px] text-[#FF4136] p-2"
+                  >
+                    <CiTrash />
+                  </button>
                 ) : (
                   <button
-                    onClick={() => setSelectedSocial(social)}
+                    onClick={() => handleConnect(social)}
                     className="text-white text-sm font-semibold bg-[#0F91D2] border border-[#0F91D2] rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] py-3 px-4"
                   >
                     Connect
@@ -184,46 +241,41 @@ const SocialProfile = () => {
                   <p className="text-[#535862] text-center">
                     Enter your profile URL to connect.
                   </p>
+                  {selectedSocial.link && (
+                    <div className="w-full text-center p-3 bg-[#F0F5F7] rounded-[8px] mb-4">
+                      <p className="text-[#343434]">Connected: {selectedSocial.link}</p>
+                    </div>
+                  )}
                   <div>
                     <input
-                      className={`border w-full p-3 rounded-[8px] focus:outline-none ${
-                        errors[
-                          selectedSocial.name.toLowerCase().replace(" ", "_")
-                        ]
-                          ? "border-red-500"
-                          : "border-[#D5D7DA]"
-                      }`}
-                      value={
-                        formData[
-                          selectedSocial.name.toLowerCase().replace(" ", "_")
-                        ] || ""
-                      }
+                      type="text"
+                      value={formData[selectedSocial.name.toLowerCase().replace(" ", "_")]}
                       onChange={handleChange}
-                      type="url"
-                      required
+                      className="w-full bg-[#F0F5F7] rounded-[8px] px-3 py-2 mt-4 text-[#181D27] text-sm"
+                      placeholder={`Enter ${selectedSocial.name} URL`}
                     />
-                    {errors[
-                      selectedSocial.name.toLowerCase().replace(" ", "_")
-                    ] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {
-                          errors[
-                            selectedSocial.name.toLowerCase().replace(" ", "_")
-                          ]
-                        }
+                    {errors[selectedSocial.name.toLowerCase().replace(" ", "_")] && (
+                      <p className="text-xs text-red-500 mt-2">
+                        {errors[selectedSocial.name.toLowerCase().replace(" ", "_")]}
                       </p>
                     )}
                   </div>
-
+                </div>
+                <div className="mt-4 flex flex-col gap-3 items-center">
                   <button
                     type="submit"
-                    className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                      loading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    disabled={loading}
+                    className="bg-[#0F91D2] w-full py-2 px-5 text-white text-sm font-medium rounded-[8px]"
                   >
-                    {loading ? "Saving..." : "Save"}
+                    {loading ? "Submitting..." : "Submit"}
                   </button>
+                  <Link
+                    to="#"
+                    className="text-[#FF4136] text-sm flex items-center gap-1"
+                    onClick={() => setSelectedSocial(null)}
+                  >
+                    <CiTrash className="text-lg" />
+                    Cancel
+                  </Link>
                 </div>
               </form>
             </div>

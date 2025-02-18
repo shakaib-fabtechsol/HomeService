@@ -10,8 +10,7 @@ export default function SettingsPreview({
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(existingImage || null);
   const [showPreview, setShowPreview] = useState(false);
-
-  // Update filePreview when existingImage changes
+ 
   useEffect(() => {
     if (existingImage) {
       setFilePreview(existingImage);
@@ -19,16 +18,11 @@ export default function SettingsPreview({
     }
   }, [existingImage]);
 
-  // Handle file drop from drag-and-drop
   const handleFileDrop = (e) => {
     e.preventDefault();
     const uploadedFile = e.dataTransfer.files[0];
     if (uploadedFile) {
-      setFile(uploadedFile);
-      setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview image
-      setShowPreview(true); // Show preview
-      // Pass the file back to the parent component
-      onFileSelect(e, fieldName);
+      handleFile(uploadedFile);
     }
   };
 
@@ -36,7 +30,7 @@ export default function SettingsPreview({
   const handleFileClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = ".jpg,.png,.svg";
+    fileInput.accept = ".jpg,.png,.svg,.mp4,.mov,.avi";
     fileInput.onchange = (e) => handleFileSelect(e);
     fileInput.click();
   };
@@ -45,19 +39,26 @@ export default function SettingsPreview({
   const handleFileSelect = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
-      setFile(uploadedFile);
-      setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview image
-      setShowPreview(true); // Show preview
-      onFileSelect(e, fieldName); // Pass the file back to the parent
+      handleFile(uploadedFile);
     }
   };
 
+  // Handle file (image or video)
+  const handleFile = (uploadedFile) => {
+    setFile(uploadedFile);
+    setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview URL
+    setShowPreview(true); // Show preview
+    onFileSelect({ target: { files: [uploadedFile] } }, fieldName); // Pass the file back to the parent
+  };
+
+  // Handle file removal
   const handleRemoveFile = () => {
     setFile(null);
     setFilePreview(null);
     setShowPreview(false);
   };
 
+  // Handle showing preview
   const handleShowPreview = () => {
     setShowPreview(true);
   };
@@ -79,10 +80,10 @@ export default function SettingsPreview({
               <strong>File Uploaded Successfully</strong>
             </p>
             <p className="text-gray-500">
-              <strong>Click to upload</strong> or drag and drop to change image
+              <strong>Click to upload</strong> or drag and drop to change file
             </p>
             <p className="text-sm text-gray-400">
-              SVG, PNG, or JPG (max. 800×400px)
+              SVG, PNG, JPG, MP4, MOV, or AVI (max. 800×400px)
             </p>
           </div>
         ) : (
@@ -92,7 +93,7 @@ export default function SettingsPreview({
               <strong>Click to upload</strong> or drag and drop
             </p>
             <p className="text-sm text-gray-400">
-              SVG, PNG, or JPG (max. 800×400px)
+              SVG, PNG, JPG, MP4, MOV, or AVI (max. 800×400px)
             </p>
           </div>
         )}
@@ -105,7 +106,7 @@ export default function SettingsPreview({
               <img src={fileicon} alt="fileicon" className="w-[20px]" />
               <div className="file-details ml-2">
                 <p className="file-name text-sm font-medium">
-                  {file ? file.name : "Existing Image"}
+                  {file ? file.name : "Existing File"}
                 </p>
               </div>
               <p
@@ -133,12 +134,20 @@ export default function SettingsPreview({
       )}
 
       {showPreview && filePreview && (
-        <div className="image-preview mt-4">
-          <img
-            src={filePreview}
-            alt="Preview"
-            className="rounded-lg border border-gray-200 w-[200px]"
-          />
+        <div className="file-preview mt-4">
+          {file?.type.startsWith("video") ? (
+            <video
+              controls
+              src={filePreview}
+              className="rounded-lg border border-gray-200 w-[200px]"
+            />
+          ) : (
+            <img
+              src={filePreview}
+              alt="Preview"
+              className="rounded-lg border border-gray-200 w-[200px]"
+            />
+          )}
         </div>
       )}
     </div>

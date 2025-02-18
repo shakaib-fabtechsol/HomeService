@@ -48,7 +48,7 @@ const MyDetail = () => {
       sales_referred: "",
       sales_representative: "",
     },
-    validate, // ✅ Custom Validation Applied
+    validate, 
     onSubmit: async (values) => {
       if (loading) return;
       const token = localStorage.getItem("token");
@@ -63,7 +63,7 @@ const MyDetail = () => {
           data.append(key, values[key]);
         });
         data.append("id", userId);
-
+         console.log("data",data);
         await axios.post(
           "https://homeservice.thefabulousshow.com/api/MyDetails",
           data,
@@ -106,7 +106,6 @@ const MyDetail = () => {
         console.log("value of data", BasicInfo); // Log API response to inspect the data
 
         if (BasicInfo) {
-          // Construct image URL from the API response
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
@@ -146,6 +145,7 @@ const MyDetail = () => {
     }
   };
 
+  console.log("data",formik.initialValues);
   const options = [
     { value: "1", label: "John Doe", avatar: profileImg },
     { value: "2", label: "Jane Smith", avatar: profileImg },
@@ -204,7 +204,6 @@ const MyDetail = () => {
                 </div>
               </div>
 
-              {/* Email Address */}
               <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
                 <div>
                   <label className="text-sm font-semibold" htmlFor="email">

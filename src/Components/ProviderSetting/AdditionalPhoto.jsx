@@ -139,6 +139,12 @@ const AdditionalPhoto = () => {
   };
 
   return (
+    <>
+     {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
     <div>
       <form onSubmit={handleSubmit}>
         <div>
@@ -249,6 +255,7 @@ const AdditionalPhoto = () => {
         </div>
       </form>
     </div>
+    </>
   );
 };
 

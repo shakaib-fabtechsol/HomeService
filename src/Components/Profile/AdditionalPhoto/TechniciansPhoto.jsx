@@ -18,6 +18,7 @@ const TeacherPhoto = () => {
         );
 
         setFormData(response.data);
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -36,6 +37,7 @@ const TeacherPhoto = () => {
           ).map((img) => img.trim())
         : []
     ) || [];
+    
 
   return (
     <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
@@ -44,7 +46,7 @@ const TeacherPhoto = () => {
           <div key={index}>
             <img
               src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-              alt={`Facility ${index + 1}`}
+              alt={`Facility`}
               className="w-full h-[500px] rounded-lg shadow"
               onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
             />

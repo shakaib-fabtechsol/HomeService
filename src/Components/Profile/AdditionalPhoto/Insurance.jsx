@@ -16,6 +16,7 @@ const TeacherPhoto = () => {
           }
         );
 
+        console.log("API Response:", response.data); // Debugging
         setFormData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -25,29 +26,35 @@ const TeacherPhoto = () => {
     fetchData();
   }, []);
 
+  // Extract all images from insurance_certificate (if available)
   const allImages =
     formdata?.businessProfile?.flatMap((profile) =>
       profile.insurance_certificate
-        ? (Array.isArray(profile.insurance_certificate)
+        ? (typeof profile.insurance_certificate === "string"
+            ? profile.insurance_certificate.split(",")
+            : Array.isArray(profile.insurance_certificate)
             ? profile.insurance_certificate
-            : profile.insurance_certificate.split(",")
-          ).map((img) => img.trim())
+            : []
+          )
+            .map((img) => img.trim())
+            .filter((img) => img) // Filter out empty strings
         : []
     ) || [];
 
+  // Since you only need one image, extract the first valid image
+  const firstImage = allImages[0];
+
   return (
     <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-      {allImages.length > 0 ? (
-        allImages.map((image, index) => (
-          <div key={index}>
-            <img
-              src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-              alt={`Facility ${index + 1}`}
-              className="w-full h-[500px] rounded-lg shadow"
-              onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
-            />
-          </div>
-        ))
+      {firstImage ? (
+        <div>
+          <img
+            src={`https://homeservice.thefabulousshow.com/uploads/${firstImage}`}
+            alt="Facility"
+            className="w-full h-[500px] rounded-lg shadow"
+            onError={(e) => (e.target.src = "/default.png")}
+          />
+        </div>
       ) : (
         <p>No facility photos available</p>
       )}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TeacherPhoto = () => {
-  const [formdata, setFormData] = useState(null);
+  const [image, setImage] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,8 +15,19 @@ const TeacherPhoto = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
+      
+        const firstProfileWithImage = response.data?.businessProfile?.find(
+          (profile) => profile.license_certificate
+        );
 
-        setFormData(response.data);
+        if (firstProfileWithImage) {
+          const { license_certificate } = firstProfileWithImage;
+        
+          const img = Array.isArray(license_certificate)
+            ? license_certificate[0]
+            : license_certificate.split(",")[0].trim();
+          setImage(img);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -25,28 +36,20 @@ const TeacherPhoto = () => {
     fetchData();
   }, []);
 
-  const allImages =
-  formdata?.businessProfile?.map((profile) =>
-    profile.license_certificate
-      ? Array.isArray(profile.license_certificate)
-        ? profile.license_certificate[0] // ✅ Get only the first image
-        : profile.license_certificate.split(",")[0].trim() // ✅ Get first image from string
-      : null
-  ).filter(Boolean) || []; // ✅ Remove null values
-
-
   return (
     <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-     {allImages.slice(0, 3).map((image, index) => (
-  <div key={index}>
-    <img
-      src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-      alt={`Facility ${index + 1}`}
-      className="w-full h-[500px] rounded-lg shadow"
-      onError={(e) => (e.target.src = "/default.png")}
-    />
-  </div>
-))}
+      {image ? (
+        <div>
+          <img
+            src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+            alt="Facility"
+            className="w-full h-[500px] rounded-lg shadow"
+            onError={(e) => (e.target.src = "/default.png")}
+          />
+        </div>
+      ) : (
+        <p>No facility photos available</p>
+      )}
     </div>
   );
 };

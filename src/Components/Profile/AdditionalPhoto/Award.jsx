@@ -15,7 +15,6 @@ const TeacherPhoto = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         setFormData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -28,26 +27,26 @@ const TeacherPhoto = () => {
   const allImages =
     formdata?.businessProfile?.flatMap((profile) =>
       profile.award_certificate
-        ? (Array.isArray(profile.award_certificate)
-            ? profile.award_certificate
-            : profile.award_certificate.split(",")
-          ).map((img) => img.trim())
+        ? Array.isArray(profile.award_certificate)
+          ? profile.award_certificate
+          : [profile.award_certificate.trim()]
         : []
     ) || [];
 
+  // Since you have only one image, extract it from the array.
+  const image = allImages[0];
+
   return (
     <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-      {allImages.length > 0 ? (
-        allImages.map((image, index) => (
-          <div key={index}>
-            <img
-              src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-              alt={`Facility ${index + 1}`}
-              className="w-full h-auto rounded-lg shadow"
-              onError={(e) => (e.target.src = "/default.png")}
-            />
-          </div>
-        ))
+      {image ? (
+        <div>
+          <img
+            src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+            alt="Facility"
+            className="w-full h-auto rounded-lg shadow"
+            onError={(e) => (e.target.src = "/default.png")}
+          />
+        </div>
       ) : (
         <p>No facility photos available</p>
       )}

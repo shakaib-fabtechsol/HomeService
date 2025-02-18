@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import Loader from "../../Components/MUI/Loader";
+
 
 const Password = () => {
   const [loading, setLoading] = useState(false);
@@ -13,7 +15,8 @@ const Password = () => {
 
   useEffect(() => {
     const userId = localStorage.getItem("id");
-    setFormData((prevState) => ({ ...prevState, user_id: userId }));
+    setFormData((prevState) => ({ ...prevState, 
+    id: userId }));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -66,8 +69,52 @@ const Password = () => {
     }));
   };
 
+ 
+  //   const fetchData = async () => {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) {
+  //       toast.error("No token found. Please log in.");
+  //       return;
+  //     }
+
+  //     try {
+  //       const response1 = await axios.post(
+  //         "https://homeservice.thefabulousshow.com/api/UpdatePassword",
+  //         {},  // You may add request body here if necessary
+  //         {
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       const BasicInfo = response1.data?.deal;
+  //       console.log(BasicInfo);
+
+  //       if (BasicInfo) {
+  //         setFormData({
+  //           current_password: BasicInfo.current_password,
+  //           password: BasicInfo.password,
+  //           confirm_password: BasicInfo.confirm_password,  
+  //         });
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       toast.error("Failed to fetch data.");
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
   return (
     <div>
+       {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
