@@ -449,7 +449,6 @@ const BusinessProfile = () => {
                   className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
                     loading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
-                  disabled={loading}
                 >
                   {loading ? "Saving..." : "Save"}
                 </button>

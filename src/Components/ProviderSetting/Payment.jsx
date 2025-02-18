@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Loader from "../../Components/MUI/Loader";
+
 
 const Payment = () => {
   const [loading, setLoading] = useState(false);
@@ -63,8 +65,67 @@ const Payment = () => {
     }
   };
 
+
+  useEffect(() => {
+    const updateData = async () => {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
+  
+      if (!token) {
+        toast.error("No token found. Please log in.");
+        return;
+      }
+  
+      if (!id) {
+        console.log("No id found in localStorage.");
+        return;
+      }
+  
+      const data = {
+        id: id,
+      };
+  
+      try {
+        const response = await axios.post(
+          "https://homeservice.thefabulousshow.com/api/AddPaymentDetails",
+          data, 
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+  
+        const BasicInfo = response.data?.payment;
+        console.log(BasicInfo, "value");
+  
+        if (BasicInfo) {
+          setFormData({
+            id: BasicInfo?.user_id,
+            service_title: BasicInfo?.service_title,
+            bank: BasicInfo?.bank,
+            branch_name: BasicInfo?.branch_name,
+            account_number: BasicInfo?.account_number,
+            bank_routing_number: BasicInfo?.bank_routing_number,
+          });
+        }
+      } catch (err) {
+        console.log("Error:", err);
+        toast.error("An error occurred while fetching data.");
+      }
+    };
+  
+    updateData();
+  }, []);
+  
+
   return (
     <div>
+       {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">

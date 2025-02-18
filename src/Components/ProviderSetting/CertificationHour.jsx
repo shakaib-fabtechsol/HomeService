@@ -49,105 +49,136 @@ const CertificationHour = () => {
     const uploadedFile = e.target.files[0];
     setFormData((prevState) => ({
       ...prevState,
-      [fieldName]: uploadedFile, 
+      [fieldName]: uploadedFile,
     }));
   };
 
-  const specialdays = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
-  const [specialSchedule, setspecialSchedule] = useState(
-    specialdays.map((day) => ({
-      day,
+  const [specialSchedule, setSpecialSchedule] = useState([
+    {
+      text: "",
+      date: "",
       closed: false,
-      slots: [{ start: "", end: "" }],
-    }))
-  );
+      is247Open: false,
+    },
+  ]);
 
-  const updatespecialSchedule = (dayIndex, update) => {
-    setspecialSchedule((prev) =>
-      prev.map((item, i) => (i === dayIndex ? { ...item, ...update } : item))
-    );
+
+  const updatespecialSchedule = (index, updatedFields) => {
+    const updatedSchedule = [...specialSchedule];
+    updatedSchedule[index] = { ...updatedSchedule[index], ...updatedFields };
+    setSpecialSchedule(updatedSchedule);
+  };
+  const deleteSlot = (index) => {
+    const updatedSchedule = specialSchedule.filter((_, i) => i !== index);
+    setSpecialSchedule(updatedSchedule);
+  };
+
+  const addNewEntry = () => {
+    const newEntry = {
+      text: "",
+      date: "",
+      closed: false,
+      is247Open: false,
+    };
+    setSpecialSchedule([...specialSchedule, newEntry]);
+  };
+
+  const closeSpecificData = (index) => {
+    updatespecialSchedule(index, { closed: !specialSchedule[index].closed });
   };
 
 
-
+  const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("No token found. Please log in.");
+      return;
+    }
+  
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      console.log("response data", response.data?.businessProfile);
+      const businessProfile = response.data?.businessProfile;
+  
+      if (businessProfile && businessProfile.length > 0) {
+        const profile = businessProfile[0];
+        let formattedSchedule = [];
+        if (profile.regular_hour) {
+          formattedSchedule =
+            typeof profile.regular_hour === "string"
+              ? JSON.parse(profile.regular_hour)
+              : profile.regular_hour;
+        }
+  
+        const transformedSchedule = formattedSchedule.map((item) => ({
+          day: item.day_name,
+          closed: item.day_status === "closed",
+          slots:
+            item.day_status === "closed"
+              ? []
+              : item.regular_hour.map((slot) => ({
+                  start: slot.start_time,
+                  end: slot.end_time,
+                })),
+        }));
+  
+        // Format special hours
+        let formattedScheduleSpecial = [];
+        if (profile.special_hour) {
+          formattedScheduleSpecial =
+            typeof profile.special_hour === "string"
+              ? JSON.parse(profile.special_hour)
+              : profile.special_hour;
+        }
+        console.log(formattedScheduleSpecial);
+        const transformedScheduleSpecial = formattedScheduleSpecial.map(
+          (item) => ({
+            text: item.text,
+            date: item.date || "",
+            closed: item.closed === "closed",
+            is247Open: item.is247Open === "true",
+          })
+        );
+  
+        const insuranceCertificate = profile.insurance_certificate
+          ? `https://homeservice.thefabulousshow.com/uploads/${profile.insurance_certificate}`
+          : "/default.png";
+        const licenseCertificate = profile.license_certificate
+          ? `https://homeservice.thefabulousshow.com/uploads/${profile.license_certificate}`
+          : "/default.png";
+        const awardCertificate = profile.award_certificate
+          ? `https://homeservice.thefabulousshow.com/uploads/${profile.award_certificate}`
+          : "/default.png";
+      
+        setFormData({
+          user_id: profile.user_id,
+          insurance_certificate: insuranceCertificate,
+          license_certificate: licenseCertificate,
+          award_certificate: awardCertificate,
+        });
+        setSchedule(transformedSchedule);
+        setSpecialSchedule(transformedScheduleSpecial);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      toast.error("Failed to fetch user details.");
+     
+    }
+  };
+ 
   useEffect(() => {
     if (!userId) return;
   
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("No token found. Please log in.");
-        return;
-      }
-  
-      try {
-        const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        const businessProfile = response.data?.businessProfile;
-        if (businessProfile && businessProfile.length > 0) {
-          const profile = businessProfile[0];
-          let formattedSchedule = [];
-          if (profile.regular_hour) {
-            if (typeof profile.regular_hour === "string") {
-              formattedSchedule = JSON.parse(profile.regular_hour);
-            } else {
-              formattedSchedule = profile.regular_hour;
-            }
-          }
- 
-          const transformedSchedule = formattedSchedule.map((item) => ({
-            day: item.day_name, // e.g., "Monday"
-            closed: item.day_status === "closed",
-            slots:
-              item.day_status === "closed"
-                ? []
-                : item.regular_hour.map((slot) => ({
-                    start: slot.start_time,
-                    end: slot.end_time,
-                  })),
-          }));
-          const insuranceCertificate = profile.insurance_certificate
-            ? `https://homeservice.thefabulousshow.com/uploads/${profile.insurance_certificate}`
-            : "/default.png";
-          const licenseCertificate = profile.license_certificate
-            ? `https://homeservice.thefabulousshow.com/uploads/${profile.license_certificate}`
-            : "/default.png";
-          const awardCertificate = profile.award_certificate
-            ? `https://homeservice.thefabulousshow.com/uploads/${profile.award_certificate}`
-            : "/default.png";
-  
-          setFormData({
-            user_id: profile.user_id,
-            insurance_certificate: insuranceCertificate,
-            license_certificate: licenseCertificate,
-            award_certificate: awardCertificate,
-           
-          });
-          setSchedule(transformedSchedule);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        toast.error("Failed to fetch user details.");
-      }
-    };
-  
     fetchData();
-  }, [userId]);
+  }, [userId])
   
 
   const handleSubmit = async (e) => {
@@ -176,20 +207,16 @@ const CertificationHour = () => {
             })),
       }));
 
-      const formattedSpecialSchedule = specialSchedule.map((item) => ({
-        day_name: item.day,
-        day_status: item.closed ? "closed" : "open",
-        special_hour: item.closed
-          ? []
-          : item.slots.map((slot) => ({
-              special_start_time: slot.start,
-              special_end_time: slot.end,
-            })),
+      const payload = specialSchedule.map((item) => ({
+        text: item.text,
+        date: item.date,
+        closed: item.closed,
+        is247Open: item.is247Open,
       }));
       const data = new FormData();
 
       data.append("regular_hour", JSON.stringify(formattedSchedule));
-      data.append("special_hour", JSON.stringify(formattedSpecialSchedule));
+      data.append("special_hour", JSON.stringify(payload));
 
       Object.entries(formData).forEach(([key, value]) => {
         if (value !== null && value !== undefined) {
@@ -214,12 +241,20 @@ const CertificationHour = () => {
       console.error("Error submitting form:", error);
       toast.error("Failed to update profile. Please try again.");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
+
+  
+
   return (
     <div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
@@ -241,7 +276,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="insurance_certificate"
-                  existingImage={formData.insurance_certificate ||profileImg} 
+                  existingImage={formData.insurance_certificate || profileImg}
                 />
               </div>
             </div>
@@ -257,7 +292,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="license_certificate"
-                    existingImage={formData.license_certificate ||profileImg} 
+                  existingImage={formData.license_certificate}
                 />
               </div>
             </div>
@@ -273,7 +308,7 @@ const CertificationHour = () => {
                 <SettingsPreview
                   onFileSelect={handleFileChange}
                   fieldName="award_certificate"
-                  existingImage={formData.award_certificate ||profileImg} 
+                  existingImage={formData.award_certificate}
                 />
               </div>
             </div>
@@ -282,6 +317,7 @@ const CertificationHour = () => {
             <div className="py-8 border-b">
               <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
                 <div>
+                  
                   <p className="text-sm font-semibold">
                     Regular Hours of Operation
                   </p>
@@ -367,88 +403,99 @@ const CertificationHour = () => {
             </div>
           </div>
           <div className="py-8 border-b">
-            <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
-              <div>
-                <p className="text-sm font-semibold">
-                  Special Hours of Operation
-                </p>
-              </div>
-              <div className="sm:col-span-2">
+            <div className="py-8 border-b">
+              <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
                 <div>
-                  {specialSchedule.map((item, dayIndex) => (
-                    <div
-                      key={item.day}
-                      className="mb-4 md:grid grid-cols-3 gap-2"
-                    >
-                      <div>
-                        <p>{item.day}</p>
-                        <label className="flex gap-2 mt-2">
-                          <input
-                            type="checkbox"
-                            checked={item.closed}
-                            onChange={() =>
-                              updatespecialSchedule(dayIndex, {
-                                closed: !item.closed,
-                              })
-                            }
-                          />
-                          Closed
-                        </label>
-                      </div>
-                      {!item.closed && (
-                        <div className="sm:col-start-2 sm:col-end-4">
-                          {item.slots.map((slot, slotIndex) => (
-                            <div
-                              key={slotIndex}
-                              className="flex items-center gap-2 mt-2"
-                            >
+                  <p className="text-sm font-semibold">
+                    Special Hours of Operation
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <div>
+                    {specialSchedule.map((item, dayIndex) => (
+                      <div
+                        key={item.day}
+                        className="mb-4 md:grid grid-cols-3 gap-2 w-full"
+                        style={{ display: item.closed ? "none" : "grid" }}
+                      >
+                        <div className="sm:col-start-1 md:col-start-2 sm:col-end-2 w-full">
+                          <div className="flex  md:flex-row sm:flex-row lg:flex-row gap-12 lg:gap-1   ">
+                            <div className="w-full">
                               <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                                value={slot.start}
-                                onChange={(e) => {
-                                  const slots = [...item.slots];
-                                  slots[slotIndex].start = e.target.value;
-                                  updatespecialSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none"
-                                value={slot.end}
-                                onChange={(e) => {
-                                  const slots = [...item.slots];
-                                  slots[slotIndex].end = e.target.value;
-                                  updatespecialSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              <button
-                                onClick={() =>
+                                type="text"
+                                className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none   w-[150px] lg:w-[200px] "
+                                placeholder="Enter text"
+                                value={item.text}
+                                onChange={(e) =>
                                   updatespecialSchedule(dayIndex, {
-                                    slots: item.slots.filter(
-                                      (_, i) => i !== slotIndex
-                                    ),
+                                    text: e.target.value,
                                   })
                                 }
-                              >
-                                <FaTrash />
-                              </button>
+                              />
                             </div>
-                          ))}
-                          <button
-                            className="py-2"
-                            onClick={() =>
-                              updatespecialSchedule(dayIndex, {
-                                slots: [...item.slots, { start: "", end: "" }],
-                              })
-                            }
-                          >
-                            <FaPlusCircle />
-                          </button>
+                            <div className="w-full">
+                              <input
+                                type="date"
+                                className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none w-[150px] sm:w-full lg:w-[200px] "
+                                value={item.date}
+                                onChange={(e) =>
+                                  updatespecialSchedule(dayIndex, {
+                                    date: e.target.value,
+                                  })
+                                }
+                              />
+                            </div>
+                            <button
+                              type="button"
+                              className="text-gray-700 sm:w-auto flex-shrink-0"
+                              onClick={() => deleteSlot(dayIndex)}
+                            >
+                              <FaTrash />
+                            </button>
+                          </div>
+
+                          <div className="flex justify-between items-center gap-4 mt-2 w-full">
+                            <label className="flex items-center gap-2">
+                              <input
+                                type="checkbox"
+                                checked={item.closed}
+                                onChange={() => closeSpecificData(dayIndex)}
+                              />
+                              Closed
+                            </label>
+                            <label
+                              key={dayIndex}
+                              className="flex text-nowrap items-center gap-2"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={
+                                  item.is247Open ===
+                                  specialSchedule[dayIndex]?.is247Open
+                                } // Compare with corresponding specialSchedule entry
+                                onChange={() =>
+                                  updatespecialSchedule(dayIndex, {
+                                    is247Open: !item.is247Open, // Toggling the value when clicked
+                                  })
+                                }
+                              />
+                              24/7 Open
+                            </label>
+                          </div>
+
+                          <div className="flex gap-3 mt-2 w-full">
+                            <button
+                              type="button"
+                              className="py-2 sm:w-auto"
+                              onClick={addNewEntry}
+                            >
+                              <FaPlusCircle />
+                            </button>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  ))}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
