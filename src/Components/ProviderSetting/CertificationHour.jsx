@@ -500,7 +500,7 @@ const CertificationHour = () => {
                           {item.hour?.map((slot, slotIndex) => (
                             <div
                               key={slotIndex}
-                              className="flex w-full items-center gap-2 mt-2"
+                              className="flex w-full items-center lg:gap-4 gap-10 mt-2"
                             >
                               <div className="w-full">
                               <input
