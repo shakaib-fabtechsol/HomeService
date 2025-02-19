@@ -63,9 +63,9 @@ const ProfileDeal = () => {
           </div>
         </div>
         {services.length > 0 ? (
-          <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-            {services.map((service, index) => (
-              <div key={index} className="h-50 w-50">
+         <div className="grid mt-4 grid-cols-1 md:grid-cols-3 gap-4">
+            {services.slice(0, 4).map((service, index) => (
+              <div key={index} className="max-h-50 max-w-50">
                 <ServiceBox
                   image={service.image}
                   title={service.title}

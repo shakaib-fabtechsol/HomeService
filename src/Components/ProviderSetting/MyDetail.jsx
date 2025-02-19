@@ -15,8 +15,6 @@ const MyDetail = () => {
   const [selectedOption, setSelectedOption] = useState(false);
 
   const userId = localStorage.getItem("id");
-  console.log(userId);
-
   const validate = (values) => {
     const errors = {};
 
@@ -63,7 +61,6 @@ const MyDetail = () => {
           data.append(key, values[key]);
         });
         data.append("id", userId);
-         console.log("data",data);
         await axios.post(
           "https://homeservice.thefabulousshow.com/api/MyDetails",
           data,
@@ -103,8 +100,6 @@ const MyDetail = () => {
         );
 
         const BasicInfo = response?.data?.user;
-        console.log("value of data", BasicInfo); // Log API response to inspect the data
-
         if (BasicInfo) {
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
@@ -144,8 +139,7 @@ const MyDetail = () => {
       setSelectedOption(selectedValue);
     }
   };
-
-  console.log("data",formik.initialValues);
+ 
   const options = [
     { value: "1", label: "John Doe", avatar: profileImg },
     { value: "2", label: "Jane Smith", avatar: profileImg },
@@ -154,7 +148,6 @@ const MyDetail = () => {
 
   const handleSelectChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Selected Value:", selectedValue);
 
     const selectedRep = options.find(
       (option) => option.value === selectedValue
@@ -245,8 +238,6 @@ const MyDetail = () => {
                   />
                 </div>
               </div>
-
-              {console.log("formik datad", formik.values.personal_image)}
               <div className="grid md:grid-cols-3 gap-2 py-8 border-b">
                 <div>
                   <p className="text-sm font-semibold text-[#414651]">
@@ -294,7 +285,6 @@ const MyDetail = () => {
                     )}
                 </div>
               </div>
-              {console.log("formik.values.sales_referred", options[0]?.value)}
 
               {formik.values.sales_referred === "Yes" && (
                 <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">

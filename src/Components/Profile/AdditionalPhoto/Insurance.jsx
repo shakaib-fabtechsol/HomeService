@@ -30,17 +30,17 @@ const TeacherPhoto = () => {
     formdata?.businessProfile?.[0]?.insurance_certificate;
 
   return (
-    <div>
-      {image ? (
-        <img
-          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-          alt="Facility"
-          className="w-50 h-[200px] rounded-lg shadow"
-        />
-      ) : (
-        <p>No facility photos available</p>
-      )}
-    </div>
+    <div className="w-64 h-64">
+    {image ? (
+      <img
+        src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+        alt="Facility"
+        className="w-full h-full object-cover rounded-lg shadow"
+      />
+    ) : (
+      <p>No facility photos available</p>
+    )}
+  </div>
   );
 };
 

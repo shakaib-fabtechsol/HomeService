@@ -33,20 +33,16 @@ const TeacherPhoto = () => {
         : []
     ) || [];
 
-  // Since you have only one image, extract it from the array.
   const image = allImages[0];
 
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
+    <div className="w-64 h-64">
       {image ? (
-        <div>
-          <img
-            src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-            alt="Facility"
-            className="w-50 h-[200px] rounded-lg shadow"
-          
-          />
-        </div>
+        <img
+          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+          alt="Facility"
+          className="w-full h-full object-cover rounded-lg shadow"
+        />
       ) : (
         <p>No facility photos available</p>
       )}

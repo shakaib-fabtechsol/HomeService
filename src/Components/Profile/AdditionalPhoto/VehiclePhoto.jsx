@@ -31,18 +31,17 @@ const TeacherPhoto = () => {
       formdata?.businessProfile?.[0]?.vehicle_photo.split(",")[0]);
 
   return (
-    <div>
-      {image ? (
-        <img
-          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-          alt={`Facility`}
-         className="w-50 h-[300px] rounded-lg shadow"
-          onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
-        />
-      ) : (
-        <p>No facility photos available</p>
-      )}
-    </div>
+    <div className="w-64 h-64">
+    { image ? (
+      <img
+        src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+        alt="Facility"
+        className="w-full h-full object-cover rounded-lg shadow"
+      />
+    ) : (
+      <p>No facility photos available</p>
+    )}
+  </div>
   );
 };
 

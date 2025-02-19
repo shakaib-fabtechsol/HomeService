@@ -32,7 +32,7 @@ function ServiceBox({
 
   return (
     <div className="border px-3 py-3 rounded-lg">
-      <div className="border px-3 py-3 rounded-lg">
+      <div className="rounded-lg">
         <img
           src={imageToShow}
          
