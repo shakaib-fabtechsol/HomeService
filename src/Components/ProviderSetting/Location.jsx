@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Box from "@mui/material/Box";
+import { toast } from "react-toastify";
 import Slider from "@mui/material/Slider";
 import {
   LoadScript,
@@ -22,22 +23,15 @@ const ServiceArea = () => {
   const [bulkText, setBulkText] = useState("");
   const [locationsList, setLocationsList] = useState([]);
   const [value2, setValue2] = useState(10);
+
   const [mapUrl, setMapUrl] = useState("");
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
-   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const autocompleteRef = useRef(null);
   const inputRef = useRef(null);
- const fomdata=[{
-    service_location:null,
-    service_location_type:"",
-    business_location:"",
-    restrict_location:"",
-    location_miles:"",
 
-
-  }]
   const userId = localStorage.getItem("id");
   console.log(userId);
 
@@ -131,265 +125,300 @@ const ServiceArea = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("No token found. Please log in.");
+      return;
+    }
 
     try {
-      const response = await axios.post("AddBusinessLocation");
+      let payload = {};
+
+      if (serviceType === "location") {
+        payload = {
+          user_id: userId,
+          service_location: location,
+          service_location_type: "location",
+          business_location: location,
+          restrict_location: locationsList,
+        };
+      } else if (serviceType === "radius") {
+        payload = {
+          user_id: userId,
+          service_location: location,
+          service_location_type: "radius",
+          location_miles: value2,
+        };
+      }
+
+      const response = await axios.post("https://homeservice.thefabulousshow.com/api/AddBusinessLocation", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       console.log(response?.data);
+      console.log("response", response);
+      toast.success("Service area saved successfully!");
     } catch (err) {
       console.error("Error:", err);
+      toast.error("Failed to save service area.");
     } finally {
       setLoading(false);
     }
   };
   return (
     <div>
-        <form onSubmit={handleSubmit}>
-      <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
-        <div>
-          <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-            <p className="text-lg font-semibold text-[#181D27]">Service Area</p>
-            <p className="text-[#535862] text-sm">
-              Choose service area for your deals.
-            </p>
-          </div>
-          <div className="lg:max-w-[65%] xl:max-w-[45%]">
-            <div className="flex flex-wrap gap-4 py-4 items-center mb-4">
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="serviceType"
-                  className="form-radio"
-                  checked={serviceType === "location"}
-                  onChange={() => setServiceType("location")}
-                />
-                <span className="ms-3">Service Locations</span>
-              </label>
-              <label className="flex items-center">
-                <input
-                  type="radio"
-                  name="serviceType"
-                  className="form-radio"
-                  checked={serviceType === "radius"}
-                  onChange={() => setServiceType("radius")}
-                />
-                <span className="ms-3">Service Radius</span>
-              </label>
+      <form onSubmit={handleSubmit}>
+        <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Service Area
+              </p>
+              <p className="text-[#535862] text-sm">
+                Choose service area for your deals.
+              </p>
             </div>
+            <div className="lg:max-w-[65%] xl:max-w-[45%]">
+              <div className="flex flex-wrap gap-4 py-4 items-center mb-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="serviceType"
+                    className="form-radio"
+                    checked={serviceType === "location"}
+                    onChange={() => setServiceType("location")}
+                  />
+                  <span className="ms-3">Service Locations</span>
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="serviceType"
+                    className="form-radio"
+                    checked={serviceType === "radius"}
+                    onChange={() => setServiceType("radius")}
+                  />
+                  <span className="ms-3">Service Radius</span>
+                </label>
+              </div>
 
-            {serviceType === "location" && (
-              <div className="ser-location">
-                <div className="mb-6">
-                  <label
-                    htmlFor="bloc"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Business Location
-                  </label>
-                  <div className="flex items-center border py-2 rounded-lg px-3 relative w-full">
-                    <Autocomplete
-                      onLoad={(auto) => (autocompleteRef.current = auto)}
-                      onPlaceChanged={onPlaceSelected}
+              {serviceType === "location" && (
+                <div className="ser-location">
+                  <div className="mb-6">
+                    <label
+                      htmlFor="bloc"
+                      className="block text-sm font-medium mb-2"
                     >
+                      Business Location
+                    </label>
+                    <div className="flex items-center border py-2 rounded-lg px-3 relative w-full">
+                      <Autocomplete
+                        onLoad={(auto) => (autocompleteRef.current = auto)}
+                        onPlaceChanged={onPlaceSelected}
+                      >
+                        <input
+                          type="text"
+                          value={location}
+                          onChange={(e) => setLocation(e.target.value)}
+                          placeholder="Enter your service location..."
+                          className="w-full py-2 px-3 focus-none pr-10"
+                        />
+                      </Autocomplete>
+                      <FaPencilAlt
+                        onClick={() => setLocation("")}
+                        className="absolute right-3 text-gray-500 cursor-pointer hover:text-gray-700"
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <div className="flex flex-wrap justify-between">
+                      <label
+                        htmlFor="sloc"
+                        className="block text-sm font-medium my-2"
+                      >
+                        Enter Service Locations
+                      </label>
+                      <div className="flex my-2 items-center">
+                        <input
+                          type="checkbox"
+                          id="bulk"
+                          className="me-2 focus-none focus:outline-none"
+                          checked={isBulk}
+                          onChange={handleBulkChange}
+                        />
+                        <label
+                          htmlFor="bulk"
+                          className="block text-sm font-semibold"
+                        >
+                          Add locations in bulk
+                        </label>
+                      </div>
+                    </div>
+
+                    {isBulk ? (
+                      <div className="relative flex flex-col mb-2 border rounded-lg px-3 py-2">
+                        <Autocomplete>
+                          <textarea
+                            id="bulkLoc"
+                            rows="4"
+                            onKeyDown={handleAddLocation}
+                            placeholder="Enter locations, one per line."
+                            className="w-full bg-transparent outline-none pt-[40px] resize-none"
+                            value={bulkText}
+                            onChange={handleBulkTextChange}
+                          ></textarea>
+                        </Autocomplete>
+                      </div>
+                    ) : (
+                      <div className="flex items-center border py-2 rounded-lg px-3 mb-2">
+                        <Autocomplete>
+                          <input
+                            type="text"
+                            placeholder="Enter service location..."
+                            className="w-full py-2 px-3 focus-none"
+                          />
+                        </Autocomplete>
+                      </div>
+                    )}
+
+                    <p className="text-sm myblack text-end">
+                      {locations.length} / 1000
+                    </p>
+                  </div>
+                  <div className="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
+                    <label htmlFor="restrict">
+                      <img src={location} alt="" className="max-w-20px me-2" />
+                    </label>
+                    <Autocomplete>
                       <input
                         type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="Enter your service location..."
-                        className="w-full py-2 px-3 focus-none pr-10"
+                        id="restrict"
+                        className="w-full focus-none rounded-lg px-3 py-4"
+                        placeholder="Restrict locations within a country (optional)"
+                        onChange={(e) => setInputValue(e.target.value)}
+                        value={inputValue}
+                        onKeyDown={handleAdd}
                       />
                     </Autocomplete>
-                    <FaPencilAlt
-                      onClick={() => setLocation("")}
-                      className="absolute right-3 text-gray-500 cursor-pointer hover:text-gray-700"
-                    />
                   </div>
+                  {locationsList.length > 0 && (
+                    <div className="border rounded-lg py-3 mb-6">
+                      {locationsList.map((loc, index) => (
+                        <div
+                          key={index}
+                          className="px-3 py-1 flex items-center justify-between"
+                        >
+                          <p className="myblack">{loc}</p>
+                          <Link
+                            to="#"
+                            onClick={() => handleRemoveLocation(index)}
+                            className="text-red-500"
+                          >
+                            ×
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className="mb-4">
-                  <div className="flex flex-wrap justify-between">
+              )}
+
+              {serviceType === "radius" && (
+                <div className="ser-radius">
+                  <div className="mb-6">
                     <label
-                      htmlFor="sloc"
-                      className="block text-sm font-medium my-2"
+                      htmlFor="bloc"
+                      className="block text-sm font-medium mb-2"
                     >
                       Enter Service Locations
                     </label>
-                    <div className="flex my-2 items-center">
-                      <input
-                        type="checkbox"
-                        id="bulk"
-                        className="me-2 focus-none focus:outline-none"
-                        checked={isBulk}
-                        onChange={handleBulkChange}
-                      />
-                      <label
-                        htmlFor="bulk"
-                        className="block text-sm font-semibold"
+                    <div className="flex items-center border py-2 rounded-lg px-3">
+                      <img src={location} alt="" className="max-w-20px me-2" />
+                      <Autocomplete
+                        onLoad={(auto) => (autocompleteRef.current = auto)}
+                        onPlaceChanged={onPlaceSelected}
+                        className="w-full"
                       >
-                        Add locations in bulk
-                      </label>
-                    </div>
-                  </div>
-
-                  {isBulk ? (
-                    <div className="relative flex flex-col mb-2 border rounded-lg px-3 py-2">
-                      <Autocomplete>
-                        <textarea
-                          id="bulkLoc"
-                          rows="4"
-                          onKeyDown={handleAddLocation}
-                          placeholder="Enter locations, one per line."
-                          className="w-full bg-transparent outline-none pt-[40px] resize-none"
-                          value={bulkText}
-                          onChange={handleBulkTextChange}
-                        ></textarea>
-                      </Autocomplete>
-                    </div>
-                  ) : (
-                    <div className="flex items-center border py-2 rounded-lg px-3 mb-2">
-                      <Autocomplete>
                         <input
                           type="text"
-                          placeholder="Enter service location..."
-                          className="w-full py-2 px-3 focus-none"
+                          value={location}
+                          onChange={(e) => setLocation(e.target.value)}
+                          placeholder="Enter your service location..."
+                          className="w-full py-2 px-3 focus-none pr-10"
                         />
                       </Autocomplete>
+                      <FaPencilAlt />
                     </div>
-                  )}
-
-                  <p className="text-sm myblack text-end">
-                    {locations.length} / 1000
-                  </p>
-                </div>
-                <div className="mb-6 border rounded-lg px-3 text-sm font-medium flex items-center">
-                  <label htmlFor="restrict">
-                    <img src={location} alt="" className="max-w-20px me-2" />
-                  </label>
-                  <Autocomplete>
-                    <input
-                      type="text"
-                      id="restrict"
-                      className="w-full focus-none rounded-lg px-3 py-4"
-                      placeholder="Restrict locations within a country (optional)"
-                      onChange={(e) => setInputValue(e.target.value)}
-                      value={inputValue}
-                      onKeyDown={handleAdd}
-                    />
-                  </Autocomplete>
-                </div>
-                {locationsList.length > 0 && (
-                  <div className="border rounded-lg py-3 mb-6">
-                    {locationsList.map((loc, index) => (
-                      <div
-                        key={index}
-                        className="px-3 py-1 flex items-center justify-between"
-                      >
-                        <p className="myblack">{loc}</p>
-                        <Link
-                          to="#"
-                          onClick={() => handleRemoveLocation(index)}
-                          className="text-red-500"
-                        >
-                          ×
-                        </Link>
-                      </div>
-                    ))}
                   </div>
-                )}
-              </div>
-            )}
-
-            {serviceType === "radius" && (
-              <div className="ser-radius">
-                <div className="mb-6">
-                  <label
-                    htmlFor="bloc"
-                    className="block text-sm font-medium mb-2"
-                  >
-                    Enter Service Locations
-                  </label>
-                  <div className="flex items-center border py-2 rounded-lg px-3">
-                    <img src={location} alt="" className="max-w-20px me-2" />
-                    <Autocomplete
-                      onLoad={(auto) => (autocompleteRef.current = auto)}
-                      onPlaceChanged={onPlaceSelected}
-                      className="w-full"
+                  <div>
+                    <label
+                      htmlFor=""
+                      className="block text-sm font-medium mb-2"
                     >
-                      <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="Enter your service location..."
-                        className="w-full py-2 px-3 focus-none pr-10"
-                      />
-                    </Autocomplete>
-                    <FaPencilAlt />
+                      Coverage from Service Location
+                    </label>
+                    <div className="flex justify-between">
+                      <p className="text-sm">0 Miles</p>
+                      <p className="text-sm">60 Miles</p>
+                    </div>
                   </div>
+                  <Box>
+                    <Slider
+                      value={value2}
+                      min={0}
+                      step={1}
+                      max={60}
+                      scale={calculateValue}
+                      getAriaValueText={valueLabelFormat}
+                      valueLabelFormat={valueLabelFormat}
+                      onChange={handleChange2}
+                      valueLabelDisplay="auto"
+                      aria-labelledby="non-linear-slider"
+                    />
+                  </Box>
                 </div>
-                <div>
-                  <label htmlFor="" className="block text-sm font-medium mb-2">
-                    Coverage from Service Location
-                  </label>
-                  <div className="flex justify-between">
-                    <p className="text-sm">0 Miles</p>
-                    <p className="text-sm">60 Miles</p>
-                  </div>
-                </div>
-                <Box>
-                  <Slider
-                    value={value2}
-                    min={0}
-                    step={1}
-                    max={60}
-                    scale={calculateValue}
-                    getAriaValueText={valueLabelFormat}
-                    valueLabelFormat={valueLabelFormat}
-                    onChange={handleChange2}
-                    valueLabelDisplay="auto"
-                    aria-labelledby="non-linear-slider"
-                  />
-                </Box>
-              </div>
-            )}
+              )}
 
-            {lat && lng && (
-              <div className="map-container">
-                <GoogleMap
-                  center={{ lat, lng }}
-                  zoom={10}
-                  mapContainerStyle={{ width: "100%", height: "400px" }}
-                >
-                  <Marker position={{ lat, lng }} />
-                  <Circle
+              {lat && lng && (
+                <div className="map-container">
+                  <GoogleMap
                     center={{ lat, lng }}
-                    options={{
-                      strokeColor: "#FF0000",
-                      strokeOpacity: 0.8,
-                      strokeWeight: 2,
-                      fillColor: "#FF0000",
-                      fillOpacity: 0.35,
-                      radius: value2 * 1609.34,
-                    }}
-                  />
-                </GoogleMap>
-              </div>
-            )}
+                    zoom={10}
+                    mapContainerStyle={{ width: "100%", height: "400px" }}
+                  >
+                    <Marker position={{ lat, lng }} />
+                    <Circle
+                      center={{ lat, lng }}
+                      options={{
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.35,
+                        radius: value2 * 1609.34,
+                      }}
+                    />
+                  </GoogleMap>
+                </div>
+              )}
 
-            <div className="flex justify-end mt-12">
-              <button
-                type="reset"
-                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-              >
-                Save
-              </button>
+              <div className="flex justify-end mt-12">
+                <button
+                  type="reset"
+                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      </LoadScript>
+        </LoadScript>
       </form>
     </div>
   );

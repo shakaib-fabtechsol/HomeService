@@ -34,7 +34,7 @@ function ServiceBox({
     <div className="border px-3 py-3 rounded-lg">
       <div className="border px-3 py-3 rounded-lg">
         <img
-          src={defaultimg}
+          src={imageToShow}
          
           alt="Service Image"
           className="rounded-lg w-full h-40 object-cover"
