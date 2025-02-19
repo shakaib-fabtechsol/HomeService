@@ -46,7 +46,7 @@ const ProfileDeal = () => {
     : [];
 
   return (
-    <div>
+    <div className="h-screen">
       <div className="mt-4">
         <div className="md:flex justify-between items-center">
           <h2 className="text-2xl font-medium myhead">My Deals</h2>
@@ -65,14 +65,15 @@ const ProfileDeal = () => {
         {services.length > 0 ? (
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
             {services.map((service, index) => (
-              <ServiceBox
-                key={index}
-                image={service.image}
-                title={service.title}
-                price={service.price}
-                description={service.description}
-                tags={service.tags}
-              />
+              <div key={index} className="h-50 w-50">
+                <ServiceBox
+                  image={service.image}
+                  title={service.title}
+                  price={service.price}
+                  description={service.description}
+                  tags={service.tags}
+                />
+              </div>
             ))}
           </div>
         ) : (

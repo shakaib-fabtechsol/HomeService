@@ -65,7 +65,7 @@ function ServiceDetail() {
 
   const location = useLocation();
   const dealid = location.state?.dealid || "";
-
+  const [provider, setProviderData] = useState({});
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
   const handlecontactClose = () => setcontactOpen(false);
@@ -92,38 +92,82 @@ function ServiceDetail() {
   ];
 
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
   // Fetch service details using axios when the component mounts
   useEffect(() => {
     if (dealid) {
-      // Assuming token is stored in localStorage
       const token = localStorage.getItem("token");
-      setLoading(true); // Start loading
+      setLoading(true);
 
       if (token) {
         axios
           .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
             headers: {
-              Authorization: `Bearer ${token}`, // Add token to headers
+              Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => {
             const model = serviceDetails?.pricing_model || "Hourly";
             setPricingModel(model);
             console.log("model", model);
-            setServiceDetails(response.data.deal); // Set fetched data to state
-            setLoading(false); // Stop loading
+            setServiceDetails(response.data.deal);
+            setLoading(false);
           })
           .catch((error) => {
-            setLoading(false); // Stop loading if there's an error
+            setLoading(false);
             console.error("Error fetching service details:", error);
           });
       }
     }
   }, [dealid]);
 
-  console.log("service", serviceDetails?.image);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!token || !userId) return;
+
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("API Response:", response.data);
+        setProviderData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const imagePath = provider?.user?.personal_image;
+  const imageUrl = imagePath
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    : "/default.png";
+  const regularHours =
+    provider?.businessProfile && provider.businessProfile.length > 0
+      ? JSON.parse(provider.businessProfile[0].regular_hour || "[]")
+      : [];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = days[new Date().getDay()];
+  const currentDayData = regularHours.find(
+    (item) => item.day_name === currentDay
+  );
 
   const handleDelete = (dealId) => {
     if (!dealId) {
@@ -174,8 +218,8 @@ function ServiceDetail() {
     return <div>No service details available.</div>;
   }
 
-  const imagePath = serviceDetails[0]?.image;
-  const imageUrl = imagePath
+  const imagePath1 = serviceDetails[0]?.image;
+  const imageUrl1 = imagePath1
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";
   return (
@@ -217,13 +261,15 @@ function ServiceDetail() {
               <div className="flex flex-wrap items-center">
                 <img
                   onClick={() => navigate("/provider/ProfileDetails")}
-                  src={provider}
+                  src={imageUrl1}
                   alt=""
                   className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
                 />
                 <div className="my-2">
                   <div className="flex">
-                    <p className="font-semibold myhead me-2">Provider Name</p>
+                    <p className="font-semibold myhead me-2">
+                      {provider?.user?.name}
+                    </p>
                     <div className="flex">
                       <IoIosStar className="me-2 text-[#F8C600]" />
                       <p className="myblack text-sm">
@@ -235,16 +281,45 @@ function ServiceDetail() {
                     <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
                     <div className="flex items-center">
                       <IoLocationOutline className="me-2 myblack" />
-                      <p className="myblack ">Address of the provider here</p>
+                      <p className="myblack ">{provider?.user?.location}</p>
                     </div>
                   </div>
-                  <div className="flex mt-2">
+                  <div className="flex mt-2 items-center">
                     <div className="flex me-2">
                       <FaRegCalendarAlt className="me-2" />
-                      <p className="text-sm myblack me-2">Hours: </p>
-                      <p className="text-sm text-[#34A853]"> Available</p>
+                      <p className="text-sm myblack">
+                        {currentDayData ? (
+                          <>{currentDayData.day_name}:&nbsp;</>
+                        ) : (
+                          "No data available for today."
+                        )}
+                      </p>
+
+                      <p className="text-sm text-[#34A853] font-[300]">
+                        {currentDayData?.day_status === "open"
+                          ? "Available"
+                          : "Unavailable"}
+                      </p>
+                      <p className="text-sm ml-2 lg:ml-10 myblack">
+                        {currentDayData?.day_status === "open" ? (
+                          <>
+                            Closed {currentDayData.regular_hour[0].end_time}{" "}
+                            {currentDayData.regular_hour[0].end_time.includes(
+                              "AM"
+                            ) ||
+                            currentDayData.regular_hour[0].end_time.includes(
+                              "PM"
+                            )
+                              ? ""
+                              : currentDayData.regular_hour[0].end_time >= 12
+                              ? "PM"
+                              : "AM"}
+                          </>
+                        ) : (
+                          "Closed"
+                        )}
+                      </p>
                     </div>
-                    <p className="text-sm myblack">Close 6PM</p>
                   </div>
                 </div>
               </div>
@@ -279,52 +354,6 @@ function ServiceDetail() {
           </div>
           <div className="col-span-12 xl:col-span-4">
             <div className="flex flex-col h-full gap-5">
-              {/* <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
-                <Box sx={{ width: "100%" }}>
-                  <Box
-                    sx={{
-                      border: "1px solid #E9EAEB",
-                      borderRadius: "12px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      aria-label="basic tabs example"
-                      variant="scrollable"
-                      TabIndicatorProps={{ sx: { display: "none" } }}
-                      sx={{
-                        backgroundColor: "#ffffff",
-                        "& .MuiTab-root": {
-                          color: "#535862",
-                          textTransform: "capitalize",
-                          fontFamily: "inter",
-                        },
-                        "& .Mui-selected": {
-                          color: "#181D27",
-                          fontWeight: "700",
-                          fontFamily: "inter",
-                        },
-                      }}
-                    >
-                      <Tab label="Basic" {...a11yProps(0)} />
-                      <Tab label="Standard" {...a11yProps(1)} />
-                      <Tab label="Premium" {...a11yProps(2)} />
-                    </Tabs>
-                  </Box>
-                  <CustomTabPanel value={value} index={0}>
-                    <Basic />
-                  </CustomTabPanel>
-                  <CustomTabPanel value={value} index={1}>
-                    <Standard />
-                  </CustomTabPanel>
-                  <CustomTabPanel value={value} index={2}>
-                    <Premium />
-                  </CustomTabPanel>
-                </Box>
-              </div> */}
-
               <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
                 <Box sx={{ width: "100%" }}>
                   <Box
@@ -353,7 +382,6 @@ function ServiceDetail() {
                         },
                       }}
                     >
-                    
                       <Tab label="Basic" {...a11yProps(0)} />
                       {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
                         <Tab label="Standard" {...a11yProps(1)} />
@@ -371,11 +399,11 @@ function ServiceDetail() {
                       </h2>
                       <p className="text-3xl myhead font-bold">
                         {serviceDetails[0]?.pricing_model === "Hourly"
-                          ? "$" + serviceDetails[0].hourly_final_list_price
+                          ? "" + serviceDetails[0].hourly_final_list_price
                           : serviceDetails[0]?.pricing_model === "Flat"
-                          ? "$" + serviceDetails[0].flat_rate_price
+                          ? "" + serviceDetails[0].flat_rate_price
                           : serviceDetails[0]?.pricing_model === "Custom"
-                          ? "$" + serviceDetails[0].price1
+                          ? "" + serviceDetails[0].price1
                           : "$200"}
                       </p>
                     </div>

@@ -8,6 +8,7 @@ import BasicInfo from "../../Components/ServiceProvider/BasicInfo";
 import PricingPackaging from "../../Components/ServiceProvider/PricingPackaging";
 import MediaUpload from "../../Components/ServiceProvider/MediaUpload";
 import ReviewPublish from "../../Components/ServiceProvider/ReviewPublish";
+import Loader from "../../Components/MUI/Loader";
 import axios from "axios";
 
 function TabPanel(props) {
@@ -35,12 +36,19 @@ function TabPanel(props) {
 function NewDeals() {
   const [value, setValue] = React.useState(0);
   const [serviceId, setServiceId] = useState(null); 
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log("🔄 NewDeals Updated Service ID:", serviceId); 
+    console.log(" NewDeals Updated Service ID:", serviceId); 
   }, [serviceId]);
 
-
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  };
 
   return (
     <div className="pmain">
@@ -73,7 +81,7 @@ function NewDeals() {
                 },
               }}
               value={value}
-              onChange={(event, newValue) => setValue(newValue)}
+              onChange={handleChange}
               variant="scrollable"
               scrollButtons="auto"
             >
@@ -84,19 +92,25 @@ function NewDeals() {
             </Tabs>
           </Box>
 
-          <TabPanel value={value} index={0}>
-            <BasicInfo setValue={setValue} setServiceId={setServiceId} />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <PricingPackaging setValue={setValue} serviceId={serviceId} />
-          </TabPanel>
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              <TabPanel value={value} index={0}>
+                <BasicInfo setValue={setValue} setServiceId={setServiceId} />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <PricingPackaging setValue={setValue} serviceId={serviceId} />
+              </TabPanel>
 
-          <TabPanel value={value} index={2}>
-            <MediaUpload setValue={setValue} serviceId={serviceId} />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <ReviewPublish setValue={setValue} serviceId={serviceId}/>
-          </TabPanel>
+              <TabPanel value={value} index={2}>
+                <MediaUpload setValue={setValue} serviceId={serviceId} />
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <ReviewPublish setValue={setValue} serviceId={serviceId}/>
+              </TabPanel>
+            </>
+          )}
         </Box>
       </div>
     </div>

@@ -44,7 +44,7 @@ const TeacherPhoto = () => {
             <img
               src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
               alt={`Facility ${index + 1}`}
-              className="w-full h-[500px] rounded-lg shadow"
+           className="w-50 h-[300px] rounded-lg shadow"
               onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
             />
           </div>

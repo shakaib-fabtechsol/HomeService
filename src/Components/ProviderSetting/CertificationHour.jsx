@@ -57,15 +57,16 @@ const CertificationHour = () => {
     {
       text: "",
       date: "",
+      hour: [{ start: "", end: "" }],
       closed: false,
       is247Open: false,
     },
   ]);
 
-
   const updatespecialSchedule = (index, updatedFields) => {
     const updatedSchedule = [...specialSchedule];
     updatedSchedule[index] = { ...updatedSchedule[index], ...updatedFields };
+    console.log("Updated Schedule:", updatedSchedule); // Debugging
     setSpecialSchedule(updatedSchedule);
   };
   const deleteSlot = (index) => {
@@ -77,6 +78,7 @@ const CertificationHour = () => {
     const newEntry = {
       text: "",
       date: "",
+      hour: [{ start: "", end: "" }],
       closed: false,
       is247Open: false,
     };
@@ -87,14 +89,13 @@ const CertificationHour = () => {
     updatespecialSchedule(index, { closed: !specialSchedule[index].closed });
   };
 
-
   const fetchData = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("No token found. Please log in.");
       return;
     }
-  
+
     try {
       const response = await axios.get(
         `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
@@ -104,10 +105,25 @@ const CertificationHour = () => {
           },
         }
       );
-  
+      const defaultSchedule = days.map((day) => ({
+        day,
+        closed: false,
+        slots: [{ start: "", end: "" }],
+      }));
+
+      const defaultSpecialSchedule = [
+        {
+          text: "",
+          date: "",
+          hour: [{ start: "", end: "" }],
+          closed: false,
+          is247Open: false,
+        },
+      ];
+
       console.log("response data", response.data?.businessProfile);
       const businessProfile = response.data?.businessProfile;
-  
+
       if (businessProfile && businessProfile.length > 0) {
         const profile = businessProfile[0];
         let formattedSchedule = [];
@@ -117,7 +133,7 @@ const CertificationHour = () => {
               ? JSON.parse(profile.regular_hour)
               : profile.regular_hour;
         }
-  
+
         const transformedSchedule = formattedSchedule.map((item) => ({
           day: item.day_name,
           closed: item.day_status === "closed",
@@ -129,8 +145,7 @@ const CertificationHour = () => {
                   end: slot.end_time,
                 })),
         }));
-  
-        // Format special hours
+
         let formattedScheduleSpecial = [];
         if (profile.special_hour) {
           formattedScheduleSpecial =
@@ -142,12 +157,13 @@ const CertificationHour = () => {
         const transformedScheduleSpecial = formattedScheduleSpecial.map(
           (item) => ({
             text: item.text,
+            hour: item.hour,
             date: item.date || "",
             closed: item.closed === "closed",
             is247Open: item.is247Open === "true",
           })
         );
-  
+
         const insuranceCertificate = profile.insurance_certificate
           ? `https://homeservice.thefabulousshow.com/uploads/${profile.insurance_certificate}`
           : "/default.png";
@@ -157,29 +173,33 @@ const CertificationHour = () => {
         const awardCertificate = profile.award_certificate
           ? `https://homeservice.thefabulousshow.com/uploads/${profile.award_certificate}`
           : "/default.png";
-      
+
         setFormData({
           user_id: profile.user_id,
           insurance_certificate: insuranceCertificate,
           license_certificate: licenseCertificate,
           award_certificate: awardCertificate,
         });
-        setSchedule(transformedSchedule);
-        setSpecialSchedule(transformedScheduleSpecial);
+        setSchedule(
+          transformedSchedule.length > 0 ? transformedSchedule : defaultSchedule
+        );
+        setSpecialSchedule(
+          transformedScheduleSpecial.length > 0
+            ? transformedScheduleSpecial
+            : defaultSpecialSchedule
+        );
       }
     } catch (error) {
       console.error("Error fetching data:", error);
       toast.error("Failed to fetch user details.");
-     
     }
   };
- 
+
   useEffect(() => {
     if (!userId) return;
-  
+
     fetchData();
-  }, [userId])
-  
+  }, [userId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -211,6 +231,7 @@ const CertificationHour = () => {
         text: item.text,
         date: item.date,
         closed: item.closed,
+        hour: item.hour,
         is247Open: item.is247Open,
       }));
       const data = new FormData();
@@ -244,9 +265,6 @@ const CertificationHour = () => {
       setLoading(false);
     }
   };
-
-
-  
 
   return (
     <div>
@@ -317,7 +335,6 @@ const CertificationHour = () => {
             <div className="py-8 border-b">
               <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
                 <div>
-                  
                   <p className="text-sm font-semibold">
                     Regular Hours of Operation
                   </p>
@@ -469,10 +486,7 @@ const CertificationHour = () => {
                             >
                               <input
                                 type="checkbox"
-                                checked={
-                                  item.is247Open ===
-                                  specialSchedule[dayIndex]?.is247Open
-                                } // Compare with corresponding specialSchedule entry
+                                checked={item.is247Open}
                                 onChange={() =>
                                   updatespecialSchedule(dayIndex, {
                                     is247Open: !item.is247Open, // Toggling the value when clicked
@@ -482,6 +496,38 @@ const CertificationHour = () => {
                               24/7 Open
                             </label>
                           </div>
+
+                          {item.hour?.map((slot, slotIndex) => (
+                            <div
+                              key={slotIndex}
+                              className="flex w-full items-center gap-2 mt-2"
+                            >
+                              <div className="w-full">
+                              <input
+                                type="time"
+                                className="border border-[#D5D7DA] p-3 rounded-[8px]  w-[150px] sm:w-full lg:w-[200px] shadow"
+                                value={slot.start}
+                                onChange={(e) => {
+                                  const slots = [...item.hour];
+                                  slots[slotIndex].start = e.target.value;
+                                  updatespecialSchedule(dayIndex, { slots });
+                                }}
+                              />
+                              </div>
+                              <div className="w-full">
+                              <input
+                                type="time"
+                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-[150px] sm:w-full lg:w-[200px] shadow"
+                                value={slot.end}
+                                onChange={(e) => {
+                                  const slots = [...item.hour];
+                                  slots[slotIndex].end = e.target.value;
+                                  updatespecialSchedule(dayIndex, { slots });
+                                }}
+                              />
+                              </div>
+                            </div>
+                          ))}
 
                           <div className="flex gap-3 mt-2 w-full">
                             <button

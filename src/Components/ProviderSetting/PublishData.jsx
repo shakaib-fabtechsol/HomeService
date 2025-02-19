@@ -31,6 +31,7 @@ import License from "../../Components/Profile/AdditionalPhoto/License";
 import Award from "../../Components/Profile/AdditionalPhoto/Award";
 import TechniciansPhoto from "../../Components/Profile/AdditionalPhoto/TechniciansPhoto";
 import ProfileDeal from "../../Components/Profile/ProfileDeal";
+import Loader from "../../Components/MUI/Loader";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -187,6 +188,27 @@ function ProfileDetails() {
     }
   };
 
+  const imagePath = formdata?.user?.personal_image;
+  const imageUrl = imagePath
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    : "/default.png";
+  const regularHours = JSON.parse(
+    formdata?.businessProfile[0]?.regular_hour || "[]"
+  );
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = days[new Date().getDay()];
+  const currentDayData = regularHours.find(
+    (item) => item.day_name === currentDay
+  );
+
   const modalContacts = [
     { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
     {
@@ -210,6 +232,11 @@ function ProfileDetails() {
 
   return (
     <div>
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <div className="flex items-center">
         <Link to="/provider/services">
           <FaArrowLeft className="me-4 text-xl" />
@@ -219,13 +246,15 @@ function ProfileDetails() {
       <div className="flex flex-col lg:flex-row justify-between mt-4 lg:items-start">
         <div className="flex flex-wrap items-center">
           <img
-            src={provider}
+            src={imageUrl}
             alt=""
             className="me-2 my-2 rounded-lg max-w-[120px]"
           />
           <div className="my-2">
             <div className="flex items-center">
-              <p className="font-semibold myhead me-2">Provider Name</p>
+              <p className="font-semibold myhead me-2">
+                {formdata?.user?.name}
+              </p>
               <div className="flex ms-3">
                 <IoIosStar className="me-1 text-[#F8C600]" />
                 <div className="flex flex-wrap">
@@ -236,22 +265,47 @@ function ProfileDetails() {
             </div>
 
             <div className="flex flex-wrap mt-2">
-              <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
               <div className="flex items-center">
                 <IoLocationOutline className="me-2 myblack" />
-                <p className="myblack ">Address of the provider here</p>
+                <p className="myblack ">{formdata?.user?.location}</p>
               </div>
             </div>
             <div className="flex mt-2 items-center">
-              <div className="flex me-2">
-                <FaRegCalendarAlt className="me-2" />
-                <p className="text-sm myblack">Hours:&nbsp;</p>
-                <p className="text-sm text-[#34A853] font-[300]">Available</p>
+              <div className="flex mt-2 items-center">
+                <div className="flex me-2">
+                  <FaRegCalendarAlt className="me-2" />
+                  <p className="text-sm myblack">
+                    {currentDayData ? (
+                      <>{currentDayData.day_name}:&nbsp;</>
+                    ) : (
+                      "No data available for today."
+                    )}
+                  </p>
+
+                  <p className="text-sm text-[#34A853] font-[300]">
+                    {currentDayData?.day_status === "open"
+                      ? "Available"
+                      : "Unavailable"}
+                  </p>
+                  <p className="text-sm ml-2 lg:ml-10 myblack">
+                    {currentDayData?.day_status === "open" ? (
+                      <>
+                        Closed {currentDayData.regular_hour[0].end_time}{" "}
+                        {currentDayData.regular_hour[0].end_time.includes(
+                          "AM"
+                        ) ||
+                        currentDayData.regular_hour[0].end_time.includes("PM")
+                          ? ""
+                          : currentDayData.regular_hour[0].end_time >= 12
+                          ? "PM"
+                          : "AM"}
+                      </>
+                    ) : (
+                      "Closed"
+                    )}
+                  </p>
+                </div>
               </div>
-              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2"></div>
-              <select name="" id="" className="text-sm myblack bg-transparent">
-                <option value="">Close 6PM</option>
-              </select>
             </div>
           </div>
         </div>

@@ -39,7 +39,7 @@ const TeacherPhoto = () => {
                 src={`https://homeservice.thefabulousshow.com/uploads/${image.trim()}`}
                 alt={`Technician ${index + 1}`}
                 className="w-full h-[500px] rounded-lg shadow"
-                onError={(e) => (e.target.src = "/default.png")} 
+           
               />
             </div>
           ))
