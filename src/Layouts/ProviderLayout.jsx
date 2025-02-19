@@ -11,7 +11,7 @@ import { IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import logo from "../assets/img/logo.png";
-import defaultUser from "../assets/img/user.png";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -98,7 +98,8 @@ function ProviderLayout() {
   ];
 
   const imageUrl = `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`;
-
+  const defaultimg = "/vite.svg";
+  const imageToShow = imageUrl || defaultimg;
   const drawer = (
     <Box
       sx={{
@@ -132,7 +133,6 @@ function ProviderLayout() {
         </List>
       </Box>
 
-      {/* User Info & Bottom Section */}
       <Box sx={{ fontFamily: "inter" }}>
         <List className="border-b-2">
           {bottomItems.map((item) => (
@@ -153,11 +153,7 @@ function ProviderLayout() {
         <Box>
           <div className="flex items-center px-4 py-4">
             <Link to="/provider/ProfileDetails">
-              <img
-                src={imageUrl || defaultUser}
-                alt="User"
-                className="rounded-full pe-2 w-[100px] h-[50px]"
-              />
+              <img src={imageToShow} width="50px" height="60px" />
             </Link>
             <Box>
               <Box className="flex justify-between items-center">

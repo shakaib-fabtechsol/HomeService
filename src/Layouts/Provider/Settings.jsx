@@ -11,7 +11,8 @@ import SocialProfile from "../../Components/ProviderSetting/SocialProfile";
 import Password from "../../Components/ProviderSetting/Password";
 import Publish from "../../Components/ProviderSetting/PublishData";
 import ChannelConversation from "../../Components/ProviderSetting/ChannelConversation";
-import Payment from "../../Components/ProviderSetting/Payment"
+import Payment from "../../Components/ProviderSetting/Payment";
+import Loader from "../../Components/MUI/Loader";
 
 function TabPanel(props) {
   useEffect(() => {
@@ -36,9 +37,14 @@ function Settings() {
     document.title = "Settings";
   }, []);
   const [value, setValue] = React.useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
   };
 
   return (
@@ -86,36 +92,42 @@ function Settings() {
             </Tabs>
           </Box>
 
-          <TabPanel value={value} index={0}>
-            <MyDetail />
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Location />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <BusinessProfile />
-          </TabPanel>
-          <TabPanel value={value} index={3}>
-            <CertificationHour />
-          </TabPanel>
-          <TabPanel value={value} index={4}>
-            <AdditionalPhoto />
-          </TabPanel>
-          <TabPanel value={value} index={5}>
-            <SocialProfile />
-          </TabPanel>
-          <TabPanel value={value} index={6}>
-            <Password />
-          </TabPanel>
-          <TabPanel value={value} index={7}>
-            <ChannelConversation />
-          </TabPanel>
-          <TabPanel value={value} index={8}>
-            <Payment />
-          </TabPanel>
-          <TabPanel value={value} index={9}>
-            <Publish/>
-          </TabPanel>
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              <TabPanel value={value} index={0}>
+                <MyDetail />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <Location />
+              </TabPanel>
+              <TabPanel value={value} index={2}>
+                <BusinessProfile />
+              </TabPanel>
+              <TabPanel value={value} index={3}>
+                <CertificationHour />
+              </TabPanel>
+              <TabPanel value={value} index={4}>
+                <AdditionalPhoto />
+              </TabPanel>
+              <TabPanel value={value} index={5}>
+                <SocialProfile />
+              </TabPanel>
+              <TabPanel value={value} index={6}>
+                <Password />
+              </TabPanel>
+              <TabPanel value={value} index={7}>
+                <ChannelConversation />
+              </TabPanel>
+              <TabPanel value={value} index={8}>
+                <Payment />
+              </TabPanel>
+              <TabPanel value={value} index={9}>
+                <Publish/>
+              </TabPanel>
+            </>
+          )}
         </Box>
       </div>
     </div>

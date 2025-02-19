@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -27,31 +26,22 @@ const TeacherPhoto = () => {
     fetchData();
   }, []);
 
+  const image =
+    formdata?.businessProfile?.[0]?.technician_photo ||
+    formdata?.businessProfile?.[0]?.technician_photo?.split(",")[0];
 
-  const allImages =
-    formdata?.businessProfile?.flatMap((profile) =>
-      profile.technician_photo
-        ? (Array.isArray(profile.technician_photo)
-            ? profile.technician_photo
-            : profile.technician_photo.split(",")
-          ).map((img) => img.trim())
-        : []
-    ) || [];
+
     
 
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-      {allImages.length > 0 ? (
-        allImages.map((image, index) => (
-          <div key={index}>
-            <img
-              src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-              alt={`Facility`}
-              className="w-full h-[500px] rounded-lg shadow"
-              onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
-            />
-          </div>
-        ))
+    <div>
+      {image ? (
+        <img
+          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+          alt={`Facility`}
+          className="w-50 h-[200px] rounded-lg shadow"
+         // Load default if image fails
+        />
       ) : (
         <p>No facility photos available</p>
       )}

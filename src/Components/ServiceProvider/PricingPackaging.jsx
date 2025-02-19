@@ -106,7 +106,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
               pricing_model: BasicInfo.pricing_model || "",
               estimated_service_time: BasicInfo.estimated_service_time || "",
 
-              ...(BasicInfo.pricing_model ==="Flat"
+              ...(BasicInfo.pricing_model === "Flat"
                 ? {
                     flat_rate_price: BasicInfo.flat_rate_price || "",
                     flat_by_now_discount: BasicInfo.flat_by_now_discount || "",
@@ -164,47 +164,68 @@ const PricingPackaging = ({ serviceId, setValue }) => {
   }, [dealid]);
   const handleRateChange = (event) => {
     const newRate = event.target.value;
-  
+
     setSelectedRate(newRate);
     setFormData((prevData) => ({
       ...prevData,
       pricing_model: newRate,
     }));
   };
+
+  const formatCurrency = (value, key) => {
+    if (!value) return "";
+    const numericValue = value.toString().replace(/[^0-9.]/g, "");
+    if (key === "flat_by_now_discount" || key==="discount" || key==="by_now_discount1" || key==="by_now_discount2" || key==="by_now_discount3") {
+      return `${numericValue} %`;
+    }
+
+    return `$${numericValue}`;
+  };
   
-
+  const parseCurrency = (value, key) => {
+    if (!value) return "";
+    let numericValue = value.replace(/[^0-9.]/g, "");
+   
+    if (key === "flat_by_now_discount" || key==="discount" || key==="by_now_discount1" || key==="by_now_discount2" || key==="by_now_discount3") {
+      return numericValue;
+    }
+    return numericValue;
+  };
+  
   const handleFormSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
-    if (loading) return; 
-    setLoading(true); 
+    if (loading) return;
+    setLoading(true);
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("No token found. Please log in.");
       setLoading(false);
       return;
     }
-  
+
     let formdata = {
       id: serviceId,
       pricing_model: selectedRate,
     };
-    
+
     if (selectedRate === "Flat") {
       formdata = {
         ...formdata,
         flat_rate_price: e.target.flat_rate_price?.value,
         flat_by_now_discount: e.target.flat_by_now_discount?.value,
         flat_final_list_price: e.target.flat_final_list_price?.value,
-        flat_estimated_service_time: e.target.flat_estimated_service_time?.value,
+        flat_estimated_service_time:
+          e.target.flat_estimated_service_time?.value,
       };
     } else if (selectedRate === "Hourly") {
       formdata = {
         ...formdata,
         hourly_rate: e.target.hourly_rate.value,
-        discount: e.target.discount ? e.target.discount?.value : null,  
+        discount: e.target.discount ? e.target.discount?.value : null,
         hourly_final_list_price: e.target.hourly_final_list_price?.value,
-        hourly_estimated_service_time: e.target.hourly_estimated_service_time?.value,
+        hourly_estimated_service_time:
+          e.target.hourly_estimated_service_time?.value,
       };
     } else if (selectedRate === "Custom") {
       formdata = {
@@ -215,14 +236,14 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         by_now_discount1: e.target.by_now_discount1?.value,
         final_list_price1: e.target.final_list_price1?.value,
         estimated_service_timing1: e.target?.estimated_service_timing1?.value,
-    
+
         title2: e.target.title2?.value,
         deliverable2: e.target.deliverable2?.value,
         price2: e.target.price2?.value,
         by_now_discount2: e.target.by_now_discount2?.value,
         final_list_price2: e.target.final_list_price2?.value,
         estimated_service_timing2: e.target?.estimated_service_timing2?.value,
-    
+
         title3: e.target.title3?.value,
         deliverable3: e.target.deliverable3?.value,
         price3: e.target.price3?.value,
@@ -231,9 +252,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         estimated_service_timing3: e.target?.estimated_service_timing3?.value,
       };
     }
-    
-  
-    
 
     try {
       const response = await fetch(
@@ -292,8 +310,94 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
   };
 
- 
- 
+  const handleInputChange = (e, key) => {
+    const rawValue = parseCurrency(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [key]: rawValue };
+
+      if (updatedData.flat_rate_price && updatedData.flat_by_now_discount) {
+        const flatRate = parseFloat(updatedData.flat_rate_price) || 0;
+        const discount = parseFloat(updatedData.flat_by_now_discount) || 0;
+        updatedData.flat_final_list_price = (
+          flatRate -
+          (flatRate * discount) / 100
+        ).toFixed(2);
+      }
+
+      return updatedData;
+    });
+  };
+
+  const handleHourlyInputChange = (e, key) => {
+    const rawValue = parseCurrency(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [key]: rawValue };
+
+      if (updatedData.hourly_rate && updatedData.discount) {
+        const hourlyRate = parseFloat(updatedData.hourly_rate) || 0;
+        const discount = parseFloat(updatedData.discount) || 0;
+        updatedData.hourly_final_list_price = (
+          hourlyRate -
+          (hourlyRate * discount) / 100
+        ).toFixed(2);
+      }
+
+      return updatedData;
+    });
+  };
+
+  const handlePriceInputChange = (e, key) => {
+    const rawValue = parseCurrency(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [key]: rawValue };
+      if (updatedData.price1 && updatedData.by_now_discount1) {
+        const price = parseFloat(updatedData.price1) || 0;
+        const discount = parseFloat(updatedData.by_now_discount1) || 0;
+        updatedData.final_list_price1 = (
+          price -
+          (price * discount) / 100
+        ).toFixed(2);
+      }
+
+      return updatedData;
+    });
+  };
+
+  const handlePriceInputChanged = (e, key) => {
+    const rawValue = parseCurrency(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [key]: rawValue };
+      if (updatedData.price2 && updatedData.by_now_discount2) {
+        const price = parseFloat(updatedData.price2) || 0;
+        const discount = parseFloat(updatedData.by_now_discount2) || 0;
+        updatedData.final_list_price2 = (
+          price -
+          (price * discount) / 100
+        ).toFixed(2);
+      }
+
+      return updatedData;
+    });
+  };
+
+  const handlePriceInput = (e, key) => {
+    const rawValue = parseCurrency(e.target.value);
+    setFormData((prev) => {
+      const updatedData = { ...prev, [key]: rawValue };
+      if (updatedData.price3 && updatedData.by_now_discount3) {
+        const price = parseFloat(updatedData.price3) || 0;
+        const discount = parseFloat(updatedData.by_now_discount3) || 0;
+        updatedData.final_list_price3 = (
+          price -
+          (price * discount) / 100
+        ).toFixed(2);
+      }
+
+      return updatedData;
+    });
+  };
+
+
   return (
     <div>
       <form onSubmit={handleFormSubmit}>
@@ -362,40 +466,34 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   <input
                     type="text"
                     id="flat_rate_price"
-                    placeholder="$100"
-                    value={formdata.flat_rate_price || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        flat_rate_price: e.target.value,
-                      }))
-                    }
+                    placeholder="Enter price"
+                    value={formatCurrency(formdata.flat_rate_price || "")}
+                    onChange={(e) => handleInputChange(e, "flat_rate_price")}
                     className="myinput focus-none"
                   />
                 </div>
               </div>
 
+              {/* Buy Now Discount */}
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="BuyNow" className="font-semibold">
-                    Buy Now Discount
+                    Buy Now Discount (%)
                   </label>
                   <input
                     type="text"
                     id="flat_by_now_discount"
                     placeholder="10 %"
-                    value={formdata.flat_by_now_discount || ""}
+                    value={formatCurrency(formdata.flat_by_now_discount, "flat_by_now_discount")}
                     onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        flat_by_now_discount: e.target.value,
-                      }))
+                      handleInputChange(e, "flat_by_now_discount")
                     }
                     className="myinput focus-none"
                   />
                 </div>
               </div>
 
+              {/* Final List Price (Calculated) */}
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Finalp" className="font-semibold">
@@ -404,14 +502,9 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   <input
                     type="text"
                     id="flat_final_list_price"
-                    placeholder="$90"
-                    value={formdata.flat_final_list_price || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        flat_final_list_price: e.target.value,
-                      }))
-                    }
+                    placeholder="%90"
+                    value={formatCurrency(formdata.flat_final_list_price || "")}
+                    readOnly
                     className="myinput focus-none"
                   />
                 </div>
@@ -423,7 +516,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     Estimated Service Time
                   </label>
                   <select
-                  id="flat_estimated_service_time"
+                    id="flat_estimated_service_time"
                     className="myselect pe-[30px] focus-none"
                     value={formdata.flat_estimated_service_time || ""}
                     onChange={(e) =>
@@ -458,34 +551,25 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     type="text"
                     id="hourly_rate"
                     placeholder="$25/hour"
-                    value={formdata.hourly_rate || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        hourly_rate: e.target.value,
-                      }))
-                    }
+                    value={formatCurrency(formdata.hourly_rate || "")}
+                    onChange={(e) => handleHourlyInputChange(e, "hourly_rate")}
                     className="myinput focus-none"
                   />
                 </div>
               </div>
 
+              {/* Discount */}
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="HourlyDiscount" className="font-semibold">
-                    Discount
+                    Discount (%)
                   </label>
                   <input
                     type="text"
                     id="discount"
                     placeholder="10 %"
-                    value={formdata.discount || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        discount: e.target.value,
-                      }))
-                    }
+                    value={formatCurrency(formdata.discount,"discount")}
+                    onChange={(e) => handleHourlyInputChange(e, "discount")}
                     className="myinput focus-none"
                   />
                 </div>
@@ -500,18 +584,14 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     type="text"
                     id="hourly_final_list_price"
                     placeholder="$90"
-                    value={formdata.hourly_final_list_price || ""}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        hourly_final_list_price: e.target.value,
-                      }))
-                    }
+                    value={formatCurrency(
+                      formdata.hourly_final_list_price || ""
+                    )}
+                    readOnly
                     className="myinput focus-none"
                   />
                 </div>
               </div>
-
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label
@@ -521,9 +601,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                     Estimated Service Time
                   </label>
                   <select
-                  id="hourly_estimated_service_time"
+                    id="hourly_estimated_service_time"
                     className="myselect pe-[30px] focus-none"
-                    value={formdata.hourly_estimated_service_time || ""}
+                    value={formatCurrency(
+                      formdata.hourly_estimated_service_time || ""
+                    )}
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
@@ -545,7 +627,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
             </>
           )}
 
-         
           {selectedRate === "Custom" && (
             <>
               <div className="col-span-12 mt-6">
@@ -570,7 +651,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="Title"
                             id="title1"
-
                             value={formdata.title1 || ""}
                             onChange={(e) =>
                               setFormData((prev) => ({
@@ -579,7 +659,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               }))
                             }
                           />
-                            
                         </div>
                         <div className="flex flex-col mt-4">
                           <label
@@ -592,7 +671,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                             name="deliverable1"
                             id="deliverable1"
-                          
                             value={formdata.deliverable1}
                             onChange={(e) =>
                               setFormData((prev) => ({
@@ -615,39 +693,34 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$50"
                             id="price1"
-                           
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                price1: e.target.value,
-                              }))
+                              handlePriceInputChange(e, "price1")
                             }
-                            value={formdata.price1}
-                           
+                            value={formatCurrency(formdata.price1 || "")}
                           />
                         </div>
+
                         <div className="flex flex-col mt-4">
                           <label
                             className="text-sm font-medium ps-2"
                             htmlFor="by_now_discount1"
                           >
-                            Buy Now Discount
+                            Buy Now Discount (%)
                           </label>
                           <input
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                             type="text"
                             placeholder="10 %"
                             id="by_now_discount1"
-
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                by_now_discount1: e.target.value,
-                              }))
+                              handlePriceInputChange(e, "by_now_discount1")
                             }
-                            value={formdata.by_now_discount1}
+                            value={formatCurrency(formdata.by_now_discount1 ,"by_now_discount1")}
+                           
                           />
                         </div>
+
+                     
                         <div className="flex flex-col mt-4">
                           <label
                             className="text-sm font-medium ps-2"
@@ -660,13 +733,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price1"
-                            value={formdata.final_list_price1}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                final_list_price1: e.target.value,
-                              }))
-                            }
+                            value={formatCurrency(formdata.final_list_price1 || "")}
+                            readOnly
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -685,7 +753,9 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none appearance-none"
                             name="estimated_service_timing1"
                             id="estimated_service_timing1"
-                            value={formdata.estimated_service_timing1}
+                            
+                            value={formatCurrency(
+                              formdata.estimated_service_timing1)}
                             onChange={(e) =>
                               setFormData((prev) => ({
                                 ...prev,
@@ -763,12 +833,9 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             placeholder="$50"
                             id="price2"
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                price2: e.target.value,
-                              }))
+                              handlePriceInputChanged(e, "price2")
                             }
-                            value={formdata.price2}
+                            value={formatCurrency(formdata.price2 || "")}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -784,12 +851,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             placeholder="10 %"
                             id="by_now_discount2"
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                by_now_discount2: e.target.value,
-                              }))
+                              handlePriceInputChanged(e, "by_now_discount2")
                             }
-                            value={formdata.by_now_discount2}
+                            value={formatCurrency(formdata.by_now_discount2 ,"by_now_discount2" )}
+                          
+                            
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -804,13 +870,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price2"
-                            value={formdata.final_list_price2}
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                final_list_price2: e.target.value,
-                              }))
+                              handlePriceInputChanged(e, "final_list_price2")
                             }
+                            value={formatCurrency(formdata.final_list_price2 || "")}
+                           
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -907,12 +971,10 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             placeholder="$50"
                             id="price3"
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                price3: e.target.value,
-                              }))
+                              handlePriceInput(e, "price3")
                             }
-                            value={formdata.price3}
+                            value={formatCurrency(formdata.price3 || "")}
+                           
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -928,12 +990,9 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             placeholder="10 %"
                             id="by_now_discount3"
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                by_now_discount3: e.target.value,
-                              }))
+                              handlePriceInput(e, "by_now_discount3")
                             }
-                            value={formdata.by_now_discount3}
+                            value={formatCurrency(formdata.by_now_discount3 ,"by_now_discount3" )}
                           />
                         </div>
                         <div className="flex flex-col mt-4">
@@ -948,13 +1007,10 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             type="text"
                             placeholder="$90"
                             id="final_list_price3"
-                            value={formdata.final_list_price3}
                             onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                final_list_price3: e.target.value,
-                              }))
+                              handlePriceInput(e, "final_list_price3")
                             }
+                            value={formatCurrency(formdata.final_list_price3 || "")}
                           />
                         </div>
                         <div className="flex flex-col mt-4">

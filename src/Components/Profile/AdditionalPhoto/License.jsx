@@ -37,16 +37,13 @@ const TeacherPhoto = () => {
   }, []);
 
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
+    <div>
       {image ? (
-        <div>
-          <img
-            src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-            alt="Facility"
-            className="w-full h-[500px] rounded-lg shadow"
-            onError={(e) => (e.target.src = "/default.png")}
-          />
-        </div>
+        <img
+          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+          alt="Facility"
+          className="w-50 h-[200px] rounded-lg shadow"
+        />
       ) : (
         <p>No facility photos available</p>
       )}

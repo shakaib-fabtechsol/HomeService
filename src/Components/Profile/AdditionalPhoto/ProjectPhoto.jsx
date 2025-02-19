@@ -25,29 +25,20 @@ const TeacherPhoto = () => {
     fetchData();
   }, []);
 
-  const allImages =
-    formdata?.businessProfile?.flatMap((profile) =>
-      profile.project_photo
-        ? (Array.isArray(profile.project_photo)
-            ? profile.project_photo
-            : profile.project_photo.split(",")
-          ).map((img) => img.trim())
-        : []
-    ) || [];
+  const image =
+    formdata?.businessProfile?.[0]?.project_photo ||
+    (formdata?.businessProfile?.[0]?.project_photo &&
+      formdata?.businessProfile?.[0]?.project_photo.split(",")[0]);
 
   return (
-    <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-3">
-      {allImages.length > 0 ? (
-        allImages.map((image, index) => (
-          <div key={index}>
-            <img
-              src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-              alt={`Facility ${index + 1}`}
-              className="w-full h-auto rounded-lg shadow"
-              onError={(e) => (e.target.src = "/default.png")} // Load default if image fails
-            />
-          </div>
-        ))
+    <div>
+      {image ? (
+        <img
+          src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+          alt={`Facility`}
+          className="w-50 h-[200px] rounded-lg shadow"
+      
+        />
       ) : (
         <p>No facility photos available</p>
       )}

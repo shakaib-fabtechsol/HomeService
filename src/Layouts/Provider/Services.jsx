@@ -56,7 +56,7 @@ function ServiceBox({
         <Link to="/provider/serviceDetails" state={{ dealid }}>
           <h2 className="text-lg font-semibold">{title ?? "N/A"}</h2>
         </Link>
-        <p className="mb-0 text-lg font-extrabold">${price ?? "N/A"}</p>
+        <p className="mb-0 text-lg font-extrabold">{price ?? "N/A"}</p>
       </div>
 
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>

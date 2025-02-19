@@ -43,8 +43,8 @@ const TeacherPhoto = () => {
           <img
             src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
             alt="Facility"
-            className="w-full h-auto rounded-lg shadow"
-            onError={(e) => (e.target.src = "/default.png")}
+            className="w-50 h-[200px] rounded-lg shadow"
+          
           />
         </div>
       ) : (

@@ -10,6 +10,7 @@ import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
 import { useParams } from "react-router-dom";
+
 import {
   IoChatbubbleEllipsesOutline,
   IoLocationOutline,
@@ -54,6 +55,7 @@ function a11yProps(index) {
 const ReviewPublish = ({ serviceId, setValue }) => {
   const [tag, setTags] = useState([]);
   const [pricingModel, setPricingModel] = useState("");
+  const [provider, setProviderData] = useState({});
   const { dealid } = useParams();
   const [value, setValued] = useState(0);
 
@@ -333,6 +335,31 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
   console.log("formdata", formdata);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!token || !userId) return;
+
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("API Response:", response.data);
+        setProviderData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
@@ -371,7 +398,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: publishValue }));
-        navigate("/provider/services")
+        navigate("/provider/services");
 
         Swal.fire({
           icon: "success",
@@ -398,6 +425,26 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       setLoading(false);
     }
   };
+  const imagePath = provider?.user?.personal_image;
+  const imageUrl = imagePath
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    : "/default.png";
+    const regularHours = provider?.businessProfile && provider.businessProfile.length > 0
+    ? JSON.parse(provider.businessProfile[0].regular_hour || "[]")
+    : [];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = days[new Date().getDay()];
+  const currentDayData = regularHours.find(
+    (item) => item.day_name === currentDay
+  );
 
   return (
     <div>
@@ -413,13 +460,15 @@ const ReviewPublish = ({ serviceId, setValue }) => {
               <div className="flex flex-wrap items-center">
                 <img
                   onClick={() => navigate("/provider/ProfileDetails")}
-                  src={provider}
+                  src={imageUrl}
                   alt=""
                   className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
                 />
                 <div className="my-2">
                   <div className="flex">
-                    <p className="font-semibold myhead me-2">Provider Name</p>
+                    <p className="font-semibold myhead me-2">
+                      {provider?.user?.name}
+                    </p>
                     <div className="flex">
                       <IoIosStar className="me-2 text-[#F8C600]" />
                       <p className="myblack text-sm">
@@ -428,19 +477,49 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                     </div>
                   </div>
                   <div className="flex flex-wrap mt-2">
-                    <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
                     <div className="flex items-center">
                       <IoLocationOutline className="me-2 myblack" />
-                      <p className="myblack ">Address of the provider here</p>
+                      <p className="myblack ">{provider?.user?.location}</p>
                     </div>
                   </div>
-                  <div className="flex mt-2">
-                    <div className="flex me-2">
-                      <FaRegCalendarAlt className="me-2" />
-                      <p className="text-sm myblack">Hours:</p>
-                      <p className="text-sm text-[#34A853]"> Available</p>
+                  <div className="flex mt-2 items-center">
+                    <div className="flex mt-2 items-center">
+                      <div className="flex me-2">
+                        <FaRegCalendarAlt className="me-2" />
+                        <p className="text-sm myblack">
+                          {currentDayData ? (
+                            <>{currentDayData.day_name}:&nbsp;</>
+                          ) : (
+                            "No data available for today."
+                          )}
+                        </p>
+
+                        <p className="text-sm text-[#34A853] font-[300]">
+                          {currentDayData?.day_status === "open"
+                            ? "Available"
+                            : "Unavailable"}
+                        </p>
+                        <p className="text-sm ml-2 lg:ml-10 myblack">
+                          {currentDayData?.day_status === "open" ? (
+                            <>
+                              Closed {currentDayData.regular_hour[0].end_time}{" "}
+                              {currentDayData.regular_hour[0].end_time.includes(
+                                "AM"
+                              ) ||
+                              currentDayData.regular_hour[0].end_time.includes(
+                                "PM"
+                              )
+                                ? ""
+                                : currentDayData.regular_hour[0].end_time >= 12
+                                ? "PM"
+                                : "AM"}
+                            </>
+                          ) : (
+                            "Closed"
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <p className="text-sm myblack">Close 6PM</p>
                   </div>
                 </div>
               </div>
@@ -525,11 +604,11 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                       </h2>
                       <p className="text-3xl myhead font-bold">
                         {formdata.pricing_model === "Hourly"
-                          ? "$" + formdata.hourly_final_list_price
+                          ? "" + formdata.hourly_final_list_price
                           : formdata.pricing_model === "Flat"
-                          ? "$" + formdata.flat_rate_price
+                          ? "" + formdata.flat_rate_price
                           : formdata.pricing_model === "Custom"
-                          ? "$" + formdata.price1
+                          ? "" + formdata.price1
                           : "$200"}
                       </p>
                     </div>

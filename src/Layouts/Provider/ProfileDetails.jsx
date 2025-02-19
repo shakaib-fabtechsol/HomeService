@@ -15,6 +15,7 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import { Modal } from "@mui/material";
 import { FiPhone } from "react-icons/fi";
+import Loader from "../../Components/MUI/Loader";
 import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
@@ -88,7 +89,7 @@ function ProfileDetails() {
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
   const handlecontactClose = () => setcontactOpen(false);
-  const [formdata, setFormData] = useState(null); 
+  const [formdata, setFormData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -142,7 +143,31 @@ function ProfileDetails() {
     },
   ];
 
+  const imagePath = formdata?.user?.personal_image;
+  const imageUrl = imagePath
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    : "/default.png";
+  const regularHours = JSON.parse(
+    formdata?.businessProfile[0]?.regular_hour || "[]"
+  );
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = days[new Date().getDay()];
+  const currentDayData = regularHours.find(
+    (item) => item.day_name === currentDay
+  );
+
+  console.log("value", regularHours?.day_name);
   return (
+    <>
+  { Loader ? ( 
     <div>
       <div className="flex items-center">
         <Link to="/provider/services">
@@ -151,15 +176,18 @@ function ProfileDetails() {
         <h2 className="text-2xl font-semibold">Profile Details</h2>
       </div>
       <div className="flex flex-col lg:flex-row justify-between mt-4 lg:items-start">
+      
         <div className="flex flex-wrap items-center">
           <img
-            src={provider}
+            src={imageUrl}
             alt=""
             className="me-2 my-2 rounded-lg max-w-[120px]"
           />
           <div className="my-2">
             <div className="flex items-center">
-              <p className="font-semibold myhead me-2">Provider Name</p>
+              <p className="font-semibold myhead me-2">
+                {formdata?.user?.name}
+              </p>
               <div className="flex ms-3">
                 <IoIosStar className="me-1 text-[#F8C600]" />
                 <div className="flex flex-wrap">
@@ -170,22 +198,43 @@ function ProfileDetails() {
             </div>
 
             <div className="flex flex-wrap mt-2">
-              <p className="myblack pe-3 me-3 border-e">House Cleaning</p>
               <div className="flex items-center">
                 <IoLocationOutline className="me-2 myblack" />
-                <p className="myblack ">Address of the provider here</p>
+                <p className="myblack ">{formdata?.user?.location}</p>
               </div>
             </div>
             <div className="flex mt-2 items-center">
               <div className="flex me-2">
                 <FaRegCalendarAlt className="me-2" />
-                <p className="text-sm myblack">Hours:&nbsp;</p>
-                <p className="text-sm text-[#34A853] font-[300]">Available</p>
+                <p className="text-sm myblack">
+                  {currentDayData ? (
+                    <>{currentDayData.day_name}:&nbsp;</>
+                  ) : (
+                    "No data available for today."
+                  )}
+                </p>
+
+                <p className="text-sm text-[#34A853] font-[300]">
+                  {currentDayData?.day_status === "open"
+                    ? "Available"
+                    : "Unavailable"}
+                </p>
+                <p className="text-sm ml-2 lg:ml-10 myblack">
+                  {currentDayData?.day_status === "open" ? (
+                    <>
+                      Closed {currentDayData.regular_hour[0].end_time}{" "}
+                      {currentDayData.regular_hour[0].end_time.includes("AM") ||
+                      currentDayData.regular_hour[0].end_time.includes("PM")
+                        ? ""
+                        : currentDayData.regular_hour[0].end_time >= 12
+                        ? "PM"
+                        : "AM"}
+                    </>
+                  ) : (
+                    "Closed"
+                  )}
+                </p>
               </div>
-              <div className="relative w-[6px] h-[6px] bg-[#5358624D] rounded-full me-2"></div>
-              <select name="" id="" className="text-sm myblack bg-transparent">
-                <option value="">Close 6PM</option>
-              </select>
             </div>
           </div>
         </div>
@@ -242,16 +291,14 @@ function ProfileDetails() {
       <div className="mt-6">
         <h2 className="text-lg font-medium myhead">About me </h2>
         <p className="myblack mt-3">
-          {/* {
+          {
           formdata?.businessProfile[0]?.about
-         } */}
+         }
         </p>
       </div>
       <ProfileDeal />
       <div className="additional">
-        <h2 className="text-2xl mt-4 font-semibold myhead">
-          Additional Info
-        </h2>
+        <h2 className="text-2xl mt-4 font-semibold myhead">Additional Info</h2>
         <div>
           <Accordion
             expanded={expanded === "Technicians"}
@@ -385,6 +432,11 @@ function ProfileDetails() {
         <Review />
       </div>
     </div>
+        ):(
+<p>Loading......</p>
+        )}
+
+</>
   );
 }
 
