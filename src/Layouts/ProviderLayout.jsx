@@ -15,7 +15,7 @@ import logo from "../assets/img/logo.png";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 function ProviderLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -153,11 +153,15 @@ function ProviderLayout() {
         <Box>
           <div className="flex items-center px-4 py-4">
             <Link to="/provider/ProfileDetails">
-              <img src={imageToShow} width="50px" height="60px" />
+              <img src={imageToShow} width="50px" height="70px" />
             </Link>
             <Box>
               <Box className="flex justify-between items-center">
-                <p className="font-bold">{userData?.name || "User Name"}</p>
+                <p className="font-bold text-sm">
+                  {userData?.name?.length > 15
+                    ? `${userData?.name?.substring(0, 15)}...`
+                    : userData?.name || "User Name"}
+                </p>
                 <button onClick={handleLogout}>
                   <MdLogout className="text-2xl" />
                 </button>

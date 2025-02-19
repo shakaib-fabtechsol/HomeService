@@ -1,8 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
 
-const TeacherPhoto = () => {
-  const [formdata, setFormData] = useState(null);
+import { useEffect, useState } from "react";
+
+const Vedio = () => {
+  const [formdata, setFormData] = useState({
+    video: "",
+  });
+
+  console.log(formdata);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,23 +31,22 @@ const TeacherPhoto = () => {
     fetchData();
   }, []);
 
+  const data = formdata?.businessProfile?.about_video;
 
-  const image =
-    formdata?.businessProfile?.[0]?.facility_photo;
-  
   return (
-    <div className="w-64 h-64">
-    { image ? (
-      <img
-        src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
-        alt="Facility"
-        className="w-full h-full object-cover rounded-lg shadow"
-      />
-    ) : (
-      <p>No facility photos available</p>
-    )}
-  </div>
+    <>
+      <div className="video-container">
+        <video
+          src={`https://homeservice.thefabulousshow.com/uploads/${data}`}
+          controls
+          width="50%"
+          height="500"
+          autoPlay
+          muted
+        />
+      </div>
+    </>
   );
 };
 
-export default TeacherPhoto;
+export default Vedio;

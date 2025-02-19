@@ -30,6 +30,7 @@ import ProjectPhoto from "../../Components/Profile/AdditionalPhoto/ProjectPhoto"
 import License from "../../Components/Profile/AdditionalPhoto/License";
 import Award from "../../Components/Profile/AdditionalPhoto/Award";
 import TechniciansPhoto from "../../Components/Profile/AdditionalPhoto/TechniciansPhoto";
+import VedioChannal from "../../Components/Profile/AdditionalPhoto/Vedio";
 import ProfileDeal from "../../Components/Profile/ProfileDeal";
 import Loader from "../../Components/MUI/Loader";
 import axios from "axios";
@@ -86,7 +87,6 @@ function ProfileDetails() {
 
   const categories = ["Category 01", "Category 02", "Category 03"];
 
-  const location = useLocation();
 
   const navigate = useNavigate();
   const [contactopen, setcontactOpen] = React.useState(false);
@@ -309,46 +309,11 @@ function ProfileDetails() {
             </div>
           </div>
         </div>
-        <button
-          onClick={handlecontactOpen}
-          className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803] w-full lg:max-w-[300px] lg:fixed right-[20px] z-[99]"
-        >
-          <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
-          <span>Contact Pro</span>
-        </button>
-        <Modal
-          open={contactopen}
-          onClose={handlecontactClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-          sx={{ m: 2 }}
-        >
-          <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
-            <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
-              <p className="text-lg font-semibold">Contact Pro</p>
-              <div className="flex flex-col gap-3 mt-4">
-                {modalContacts.map((contact, index) => (
-                  <Link
-                    key={index}
-                    className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
-                    to={contact.path}
-                  >
-                    <span className="text-[24px]">{contact.Icon}</span>
-                    <span>{contact.title}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Modal>
+       
       </div>
-
-      <div className="mt-6">
-        <h2 className="text-lg font-medium myhead">About me </h2>
-        <p className="myblack mt-3"></p>
-      </div>
+    
       <div className="additional">
-        <h2 className="text-2xl mt-4 font-semibold myhead">Additional Info</h2>
+        <h2 className="text-2xl lg:mt-10   font-semibold myhead">Additional Info</h2>
         <div>
           <Accordion
             expanded={expanded === "Technicians"}
@@ -456,7 +421,7 @@ function ProfileDetails() {
               aria-controls={`SpecialHourd-content`}
               id={`SpecialHourd-header`}
             >
-              <h3 className="me-3">Regular Hours of Operation</h3>
+              <h3 className="me-3">Special Hours of Operation</h3>
             </AccordionSummary>
             <AccordionDetails>
               <SpecialHour />
@@ -474,6 +439,20 @@ function ProfileDetails() {
             </AccordionSummary>
             <AccordionDetails>
               <Social />
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "Video"}
+            onChange={handleChange("Video")}
+          >
+            <AccordionSummary
+              aria-controls={`Video-content`}
+              id={`Video-header`}
+            >
+              <h3 className="me-3">Video</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <VedioChannal />
             </AccordionDetails>
           </Accordion>
         </div>

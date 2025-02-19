@@ -220,7 +220,7 @@ function ServiceDetail() {
 
   const imagePath1 = serviceDetails[0]?.image;
   const imageUrl1 = imagePath1
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath1}`
     : "/default.png";
   return (
     <div className="pmain">
@@ -261,9 +261,12 @@ function ServiceDetail() {
               <div className="flex flex-wrap items-center">
                 <img
                   onClick={() => navigate("/provider/ProfileDetails")}
-                  src={imageUrl1}
+                  src={imageUrl}
                   alt=""
-                  className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
+                  className="me-2 my-2 rounded-lg object-cover w-[100px] h-[100px] cursor-pointer"
+                  style={{
+                    aspectRatio: "1/1", // Ek samaan height aur width par set karta hai
+                  }}
                 />
                 <div className="my-2">
                   <div className="flex">
@@ -350,7 +353,11 @@ function ServiceDetail() {
               </Modal>
             </div>
 
-            <img src={imageUrl} alt="" className="rounded-xl w-full mt-4" />
+            <img
+              src={imageUrl1}
+              alt=""
+              className="rounded-xl object-cover w-[1000px] h-[350px]"
+            />
           </div>
           <div className="col-span-12 xl:col-span-4">
             <div className="flex flex-col h-full gap-5">

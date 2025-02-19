@@ -9,6 +9,7 @@ import { IoChatbubbleEllipsesOutline } from "react-icons/io5";
 import provider from "../../assets/img/provider.png";
 import { styled } from "@mui/material/styles";
 import MuiAccordion from "@mui/material/Accordion";
+import VedioChannal from "../../Components/Profile/AdditionalPhoto/Vedio";
 import MuiAccordionSummary, {
   accordionSummaryClasses,
 } from "@mui/material/AccordionSummary";
@@ -271,23 +272,8 @@ function ProfileDetails() {
           </div>
         </Modal>
       </div>
-      <div className="flex items-center justify-end mt-3 lg:mt-0">
-        <button
-          className="bg-[#FA2841] px-3 py-3 text-[#fff] rounded-md me-2"
-          onClick={() => handleDelete(dealid)}
-        >
-          <FaRegTrashCan />
-        </button>
-        <Link
-          to={`/provider/settings/${setting}`}
-          className="bg-[#0F91D2] px-3 py-3 text-[#fff] rounded-md"
-        >
-          <FaPencilAlt />
-        </Link>
-      </div>
-      {/* {
-        console.log("formdata",formdata?.businessProfile[0]?.about)
-      } */}
+   
+     
       <div className="mt-6">
         <h2 className="text-lg font-medium myhead">About me </h2>
         <p className="myblack mt-3">
@@ -298,7 +284,7 @@ function ProfileDetails() {
       </div>
       <ProfileDeal />
       <div className="additional">
-        <h2 className="text-2xl mt-4 font-semibold myhead">Additional Info</h2>
+        <h2 className="text-2xl lg:mt-20 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
         <div>
           <Accordion
             expanded={expanded === "Technicians"}
@@ -424,6 +410,21 @@ function ProfileDetails() {
             </AccordionSummary>
             <AccordionDetails>
               <Social />
+            </AccordionDetails>
+          </Accordion>
+
+          <Accordion
+            expanded={expanded === "Video"}
+            onChange={handleChange("Video")}
+          >
+            <AccordionSummary
+              aria-controls={`Video-content`}
+              id={`Video-header`}
+            >
+              <h3 className="me-3">Video</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <VedioChannal />
             </AccordionDetails>
           </Accordion>
         </div>

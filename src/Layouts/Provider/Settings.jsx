@@ -11,6 +11,7 @@ import SocialProfile from "../../Components/ProviderSetting/SocialProfile";
 import Password from "../../Components/ProviderSetting/Password";
 import Publish from "../../Components/ProviderSetting/PublishData";
 import ChannelConversation from "../../Components/ProviderSetting/ChannelConversation";
+
 import Payment from "../../Components/ProviderSetting/Payment";
 import Loader from "../../Components/MUI/Loader";
 
