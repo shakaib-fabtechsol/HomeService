@@ -97,8 +97,12 @@ function ProviderLayout() {
     },
   ];
 
-  const imageUrl = `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`;
+  const imageUrl = userData?.personal_image
+    ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
+    : null;
+
   const defaultimg = "/vite.svg";
+
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
     <Box
@@ -153,11 +157,18 @@ function ProviderLayout() {
         <Box>
           <div className="flex items-center px-4 py-4">
             <Link to="/provider/ProfileDetails">
-              <img src={imageToShow} width="50px" height="70px" />
+              <img
+                src={imageToShow}
+                width="100px"
+                height="70px"
+                className=" rounded-2xl"
+                alt="Profile"
+              />
             </Link>
+
             <Box>
-              <Box className="flex justify-between items-center">
-                <p className="font-bold text-sm">
+              <Box className="flex justify-between   items-center">
+                <p className="font-bold ml-1 text-sm">
                   {userData?.name?.length > 15
                     ? `${userData?.name?.substring(0, 15)}...`
                     : userData?.name || "User Name"}
@@ -166,7 +177,7 @@ function ProviderLayout() {
                   <MdLogout className="text-2xl" />
                 </button>
               </Box>
-              <p className="mb-0 text-sm">
+              <p className="mb-0 ml-1 text-sm">
                 {userData?.email || "user@example.com"}
               </p>
             </Box>

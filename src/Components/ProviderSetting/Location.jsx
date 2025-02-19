@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
 import Slider from "@mui/material/Slider";
+import Loader from "../../Components/MUI/Loader";
 import {
   LoadScript,
   GoogleMap,
@@ -167,6 +169,11 @@ const ServiceArea = () => {
   };
   return (
     <div>
+       {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <Loader />
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
           <div>
@@ -403,18 +410,31 @@ const ServiceArea = () => {
               )}
 
               <div className="flex justify-end mt-12">
-                <button
-                  type="reset"
-                  className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                >
-                  Save
-                </button>
+              <Button
+                type="reset"
+                onClick={() => formik.resetForm()}
+                variant="outlined"
+                sx={{ width: "150px", py: "10px", mr: 2 }}
+              >
+                Cancel
+              </Button>
+                <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  width: "150px",
+                  py: "10px",
+                  backgroundColor: "#0F91D2",
+                  fontWeight: "bold",
+                  "&:disabled": {
+                    opacity: 0.5,
+                    cursor: "not-allowed",
+                  },
+                }}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </Button>
               </div>
             </div>
           </div>

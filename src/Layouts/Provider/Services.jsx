@@ -61,17 +61,17 @@ function ServiceBox({
 
       <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
       <p className="text-sm text-[#535862] mt-4">
-        {tags && tags.length > 0
-          ? tags.map((tag, index) => (
-              <span
-                key={index}
-                className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
-              >
-                {tag}
-              </span>
-            ))
-          : "No tags available"}
-      </p>
+  {tags && tags.length > 0
+    ? tags.slice(0, 2).map((tag, index) => (
+        <span
+          key={index}
+          className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+        >
+          {tag}
+        </span>
+      ))
+    : "No tags available"}
+</p>
     </div>
   );
 }
