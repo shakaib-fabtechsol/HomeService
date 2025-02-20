@@ -27,21 +27,26 @@ function ServiceBox({
   const imageToShow = imageUrl || defaultimg;
 
   {
-    console.log("publish",publish)
+    console.log("publish", publish);
   }
+
+  const truncateDescription = (desc, wordLimit = 20) => {
+    if (!desc) return "No description available";
+    const words = desc.split(" ");
+    return words.length <= wordLimit
+      ? desc
+      : words.slice(0, wordLimit).join(" ") + "...";
+  };
 
   return (
     <div className="border px-3 py-3 rounded-lg">
       <div className="rounded-lg">
         <img
           src={imageToShow}
-         
           alt="Service Image"
           className="rounded-lg w-full h-40 object-cover"
         />
       </div>
-
-     
 
       <p
         className={
@@ -59,19 +64,21 @@ function ServiceBox({
         <p className="mb-0 text-lg font-extrabold">{price ?? "N/A"}</p>
       </div>
 
-      <p className="text-sm text-[#535862] mt-2">{description ?? "N/A"}</p>
+      <p className="text-sm text-[#535862] mt-2">
+        {truncateDescription(description, 8) ?? "N/A"}
+      </p>
       <p className="text-sm text-[#535862] mt-4">
-  {tags && tags.length > 0
-    ? tags.slice(0, 2).map((tag, index) => (
-        <span
-          key={index}
-          className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
-        >
-          {tag}
-        </span>
-      ))
-    : "No tags available"}
-</p>
+        {tags && tags.length > 0
+          ? tags.slice(0, 2).map((tag, index) => (
+              <span
+                key={index}
+                className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+              >
+                {tag}
+              </span>
+            ))
+          : "No tags available"}
+      </p>
     </div>
   );
 }
@@ -137,35 +144,37 @@ function Services() {
             <span>Create New</span>
           </Link>
         </div>
-        {
-          console.log("value",filteredServices)
-        }
+        {console.log("value", filteredServices)}
 
         {loading ? (
           <Loader />
         ) : (
           <div className="grid mt-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
-          {filteredServices.length > 0 ? (
-            filteredServices.map((service) => (
-              <ServiceBox
-              key={service.id}
-              title={service.service_title}
-              price={service.pricing_model === 'Flat' ? service.flat_rate_price : service?.pricing_model == 'Hourly' ? service.hourly_final_list_price : service.price1
-                
-              }
-              description={service.service_description}
-              tags={
-                service.search_tags ? service.search_tags.split(",") : []
-              }
-              image={service.image}
-              publish={service.publish}
-              dealid={service.id}
-            />
-            ))
-          ) : (
-            <p>No services found</p>
-          )}
-        </div>
+            {filteredServices.length > 0 ? (
+              filteredServices.map((service) => (
+                <ServiceBox
+                  key={service.id}
+                  title={service.service_title}
+                  price={
+                    service.pricing_model === "Flat"
+                      ? service.flat_rate_price
+                      : service?.pricing_model == "Hourly"
+                      ? service.hourly_final_list_price
+                      : service.price1
+                  }
+                  description={service.service_description}
+                  tags={
+                    service.search_tags ? service.search_tags.split(",") : []
+                  }
+                  image={service.image}
+                  publish={service.publish}
+                  dealid={service.id}
+                />
+              ))
+            ) : (
+              <p>No services found</p>
+            )}
+          </div>
         )}
       </div>
     </div>

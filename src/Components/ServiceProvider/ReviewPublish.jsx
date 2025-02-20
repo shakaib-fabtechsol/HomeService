@@ -10,6 +10,7 @@ import { BiMessageAltDetail, BiMessageSquareDetail } from "react-icons/bi";
 import { TbMailDown } from "react-icons/tb";
 import { PiChats } from "react-icons/pi";
 import { useParams } from "react-router-dom";
+import Loader from "../../Components/MUI/Loader";
 
 import {
   IoChatbubbleEllipsesOutline,
@@ -55,6 +56,7 @@ function a11yProps(index) {
 const ReviewPublish = ({ serviceId, setValue }) => {
   const [tag, setTags] = useState([]);
   const [pricingModel, setPricingModel] = useState("");
+  const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [provider, setProviderData] = useState({});
   const { dealid } = useParams();
   const [value, setValued] = useState(0);
@@ -316,6 +318,8 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
           return updatedData;
         });
+        setIsApiLoaded(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching deals:", error);
@@ -429,9 +433,10 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";
-    const regularHours = provider?.businessProfile && provider.businessProfile.length > 0
-    ? JSON.parse(provider.businessProfile[0].regular_hour || "[]")
-    : [];
+  const regularHours =
+    provider?.businessProfile && provider.businessProfile.length > 0
+      ? JSON.parse(provider.businessProfile[0].regular_hour || "[]")
+      : [];
   const days = [
     "Sunday",
     "Monday",
@@ -447,312 +452,324 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   );
 
   return (
-    <div>
-      <div>
-        <div className="flex flex-col lg:flex-row justify-between mt-8">
-          <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
-            {formdata?.service_title}
-          </h2>
-        </div>
-        <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
-          <div className="col-span-12 xl:col-span-8">
-            <div className="">
-              <div className="flex flex-wrap items-center">
-                <img
-                  onClick={() => navigate("/provider/ProfileDetails")}
-                  src={imageUrl}
-                  alt=""
-                  className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
-                />
-                <div className="my-2">
-                  <div className="flex">
-                    <p className="font-semibold myhead me-2">
-                      {provider?.user?.name}
-                    </p>
-                    <div className="flex">
-                      <IoIosStar className="me-2 text-[#F8C600]" />
-                      <p className="myblack text-sm">
-                        <span className="myhead font-semibold">4.9</span>(457)
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap mt-2">
-                    <div className="flex items-center">
-                      <IoLocationOutline className="me-2 myblack" />
-                      <p className="myblack ">{provider?.user?.location}</p>
-                    </div>
-                  </div>
-                  <div className="flex mt-2 items-center">
-                    <div className="flex mt-2 items-center">
-                      <div className="flex me-2">
-                        <FaRegCalendarAlt className="me-2" />
-                        <p className="text-sm myblack">
-                          {currentDayData ? (
-                            <>{currentDayData.day_name}:&nbsp;</>
-                          ) : (
-                            "No data available for today."
-                          )}
+    <>
+      {dealid && !isApiLoaded ? (
+        <Loader />
+      ) : (
+        <div>
+          <div>
+            <div className="flex flex-col lg:flex-row justify-between mt-8">
+              <h2 className="text-xl lg:text-[23px] myhead font-semibold lg:me-2">
+                {formdata?.service_title}
+              </h2>
+            </div>
+            <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
+              <div className="col-span-12 xl:col-span-8">
+                <div className="">
+                  <div className="flex flex-wrap items-center">
+                    <img
+                      onClick={() => navigate("/provider/ProfileDetails")}
+                      src={imageUrl}
+                      alt=""
+                      className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
+                    />
+                    <div className="my-2">
+                      <div className="flex">
+                        <p className="font-semibold myhead me-2">
+                          {provider?.user?.name}
                         </p>
+                        <div className="flex">
+                          <IoIosStar className="me-2 text-[#F8C600]" />
+                          <p className="myblack text-sm">
+                            <span className="myhead font-semibold">4.9</span>
+                            (457)
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap mt-2">
+                        <div className="flex items-center">
+                          <IoLocationOutline className="me-2 myblack" />
+                          <p className="myblack ">{provider?.user?.location}</p>
+                        </div>
+                      </div>
+                      <div className="flex mt-2 items-center">
+                        <div className="flex mt-2 items-center">
+                          <div className="flex me-2">
+                            <FaRegCalendarAlt className="me-2" />
+                            <p className="text-sm myblack">
+                              {currentDayData ? (
+                                <>{currentDayData.day_name}:&nbsp;</>
+                              ) : (
+                                "No data available for today."
+                              )}
+                            </p>
 
-                        <p className="text-sm text-[#34A853] font-[300]">
-                          {currentDayData?.day_status === "open"
-                            ? "Available"
-                            : "Unavailable"}
-                        </p>
-                        <p className="text-sm ml-2 lg:ml-10 myblack">
-                          {currentDayData?.day_status === "open" ? (
-                            <>
-                              Closed {currentDayData.regular_hour[0].end_time}{" "}
-                              {currentDayData.regular_hour[0].end_time.includes(
-                                "AM"
-                              ) ||
-                              currentDayData.regular_hour[0].end_time.includes(
-                                "PM"
-                              )
-                                ? ""
-                                : currentDayData.regular_hour[0].end_time >= 12
-                                ? "PM"
-                                : "AM"}
-                            </>
-                          ) : (
-                            "Closed"
-                          )}
-                        </p>
+                            <p className="text-sm text-[#34A853] font-[300]">
+                              {currentDayData?.day_status === "open"
+                                ? "Available"
+                                : "Unavailable"}
+                            </p>
+                            <p className="text-sm ml-2 lg:ml-10 myblack">
+                              {currentDayData?.day_status === "open" ? (
+                                <>
+                                  Closed{" "}
+                                  {currentDayData.regular_hour[0].end_time}{" "}
+                                  {currentDayData.regular_hour[0].end_time.includes(
+                                    "AM"
+                                  ) ||
+                                  currentDayData.regular_hour[0].end_time.includes(
+                                    "PM"
+                                  )
+                                    ? ""
+                                    : currentDayData.regular_hour[0].end_time >=
+                                      12
+                                    ? "PM"
+                                    : "AM"}
+                                </>
+                              ) : (
+                                "Closed"
+                              )}
+                            </p>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <Modal
+                    open={contactopen}
+                    onClose={handlecontactClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{ m: 2 }}
+                  >
+                    <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
+                      <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
+                        <p className="text-lg font-semibold">Contact Pro</p>
+                        <div className="flex flex-col gap-3 mt-4">
+                          {modalContacts.map((contact, index) => (
+                            <Link
+                              key={index}
+                              className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
+                              to={contact.path}
+                            >
+                              <span className="text-[24px]">
+                                {contact.Icon}
+                              </span>
+                              <span>{contact.title}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+                <div className=" ">
+                  <img
+                    src={formdata.image}
+                    alt="Service Image"
+                    className="rounded-xl object-cover w-[1000px] h-[350px]"
+                  />
                 </div>
               </div>
-              <Modal
-                open={contactopen}
-                onClose={handlecontactClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                sx={{ m: 2 }}
-              >
-                <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
-                  <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
-                    <p className="text-lg font-semibold">Contact Pro</p>
-                    <div className="flex flex-col gap-3 mt-4">
-                      {modalContacts.map((contact, index) => (
-                        <Link
-                          key={index}
-                          className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
-                          to={contact.path}
+              <div className="col-span-12 xl:col-span-4">
+                <div className="flex flex-col h-full gap-5">
+                  <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
+                    <Box sx={{ width: "100%" }}>
+                      <Box
+                        sx={{
+                          border: "1px solid #E9EAEB",
+                          borderRadius: "12px",
+                          overflow: "hidden",
+                        }}
+                      >
+                        <Tabs
+                          value={value}
+                          onChange={handleChange}
+                          aria-label="basic tabs example"
+                          variant="scrollable"
+                          TabIndicatorProps={{ sx: { display: "none" } }}
+                          sx={{
+                            backgroundColor: "#ffffff",
+                            "& .MuiTab-root": {
+                              color: "#535862",
+                              textTransform: "capitalize",
+                              fontFamily: "inter",
+                            },
+                            "& .Mui-selected": {
+                              color: "#181D27",
+                              fontWeight: "700",
+                            },
+                          }}
                         >
-                          <span className="text-[24px]">{contact.Icon}</span>
-                          <span>{contact.title}</span>
-                        </Link>
-                      ))}
-                    </div>
+                          <Tab label="Basic" {...a11yProps(0)} />
+                          {pricingModel !== "Flat" &&
+                            pricingModel !== "Hourly" && (
+                              <Tab label="Standard" {...a11yProps(1)} />
+                            )}
+                          {pricingModel !== "Flat" &&
+                            pricingModel !== "Hourly" && (
+                              <Tab label="Premium" {...a11yProps(2)} />
+                            )}
+                        </Tabs>
+                      </Box>
+                      {console.log("valueee", formdata?.pricing_model)}
+                      <CustomTabPanel value={value} index={0}>
+                        <div className="flex justify-between">
+                          <h2 className="text-2xl font-medium myhead">
+                            {formdata?.pricing_model}
+                          </h2>
+                          <p className="text-3xl myhead font-bold">
+                            {formdata?.pricing_model === "Hourly"
+                              ? "" + formdata.hourly_final_list_price
+                              : formdata?.pricing_model === "Flat"
+                              ? "" + formdata.flat_rate_price
+                              : formdata?.pricing_model === "Custom"
+                              ? "" + formdata.price1
+                              : "$200"}
+                          </p>
+                        </div>
+                        <p className="text-sm myblack mt-2">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Morbi tellus diam, dignissim tincidunt quam vel,
+                          rutrum egestas lacus. Phasellus accumsan fermentum
+                          dolor eu gravida. Vivamus dignissim augue sed orci
+                          interdum vehicula.
+                        </p>
+
+                        <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                          {formdata?.pricing_model === "Hourly" && (
+                            <li>{formdata?.hourly_estimated_service_time}</li>
+                          )}
+                          {formdata?.pricing_model === "Flat" && (
+                            <li>{formdata?.flat_estimated_service_time}</li>
+                          )}
+                          {formdata?.pricing_model === "Custom" && (
+                            <li> {formdata?.estimated_service_timing1}</li>
+                          )}{" "}
+                          {/* You can add your custom logic here */}
+                          <li>Delivered Within 2 Days</li>
+                        </ul>
+                      </CustomTabPanel>
+
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <CustomTabPanel value={value} index={1}>
+                          <div className="flex justify-between">
+                            <h2 className="text-2xl font-medium myhead">
+                              {formdata?.pricing_model}
+                            </h2>
+                            <p className="text-3xl myhead font-bold">
+                              {formdata?.price2}
+                            </p>
+                          </div>
+                          <p className="text-sm myblack mt-2">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Morbi tellus diam, dignissim tincidunt quam
+                            vel, rutrum egestas lacus. Phasellus accumsan
+                            fermentum dolor eu gravida. Vivamus dignissim augue
+                            sed orci interdum vehicula.
+                          </p>
+                          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                            <li>{formdata?.estimated_service_timing2}</li>
+                            <li>Delivered Within 2 Days</li>
+                          </ul>
+                        </CustomTabPanel>
+                      )}
+
+                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
+                        <CustomTabPanel value={value} index={2}>
+                          <div className="flex justify-between">
+                            <h2 className="text-2xl font-medium myhead">
+                              {formdata?.pricing_model}
+                            </h2>
+                            <p className="text-3xl myhead font-bold">
+                              {formdata?.price3}
+                            </p>
+                          </div>
+                          <p className="text-sm myblack mt-2">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing
+                            elit. Morbi tellus diam, dignissim tincidunt quam
+                            vel, rutrum egestas lacus. Phasellus accumsan
+                            fermentum dolor eu gravida. Vivamus dignissim augue
+                            sed orci interdum vehicula.
+                          </p>
+                          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                            <li> {formdata?.estimated_service_timing3}</li>
+                            <li>Delivered Within 2 Days</li>
+                          </ul>
+                        </CustomTabPanel>
+                      )}
+                    </Box>
                   </div>
+                  <button
+                    onClick={handlecontactOpen}
+                    className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+                  >
+                    <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
+                    <span>Contact Pro</span>
+                  </button>
                 </div>
-              </Modal>
+              </div>
             </div>
-            <div className=" ">
-              <img
-                src={formdata.image}
-                alt="Service Image"
-                className="rounded-xl w-full h-full object-contain"
-              />
+            <div className="">
+              <div className="flex flex-wrap mt-3">
+                <div className="flex flex-wrap mt-3">
+                  {formdata?.search_tags && formdata?.search_tags.length > 0
+                    ? formdata?.search_tags.split(",").map((tag, index) => (
+                        <span
+                          key={index}
+                          className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
+                        >
+                          {tag.trim()}
+                        </span>
+                      ))
+                    : "No tags available"}
+                </div>
+              </div>
+              <h2 className="mt-4 text-xl myhead font-semibold">
+                Deal Description
+              </h2>
+              <p className="mt-2 myblack">{formdata.service_description}</p>
+              <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
+              <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+                {formdata.fine_print}
+              </ul>
             </div>
           </div>
-          <div className="col-span-12 xl:col-span-4">
-            <div className="flex flex-col h-full gap-5">
-              <div className="py-5 bg-[#FAFAFA] h-full border rounded-lg lg:px-6 px-4">
-                <Box sx={{ width: "100%" }}>
-                  <Box
-                    sx={{
-                      border: "1px solid #E9EAEB",
-                      borderRadius: "12px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Tabs
-                      value={value}
-                      onChange={handleChange}
-                      aria-label="basic tabs example"
-                      variant="scrollable"
-                      TabIndicatorProps={{ sx: { display: "none" } }}
-                      sx={{
-                        backgroundColor: "#ffffff",
-                        "& .MuiTab-root": {
-                          color: "#535862",
-                          textTransform: "capitalize",
-                          fontFamily: "inter",
-                        },
-                        "& .Mui-selected": {
-                          color: "#181D27",
-                          fontWeight: "700",
-                        },
-                      }}
-                    >
-                      <Tab label="Basic" {...a11yProps(0)} />
-                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
-                        <Tab label="Standard" {...a11yProps(1)} />
-                      )}
-                      {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
-                        <Tab label="Premium" {...a11yProps(2)} />
-                      )}
-                    </Tabs>
-                  </Box>
-                  {console.log("valueee", formdata)}
-                  <CustomTabPanel value={value} index={0}>
-                    <div className="flex justify-between">
-                      <h2 className="text-2xl font-medium myhead">
-                        {formdata.pricing_model}
-                      </h2>
-                      <p className="text-3xl myhead font-bold">
-                        {formdata.pricing_model === "Hourly"
-                          ? "" + formdata.hourly_final_list_price
-                          : formdata.pricing_model === "Flat"
-                          ? "" + formdata.flat_rate_price
-                          : formdata.pricing_model === "Custom"
-                          ? "" + formdata.price1
-                          : "$200"}
-                      </p>
-                    </div>
-
-                    <p className="text-sm myblack mt-2">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                      egestas lacus. Phasellus accumsan fermentum dolor eu
-                      gravida. Vivamus dignissim augue sed orci interdum
-                      vehicula.
-                    </p>
-
-                    <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                      {formdata.pricing_model === "Hourly" && (
-                        <li>{formdata.hourly_estimated_service_time}</li>
-                      )}
-                      {formdata.pricing_model === "Flat" && (
-                        <li>{formdata.flat_estimated_service_time}</li>
-                      )}
-                      {formdata.pricing_model === "Custom" && (
-                        <li>{formdata.estimated_service_timing1}</li>
-                      )}{" "}
-                      {/* You can add your custom logic here */}
-                      <li>Delivered Within 2 Days</li>
-                    </ul>
-                  </CustomTabPanel>
-
-                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
-                    <CustomTabPanel value={value} index={1}>
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">
-                          {formdata.pricing_model}
-                        </h2>
-                        <p className="text-3xl myhead font-bold">
-                          ${formdata.price2}
-                        </p>
-                      </div>
-                      <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
-                      </p>
-                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>{formdata.estimated_service_timing2}</li>
-                        <li>Delivered Within 2 Days</li>
-                      </ul>
-                    </CustomTabPanel>
-                  )}
-
-                  {pricingModel !== "Flat" && pricingModel !== "Hourly" && (
-                    <CustomTabPanel value={value} index={2}>
-                      <div className="flex justify-between">
-                        <h2 className="text-2xl font-medium myhead">
-                          {formdata.pricing_model}
-                        </h2>
-                        <p className="text-3xl myhead font-bold">
-                          ${formdata.price3}
-                        </p>
-                      </div>
-                      <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
-                      </p>
-                      <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li>{formdata.estimated_service_timing3}</li>
-                        <li>Delivered Within 2 Days</li>
-                      </ul>
-                    </CustomTabPanel>
-                  )}
-                </Box>
-              </div>
+          <form onSubmit={handleSubmit}>
+            <div className="col-span-12 mt-4 flex justify-end">
+              <input
+                type="text"
+                id="Flatr"
+                defaultValue={formdata?.id ? `${formdata.id}` : "0"}
+                className="focus-none border hidden"
+                readOnly
+              />
+              <input
+                type="text"
+                id="publish"
+                value={publishValue}
+                className="focus-none border hidden"
+                readOnly
+              />
               <button
-                onClick={handlecontactOpen}
-                className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
+                type="button"
+                className="border rounded-lg w-[150px] py-[10px] mr-4 font-semibold bg-white"
+                onClick={() => navigate("/somewhere")} // Navigate on cancel
               >
-                <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
-                <span>Contact Pro</span>
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
+              >
+                {loading ? "Publishing..." : "Publish"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
-        <div className="">
-          <div className="flex flex-wrap mt-3">
-            <div className="flex flex-wrap mt-3">
-              {formdata?.search_tags && formdata?.search_tags.length > 0
-                ? formdata?.search_tags.split(",").map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
-                    >
-                      {tag.trim()}
-                    </span>
-                  ))
-                : "No tags available"}
-            </div>
-          </div>
-          <h2 className="mt-4 text-xl myhead font-semibold">
-            Deal Description
-          </h2>
-          <p className="mt-2 myblack">{formdata.service_description}</p>
-          <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-          <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-            {formdata.fine_print}
-          </ul>
-        </div>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="col-span-12 mt-4 flex justify-end">
-          <input
-            type="text"
-            id="Flatr"
-            defaultValue={formdata?.id ? `${formdata.id}` : "0"}
-            className="focus-none border hidden"
-            readOnly
-          />
-          <input
-            type="text"
-            id="publish"
-            value={publishValue}
-            className="focus-none border hidden"
-            readOnly
-          />
-          <button
-            type="button"
-            className="border rounded-lg w-[150px] py-[10px] mr-4 font-semibold bg-white"
-            onClick={() => navigate("/somewhere")} // Navigate on cancel
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
-          >
-            {loading ? "Publishing..." : "Publish"}
-          </button>
-        </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 

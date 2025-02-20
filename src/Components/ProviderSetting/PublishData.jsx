@@ -77,7 +77,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 function ProfileDetails() {
   const [expanded, setExpanded] = React.useState("panel1");
-
+ const [isApiLoaded,setIsApiLoaded]=useState(false);
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -113,6 +113,8 @@ function ProfileDetails() {
 
         console.log("API Response:", response.data);
         setFormData(response.data);
+        setIsApiLoaded(true); 
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -231,12 +233,15 @@ function ProfileDetails() {
   ];
 
   return (
+
+    <>
+            {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
+   
     <div>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
+     
       <div className="flex items-center">
         <Link to="/provider/services">
           <FaArrowLeft className="me-4 text-xl" />
@@ -494,6 +499,8 @@ function ProfileDetails() {
         </div>
       </form>
     </div>
+    )}
+    </>
   );
 }
 

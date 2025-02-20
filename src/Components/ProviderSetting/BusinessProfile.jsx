@@ -20,6 +20,7 @@ const BusinessProfile = () => {
   const userId = localStorage.getItem("id");
   console.log("userID", userId);
   const [loading, setLoading] = useState(false);
+  const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [formData, setFormData] = useState({
     user_id: userId,
     business_name: "",
@@ -91,6 +92,8 @@ const BusinessProfile = () => {
             business_secondary_categories: secondaryCategories,
             website: BasicInfo[0]?.website || "",
           });
+          setIsApiLoaded(true); 
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -220,11 +223,10 @@ const BusinessProfile = () => {
   console.log("formdata", formData?.business_secondary_categories);
   return (
     <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
+     {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
       <div>
         <form onSubmit={handleSubmit}>
           <div>
@@ -457,6 +459,7 @@ const BusinessProfile = () => {
           </div>
         </form>
       </div>
+    )}
     </>
   );
 };

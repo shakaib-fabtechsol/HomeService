@@ -4,12 +4,15 @@ import Swal from "sweetalert2";
 import upload from "../../assets/img/upload.png";
 import { useParams } from "react-router-dom";
 import fileicon from "../../assets/img/fileicon.png";
+import Loader from "../../Components/MUI/Loader";
 import axios from "axios";
 
 const MediaUpload = ({ serviceId, setValue }) => {
   const {dealid} =useParams()
   const [loading, setLoading] = useState(false);
+    const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [file, setFile] = useState(null);
+  
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
 console.log("preview",filePreview);
@@ -68,10 +71,13 @@ console.log("preview",filePreview);
               const imageUrl =  `https://homeservice.thefabulousshow.com/uploads/${imagePath}`;
               setFilePreview(imageUrl);
               setShowPreview(true);
+              setIsApiLoaded(true);
+              setLoading(false);
             } catch (error) {
               console.error("Error fetching or converting image:", error);
             }
           }
+
         })
         .catch((error) => {
           console.error("Error fetching deal data:", error);
@@ -170,6 +176,9 @@ console.log("preview",filePreview);
 
   return (
     <div>
+      {dealid && !isApiLoaded ? (
+        <Loader />
+      ) : (
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
@@ -263,6 +272,7 @@ console.log("preview",filePreview);
           </button>
         </div>
       </form>
+      )}
     </div>
   );
 };

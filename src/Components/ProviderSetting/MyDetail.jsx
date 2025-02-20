@@ -13,6 +13,7 @@ const phoneRegExp = /^\+1\(\d{3}\) \d{3} \d{4}$/;
 const MyDetail = () => {
   const [loading, setLoading] = useState(false);
   const [selectedOption, setSelectedOption] = useState(false);
+  const [isApiLoaded,setIsApiLoaded]=useState(false);
 
   const userId = localStorage.getItem("id");
   const validate = (values) => {
@@ -49,6 +50,7 @@ const MyDetail = () => {
     validate, 
     onSubmit: async (values) => {
       if (loading) return;
+      setLoading(true);
       const token = localStorage.getItem("token");
       if (!token) {
         toast.error("No token found. Please log in.");
@@ -70,8 +72,8 @@ const MyDetail = () => {
               Authorization: `Bearer ${token}`,
             },
           }
+        
         );
-
         toast.success("Profile updated successfully!");
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -104,7 +106,7 @@ const MyDetail = () => {
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
-            : "/default.png"; // Fallback to default if no image path is found
+            : "/default.png"; 
           const selectedSalesRep = options.find(
             (option) => option.value === BasicInfo?.sales_representative
           );
@@ -116,10 +118,15 @@ const MyDetail = () => {
             personal_image: imageUrl,
           });
           setSelectedOption(selectedSalesRep || null);
+          setIsApiLoaded(true); 
+          setLoading(false);
         }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch user details.");
+        setLoading(false);
+
       }
     };
 
@@ -158,12 +165,12 @@ const MyDetail = () => {
 
   return (
     <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
-      <div>
+  {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
+  
+          <div>
         <form onSubmit={formik.handleSubmit}>
           <div>
             <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
@@ -398,6 +405,7 @@ const MyDetail = () => {
           </div>
         </form>
       </div>
+    )}
     </>
   );
 };

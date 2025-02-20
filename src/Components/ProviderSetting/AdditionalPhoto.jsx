@@ -13,6 +13,7 @@ const AdditionalPhoto = () => {
   const userId= localStorage.getItem("id");
   console.log("userID",userId);
   const [loading, setLoading] = useState(false);
+   const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [formData, setFormData] = useState({
     user_id:userId,
     technician_photo:null,
@@ -83,6 +84,8 @@ const AdditionalPhoto = () => {
             vehicle_photo:imageUrl,
             about_video:BasicInfo[0].about_video,
           });
+          setIsApiLoaded(true); 
+          setLoading(false);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -140,11 +143,10 @@ const AdditionalPhoto = () => {
 
   return (
     <>
-     {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
+         {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
     <div>
       <form onSubmit={handleSubmit}>
         <div>
@@ -255,6 +257,7 @@ const AdditionalPhoto = () => {
         </div>
       </form>
     </div>
+    )}
     </>
   );
 };

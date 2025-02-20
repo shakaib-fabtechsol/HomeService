@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 const ChannelConversation = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [formData, setFormData] = useState({
     user_id: "",
     conversation_call_number: "",
@@ -128,6 +129,8 @@ const ChannelConversation = () => {
             chat: BasicInfo?.chat_toggle || false,
             form: BasicInfo?.form_toggle || false,
           });
+          setIsApiLoaded(true); 
+          setLoading(false);
         }
 
         console.log("Response:", response.data);
@@ -141,11 +144,10 @@ const ChannelConversation = () => {
 
   return (
     <div>
-         {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
+            {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
@@ -390,6 +392,7 @@ const ChannelConversation = () => {
           </div>
         </div>
       </form>
+    )}
     </div>
   );
 };
