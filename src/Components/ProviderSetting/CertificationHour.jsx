@@ -11,6 +11,7 @@ const CertificationHour = () => {
   const userId = localStorage.getItem("id");
   console.log("userID", userId);
   const [loading, setLoading] = useState(false);
+  const [isApiLoaded, setIsApiLoaded] = useState(false);
 
   const [formData, setFormData] = useState({
     user_id: userId,
@@ -188,6 +189,8 @@ const CertificationHour = () => {
             ? transformedScheduleSpecial
             : defaultSpecialSchedule
         );
+        setIsApiLoaded(true);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -268,304 +271,312 @@ const CertificationHour = () => {
 
   return (
     <div>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
-            <p className="text-lg font-semibold text-[#181D27]">
-              Certifications & Hours
-            </p>
-            <p className="text-[#535862] text-sm">
-              Update your certifications & hours details.
-            </p>
-          </div>
-          <div className="py-8 border-b">
-            <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-              <div>
-                <p className="text-sm font-semibold text-[#414651]">
-                  Upload Insurance Certificate
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <SettingsPreview
-                  onFileSelect={handleFileChange}
-                  fieldName="insurance_certificate"
-                  existingImage={formData.insurance_certificate || profileImg}
-                />
-              </div>
+      {loading || !isApiLoaded ? (
+        <Loader />
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
+              <p className="text-lg font-semibold text-[#181D27]">
+                Certifications & Hours
+              </p>
+              <p className="text-[#535862] text-sm">
+                Update your certifications & hours details.
+              </p>
             </div>
-          </div>
-          <div className="py-8 border-b">
-            <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-              <div>
-                <p className="text-sm font-semibold text-[#414651]">
-                  Upload Licensing Certificate
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <SettingsPreview
-                  onFileSelect={handleFileChange}
-                  fieldName="license_certificate"
-                  existingImage={formData.license_certificate}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="py-8 border-b">
-            <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
-              <div>
-                <p className="text-sm font-semibold text-[#414651]">
-                  Upload Awards Certificate
-                </p>
-              </div>
-              <div className="md:col-span-2">
-                <SettingsPreview
-                  onFileSelect={handleFileChange}
-                  fieldName="award_certificate"
-                  existingImage={formData.award_certificate}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="py-8 border-b">
             <div className="py-8 border-b">
-              <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
                 <div>
-                  <p className="text-sm font-semibold">
-                    Regular Hours of Operation
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Insurance Certificate
                   </p>
                 </div>
-                <div className="sm:col-span-2">
-                  {schedule.map((item, dayIndex) => (
-                    <div
-                      key={item.day}
-                      className="mb-4 md:grid grid-cols-3 gap-2"
-                    >
-                      <div>
-                        <p>{item.day}</p>
-                        <label className="flex gap-2 mt-2">
-                          <input
-                            type="checkbox"
-                            checked={item.closed}
-                            onChange={() =>
-                              updateSchedule(dayIndex, { closed: !item.closed })
-                            }
-                          />
-                          Closed
-                        </label>
-                      </div>
-
-                      {!item.closed && (
-                        <div className="col-start-2 col-end-4">
-                          {item.slots.map((slot, slotIndex) => (
-                            <div
-                              key={slotIndex}
-                              className="flex items-center gap-2 mt-2"
-                            >
-                              <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow"
-                                value={slot.start}
-                                onChange={(e) => {
-                                  const slots = [...item.slots];
-                                  slots[slotIndex].start = e.target.value;
-                                  updateSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow"
-                                value={slot.end}
-                                onChange={(e) => {
-                                  const slots = [...item.slots];
-                                  slots[slotIndex].end = e.target.value;
-                                  updateSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  updateSchedule(dayIndex, {
-                                    slots: item.slots.filter(
-                                      (_, i) => i !== slotIndex
-                                    ),
-                                  })
-                                }
-                              >
-                                <FaTrash />
-                              </button>
-                            </div>
-                          ))}
-                          <button
-                            type="button"
-                            className="py-2"
-                            onClick={() =>
-                              updateSchedule(dayIndex, {
-                                slots: [...item.slots, { start: "", end: "" }],
-                              })
-                            }
-                          >
-                            <FaPlusCircle />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                <div className="md:col-span-2">
+                  <SettingsPreview
+                    onFileSelect={handleFileChange}
+                    fieldName="insurance_certificate"
+                    existingImage={formData.insurance_certificate || profileImg}
+                  />
                 </div>
               </div>
             </div>
-          </div>
-          <div className="py-8 border-b">
             <div className="py-8 border-b">
-              <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
                 <div>
-                  <p className="text-sm font-semibold">
-                    Special Hours of Operation
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Licensing Certificate
                   </p>
                 </div>
-                <div className="sm:col-span-2">
+                <div className="md:col-span-2">
+                  <SettingsPreview
+                    onFileSelect={handleFileChange}
+                    fieldName="license_certificate"
+                    existingImage={formData.license_certificate}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="py-8 border-b">
+              <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
+                <div>
+                  <p className="text-sm font-semibold text-[#414651]">
+                    Upload Awards Certificate
+                  </p>
+                </div>
+                <div className="md:col-span-2">
+                  <SettingsPreview
+                    onFileSelect={handleFileChange}
+                    fieldName="award_certificate"
+                    existingImage={formData.award_certificate}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="py-8 border-b">
+              <div className="py-8 border-b">
+                <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
                   <div>
-                    {specialSchedule.map((item, dayIndex) => (
+                    <p className="text-sm font-semibold">
+                      Regular Hours of Operation
+                    </p>
+                  </div>
+                  <div className="sm:col-span-2">
+                    {schedule.map((item, dayIndex) => (
                       <div
                         key={item.day}
-                        className="mb-4 md:grid grid-cols-3 gap-2 w-full"
-                        style={{ display: item.closed ? "none" : "grid" }}
+                        className="mb-4 md:grid grid-cols-3 gap-2"
                       >
-                        <div className="sm:col-start-1 md:col-start-2 sm:col-end-2 w-full">
-                          <div className="flex  md:flex-row sm:flex-row lg:flex-row gap-12 lg:gap-1   ">
-                            <div className="w-full">
-                              <input
-                                type="text"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none   w-[150px] lg:w-[200px] "
-                                placeholder="Enter text"
-                                value={item.text}
-                                onChange={(e) =>
-                                  updatespecialSchedule(dayIndex, {
-                                    text: e.target.value,
-                                  })
-                                }
-                              />
-                            </div>
-                            <div className="w-full">
-                              <input
-                                type="date"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none w-[150px] sm:w-full lg:w-[200px] "
-                                value={item.date}
-                                onChange={(e) =>
-                                  updatespecialSchedule(dayIndex, {
-                                    date: e.target.value,
-                                  })
-                                }
-                              />
-                            </div>
+                        <div>
+                          <p>{item.day}</p>
+                          <label className="flex gap-2 mt-2">
+                            <input
+                              type="checkbox"
+                              checked={item.closed}
+                              onChange={() =>
+                                updateSchedule(dayIndex, {
+                                  closed: !item.closed,
+                                })
+                              }
+                            />
+                            Closed
+                          </label>
+                        </div>
+
+                        {!item.closed && (
+                          <div className="col-start-2 col-end-4">
+                            {item.slots.map((slot, slotIndex) => (
+                              <div
+                                key={slotIndex}
+                                className="flex items-center gap-2 mt-2"
+                              >
+                                <input
+                                  type="time"
+                                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow"
+                                  value={slot.start}
+                                  onChange={(e) => {
+                                    const slots = [...item.slots];
+                                    slots[slotIndex].start = e.target.value;
+                                    updateSchedule(dayIndex, { slots });
+                                  }}
+                                />
+                                <input
+                                  type="time"
+                                  className="border border-[#D5D7DA] p-3 rounded-[8px] w-full shadow"
+                                  value={slot.end}
+                                  onChange={(e) => {
+                                    const slots = [...item.slots];
+                                    slots[slotIndex].end = e.target.value;
+                                    updateSchedule(dayIndex, { slots });
+                                  }}
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    updateSchedule(dayIndex, {
+                                      slots: item.slots.filter(
+                                        (_, i) => i !== slotIndex
+                                      ),
+                                    })
+                                  }
+                                >
+                                  <FaTrash />
+                                </button>
+                              </div>
+                            ))}
                             <button
                               type="button"
-                              className="text-gray-700 sm:w-auto flex-shrink-0"
-                              onClick={() => deleteSlot(dayIndex)}
-                            >
-                              <FaTrash />
-                            </button>
-                          </div>
-
-                          <div className="flex justify-between items-center gap-4 mt-2 w-full">
-                            <label className="flex items-center gap-2">
-                              <input
-                                type="checkbox"
-                                checked={item.closed}
-                                onChange={() => closeSpecificData(dayIndex)}
-                              />
-                              Closed
-                            </label>
-                            <label
-                              key={dayIndex}
-                              className="flex text-nowrap items-center gap-2"
-                            >
-                              <input
-                                type="checkbox"
-                                checked={item.is247Open}
-                                onChange={() =>
-                                  updatespecialSchedule(dayIndex, {
-                                    is247Open: !item.is247Open, // Toggling the value when clicked
-                                  })
-                                }
-                              />
-                              24/7 Open
-                            </label>
-                          </div>
-
-                          {item.hour?.map((slot, slotIndex) => (
-                            <div
-                              key={slotIndex}
-                              className="flex w-full items-center lg:gap-4 gap-10 mt-2"
-                            >
-                              <div className="w-full">
-                              <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px]  w-[150px] sm:w-full lg:w-[200px] shadow"
-                                value={slot.start}
-                                onChange={(e) => {
-                                  const slots = [...item.hour];
-                                  slots[slotIndex].start = e.target.value;
-                                  updatespecialSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              </div>
-                              <div className="w-full">
-                              <input
-                                type="time"
-                                className="border border-[#D5D7DA] p-3 rounded-[8px] w-[150px] sm:w-full lg:w-[200px] shadow"
-                                value={slot.end}
-                                onChange={(e) => {
-                                  const slots = [...item.hour];
-                                  slots[slotIndex].end = e.target.value;
-                                  updatespecialSchedule(dayIndex, { slots });
-                                }}
-                              />
-                              </div>
-                            </div>
-                          ))}
-
-                          <div className="flex gap-3 mt-2 w-full">
-                            <button
-                              type="button"
-                              className="py-2 sm:w-auto"
-                              onClick={addNewEntry}
+                              className="py-2"
+                              onClick={() =>
+                                updateSchedule(dayIndex, {
+                                  slots: [
+                                    ...item.slots,
+                                    { start: "", end: "" },
+                                  ],
+                                })
+                              }
                             >
                               <FaPlusCircle />
                             </button>
                           </div>
-                        </div>
+                        )}
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+            <div className="py-8 border-b">
+              <div className="py-8 border-b">
+                <div className="grid lg:grid-cols-3 gap-2 max-w-[1000px]">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      Special Hours of Operation
+                    </p>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <div>
+                      {specialSchedule.map((item, dayIndex) => (
+                        <div
+                          key={item.day}
+                          className="mb-4 md:grid grid-cols-3 gap-2 w-full"
+                          style={{ display: item.closed ? "none" : "grid" }}
+                        >
+                          <div className="sm:col-start-1 md:col-start-2 sm:col-end-2 w-full">
+                            <div className="flex  md:flex-row sm:flex-row lg:flex-row gap-12 lg:gap-1   ">
+                              <div className="w-full">
+                                <input
+                                  type="text"
+                                  className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none   w-[150px] lg:w-[200px] "
+                                  placeholder="Enter text"
+                                  value={item.text}
+                                  onChange={(e) =>
+                                    updatespecialSchedule(dayIndex, {
+                                      text: e.target.value,
+                                    })
+                                  }
+                                />
+                              </div>
+                              <div className="w-full">
+                                <input
+                                  type="date"
+                                  className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none w-[150px] sm:w-full lg:w-[200px] "
+                                  value={item.date}
+                                  onChange={(e) =>
+                                    updatespecialSchedule(dayIndex, {
+                                      date: e.target.value,
+                                    })
+                                  }
+                                />
+                              </div>
+                              <button
+                                type="button"
+                                className="text-gray-700 sm:w-auto flex-shrink-0"
+                                onClick={() => deleteSlot(dayIndex)}
+                              >
+                                <FaTrash />
+                              </button>
+                            </div>
 
-          <div className="flex justify-end mt-4">
-            <button
-              type="reset"
-              className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                loading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
+                            <div className="flex justify-between items-center gap-4 mt-2 w-full">
+                              <label className="flex items-center gap-2">
+                                <input
+                                  type="checkbox"
+                                  checked={item.closed}
+                                  onChange={() => closeSpecificData(dayIndex)}
+                                />
+                                Closed
+                              </label>
+                              <label
+                                key={dayIndex}
+                                className="flex text-nowrap items-center gap-2"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={item.is247Open}
+                                  onChange={() =>
+                                    updatespecialSchedule(dayIndex, {
+                                      is247Open: !item.is247Open, // Toggling the value when clicked
+                                    })
+                                  }
+                                />
+                                24/7 Open
+                              </label>
+                            </div>
+
+                            {item.hour?.map((slot, slotIndex) => (
+                              <div
+                                key={slotIndex}
+                                className="flex w-full items-center lg:gap-4 gap-10 mt-2"
+                              >
+                                <div className="w-full">
+                                  <input
+                                    type="time"
+                                    className="border border-[#D5D7DA] p-3 rounded-[8px]  w-[150px] sm:w-full lg:w-[200px] shadow"
+                                    value={slot.start}
+                                    onChange={(e) => {
+                                      const slots = [...item.hour];
+                                      slots[slotIndex].start = e.target.value;
+                                      updatespecialSchedule(dayIndex, {
+                                        slots,
+                                      });
+                                    }}
+                                  />
+                                </div>
+                                <div className="w-full">
+                                  <input
+                                    type="time"
+                                    className="border border-[#D5D7DA] p-3 rounded-[8px] w-[150px] sm:w-full lg:w-[200px] shadow"
+                                    value={slot.end}
+                                    onChange={(e) => {
+                                      const slots = [...item.hour];
+                                      slots[slotIndex].end = e.target.value;
+                                      updatespecialSchedule(dayIndex, {
+                                        slots,
+                                      });
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            ))}
+
+                            <div className="flex gap-3 mt-2 w-full">
+                              <button
+                                type="button"
+                                className="py-2 sm:w-auto"
+                                onClick={addNewEntry}
+                              >
+                                <FaPlusCircle />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-4">
+              <button
+                type="reset"
+                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 };

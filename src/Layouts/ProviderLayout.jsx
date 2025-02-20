@@ -19,6 +19,7 @@ const drawerWidth = 220;
 
 function ProviderLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
+   const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -52,6 +53,8 @@ function ProviderLayout() {
         );
         console.log("Fetched User Data:", response?.data?.user);
         setUserData(response.data?.user);
+        setIsApiLoaded(true); 
+        setLoading(false);
       } catch (err) {
         console.error("Error fetching user data:", err);
         toast.error("Failed to load user data.");
@@ -105,6 +108,7 @@ function ProviderLayout() {
 
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
+    
     <Box
       sx={{
         height: "100%",
@@ -188,6 +192,7 @@ function ProviderLayout() {
   );
 
   return (
+    
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box

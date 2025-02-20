@@ -13,6 +13,7 @@ function BasicInfo({ setServiceId, setValue }) {
   console.log("idddd", dealid);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
     service_title: "",
@@ -88,6 +89,8 @@ function BasicInfo({ setServiceId, setValue }) {
           setTags(
             BasicInfo.search_tags ? BasicInfo.search_tags.split(",") : []
           );
+          setIsApiLoaded(true);
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error fetching deal data:", error);
@@ -108,7 +111,7 @@ function BasicInfo({ setServiceId, setValue }) {
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("No token found. Please log in.");
-      setLoading(false);
+
       return;
     }
 
@@ -171,14 +174,12 @@ function BasicInfo({ setServiceId, setValue }) {
   };
   return (
     <>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-1000">
-          <Loader />
-        </div>
-      )}
-      <div>
-        <ToastContainer position="top-right" autoClose={3000} />
-       
+      {(dealid && !isApiLoaded)  ? (
+        <Loader />
+      ) : (
+        <div>
+          <ToastContainer position="top-right" autoClose={3000} />
+
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-12">
               <div className="col-span-12 lg:col-span-7 mt-4">
@@ -371,7 +372,8 @@ function BasicInfo({ setServiceId, setValue }) {
               </div>
             </div>
           </form>
-      </div>
+        </div>
+      )}
     </>
   );
 }

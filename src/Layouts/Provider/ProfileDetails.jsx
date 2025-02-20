@@ -89,6 +89,8 @@ function ProfileDetails() {
   const dealid = location.state?.dealid || "";
   const [contactopen, setcontactOpen] = React.useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
+   const [isApiLoaded,setIsApiLoaded]=useState(false);
+     const [loading, setLoading] = useState(false);
   const handlecontactClose = () => setcontactOpen(false);
   const [formdata, setFormData] = useState(null);
 
@@ -109,6 +111,8 @@ function ProfileDetails() {
 
         console.log("API Response:", response.data);
         setFormData(response.data);
+        setIsApiLoaded(true); 
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -168,7 +172,10 @@ function ProfileDetails() {
   console.log("value", regularHours?.day_name);
   return (
     <>
-  { Loader ? ( 
+       {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
     <div>
       <div className="flex items-center">
         <Link to="/provider/services">
@@ -284,7 +291,7 @@ function ProfileDetails() {
       </div>
       <ProfileDeal />
       <div className="additional">
-        <h2 className="text-2xl lg:mt-20 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
+        <h2 className="text-2xl lg:mt-10 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
         <div>
           <Accordion
             expanded={expanded === "Technicians"}
@@ -433,8 +440,6 @@ function ProfileDetails() {
         <Review />
       </div>
     </div>
-        ):(
-<p>Loading......</p>
         )}
 
 </>

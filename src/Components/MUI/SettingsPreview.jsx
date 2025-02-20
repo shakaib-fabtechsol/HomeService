@@ -8,7 +8,7 @@ export default function SettingsPreview({
   existingImage,
 }) {
   const [file, setFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(existingImage || null);
+  const [filePreview, setFilePreview] = useState(existingImage);
   const [showPreview, setShowPreview] = useState(false);
  
   useEffect(() => {
@@ -25,8 +25,7 @@ export default function SettingsPreview({
       handleFile(uploadedFile);
     }
   };
-
-  // Handle file selection via file input
+ 
   const handleFileClick = () => {
     const fileInput = document.createElement("input");
     fileInput.type = "file";
@@ -35,7 +34,6 @@ export default function SettingsPreview({
     fileInput.click();
   };
 
-  // Handle the file change (from file input)
   const handleFileSelect = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
@@ -56,6 +54,7 @@ export default function SettingsPreview({
     setFile(null);
     setFilePreview(null);
     setShowPreview(false);
+    onFileSelect({ target: { files: [] } }, fieldName); // Pass an empty array to indicate file removal
   };
 
   // Handle showing preview
@@ -133,23 +132,15 @@ export default function SettingsPreview({
         </div>
       )}
 
-      {showPreview && filePreview && (
-        <div className="file-preview mt-4">
-          {file?.type.startsWith("video") ? (
-            <video
-              controls
-              src={filePreview}
-              className="rounded-lg border border-gray-200 w-[200px]"
-            />
-          ) : (
-            <img
-              src={filePreview}
-              alt="Preview"
-              className="rounded-lg border border-gray-200 w-[200px]"
-            />
-          )}
-        </div>
-      )}
+{showPreview && filePreview && (
+  <div className="file-preview mt-4">
+    <img
+      src={filePreview}
+      alt="Preview"
+      className="rounded-lg border border-gray-200 w-[200px]"
+    />
+  </div>
+)}
     </div>
   );
 }

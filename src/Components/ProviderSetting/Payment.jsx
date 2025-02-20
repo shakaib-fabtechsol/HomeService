@@ -7,6 +7,7 @@ import Loader from "../../Components/MUI/Loader";
 
 const Payment = () => {
   const [loading, setLoading] = useState(false);
+   const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [formData, setFormData] = useState({
     user_id: "",
     service_title: "",
@@ -108,6 +109,8 @@ const Payment = () => {
             account_number: BasicInfo?.account_number,
             bank_routing_number: BasicInfo?.bank_routing_number,
           });
+          setIsApiLoaded(true); 
+          setLoading(false);
         }
       } catch (err) {
         console.log("Error:", err);
@@ -121,11 +124,10 @@ const Payment = () => {
 
   return (
     <div>
-       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <Loader />
-        </div>
-      )}
+              {
+    (loading || !isApiLoaded ) ? (
+      <Loader />
+    ):(
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
@@ -285,6 +287,7 @@ const Payment = () => {
           </div>
         </div>
       </form>
+    )}
     </div>
   );
 };
