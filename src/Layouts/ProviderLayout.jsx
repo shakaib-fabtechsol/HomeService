@@ -99,6 +99,7 @@ function ProviderLayout() {
       link: "/provider/support",
     },
   ];
+  console.log(userData?.personal_image)
 
   const imageUrl = userData?.personal_image
     ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
@@ -108,7 +109,7 @@ function ProviderLayout() {
 
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
-    
+   
     <Box
       sx={{
         height: "100%",
