@@ -9,6 +9,7 @@ import axios from "axios";
 
 const MediaUpload = ({ serviceId, setValue }) => {
   const {dealid} =useParams()
+  const id=localStorage.getItem("id");
   const [loading, setLoading] = useState(false);
     const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [file, setFile] = useState(null);
@@ -176,9 +177,7 @@ console.log("preview",filePreview);
 
   return (
     <div>
-      {dealid && !isApiLoaded ? (
-        <Loader />
-      ) : (
+    
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
@@ -272,7 +271,7 @@ console.log("preview",filePreview);
           </button>
         </div>
       </form>
-      )}
+     
     </div>
   );
 };
