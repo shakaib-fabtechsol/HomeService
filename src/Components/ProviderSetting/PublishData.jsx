@@ -237,12 +237,6 @@ function ProfileDetails() {
         <Loader />
       ) : (
         <div>
-          <div className="flex items-center">
-            <Link to="/provider/services">
-              <FaArrowLeft className="me-4 text-xl" />
-            </Link>
-            <h2 className="text-2xl font-semibold">Profile Details</h2>
-          </div>
           <div className="flex flex-col lg:flex-row justify-between mt-4 lg:items-start">
             <div className="flex flex-wrap items-center">
               <img

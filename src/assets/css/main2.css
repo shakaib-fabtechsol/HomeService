@@ -25,6 +25,7 @@
     background-repeat: no-repeat;
     background-position: calc(100% - 10px) center;
     appearance: none;
+    width: 100% ;
 }
 textarea{
     resize: none !important;
