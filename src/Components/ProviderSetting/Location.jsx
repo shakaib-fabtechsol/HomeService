@@ -31,7 +31,6 @@ const ServiceArea = () => {
   const [lat, setLat] = useState(null);
   const [lng, setLng] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isApiLoaded, setIsGoogleApiLoaded] = useState(false); 
 
   const autocompleteRef = useRef(null);
   const inputRef = useRef(null);
@@ -50,8 +49,6 @@ const ServiceArea = () => {
         );
 
         autocompleteRef.current.addListener("place_changed", onPlaceSelected);
-        // setIsGoogleApiLoaded(true); 
-        // setLoading(false);
       }
     }, 500);
 
@@ -91,6 +88,13 @@ const ServiceArea = () => {
     setBulkText("");
     setLocations([]);
   };
+  function valueLabelFormat(value) {
+    return `${value} Miles`;
+  }
+
+  function calculateValue(value) {
+    return value;
+  }
 
   const handleBulkTextChange = (e) => {
     setBulkText(e.target.value);
@@ -169,10 +173,6 @@ const ServiceArea = () => {
 
   return (
     <div>
-               {
-    (loading || isApiLoaded ) ? (
-      <Loader />
-    ):(
         <form onSubmit={handleSubmit}>
           <LoadScript googleMapsApiKey={GOOGLE_API_KEY} libraries={libraries}>
             <div>
@@ -411,7 +411,7 @@ const ServiceArea = () => {
                 <div className="flex justify-end mt-12">
                   <Button
                     type="reset"
-                    onClick={() => formik.resetForm()}
+                    onClick={() => resetForm()}
                     variant="outlined"
                     sx={{ width: "150px", py: "10px", mr: 2 }}
                   >
@@ -439,9 +439,16 @@ const ServiceArea = () => {
             </div>
           </LoadScript>
         </form>
-      )}
+      
     </div>
   );
 };
 
 export default ServiceArea;
+
+
+
+
+
+
+

@@ -12,6 +12,7 @@ import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import logo from "../assets/img/logo.png";
 
+
 import axios from "axios";
 import { toast } from "react-toastify";
 
@@ -19,7 +20,6 @@ const drawerWidth = 220;
 
 function ProviderLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
-   const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [userData, setUserData] = useState(null);
   const navigate = useNavigate();
 
@@ -53,8 +53,6 @@ function ProviderLayout() {
         );
         console.log("Fetched User Data:", response?.data?.user);
         setUserData(response.data?.user);
-        setIsApiLoaded(true); 
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching user data:", err);
         toast.error("Failed to load user data.");
@@ -99,16 +97,16 @@ function ProviderLayout() {
       link: "/provider/support",
     },
   ];
+  console.log(userData?.personal_image)
 
   const imageUrl = userData?.personal_image
     ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
     : null;
 
   const defaultimg = "/vite.svg";
-
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
-    
+   
     <Box
       sx={{
         height: "100%",
