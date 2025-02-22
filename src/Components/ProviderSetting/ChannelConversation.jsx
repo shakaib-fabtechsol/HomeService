@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../../Components/MUI/Loader";
 import { toast } from "react-toastify";
+import {useParams} from "react-router-dom";
 const ChannelConversation = () => {
   const navigate = useNavigate();
+const {dealid } =useParams();
+const id = localStorage.getItem("id");
   const [loading, setLoading] = useState(false);
   const [isApiLoaded,setIsApiLoaded]=useState(false);
   const [formData, setFormData] = useState({
@@ -19,7 +22,6 @@ const ChannelConversation = () => {
   const [toggles, setToggles] = useState({
     call: false,
     text: false,
-    email: false,
     address: false,
     chat: false,
     form: false,
@@ -143,11 +145,9 @@ const ChannelConversation = () => {
   }, []);
 
   return (
+    <>
     <div>
-            {
-    (loading || !isApiLoaded ) ? (
-      <Loader />
-    ):(
+        
       <form onSubmit={handleSubmit}>
         <div>
           <div className="border-b border-[#E9EAEB] pb-5 items-center flex-wrap gap-4">
@@ -392,8 +392,9 @@ const ChannelConversation = () => {
           </div>
         </div>
       </form>
-    )}
+  
     </div>
+    </>
   );
 };
 

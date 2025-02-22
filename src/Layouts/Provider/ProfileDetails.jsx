@@ -121,11 +121,12 @@ function ProfileDetails() {
     fetchData();
   }, []);
 
+
   const setting =
     formdata?.businessProfile?.[0]?.user_id || "No Data Available";
 
   console.log("User ID:", setting);
-  console.log("Complete Data:", formdata);
+  console.log("Complete Data:",formdata?.businessProfile[0]?.business_name);
 
   const modalContacts = [
     { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
@@ -194,7 +195,7 @@ function ProfileDetails() {
           <div className="my-2">
             <div className="flex items-center">
               <p className="font-semibold myhead me-2">
-                {formdata?.user?.name}
+              {formdata?.businessProfile[0]?.business_name}
               </p>
               <div className="flex ms-3">
                 <IoIosStar className="me-1 text-[#F8C600]" />
@@ -208,7 +209,7 @@ function ProfileDetails() {
             <div className="flex flex-wrap mt-2">
               <div className="flex items-center">
                 <IoLocationOutline className="me-2 myblack" />
-                <p className="myblack ">{formdata?.user?.location}</p>
+                <p className="myblack "> {formdata?.businessProfile[0]?.conversation_address}</p>
               </div>
             </div>
             <div className="flex mt-2 items-center">
@@ -291,7 +292,7 @@ function ProfileDetails() {
       </div>
       <ProfileDeal />
       <div className="additional">
-        <h2 className="text-2xl lg:mt-10 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
+        <h2 className="text-2xl lg:mt-3 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
         <div>
           <Accordion
             expanded={expanded === "Technicians"}
@@ -436,9 +437,7 @@ function ProfileDetails() {
           </Accordion>
         </div>
       </div>
-      <div className="mt-5">
-        <Review />
-      </div>
+     
     </div>
         )}
 

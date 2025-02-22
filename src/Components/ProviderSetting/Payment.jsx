@@ -3,11 +3,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../../Components/MUI/Loader";
-
+import {useParams} from "react-router-dom"
 
 const Payment = () => {
+  const { dealid } = useParams();
   const [loading, setLoading] = useState(false);
    const [isApiLoaded,setIsApiLoaded]=useState(false);
+   const userId = localStorage.getItem("id");
   const [formData, setFormData] = useState({
     user_id: "",
     service_title: "",
@@ -124,8 +126,7 @@ const Payment = () => {
 
   return (
     <div>
-              {
-    (loading || !isApiLoaded ) ? (
+     {(userId  && !isApiLoaded)  ? (
       <Loader />
     ):(
       <form onSubmit={handleSubmit}>

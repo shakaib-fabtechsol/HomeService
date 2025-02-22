@@ -311,7 +311,7 @@ const CertificationHour = () => {
                   <SettingsPreview
                     onFileSelect={handleFileChange}
                     fieldName="license_certificate"
-                    existingImage={formData.license_certificate}
+                    existingImage={formData.license_certificate || profileImg}
                   />
                 </div>
               </div>
@@ -327,7 +327,7 @@ const CertificationHour = () => {
                   <SettingsPreview
                     onFileSelect={handleFileChange}
                     fieldName="award_certificate"
-                    existingImage={formData.award_certificate}
+                    existingImage={formData.award_certificate || profileImg}
                   />
                 </div>
               </div>

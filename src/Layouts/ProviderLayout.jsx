@@ -2,6 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import logo1 from "../assets/img/Business-icon.png"
 import {
   MdOutlineSupport,
   MdHomeRepairService,
@@ -103,7 +104,7 @@ function ProviderLayout() {
     ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
     : null;
 
-  const defaultimg = "/vite.svg";
+  const defaultimg = logo1;
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
    
