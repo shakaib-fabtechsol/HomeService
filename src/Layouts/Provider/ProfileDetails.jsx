@@ -149,7 +149,7 @@ function ProfileDetails() {
     },
   ];
 
-  const imagePath = formdata?.user?.personal_image;
+  const imagePath = formdata?.businessProfile[0]?.business_logo;
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";

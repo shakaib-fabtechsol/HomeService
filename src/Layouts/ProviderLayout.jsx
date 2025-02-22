@@ -2,7 +2,7 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import { Box, Drawer, CssBaseline, List } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import logo1 from "../assets/img/Business-icon.png"
+import logo1 from "../assets/img/Business-icon.png";
 import {
   MdOutlineSupport,
   MdHomeRepairService,
@@ -12,7 +12,6 @@ import { IoIosSettings } from "react-icons/io";
 import { Outlet, NavLink, Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import logo from "../assets/img/logo.png";
-
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -98,16 +97,15 @@ function ProviderLayout() {
       link: "/provider/support",
     },
   ];
-  console.log(userData?.personal_image)
+  console.log(userData?.personal_image);
 
   const imageUrl = userData?.personal_image
     ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
     : null;
 
-  const defaultimg = logo1;
+  const defaultimg = "/dummy.png";
   const imageToShow = imageUrl || defaultimg;
   const drawer = (
-   
     <Box
       sx={{
         height: "100%",
@@ -162,9 +160,8 @@ function ProviderLayout() {
             <Link to="/provider/ProfileDetails">
               <img
                 src={imageToShow}
-                width="100px"
-                height="70px"
-                className=" rounded-2xl"
+               
+                className=" rounded-2xl w-100 h-100"
                 alt="Profile"
               />
             </Link>
@@ -191,7 +188,6 @@ function ProviderLayout() {
   );
 
   return (
-    
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box
