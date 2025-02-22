@@ -412,6 +412,32 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       return updatedData;
     });
   };
+  const handleBulletKeyDown = (fieldName) => (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const bullet = "• ";
+      const { selectionStart, selectionEnd, value } = e.target;
+      const newValue =
+        value.substring(0, selectionStart) +
+        "\n" +
+        bullet +
+        value.substring(selectionEnd);
+      setFormData((prev) => ({ ...prev, [fieldName]: newValue }));
+
+      // Set the cursor position after the inserted bullet.
+      setTimeout(() => {
+        e.target.selectionStart = e.target.selectionEnd =
+          selectionStart + bullet.length + 1;
+      }, 0);
+    }
+  };
+
+  // Generic handler for setting a bullet when the field gains focus.
+  const handleBulletFocus = (fieldName) => (e) => {
+    if (!formdata[fieldName] || formdata[fieldName].trim() === "") {
+      setFormData((prev) => ({ ...prev, [fieldName]: "• " }));
+    }
+  };
 
   return (
     <>
@@ -692,24 +718,27 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                             <div className="flex flex-col mt-4">
                               <label
                                 className="text-sm font-medium ps-2"
-                                htmlFor="deliverable1"
+                                htmlFor="deliverable"
                               >
-                                Deliverables
+                                Deliverable 1
                               </label>
                               <textarea
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
-                                name="deliverable1"
-                                id="deliverable1"
-                                value={formdata.deliverable1}
+                                name="deliverable"
+                                id="deliverable"
+                                value={formdata.deliverable}
                                 onChange={(e) =>
                                   setFormData((prev) => ({
                                     ...prev,
-                                    deliverable1: e.target.value,
+                                    deliverable: e.target.value,
                                   }))
                                 }
-                                placeholder="Write here.."
+                                onFocus={handleBulletFocus("deliverable")}
+                                onKeyDown={handleBulletKeyDown("deliverable")}
+                                placeholder="Write here..."
                               ></textarea>
                             </div>
+
                             <div className="flex flex-col mt-4">
                               <label
                                 className="text-sm font-medium ps-2"
@@ -837,7 +866,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                                 className="text-sm font-medium ps-2"
                                 htmlFor="deliverable2"
                               >
-                                Deliverables
+                                Deliverable 2
                               </label>
                               <textarea
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
@@ -850,9 +879,12 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                                     deliverable2: e.target.value,
                                   }))
                                 }
-                                placeholder="Write here.."
+                                onFocus={handleBulletFocus("deliverable2")}
+                                onKeyDown={handleBulletKeyDown("deliverable2")}
+                                placeholder="Write here..."
                               ></textarea>
                             </div>
+
                             <div className="flex flex-col mt-4">
                               <label
                                 className="text-sm font-medium ps-2"
@@ -981,7 +1013,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                                 className="text-sm font-medium ps-2"
                                 htmlFor="deliverable3"
                               >
-                                Deliverables
+                                Deliverable 3
                               </label>
                               <textarea
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
@@ -994,7 +1026,9 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                                     deliverable3: e.target.value,
                                   }))
                                 }
-                                placeholder="Write here.."
+                                onFocus={handleBulletFocus("deliverable3")}
+                                onKeyDown={handleBulletKeyDown("deliverable3")}
+                                placeholder="Write here..."
                               ></textarea>
                             </div>
                             <div className="flex flex-col mt-4">
