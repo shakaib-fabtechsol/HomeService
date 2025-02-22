@@ -34,6 +34,7 @@ const CertificationHour = () => {
     days.map((day) => ({
       day,
       closed: false,
+      Open24Hours:false,
       slots: [{ start: "", end: "" }],
     }))
   );
@@ -60,7 +61,7 @@ const CertificationHour = () => {
       date: "",
       hour: [{ start: "", end: "" }],
       closed: false,
-      is247Open: false,
+      Open24Hours: false,
     },
   ]);
 
@@ -81,7 +82,7 @@ const CertificationHour = () => {
       date: "",
       hour: [{ start: "", end: "" }],
       closed: false,
-      is247Open: false,
+      Open24Hours: false,
     };
     setSpecialSchedule([...specialSchedule, newEntry]);
   };
@@ -109,6 +110,7 @@ const CertificationHour = () => {
       const defaultSchedule = days.map((day) => ({
         day,
         closed: false,
+        Open24Hours: false,
         slots: [{ start: "", end: "" }],
       }));
 
@@ -118,7 +120,7 @@ const CertificationHour = () => {
           date: "",
           hour: [{ start: "", end: "" }],
           closed: false,
-          is247Open: false,
+          Open24Hours: false,
         },
       ];
 
@@ -137,6 +139,7 @@ const CertificationHour = () => {
 
         const transformedSchedule = formattedSchedule.map((item) => ({
           day: item.day_name,
+          Open24Hours: item.Open24Hours,
           closed: item.day_status === "closed",
           slots:
             item.day_status === "closed"
@@ -161,7 +164,7 @@ const CertificationHour = () => {
             hour: item.hour,
             date: item.date || "",
             closed: item.closed === "closed",
-            is247Open: item.is247Open === "true",
+            Open24Hours: item.Open24Hours === "true",
           })
         );
 
@@ -222,6 +225,7 @@ const CertificationHour = () => {
       const formattedSchedule = schedule.map((item) => ({
         day_name: item.day,
         day_status: item.closed ? "closed" : "open",
+        Open24Hours: item.Open24Hours,
         regular_hour: item.closed
           ? []
           : item.slots.map((slot) => ({
@@ -235,7 +239,7 @@ const CertificationHour = () => {
         date: item.date,
         closed: item.closed,
         hour: item.hour,
-        is247Open: item.is247Open,
+        Open24Hours: item.Open24Hours,
       }));
       const data = new FormData();
 
@@ -359,6 +363,21 @@ const CertificationHour = () => {
                               }
                             />
                             Closed
+                          </label>
+                          <label
+                            key={item.Open24Hours}
+                            className="flex text-nowrap items-center gap-2"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={item.Open24Hours}
+                              onChange={() =>
+                                updateSchedule(dayIndex, {
+                                  Open24Hours: !item.Open24Hours,
+                                })
+                              }
+                            />
+                          Open 24 Hours
                           </label>
                         </div>
 
@@ -492,14 +511,14 @@ const CertificationHour = () => {
                               >
                                 <input
                                   type="checkbox"
-                                  checked={item.is247Open}
+                                  checked={item.Open24Hours}
                                   onChange={() =>
                                     updatespecialSchedule(dayIndex, {
-                                      is247Open: !item.is247Open, // Toggling the value when clicked
+                                      Open24Hours: !item.Open24Hours, // Toggling the value when clicked
                                     })
                                   }
                                 />
-                                24/7 Open
+                              Open 24 Hours
                               </label>
                             </div>
 

@@ -160,7 +160,7 @@ const AdditionalPhoto = () => {
             <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
               <div>
                 <p className="text-sm font-semibold text-[#414651]">
-                  Upload About us Video 
+                  Upload About Us Video 
                 </p>
               </div>
               <div className="md:col-span-2">
