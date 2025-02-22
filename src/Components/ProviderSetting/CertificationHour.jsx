@@ -34,7 +34,7 @@ const CertificationHour = () => {
     days.map((day) => ({
       day,
       closed: false,
-      Open24Hours:false,
+      Open24Hours: false,
       slots: [{ start: "", end: "" }],
     }))
   );
@@ -377,7 +377,7 @@ const CertificationHour = () => {
                                 })
                               }
                             />
-                          Open 24 Hours
+                            Open 24 Hours
                           </label>
                         </div>
 
@@ -451,6 +451,10 @@ const CertificationHour = () => {
                     <p className="text-sm font-semibold">
                       Special Hours of Operation
                     </p>
+                    <p className="text-[#535862] text-sm">
+                      This is to show your hours around holidays. This will be
+                      publicly displayed.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <div>
@@ -466,7 +470,7 @@ const CertificationHour = () => {
                                 <input
                                   type="text"
                                   className="border border-[#D5D7DA] p-3 rounded-[8px] shadow-[0px_1px_2px_0px_#0A0D120D] focus:outline-none   w-[150px] lg:w-[200px] "
-                                  placeholder="Enter text"
+                                  placeholder="list holiday"
                                   value={item.text}
                                   onChange={(e) =>
                                     updatespecialSchedule(dayIndex, {
@@ -518,7 +522,7 @@ const CertificationHour = () => {
                                     })
                                   }
                                 />
-                              Open 24 Hours
+                                Open 24 Hours
                               </label>
                             </div>
 
