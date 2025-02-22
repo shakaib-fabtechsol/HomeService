@@ -151,7 +151,7 @@ const AdditionalPhoto = () => {
                   Additional Info
                 </p>
                 <p className="text-[#535862] text-sm">
-                  Upload additional info.
+                  Upload optional additional info.
                 </p>
               </div>
               <div className="py-8 border-b">
