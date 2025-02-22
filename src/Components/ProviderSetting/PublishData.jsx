@@ -84,8 +84,7 @@ function ProfileDetails() {
   useEffect(() => {
     document.title = "Profile Details";
   }, []);
-
-  const categories = ["Category 01", "Category 02", "Category 03"];
+  
 
 
   const navigate = useNavigate();
@@ -95,6 +94,7 @@ function ProfileDetails() {
   const handlecontactClose = () => setcontactOpen(false);
   const [formdata, setFormData] = useState(null);
   const [publishValue, setPublishValue] = useState(1);
+  const userId = localStorage.getItem("id");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -235,8 +235,7 @@ function ProfileDetails() {
   return (
 
     <>
-            {
-    (loading || !isApiLoaded ) ? (
+       {(userId&& !isApiLoaded)  ? (
       <Loader />
     ):(
    
@@ -258,7 +257,7 @@ function ProfileDetails() {
           <div className="my-2">
             <div className="flex items-center">
               <p className="font-semibold myhead me-2">
-                {formdata?.user?.name}
+              {formdata?.businessProfile[0]?.bussiness_name }
               </p>
               <div className="flex ms-3">
                 <IoIosStar className="me-1 text-[#F8C600]" />
@@ -272,7 +271,7 @@ function ProfileDetails() {
             <div className="flex flex-wrap mt-2">
               <div className="flex items-center">
                 <IoLocationOutline className="me-2 myblack" />
-                <p className="myblack ">{formdata?.user?.location}</p>
+                <p className="myblack ">{formdata?.businessProfile[0]?.conversation_address}</p>
               </div>
             </div>
             <div className="flex mt-2 items-center">
@@ -462,9 +461,9 @@ function ProfileDetails() {
           </Accordion>
         </div>
       </div>
-      <div className="mt-5">
+      {/* <div className="mt-5">
         <Review />
-      </div>
+      </div> */}
 
       <form onSubmit={handleSubmit}>
         <div className="col-span-12 mt-4 flex justify-end">

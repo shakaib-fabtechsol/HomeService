@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import upload from "../../assets/img/upload.png";
+import React, { useState, useEffect, useRef } from "react";
+import upload from "../../assets/img/logo.png";
 import fileicon from "../../assets/img/fileicon.png";
 
 export default function SettingsPreview({
@@ -8,15 +8,25 @@ export default function SettingsPreview({
   existingImage,
 }) {
   const [file, setFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(existingImage);
-  const [showPreview, setShowPreview] = useState(false);
- 
+  const [filePreview, setFilePreview] = useState(existingImage || upload);
+  const [showPreview, setShowPreview] = useState(!!(existingImage || upload));
+  const fileInputRef = useRef(null);
+
   useEffect(() => {
     if (existingImage) {
       setFilePreview(existingImage);
       setShowPreview(true);
     }
   }, [existingImage]);
+
+  // Clean up the object URL to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (filePreview && file) {
+        URL.revokeObjectURL(filePreview);
+      }
+    };
+  }, [filePreview, file]);
 
   const handleFileDrop = (e) => {
     e.preventDefault();
@@ -25,13 +35,11 @@ export default function SettingsPreview({
       handleFile(uploadedFile);
     }
   };
- 
+
   const handleFileClick = () => {
-    const fileInput = document.createElement("input");
-    fileInput.type = "file";
-    fileInput.accept = ".jpg,.png,.svg,.mp4,.mov,.avi";
-    fileInput.onchange = (e) => handleFileSelect(e);
-    fileInput.click();
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileSelect = (e) => {
@@ -41,23 +49,25 @@ export default function SettingsPreview({
     }
   };
 
-  // Handle file (image or video)
   const handleFile = (uploadedFile) => {
     setFile(uploadedFile);
-    setFilePreview(URL.createObjectURL(uploadedFile)); // Set the preview URL
-    setShowPreview(true); // Show preview
-    onFileSelect({ target: { files: [uploadedFile] } }, fieldName); // Pass the file back to the parent
+    const previewUrl = URL.createObjectURL(uploadedFile);
+    setFilePreview(previewUrl);
+    setShowPreview(true);
+    onFileSelect({ target: { files: [uploadedFile] } }, fieldName);
   };
 
-  // Handle file removal
+  // Updated: When removing the file, set the preview to the default upload image.
   const handleRemoveFile = () => {
     setFile(null);
-    setFilePreview(null);
-    setShowPreview(false);
-    onFileSelect({ target: { files: [] } }, fieldName); // Pass an empty array to indicate file removal
+    setFilePreview(upload); // Set default image
+    setShowPreview(true);   // Ensure preview is shown
+    onFileSelect({ target: { files: [] } }, fieldName);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
-  // Handle showing preview
   const handleShowPreview = () => {
     setShowPreview(true);
   };
@@ -72,6 +82,13 @@ export default function SettingsPreview({
         className="upload-box w-full border border-solid border-1 border-[#cdcdcd] rounded-lg p-4 text-center cursor-pointer"
         onClick={handleFileClick}
       >
+        <input
+          type="file"
+          ref={fileInputRef}
+          accept=".jpg,.png,.svg,.mp4,.mov,.avi"
+          style={{ display: "none" }}
+          onChange={handleFileSelect}
+        />
         {file || existingImage ? (
           <div className="upload-placeholder flex flex-col items-center justify-center min-h-[180px]">
             <img src={upload} alt="upload" className="w-[50px] mb-4" />
@@ -122,6 +139,7 @@ export default function SettingsPreview({
                 </p>
               )}
               <button
+                type="button"
                 className="remove-file text-red-500 font-bold text-xs"
                 onClick={handleRemoveFile}
               >
@@ -132,15 +150,15 @@ export default function SettingsPreview({
         </div>
       )}
 
-{showPreview && filePreview && (
-  <div className="file-preview mt-4">
-    <img
-      src={filePreview}
-      alt="Preview"
-      className="rounded-lg border border-gray-200 w-[200px]"
-    />
-  </div>
-)}
+      {showPreview && filePreview &&  (
+        <div className="file-preview mt-4">
+          <img
+            src={filePreview || existingImage}
+            alt="Preview"
+            className="rounded-lg border border-gray-200 w-[200px]"
+          />
+        </div>
+      )}
     </div>
   );
 }
