@@ -55,7 +55,8 @@ function Settings() {
           <h2 className="text-2xl font-semibold">Settings</h2>
         </div>
         <p className="text-[#535862] mt-4">
-          Track, manage and forecast your customers and orders.
+          Update all your general settings including: business, personal, and
+          payment settings.
         </p>
       </div>
       <div className="btm">
@@ -80,7 +81,7 @@ function Settings() {
               variant="scrollable"
               scrollButtons="auto"
             >
-              <Tab label="My details" />
+              <Tab label="Personal Profile" />
               <Tab label="Service Area" />
               <Tab label="Business Profile " />
               <Tab label="Certifications & Hours" />
@@ -89,7 +90,7 @@ function Settings() {
               <Tab label="Password" />
               <Tab label="Channels for Conversations" />
               <Tab label="Payment/Payout Info" />
-              <Tab label="Publish"/>
+              <Tab label="Publish" />
             </Tabs>
           </Box>
 
@@ -125,7 +126,7 @@ function Settings() {
                 <Payment />
               </TabPanel>
               <TabPanel value={value} index={9}>
-                <Publish/>
+                <Publish />
               </TabPanel>
             </>
           )}

@@ -10,13 +10,17 @@ function Support() {
   return (
     <div className="flex items-center justify-center h-[calc(100dvh-25px)]">
       <div className="">
-        <img
-          src={logo}
-          alt="Company Logo"
-          className="mb-6 w-full h-auto object-scale-down"
-        />
+        <div className="flex justify-center">
+          <img
+            src={logo}
+            alt="Company Logo"
+            className="mb-6 w-[150px] h-auto object-scale-down"
+          />
+        </div>
         <div className="">
-          <h1 className="text-2xl text-center font-bold text-[#181D27] mb-4">Contact Us</h1>
+          <h1 className="text-2xl text-center font-bold text-[#181D27] mb-4">
+            Contact Us
+          </h1>
           <p className="text-lg text-[#000] font-semibold mt-4">Email: </p>
           <Link
             to="mailto:contact@homeprodeals.com"
@@ -26,7 +30,7 @@ function Support() {
           </Link>
           <p className="text-lg text-[#000] font-semibold mt-4">Phone: </p>
           <Link to="tel:+10000000000" className="text-[#000] hover:underline">
-            +1 (000) 000 0000
+            +1(855) 776-3327
           </Link>
         </div>
       </div>

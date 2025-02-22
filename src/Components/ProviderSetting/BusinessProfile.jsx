@@ -270,7 +270,7 @@ const BusinessProfile = () => {
                 <div className="grid md:grid-cols-3 gap-2 max-w-[1000px]">
                   <div>
                     <p className="text-sm font-semibold text-[#414651]">
-                      Your Logo
+                    Business Logo
                     </p>
                     <p className="text-[#535862] text-sm">
                       This will be publically displayed on your profile.
@@ -320,6 +320,9 @@ const BusinessProfile = () => {
                     <label className="text-sm font-semibold" htmlFor="about">
                       About
                     </label>
+                    <p className="text-[#535862] text-sm">
+                    This is quick info customers will see about your business. This will be publicly displayed.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <textarea

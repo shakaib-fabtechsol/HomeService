@@ -26,9 +26,7 @@ const MyDetail = () => {
 
     if (!values.email.trim()) {
       errors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-    ) {
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
       errors.email = "Invalid email address";
     }
 
@@ -141,7 +139,7 @@ const MyDetail = () => {
             },
           }
         );
-        
+
         toast.success("Profile updated successfully!");
       } catch (error) {
         console.error("Error submitting form:", error);
@@ -176,8 +174,7 @@ const MyDetail = () => {
             ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
             : "/default.png";
           const selectedSalesRep = options.find(
-            (option) =>
-              option.value === BasicInfo?.sales_representative
+            (option) => option.value === BasicInfo?.sales_representative
           );
           formik.setValues({
             name: BasicInfo?.name || "",
@@ -252,6 +249,9 @@ const MyDetail = () => {
                     <label className="text-sm font-semibold" htmlFor="name">
                       Full Name
                     </label>
+                    <p className="text-[#535862] text-sm">
+                      This will be displayed on your profile.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <TextField
@@ -262,12 +262,8 @@ const MyDetail = () => {
                       value={formik.values.name}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
-                      error={
-                        formik.touched.name && Boolean(formik.errors.name)
-                      }
-                      helperText={
-                        formik.touched.name && formik.errors.name
-                      }
+                      error={formik.touched.name && Boolean(formik.errors.name)}
+                      helperText={formik.touched.name && formik.errors.name}
                     />
                   </div>
                 </div>
@@ -276,8 +272,12 @@ const MyDetail = () => {
                 <div className="grid sm:grid-cols-3 gap-2 py-8 border-b">
                   <div>
                     <label className="text-sm font-semibold" htmlFor="email">
-                      Email address
+                      Email Address
                     </label>
+                    <p className="text-[#535862] text-sm">
+                      This is for when we need to contact you about your
+                      personal profile. This will not be publicly displayed.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <TextField
@@ -289,12 +289,9 @@ const MyDetail = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={
-                        formik.touched.email &&
-                        Boolean(formik.errors.email)
+                        formik.touched.email && Boolean(formik.errors.email)
                       }
-                      helperText={
-                        formik.touched.email && formik.errors.email
-                      }
+                      helperText={formik.touched.email && formik.errors.email}
                     />
                   </div>
                 </div>
@@ -305,6 +302,10 @@ const MyDetail = () => {
                     <label className="text-sm font-semibold" htmlFor="phone">
                       Phone Number
                     </label>
+                    <p className="text-[#535862] text-sm">
+                      This is for when we need to contact you about your
+                      personal profile. This will not be publicly displayed.
+                    </p>
                   </div>
                   <div className="sm:col-span-2">
                     <TextField
@@ -316,12 +317,9 @@ const MyDetail = () => {
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       error={
-                        formik.touched.phone &&
-                        Boolean(formik.errors.phone)
+                        formik.touched.phone && Boolean(formik.errors.phone)
                       }
-                      helperText={
-                        formik.touched.phone && formik.errors.phone
-                      }
+                      helperText={formik.touched.phone && formik.errors.phone}
                       placeholder="+1(000) 000 0000"
                     />
                   </div>
@@ -334,7 +332,8 @@ const MyDetail = () => {
                       Personal Profile Photo
                     </p>
                     <p className="text-[#535862] text-sm">
-                      This will be displayed on your profile.
+                      This is your personal profile, this will not be publicly
+                      displayed.
                     </p>
                   </div>
                   <div className="md:col-span-2">
@@ -343,9 +342,7 @@ const MyDetail = () => {
                         handleFileChange(e, "personal_image")
                       }
                       fieldName="personal_image"
-                      existingImage={
-                        formik.values.personal_image || profileImg
-                      }
+                      existingImage={formik.values.personal_image || profileImg}
                     />
                   </div>
                 </div>
@@ -470,9 +467,7 @@ const MyDetail = () => {
                 <input
                   type="text"
                   id="Flatr"
-                  defaultValue={
-                    formik.values?.id ? `${formik.values.id}` : "0"
-                  }
+                  defaultValue={formik.values?.id ? `${formik.values.id}` : "0"}
                   className="focus-none border hidden"
                   readOnly
                 />
