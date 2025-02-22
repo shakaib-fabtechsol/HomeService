@@ -25,7 +25,6 @@ const BusinessProfile = () => {
     user_id: userId,
     business_name: "",
     business_logo: null,
-    location: "",
     about: "",
     business_primary_category: "",
     business_secondary_categories: "",
@@ -84,7 +83,6 @@ const BusinessProfile = () => {
           setFormData({
             user_id: BasicInfo[0]?.user_id || "",
             business_name: BasicInfo[0]?.business_name || "",
-            location: BasicInfo[0]?.location || "",
             business_logo: imageUrl,
             about: BasicInfo[0].about || "",
             business_primary_category:
@@ -286,33 +284,7 @@ const BusinessProfile = () => {
                 </div>
               </div>
               <div className="py-8 border-b">
-                <div className="grid sm:grid-cols-3 gap-2 max-w-[1000px]">
-                  <div>
-                    <label className="text-sm font-semibold" htmlFor="location">
-                      Mailing Address
-                    </label>
-                    <p className="text-[#535862] text-sm">
-                      This is your legal mailing address.This will not be publically displayed on your profile.
-                    </p>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <div className="border flex items-center border-[#D5D7DA] p-3 rounded-[8px] w-full shadow-[0px_1px_2px_0px_#0A0D120D]">
-                      <input
-                        className="w-full focus:outline-none"
-                        type="text"
-                        value={formData.location}
-                        onChange={handleChange}
-                        name="location"
-                      />
-                      <label
-                        className="bg-[#FAFAFA] rounded-[4px]"
-                        htmlFor="location"
-                      >
-                        <FaPlus />
-                      </label>
-                    </div>
-                  </div>
-                </div>
+                
               </div>
               <div className="py-8 border-b">
                 <div className="grid sm:grid-cols-3 gap-2 max-w-[1000px]">
