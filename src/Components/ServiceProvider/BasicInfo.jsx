@@ -210,12 +210,12 @@ function BasicInfo({ setServiceId, setValue }) {
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Title" className="font-semibold">
-                    Service Title
+                  Deal Title
                   </label>
                   <input
                     type="text"
                     id="Title"
-                    placeholder="Enter service name"
+                    placeholder="Enter deal name"
                     value={formData.service_title}
                     onChange={(e) =>
                       setFormData({
