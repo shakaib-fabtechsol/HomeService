@@ -174,7 +174,7 @@ function BasicInfo({ setServiceId, setValue }) {
   };
   return (
     <>
-      {(dealid && !isApiLoaded)  ? (
+      {dealid && !isApiLoaded ? (
         <Loader />
       ) : (
         <div>
@@ -185,7 +185,7 @@ function BasicInfo({ setServiceId, setValue }) {
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Title" className="font-semibold">
-                    Service Title
+                    Deal Title
                   </label>
                   <input
                     type="text"
@@ -206,6 +206,9 @@ function BasicInfo({ setServiceId, setValue }) {
 
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <p className="font-semibold">Service Type</p>
+                <p className="text-[#535862] text-sm">
+                  Select which type of customers this offer is intended for.
+                </p>
                 <div className="flex mt-4">
                   <label className="flex me-4">
                     <input
@@ -261,7 +264,7 @@ function BasicInfo({ setServiceId, setValue }) {
                     }
                   >
                     <option value="" hidden>
-                      Select a category
+                      Select the primary category for this deal
                     </option>
                     {Businesscategories.map((option, index) => (
                       <option key={index} value={option}>
@@ -298,7 +301,7 @@ function BasicInfo({ setServiceId, setValue }) {
                         <input
                           type="text"
                           id="Tags"
-                          placeholder="Enter tag and press Enter"
+                          placeholder="Enter keywords to match your deal with buyers. Not publicly visible."
                           className="outline-none flex-grow"
                           value={inputValue}
                           onChange={(e) => setInputValue(e.target.value)}
@@ -318,7 +321,7 @@ function BasicInfo({ setServiceId, setValue }) {
                   <textarea
                     id="Description"
                     className="myinput"
-                    placeholder="Type details here..."
+                    placeholder="Describe your deal in detail, this is publicly visible."
                     rows={4}
                     required
                     value={formData.service_description}
@@ -343,7 +346,7 @@ function BasicInfo({ setServiceId, setValue }) {
                   <textarea
                     id="FinePrint"
                     className="myinput"
-                    placeholder="Type details here..."
+                    placeholder="Add specific deliverables for this deal. For example: what is included & what is not included."
                     rows={4}
                     value={formData.fine_print}
                     onChange={(e) =>
