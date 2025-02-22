@@ -278,7 +278,7 @@ function BasicInfo({ setServiceId, setValue }) {
                   </label>
                   <select
                     id="Category"
-                    className="myselect"
+                    className="myselect w-full"
                     required
                     value={formData.service_category}
                     onChange={(e) =>
@@ -289,7 +289,7 @@ function BasicInfo({ setServiceId, setValue }) {
                     }
                   >
                     <option value="" hidden>
-                      Select the primary category for this dea
+                      Select the primary category for this deal
                     </option>
                     {Businesscategories.map((option, index) => (
                       <option key={index} value={option}>
