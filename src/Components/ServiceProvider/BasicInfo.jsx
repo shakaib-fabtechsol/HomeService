@@ -58,6 +58,31 @@ function BasicInfo({ setServiceId, setValue }) {
     setTags(tags.filter((_, i) => i !== index));
   };
 
+  const handleFocus = (e) => {
+    if (formData.fine_print.trim() === "") {
+      setFormData({ ...formData, fine_print: "• " });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const bullet = "• ";
+      const { selectionStart, selectionEnd, value } = e.target;
+     
+      const newValue =
+        value.substring(0, selectionStart) +
+        "\n" +
+        bullet +
+        value.substring(selectionEnd);
+      setFormData({ ...formData, fine_print: newValue });
+      setTimeout(() => {
+        e.target.selectionStart = e.target.selectionEnd =
+          selectionStart + bullet.length + 1;
+      }, 0);
+    }
+  };
+
   useEffect(() => {
     if (dealid) {
       const token = localStorage.getItem("token");
@@ -185,7 +210,7 @@ function BasicInfo({ setServiceId, setValue }) {
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <div className="flex flex-col">
                   <label htmlFor="Title" className="font-semibold">
-                    Deal Title
+                    Service Title
                   </label>
                   <input
                     type="text"
@@ -206,9 +231,6 @@ function BasicInfo({ setServiceId, setValue }) {
 
               <div className="col-span-12 lg:col-span-7 mt-4">
                 <p className="font-semibold">Service Type</p>
-                <p className="text-[#535862] text-sm">
-                  Select which type of customers this offer is intended for.
-                </p>
                 <div className="flex mt-4">
                   <label className="flex me-4">
                     <input
@@ -264,7 +286,7 @@ function BasicInfo({ setServiceId, setValue }) {
                     }
                   >
                     <option value="" hidden>
-                      Select the primary category for this deal
+                      Select a category
                     </option>
                     {Businesscategories.map((option, index) => (
                       <option key={index} value={option}>
@@ -301,7 +323,7 @@ function BasicInfo({ setServiceId, setValue }) {
                         <input
                           type="text"
                           id="Tags"
-                          placeholder="Enter keywords to match your deal with buyers. Not publicly visible."
+                          placeholder="Enter tag and press Enter"
                           className="outline-none flex-grow"
                           value={inputValue}
                           onChange={(e) => setInputValue(e.target.value)}
@@ -321,7 +343,7 @@ function BasicInfo({ setServiceId, setValue }) {
                   <textarea
                     id="Description"
                     className="myinput"
-                    placeholder="Describe your deal in detail, this is publicly visible."
+                    placeholder="Type details here..."
                     rows={4}
                     required
                     value={formData.service_description}
@@ -352,6 +374,8 @@ function BasicInfo({ setServiceId, setValue }) {
                     onChange={(e) =>
                       setFormData({ ...formData, fine_print: e.target.value })
                     }
+                    onKeyDown={handleKeyDown}
+                    onFocus={handleFocus}
                   />
                 </div>
               </div>
