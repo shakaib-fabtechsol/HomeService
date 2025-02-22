@@ -110,7 +110,7 @@ const MyDetail = () => {
       email: "",
       phone: "",
       personal_image: "",
-      sales_referred: "",
+      sales_referred: "No",
       sales_representative: "",
     },
     validate,
