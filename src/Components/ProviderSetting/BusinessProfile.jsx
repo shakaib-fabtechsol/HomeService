@@ -480,6 +480,13 @@ const BusinessProfile = () => {
                   </div>
                 </div>
                 <div className="col-span-12 mt-4 flex justify-end gap-4">
+                <button
+                  type="reset"
+                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+                >
+                  
+                  Cancel
+                </button>
                 <input
                   type="text"
                   id="Flatr"
@@ -504,13 +511,7 @@ const BusinessProfile = () => {
                 >
                   {publishLoading ? "Publishing..." : "Publish"}
                 </button>
-                <button
-                 onClick={handlereset}
-                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
-                >
-                  
-                  Cancel
-                </button>
+              
                 <button
                   type="submit"
 

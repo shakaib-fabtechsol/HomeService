@@ -475,9 +475,11 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                     />
                     <div className="my-2">
                       <div className="flex">
+                        <Link to="/provider/ProfileDetails">
                         <p className="font-semibold myhead me-2">
-                          {provider?.user?.name}
+                          {provider?.businessProfile[0]?.business_name}
                         </p>
+                        </Link>
                         <div className="flex">
                           <IoIosStar className="me-2 text-[#F8C600]" />
                           <p className="myblack text-sm">

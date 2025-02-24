@@ -402,6 +402,12 @@ function BasicInfo({ setServiceId, setValue }) {
               </div>
 
               <div className="col-span-12 mt-4 flex justify-end gap-4">
+                <button
+                  type="reset"
+                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+                >
+                  Cancel
+                </button>
                 <input
                   type="text"
                   id="Flatr"
@@ -426,16 +432,9 @@ function BasicInfo({ setServiceId, setValue }) {
                 >
                   {publishLoading ? "Publishing..." : "Publish"}
                 </button>
-                <button
-                  type="reset"
-                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
-                >
-                  
-                  Cancel
-                </button>
+
                 <button
                   type="submit"
-
                   className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
                     loading ? "opacity-50 cursor-not-allowed" : ""
                   }`}

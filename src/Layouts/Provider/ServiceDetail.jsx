@@ -265,14 +265,16 @@ function ServiceDetail() {
                   alt=""
                   className="me-2 my-2 rounded-lg object-cover w-[100px] h-[100px] cursor-pointer"
                   style={{
-                    aspectRatio: "1/1", // Ek samaan height aur width par set karta hai
+                    aspectRatio: "1/1", 
                   }}
                 />
                 <div className="my-2">
                   <div className="flex">
+                    <Link to ="/provider/ProfileDetails">
                     <p className="font-semibold myhead me-2">
-                      {provider?.user?.name}
+                    {provider.businessProfile?.business_name}
                     </p>
+                    </Link>
                     <div className="flex">
                       <IoIosStar className="me-2 text-[#F8C600]" />
                       <p className="myblack text-sm">

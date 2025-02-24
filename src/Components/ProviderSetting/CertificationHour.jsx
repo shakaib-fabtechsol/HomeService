@@ -12,8 +12,8 @@ const CertificationHour = () => {
   const userId = localStorage.getItem("id");
   console.log("userID", userId);
   const [loading, setLoading] = useState(false);
-     const [publishValue, setPublishValue] = useState(1);
-      const [publishLoading, setPublishLoading] = useState(false);
+  const [publishValue, setPublishValue] = useState(1);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -276,11 +276,10 @@ const CertificationHour = () => {
     }
   };
 
-
   const handlePublish = async (e) => {
     e.preventDefault();
     if (publishLoading) return;
-   
+
     const userId = localStorage.getItem("id");
     if (!userId) {
       Swal.fire({
@@ -291,7 +290,7 @@ const CertificationHour = () => {
       return;
     }
 
-    setPublishLoading(true)
+    setPublishLoading(true);
 
     const token = localStorage.getItem("token");
     if (!token) {
@@ -300,7 +299,7 @@ const CertificationHour = () => {
         title: "Error",
         text: "No token found. Please log in.",
       });
-      setPublishLoading(false)
+      setPublishLoading(false);
       return;
     }
 
@@ -650,48 +649,47 @@ const CertificationHour = () => {
             </div>
 
             <div className="col-span-12 mt-4 flex justify-end gap-4">
-                <input
-                  type="text"
-                  id="Flatr"
-                  defaultValue={formData?.id ? `${formData?.id}` : "0"}
-                  className="focus-none border hidden"
-                  readOnly
-                />
-                <input
-                  type="text"
-                  id="publish"
-                  value={publishValue}
-                  className="focus-none border hidden"
-                  readOnly
-                />
-                <button
-                  type="button"
-                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                    publishLoading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  onClick={handlePublish}
-                  disabled={publishLoading}
-                >
-                  {publishLoading ? "Publishing..." : "Publish"}
-                </button>
-                <button
-                  type="reset"
-                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
-                >
-                  
-                  Cancel
-                </button>
-                <button
-                  type="submit"
+              <button
+                type="reset"
+                className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+              >
+                Cancel
+              </button>
+              <input
+                type="text"
+                id="Flatr"
+                defaultValue={formData?.id ? `${formData?.id}` : "0"}
+                className="focus-none border hidden"
+                readOnly
+              />
+              <input
+                type="text"
+                id="publish"
+                value={publishValue}
+                className="focus-none border hidden"
+                readOnly
+              />
+              <button
+                type="button"
+                className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                  publishLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                onClick={handlePublish}
+                disabled={publishLoading}
+              >
+                {publishLoading ? "Publishing..." : "Publish"}
+              </button>
 
-                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                    loading ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                  disabled={loading}
-                >
-                  {loading ? "Saving..." : "Save"}
-                </button>
-              </div>
+              <button
+                type="submit"
+                className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? "Saving..." : "Save"}
+              </button>
+            </div>
           </div>
         </form>
       )}
