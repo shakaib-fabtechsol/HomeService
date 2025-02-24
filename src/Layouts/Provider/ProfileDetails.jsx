@@ -129,7 +129,6 @@ function ProfileDetails() {
 
   console.log("User ID:", setting);
   console.log("Complete Data:", formdata?.businessProfile[0]?.business_name);
-  console.log(formdata?.conversation?.call, "valeeeee");
 
   const imagePath = formdata?.businessProfile[0]?.business_logo;
   const imageUrl = imagePath
@@ -152,40 +151,39 @@ function ProfileDetails() {
     (item) => item.day_name === currentDay
   );
   
-
   const modalContacts = useMemo(() => {
-    if (!formdata) return [];
-    const { conversation } = formdata;
+    if (!formdata?.businessProfile) return [];
+    const { conversation } = formdata.businessProfile[0];
     const contacts = [];
   
     if (conversation?.call) {
       contacts.push({
-        path: "#",
-        Icon: <FiPhone />,
-        title: conversation.conversation_call_number,
+        label: "Phone",
+        icon: <FiPhone />,
+        value: conversation.conversation_call_number,
       });
     }
   
     if (conversation?.text) {
       contacts.push({
-        path: "#",
-        Icon: <BiMessageSquareDetail />,
-        title: conversation.conversation_text_number,
+        label: "Text",
+        icon: <BiMessageSquareDetail />,
+        value: conversation.conversation_text_number,
       });
     }
   
     if (conversation?.address) {
       contacts.push({
-        path: "#",
-        Icon: <TbMailDown />,
-        title: conversation.conversation_address,
+        label: "Address",
+        icon: <TbMailDown />,
+        value: conversation.conversation_address,
       });
     }
   
     contacts.push({
-      path: "#",
-      Icon: <PiChats />,
-      title: "Direct Form",
+      label: "Direct Form",
+      icon: <PiChats />,
+      value: "Direct Form",
     });
   
     return contacts;
