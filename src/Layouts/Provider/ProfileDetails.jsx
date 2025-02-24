@@ -171,6 +171,10 @@ function ProfileDetails() {
   );
 
   console.log("value", regularHours?.day_name);
+
+
+
+  
   return (
     <>
        {
@@ -283,7 +287,7 @@ function ProfileDetails() {
    
      
       <div className="mt-6">
-        <h2 className="text-lg font-medium myhead">About me </h2>
+        <h2 className="text-lg font-medium myhead">About {formdata?.user?.name} </h2>
         <p className="myblack mt-3">
           {
           formdata?.businessProfile[0]?.about
