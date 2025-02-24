@@ -20,6 +20,11 @@ const id = localStorage.getItem("id");
     conversation_text_number: "",
     conversation_email: "",
     conversation_address: "",
+    call: false,
+    text: false,
+    address: false,
+    chat: false,
+    form: false,
   });
 
   const [toggles, setToggles] = useState({
@@ -33,6 +38,10 @@ const id = localStorage.getItem("id");
     setToggles((prev) => ({
       ...prev,
       [field]: !prev[field],
+    }));
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [field]: !prevFormData[field],
     }));
   };
 
@@ -69,9 +78,9 @@ const id = localStorage.getItem("id");
         }
       );
 
-      toast.success("Password updated successfully!");
+      toast.success("Conversation added successfully!");
     } catch (error) {
-      toast.error("Failed to update password. Please try again.");
+      toast.error("Failed to add conversation. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -101,6 +110,7 @@ const id = localStorage.getItem("id");
 
       const data = {
         id: id,
+        toggles
       };
 
       try {

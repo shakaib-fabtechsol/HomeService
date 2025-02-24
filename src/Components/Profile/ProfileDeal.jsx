@@ -8,6 +8,8 @@ const ProfileDeal = () => {
   const [formdata, setFormData] = useState({ getDeal: [] });
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredServices, setFilteredServices] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,6 +65,17 @@ const ProfileDeal = () => {
       }))
     : [];
 
+  useEffect(() => {
+    const filteredServices = services.filter((service) =>
+      service.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredServices(filteredServices);
+  }, [searchQuery, services]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return (
     <>
       {loading || !isApiLoaded ? (
@@ -71,7 +84,7 @@ const ProfileDeal = () => {
         <div className="h-screen">
           <div className="mt-4">
             <div className="md:flex justify-between items-center">
-              <h2 className="text-2xl font-medium myhead">My Deals</h2>
+              <h2 className="text-2xl font-medium myhead">Our Deals</h2>
               <div className="flex border rounded-lg items-center px-2">
                 <label htmlFor="search">
                   <CiSearch className="me-2 text-xl" />
@@ -81,13 +94,14 @@ const ProfileDeal = () => {
                   type="search"
                   className="py-2 w-full focus:outline-none"
                   placeholder="Search"
+                  value={searchQuery}
+                  onChange={handleSearch}
                 />
               </div>
             </div>
-            {services.length > 0 ? (
+            {filteredServices.length > 0 ? (
               <div className="grid mt-4 grid-cols-1 md:grid-cols-3 gap-4">
-                {services.slice(0, 4).map((service, index) => (
-                  // Fixed height for each service card container
+                {filteredServices.slice(0, 4).map((service, index) => (
                   <div key={index} className="h-80">
                     <ServiceBox
                       image={service.image}
