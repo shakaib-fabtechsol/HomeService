@@ -22,8 +22,8 @@ import { PiChats } from "react-icons/pi";
 import { useLocation } from "react-router-dom";
 import Review from "../../Components/Profile/Review";
 import Social from "../../Components/Profile/AdditionalPhoto/Social";
+import RegularHour from "../../Components/Profile/AdditionalPhoto/RegularHour";
 import SpecialHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
-import RegularHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
 import Insurance from "../../Components/Profile/AdditionalPhoto/Insurance";
 import VehiclePhoto from "../../Components/Profile/AdditionalPhoto/VehiclePhoto";
 import FacilityPhoto from "../../Components/Profile/AdditionalPhoto/FacilityPhoto";
@@ -432,20 +432,6 @@ function ProfileDetails() {
                 </AccordionDetails>
               </Accordion>
               <Accordion
-                expanded={expanded === "SpecialHour"}
-                onChange={handleChange("SpecialHour")}
-              >
-                <AccordionSummary
-                  aria-controls={`SpecialHourd-content`}
-                  id={`SpecialHourd-header`}
-                >
-                  <h3 className="me-3">Regular Hours of Operation</h3>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <SpecialHour />
-                </AccordionDetails>
-              </Accordion>
-              <Accordion
                 expanded={expanded === "RegularHour"}
                 onChange={handleChange("RegularHour")}
               >
@@ -453,10 +439,24 @@ function ProfileDetails() {
                   aria-controls={`RegularHour-content`}
                   id={`RegularHour-header`}
                 >
-                  <h3 className="me-3">Special Hours of Operation</h3>
+                  <h3 className="me-3">Regular Hours of Operation</h3>
                 </AccordionSummary>
                 <AccordionDetails>
                   <RegularHour />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "SpecialHour"}
+                onChange={handleChange("SpecialHour")}
+              >
+                <AccordionSummary
+                  aria-controls={`SpecialHour-content`}
+                  id={`SpecialHour-header`}
+                >
+                  <h3 className="me-3">Special Hours of Operation</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <SpecialHour />
                 </AccordionDetails>
               </Accordion>
               <Accordion
