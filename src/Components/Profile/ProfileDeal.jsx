@@ -53,16 +53,8 @@ const ProfileDeal = () => {
         title: deal?.service_title || "No title available",
         price: deal?.flat_final_list_price || 0,
         description: truncateDescription(deal?.service_description, 5),
-        tags: deal?.search_tags
-          ? deal.search_tags
-              .split(",")
-              .slice(0, 2)
-              .map((tag) => ({
-                label: tag.trim(),
-                type: "primary",
-              }))
-          : [{ label: "No tags available", type: "secondary" }],
-      }))
+        category: deal?.service_category || "No category available",
+    }))
     : [];
 
   useEffect(() => {
@@ -108,7 +100,7 @@ const ProfileDeal = () => {
                       title={service.title}
                       price={service.price}
                       description={service.description}
-                      tags={service.tags}
+                      category={service.category}
                     />
                   </div>
                 ))}

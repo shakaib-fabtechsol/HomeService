@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const ServiceBox = ({ image, title, price, description, tags }) => {
+const ServiceBox = ({ image, title, price, description, category }) => {
   return (
     <div>
       <Link to="/provider/serviceDetails" className="border block px-3 py-3 rounded-lg">
@@ -10,19 +10,10 @@ const ServiceBox = ({ image, title, price, description, tags }) => {
           <h2 className="text-lg font-semibold">{title}</h2>
           <p className="mb-0 text-lg font-extrabold">{price}</p>
         </div>
-        <p className="text-sm text-[#535862] mt-3">{description.substring(0, 100)}...</p>
+       
         <div className="flex mt-7">
-          {tags.map((tag, index) => (
-            <p
-              key={index}
-              className={`px-3 py-1 font-semibold text-sm rounded-full me-2 ${tag.type === "primary"
-                    ? "text-[#0F91D2] bg-[#E7F4FB]"
-                    : "text-[#343434] bg-[#EBEBEB]"
-                }`}
-            >
-              {tag.label}
-            </p>
-          ))}
+         
+         {category}
         </div>
       </Link>
     </div>
