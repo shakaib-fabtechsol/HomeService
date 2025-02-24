@@ -247,9 +247,11 @@ function ProfileDetails() {
               />
               <div className="my-2">
                 <div className="flex items-center">
-                  <p className="font-semibold myhead me-2">
-                    {formdata?.businessProfile[0]?.business_name}
-                  </p>
+                  <Link to="/provider/ProfileDetails">
+                    <p className="font-semibold myhead me-2">
+                      {formdata?.businessProfile[0]?.business_name}
+                    </p>
+                  </Link>
                   <div className="flex ms-3">
                     <IoIosStar className="me-1 text-[#F8C600]" />
                     <div className="flex flex-wrap">

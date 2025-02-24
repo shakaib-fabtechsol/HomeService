@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useMemo} from "react";
 import { IoIosStar } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
@@ -24,6 +24,7 @@ import { useLocation } from "react-router-dom";
 import Review from "../../Components/Profile/Review";
 import Social from "../../Components/Profile/AdditionalPhoto/Social";
 import SpecialHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
+import RegularHour from "../../Components/Profile/AdditionalPhoto/RegularHour";
 import Insurance from "../../Components/Profile/AdditionalPhoto/Insurance";
 import VehiclePhoto from "../../Components/Profile/AdditionalPhoto/VehiclePhoto";
 import FacilityPhoto from "../../Components/Profile/AdditionalPhoto/FacilityPhoto";
@@ -87,10 +88,10 @@ function ProfileDetails() {
 
   const location = useLocation();
   const dealid = location.state?.dealid || "";
-  const [contactopen, setcontactOpen] = React.useState(false);
+  const [contactopen, setcontactOpen] = useState(false);
   const handlecontactOpen = () => setcontactOpen(true);
-   const [isApiLoaded,setIsApiLoaded]=useState(false);
-     const [loading, setLoading] = useState(false);
+  const [isApiLoaded, setIsApiLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handlecontactClose = () => setcontactOpen(false);
   const [formdata, setFormData] = useState(null);
 
@@ -111,7 +112,7 @@ function ProfileDetails() {
 
         console.log("API Response:", response.data);
         setFormData(response.data);
-        setIsApiLoaded(true); 
+        setIsApiLoaded(true);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -120,34 +121,15 @@ function ProfileDetails() {
 
     fetchData();
   }, []);
-
+  
+   
 
   const setting =
     formdata?.businessProfile?.[0]?.user_id || "No Data Available";
 
   console.log("User ID:", setting);
-  console.log("Complete Data:",formdata?.businessProfile[0]?.business_name);
-
-  const modalContacts = [
-    { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
-    {
-      path: "#",
-      Icon: <BiMessageSquareDetail />,
-      title: "Text Pro: (708) 813-8989",
-    },
-    {
-      path: "#",
-      Icon: <BiMessageAltDetail />,
-      title: "Instant Chat",
-    },
-    { path: "#", Icon: <TbMailDown />, title: "Email Pro" },
-    { path: "#", Icon: <PiChats />, title: "Direct Form" },
-    {
-      path: "#",
-      Icon: <IoLocationOutline />,
-      title: "Get Directions",
-    },
-  ];
+  console.log("Complete Data:", formdata?.businessProfile[0]?.business_name);
+  console.log(formdata?.conversation?.call, "valeeeee");
 
   const imagePath = formdata?.businessProfile[0]?.business_logo;
   const imageUrl = imagePath
@@ -169,12 +151,47 @@ function ProfileDetails() {
   const currentDayData = regularHours.find(
     (item) => item.day_name === currentDay
   );
-
-  console.log("value", regularHours?.day_name);
-
-
-
   
+
+  const modalContacts = useMemo(() => {
+    if (!formdata) return [];
+    const { conversation } = formdata;
+    const contacts = [];
+  
+    if (conversation?.call) {
+      contacts.push({
+        path: "#",
+        Icon: <FiPhone />,
+        title: conversation.conversation_call_number,
+      });
+    }
+  
+    if (conversation?.text) {
+      contacts.push({
+        path: "#",
+        Icon: <BiMessageSquareDetail />,
+        title: conversation.conversation_text_number,
+      });
+    }
+  
+    if (conversation?.address) {
+      contacts.push({
+        path: "#",
+        Icon: <TbMailDown />,
+        title: conversation.conversation_address,
+      });
+    }
+  
+    contacts.push({
+      path: "#",
+      Icon: <PiChats />,
+      title: "Direct Form",
+    });
+  
+    return contacts;
+  }, [formdata]);
+  
+
   return (
     <>
        {
@@ -198,7 +215,9 @@ function ProfileDetails() {
           />
           <div className="my-2">
             <div className="flex items-center">
+           
               <p className="font-semibold myhead me-2">
+              
               {formdata?.businessProfile[0]?.business_name}
               </p>
               <div className="flex ms-3">
@@ -269,7 +288,7 @@ function ProfileDetails() {
             <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
               <p className="text-lg font-semibold">Contact Pro</p>
               <div className="flex flex-col gap-3 mt-4">
-                {modalContacts.map((contact, index) => (
+             { modalContacts.map((contact, index) => (
                   <Link
                     key={index}
                     className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
@@ -298,6 +317,20 @@ function ProfileDetails() {
       <div className="additional">
         <h2 className="text-2xl lg:mt-3 md:mt-10 mt-4 font-semibold myhead">Additional Info</h2>
         <div>
+        <Accordion
+                expanded={expanded === "Video"}
+                onChange={handleChange("Video")}
+              >
+                <AccordionSummary
+                  aria-controls={`Video-content`}
+                  id={`Video-header`}
+                >
+                  <h3 className="me-3">About Us Video</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <VedioChannal />
+                </AccordionDetails>
+              </Accordion>
           <Accordion
             expanded={expanded === "Technicians"}
             onChange={handleChange("Technicians")}
@@ -397,19 +430,33 @@ function ProfileDetails() {
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "SpecialHour"}
-            onChange={handleChange("SpecialHour")}
-          >
-            <AccordionSummary
-              aria-controls={`SpecialHourd-content`}
-              id={`SpecialHourd-header`}
-            >
-              <h3 className="me-3">Special Hours of Operation</h3>
-            </AccordionSummary>
-            <AccordionDetails>
-              <SpecialHour />
-            </AccordionDetails>
-          </Accordion>
+                expanded={expanded === "RegularHour"}
+                onChange={handleChange("RegularHour")}
+              >
+                <AccordionSummary
+                  aria-controls={`RegularHour-content`}
+                  id={`RegularHour-header`}
+                >
+                  <h3 className="me-3">Regular Hours of Operation</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <RegularHour />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "SpecialHour"}
+                onChange={handleChange("SpecialHour")}
+              >
+                <AccordionSummary
+                  aria-controls={`SpecialHour-content`}
+                  id={`SpecialHour-header`}
+                >
+                  <h3 className="me-3">Special Hours of Operation</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <SpecialHour />
+                </AccordionDetails>
+              </Accordion>
           <Accordion
             expanded={expanded === "Socials"}
             onChange={handleChange("Socials")}
@@ -425,20 +472,7 @@ function ProfileDetails() {
             </AccordionDetails>
           </Accordion>
 
-          <Accordion
-            expanded={expanded === "Video"}
-            onChange={handleChange("Video")}
-          >
-            <AccordionSummary
-              aria-controls={`Video-content`}
-              id={`Video-header`}
-            >
-              <h3 className="me-3">Video</h3>
-            </AccordionSummary>
-            <AccordionDetails>
-              <VedioChannal />
-            </AccordionDetails>
-          </Accordion>
+          
         </div>
       </div>
      

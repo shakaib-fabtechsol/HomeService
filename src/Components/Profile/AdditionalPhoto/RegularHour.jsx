@@ -24,28 +24,6 @@ const RegularHour = () => {
 
         setFormData(response.data?.businessProfile[0]?.special_hour);
 
-        let formattedScheduleSpecial = [];
-        if (response.data?.businessProfile[0]?.special_hour) {
-          formattedScheduleSpecial =
-            typeof response.data?.businessProfile[0]?.special_hour === "string"
-              ? JSON.parse(response.data?.businessProfile[0]?.special_hour)
-              : response.data?.businessProfile[0]?.special_hour;
-        }
-        console.log("Formatted Schedule Special:", formattedScheduleSpecial);
-        const transformedScheduleSpecial = formattedScheduleSpecial.map(
-          (item) => ({
-            dayName: item.text,
-            time: item.date || "",
-            closed: item.closed === "closed",
-            is247Open: item.is247Open === "true",
-          })
-        );
-
-        console.log(
-          "Transformed Schedule Special:",
-          transformedScheduleSpecial
-        );
-        setSpecialHours(transformedScheduleSpecial);
 
         let formattedScheduleRegular = [];
         if (response.data?.businessProfile[0]?.regular_hour) {
@@ -75,8 +53,10 @@ const RegularHour = () => {
 
     fetchData();
   }, []);
+  console.log("regularHours",regularHours)
   return (
     <>
+
       {regularHours.length > 0 ? (
         regularHours.map((row, index) => (
           <div key={index} className="py-5 border-b border-[#E9EAEB]">

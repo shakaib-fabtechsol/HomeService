@@ -266,12 +266,18 @@ const MediaUpload = ({ serviceId, setValue }) => {
             <img
               src={filePreview}
               alt="Preview"
-              className="rounded-lg border w-[200px]"
+              className="rounded-lg border h-[300px] w-[300px]"
             />
           </div>
         )}
 
         <div className="col-span-12 mt-4 flex justify-end gap-4">
+        <button
+            type="reset"
+            className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+          >
+            Cancel
+          </button>
           <input
             type="text"
             id="Flatr"
@@ -295,12 +301,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
           >
             {publishLoading ? "Publishing..." : "Publish"}
           </button>
-          <button
-            type="reset"
-            className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
-          >
-            Cancel
-          </button>
+         
           <button
             type="submit"
             className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
@@ -308,7 +309,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
             }`}
             disabled={loading}
           >
-            {loading ? "Saving..." :"Save & Next"}
+            {loading ? "Saving..." : "Save & Next"}
           </button>
         </div>
       </form>

@@ -518,6 +518,12 @@ const ServiceArea = () => {
       )}
 
       <div className="col-span-12 mt-4 flex justify-end gap-4">
+      <button
+            onClick={resetForm}
+            className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+          >
+            Cancel
+          </button>
         <input
           type="text"
           id="Flatr"
@@ -541,12 +547,7 @@ const ServiceArea = () => {
         >
           {publishLoading ? "Publishing..." : "Publish"}
         </button>
-        <button
-          onClick={resetForm}
-          className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
-        >
-          Cancel
-        </button>
+       
         <button
           type="submit"
           className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
