@@ -148,36 +148,38 @@ function ProfileDetails() {
   const currentDayData = regularHours.find(
     (item) => item.day_name === currentDay
   );
-console.log("formdata",formdata?.businessProfile[0])
+
   const modalContacts = useMemo(() => {
-    if (!formdata || !formdata.businessProfile[0]) return [];
-    const {businessProfile } = formdata;
-    const contacts = [];
+    if (!formdata || !formdata.businessProfile || !formdata.businessProfile[0]) {
+      return [];
+    }
   
-    if (businessProfile?.call) {
+    const businessProfile = formdata.businessProfile[0];
+    const contacts = [];
+    if (businessProfile.call === "true" && businessProfile.conversation_call_number) {
       contacts.push({
         title: "Phone",
         Icon: <FiPhone />,
-        path: `/call/${businessProfile[0].conversation_call_number}`,
+        path: `/call/${businessProfile.conversation_call_number}`,
       });
     }
-  
-    if (businessProfile?.text) {
+   
+    if (businessProfile.text === "true" && businessProfile.conversation_text_number) {
       contacts.push({
         title: "Text",
         Icon: <BiMessageSquareDetail />,
         path: `/text/${businessProfile.conversation_text_number}`,
       });
     }
-  
-    if (businessProfile?.address) {
+   
+    if (businessProfile.address === "true" && businessProfile.conversation_address) {
       contacts.push({
         title: "Address",
         Icon: <TbMailDown />,
         path: `/address/${businessProfile.conversation_address}`,
       });
     }
-  
+   
     contacts.push({
       title: "Direct Form",
       Icon: <PiChats />,
@@ -185,7 +187,7 @@ console.log("formdata",formdata?.businessProfile[0])
     });
   
     return contacts;
-  }, [formdata]);
+  }, [formdata?.businessProfile[0]]);
 
   return (
     <>
