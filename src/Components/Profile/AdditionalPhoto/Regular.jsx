@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const SpecialHour = () => {
+const RegularHour = () => {
   const [formData, setFormData] = useState(null);
-  const [specialHours, setSpecialHours] = useState([]);
+    const [specialHours, setSpecialHours] = useState([]);
+   
   const [regularHours, setRegularHours] = useState([]);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -77,10 +77,9 @@ const SpecialHour = () => {
 
     fetchData();
   }, []);
-
   return (
     <>
-      {/* <div>
+      <div>
         <h2 className="text-lg font-semibold mb-3">Special Hours</h2>
         {specialHours.length > 0 ? (
           specialHours.map((row, index) => (
@@ -100,9 +99,9 @@ const SpecialHour = () => {
         ) : (
           <p className="text-gray-500">No special hours available.</p>
         )}
-      </div> */}
+      </div>
       <div className="mt-5">
-        <h2 className="text-lg font-semibold mb-3">Regular Hours</h2>
+        <h2 className="text-lg font-semibold mb-3">Special Hours</h2>
         {regularHours.length > 0 ? (
           regularHours.map((row, index) => (
             <div key={index} className="py-5 border-b border-[#E9EAEB]">
@@ -136,5 +135,4 @@ const SpecialHour = () => {
   );
 };
 
-export default SpecialHour;
-``;
+export default RegularHour;

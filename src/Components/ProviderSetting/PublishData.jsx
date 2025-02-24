@@ -23,6 +23,7 @@ import { useLocation } from "react-router-dom";
 import Review from "../../Components/Profile/Review";
 import Social from "../../Components/Profile/AdditionalPhoto/Social";
 import SpecialHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
+import RegularHour from "../../Components/Profile/AdditionalPhoto/SpecialHour";
 import Insurance from "../../Components/Profile/AdditionalPhoto/Insurance";
 import VehiclePhoto from "../../Components/Profile/AdditionalPhoto/VehiclePhoto";
 import FacilityPhoto from "../../Components/Profile/AdditionalPhoto/FacilityPhoto";
@@ -247,7 +248,7 @@ function ProfileDetails() {
               <div className="my-2">
                 <div className="flex items-center">
                   <p className="font-semibold myhead me-2">
-                    {formdata?.businessProfile[0]?.bussiness_name}
+                    {formdata?.businessProfile[0]?.business_name}
                   </p>
                   <div className="flex ms-3">
                     <IoIosStar className="me-1 text-[#F8C600]" />
@@ -438,10 +439,24 @@ function ProfileDetails() {
                   aria-controls={`SpecialHourd-content`}
                   id={`SpecialHourd-header`}
                 >
-                  <h3 className="me-3">Special Hours of Operation</h3>
+                  <h3 className="me-3">Regular Hours of Operation</h3>
                 </AccordionSummary>
                 <AccordionDetails>
                   <SpecialHour />
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded === "RegularHour"}
+                onChange={handleChange("RegularHour")}
+              >
+                <AccordionSummary
+                  aria-controls={`RegularHour-content`}
+                  id={`RegularHour-header`}
+                >
+                  <h3 className="me-3">Special Hours of Operation</h3>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <RegularHour />
                 </AccordionDetails>
               </Accordion>
               <Accordion
