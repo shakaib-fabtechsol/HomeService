@@ -3,16 +3,16 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import Loader from "../../Components/MUI/Loader";
-
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function BasicInfo({ setServiceId, setValue }) {
   const [tags, setTags] = useState([]);
   const { dealid } = useParams();
-  console.log("idddd", dealid);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [publishValue, setPublishValue] = useState(1);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [formData, setFormData] = useState({
     id: "",
@@ -41,21 +41,25 @@ function BasicInfo({ setServiceId, setValue }) {
   const handleAddTag = (e) => {
     if (e.key === "Enter" && inputValue.trim() !== "") {
       e.preventDefault();
-
       if (!tags.includes(inputValue.trim())) {
-        setTags([...tags, inputValue.trim()]);
+        const newTags = [...tags, inputValue.trim()];
+        setTags(newTags);
         setFormData({
           ...formData,
-          search_tags: [...tags, inputValue.trim()].join(","),
+          search_tags: newTags.join(","),
         });
       }
-
       setInputValue("");
     }
   };
 
   const handleRemoveTag = (index) => {
-    setTags(tags.filter((_, i) => i !== index));
+    const newTags = tags.filter((_, i) => i !== index);
+    setTags(newTags);
+    setFormData({
+      ...formData,
+      search_tags: newTags.join(","),
+    });
   };
 
   const handleFocus = (e) => {
@@ -69,7 +73,6 @@ function BasicInfo({ setServiceId, setValue }) {
       e.preventDefault();
       const bullet = "• ";
       const { selectionStart, selectionEnd, value } = e.target;
-
       const newValue =
         value.substring(0, selectionStart) +
         "\n" +
@@ -86,7 +89,6 @@ function BasicInfo({ setServiceId, setValue }) {
   useEffect(() => {
     if (dealid) {
       const token = localStorage.getItem("token");
-
       if (!token) {
         console.error("No authentication token found. Please log in.");
         return;
@@ -99,7 +101,6 @@ function BasicInfo({ setServiceId, setValue }) {
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
           console.log("BasicInfo:", BasicInfo);
-
           setFormData({
             id: BasicInfo.id || "",
             service_title: BasicInfo.service_title || "",
@@ -110,7 +111,6 @@ function BasicInfo({ setServiceId, setValue }) {
             service_description: BasicInfo.service_description || "",
             fine_print: BasicInfo.fine_print || "",
           });
-
           setTags(
             BasicInfo.search_tags ? BasicInfo.search_tags.split(",") : []
           );
@@ -126,21 +126,17 @@ function BasicInfo({ setServiceId, setValue }) {
     }
   }, [dealid]);
 
-  console.log("value", formData?.id);
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
-
     setLoading(true);
-
     const token = localStorage.getItem("token");
     if (!token) {
       toast.error("No token found. Please log in.");
-
       return;
     }
 
-    const formData = {
+    const submitData = {
       service_title: e.target.Title.value,
       commercial: e.target.Commercial.checked ? 1 : 0,
       residential: e.target.Residential.checked ? 1 : 0,
@@ -152,8 +148,7 @@ function BasicInfo({ setServiceId, setValue }) {
 
     try {
       let response;
-      const updatedFormData = { ...formData };
-
+      const updatedFormData = { ...submitData };
       if (dealid) {
         updatedFormData.id = dealid;
       }
@@ -164,13 +159,10 @@ function BasicInfo({ setServiceId, setValue }) {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       console.log(response);
-
       if (response.status === 200) {
         console.log("Service ID:", response.data.deal.id);
         setServiceId(response.data.deal.id);
-
         Swal.fire({
           icon: "success",
           title: dealid ? "Updated Successfully!" : "Created Successfully!",
@@ -181,13 +173,11 @@ function BasicInfo({ setServiceId, setValue }) {
         }).then(() => {
           setValue(1);
         });
-
         e.target.reset();
         setTags([]);
       }
     } catch (error) {
       console.error("Error:", error);
-
       Swal.fire({
         icon: "error",
         title: dealid ? "Update Failed" : "Submission Failed",
@@ -197,6 +187,34 @@ function BasicInfo({ setServiceId, setValue }) {
       setLoading(false);
     }
   };
+
+  const handlePublish = async () => {
+    if (publishLoading) return;
+    setPublishLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("No token found. Please log in.");
+      setPublishLoading(true);
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.status === 200) {
+        setFormData((prev) => ({ ...prev, publish: publishValue }));
+        toast.success("Published successfully!");
+        setPublishValue(1);
+      }
+    } catch (error) {
+      console.error("Error publishing deal:", error);
+      toast.error("Failed to publish. Please try again.");
+    } finally {
+      setPublishLoading(false);
+    }
+  };
+
   return (
     <>
       {dealid && !isApiLoaded ? (
@@ -383,21 +401,47 @@ function BasicInfo({ setServiceId, setValue }) {
                 </div>
               </div>
 
-              <div className="col-span-12 mt-4 flex justify-end">
+              <div className="col-span-12 mt-4 flex justify-end gap-4">
+                <input
+                  type="text"
+                  id="Flatr"
+                  defaultValue={formData?.id ? `${formData?.id}` : "0"}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <input
+                  type="text"
+                  id="publish"
+                  value={publishValue}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <button
+                  type="button"
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    publishLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={handlePublish}
+                  disabled={publishLoading}
+                >
+                  {publishLoading ? "Publishing..." : "Publish"}
+                </button>
                 <button
                   type="reset"
-                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white me-4"
+                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
                 >
+                  
                   Cancel
                 </button>
                 <button
                   type="submit"
+
                   className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
                     loading ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   disabled={loading}
                 >
-                  {loading ? "Saving..." : "Save"}
+                  {loading ? "Saving..." : "Save & Next"}
                 </button>
               </div>
             </div>

@@ -526,9 +526,10 @@ function ServiceDetail() {
               "No description available."}
           </p>
           <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-          <p className="mt-2 myblack">
-            {serviceDetails[0]?.fine_print || "No description available."}
-          </p>
+          <p className="mt-2 myblack whitespace-pre-line">
+  {serviceDetails[0]?.fine_print || "No description available."}
+</p>
+
         </div>
       </div>
     </div>

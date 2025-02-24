@@ -729,8 +729,8 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                 Deal Description
               </h2>
               <p className="mt-2 myblack">{formdata.service_description}</p>
-              <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-              <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
+              <h2 className="mt-4 text-xl myhead font-semibold ">Fine Print</h2>
+              <ul className="mt-4 myblack text-sm list-disc space-y-1 whitespace-pre-line pl-5">
                 {formdata.fine_print}
               </ul>
             </div>

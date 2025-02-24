@@ -11,9 +11,10 @@ import Swal from "sweetalert2";
 const PricingPackaging = ({ serviceId, setValue }) => {
   const navigate = useNavigate();
   const [isApiLoaded, setIsApiLoaded] = useState(false);
-  const { dealid } = useParams();
-
   const [loading, setLoading] = useState(false);
+  const [publishValue, setPublishValue] = useState(1);
+  const [publishLoading, setPublishLoading] = useState(false);
+  const { dealid } = useParams();
   const [formdata, setFormData] = useState({
     id: "",
     pricing_model: "",
@@ -431,11 +432,37 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       }, 0);
     }
   };
-
-  // Generic handler for setting a bullet when the field gains focus.
+  
   const handleBulletFocus = (fieldName) => (e) => {
     if (!formdata[fieldName] || formdata[fieldName].trim() === "") {
       setFormData((prev) => ({ ...prev, [fieldName]: "• " }));
+    }
+  };
+
+  const handlePublish = async () => {
+    if (publishLoading) return;
+    setPublishLoading(true);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("No token found. Please log in.");
+      setPublishLoading(true);
+      return;
+    }
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      if (response.status === 200) {
+        setFormData((prev) => ({ ...prev, publish: publishValue }));
+        toast.success("Published successfully!");
+        setPublishValue(1);
+      }
+    } catch (error) {
+      console.error("Error publishing deal:", error);
+      toast.error("Failed to publish. Please try again.");
+    } finally {
+      setPublishLoading(false);
     }
   };
 
@@ -470,7 +497,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       onChange={handleRateChange}
                       checked={formdata.pricing_model === "Flat"}
                     />
-                    <label htmlFor="Flat">Flat Rate</label>
+                    <label htmlFor="Flat">Fixed Rate</label>
+                   
                   </div>
 
                   <div className="flex me-8">
@@ -506,12 +534,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   <div className="col-span-12 lg:col-span-7 mt-4">
                     <div className="flex flex-col">
                       <label htmlFor="Flatr" className="font-semibold">
-                        Flat Rate Price
+                        Fixed Rate Price
                       </label>
+                     
                       <input
                         type="text"
                         id="flat_rate_price"
-                        placeholder="Enter price"
+                        placeholder="Fixed Rate price should be 200%"
                         value={formatCurrency(formdata.flat_rate_price || "")}
                         onChange={(e) =>
                           handleInputChange(e, "flat_rate_price")
@@ -530,7 +559,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       <input
                         type="text"
                         id="flat_by_now_discount"
-                        placeholder="10 %"
+                        placeholder="By Now Discount 10%"
                         value={formatCurrency(
                           formdata.flat_by_now_discount,
                           "flat_by_now_discount"
@@ -549,10 +578,11 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       <label htmlFor="Finalp" className="font-semibold">
                         Final List Price
                       </label>
+                    
                       <input
                         type="text"
                         id="flat_final_list_price"
-                        placeholder="%90"
+                        placeholder="Final List Price 180%"
                         value={formatCurrency(
                           formdata.flat_final_list_price || ""
                         )}
@@ -602,7 +632,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       <input
                         type="text"
                         id="hourly_rate"
-                        placeholder="$25/hour"
+                        placeholder="Hour rate should be$25/hour"
                         value={formatCurrency(formdata.hourly_rate || "")}
                         onChange={(e) =>
                           handleHourlyInputChange(e, "hourly_rate")
@@ -621,7 +651,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       <input
                         type="text"
                         id="discount"
-                        placeholder="10 %"
+                        placeholder="By Now Discount 10 %"
                         value={formatCurrency(formdata.discount, "discount")}
                         onChange={(e) => handleHourlyInputChange(e, "discount")}
                         className="myinput focus-none"
@@ -640,7 +670,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       <input
                         type="text"
                         id="hourly_final_list_price"
-                        placeholder="$90"
+                        placeholder="Final List Price should be $22.25"
                         value={formatCurrency(
                           formdata.hourly_final_list_price || ""
                         )}
@@ -749,7 +779,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$50"
+                                placeholder="Should be $50"
                                 id="price1"
                                 onChange={(e) =>
                                   handlePriceInputChange(e, "price1")
@@ -768,7 +798,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="10 %"
+                                placeholder=" Buy Now Discount 10 %"
                                 id="by_now_discount1"
                                 onChange={(e) =>
                                   handlePriceInputChange(e, "by_now_discount1")
@@ -790,7 +820,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$90"
+                                placeholder="  Final List Price $45"
                                 id="final_list_price1"
                                 value={formatCurrency(
                                   formdata.final_list_price1 || ""
@@ -895,7 +925,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$50"
+                                placeholder="Should be $100"
                                 id="price2"
                                 onChange={(e) =>
                                   handlePriceInputChanged(e, "price2")
@@ -913,7 +943,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="10 %"
+                                placeholder="  buy now discount 10%"
                                 id="by_now_discount2"
                                 onChange={(e) =>
                                   handlePriceInputChanged(e, "by_now_discount2")
@@ -934,7 +964,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$90"
+                                placeholder=" final list price $90"
                                 id="final_list_price2"
                                 onChange={(e) =>
                                   handlePriceInputChanged(
@@ -1041,7 +1071,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$50"
+                                placeholder="should be $200"
                                 id="price3"
                                 onChange={(e) => handlePriceInput(e, "price3")}
                                 value={formatCurrency(formdata.price3 || "")}
@@ -1057,7 +1087,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="10 %"
+                                placeholder="buy now discount 10 %"
                                 id="by_now_discount3"
                                 onChange={(e) =>
                                   handlePriceInput(e, "by_now_discount3")
@@ -1078,7 +1108,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                               <input
                                 className="shadow-[0px_1px_2px_0px_#1018280D] py-2 mt-1 px-3 bg-white border border-[#D0D5DD] rounded-[8px] focus:outline-none"
                                 type="text"
-                                placeholder="$90"
+                                placeholder="final list price $90"
                                 id="final_list_price3"
                                 onChange={(e) =>
                                   handlePriceInput(e, "final_list_price3")
@@ -1129,23 +1159,47 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                   </div>
                 </>
               )}
-              <div className="col-span-12 mt-4">
-                <div className="flex justify-end">
-                  <button
-                    type="button"
-                    className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-                    onClick={() => setSelectedRate("")}
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="border border-[#0F91D2] rounded-lg w-[150px] py-[10px] text-[#ffffff] font-semibold bg-[#0F91D2]"
-                  >
-                    {loading ? "Saving..." : "Save"}
-                  </button>
-                </div>
+
+              <div className="col-span-12 mt-4 flex justify-end gap-4">
+                <input
+                  type="text"
+                  id="Flatr"
+                  defaultValue={formdata?.id ? `${formdata?.id}` : "0"}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <input
+                  type="text"
+                  id="publish"
+                  value={publishValue}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <button
+                  type="button"
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    publishLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={handlePublish}
+                  disabled={publishLoading}
+                >
+                  {publishLoading ? "Publishing..." : "Publish"}
+                </button>
+                <button
+                  type="reset"
+                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save & Next"}
+                </button>
               </div>
             </div>
           </form>
