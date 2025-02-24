@@ -477,7 +477,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                       <div className="flex">
                         <Link to="/provider/ProfileDetails">
                         <p className="font-semibold myhead me-2">
-                          {provider?.businessProfile[0]?.business_name}
+                          {provider.businessProfile?.business_name}
                         </p>
                         </Link>
                         <div className="flex">
