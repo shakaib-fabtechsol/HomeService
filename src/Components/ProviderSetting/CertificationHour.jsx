@@ -3,6 +3,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import SettingsPreview from "../MUI/SettingsPreview";
 import { FaTrash } from "react-icons/fa6";
 import axios from "axios";
+import Swal from "sweetalert2";
 import profileImg from "../../assets/img/service3.png";
 import Loader from "../../Components/MUI/Loader";
 import { toast } from "react-toastify";
@@ -11,6 +12,8 @@ const CertificationHour = () => {
   const userId = localStorage.getItem("id");
   console.log("userID", userId);
   const [loading, setLoading] = useState(false);
+     const [publishValue, setPublishValue] = useState(1);
+      const [publishLoading, setPublishLoading] = useState(false);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -270,6 +273,72 @@ const CertificationHour = () => {
       toast.error("Failed to update profile. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    if (publishLoading) return;
+   
+    const userId = localStorage.getItem("id");
+    if (!userId) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Service ID is required!",
+      });
+      return;
+    }
+
+    setPublishLoading(true)
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No token found. Please log in.",
+      });
+      setPublishLoading(false)
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("API Response:", response.data);
+
+      if (response.status === 200) {
+        setFormData((prev) => ({ ...prev, publish: response.data.publish }));
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Setting Publish successfully.",
+          confirmButtonColor: "#0F91D2",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: response.data.message || "Failed to update deal.",
+          confirmButtonColor: "#D33",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating deal:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error updating the deal.",
+      });
+    } finally {
+      setPublishLoading(false);
     }
   };
 
@@ -580,23 +649,49 @@ const CertificationHour = () => {
               </div>
             </div>
 
-            <div className="flex justify-end mt-4">
-              <button
-                type="reset"
-                className="border border-[#cdcdcd] rounded-lg w-[150px] py-[10px] me-4 font-semibold bg-[#ffffff]"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-                disabled={loading}
-              >
-                {loading ? "Saving..." : "Save"}
-              </button>
-            </div>
+            <div className="col-span-12 mt-4 flex justify-end gap-4">
+                <input
+                  type="text"
+                  id="Flatr"
+                  defaultValue={formData?.id ? `${formData?.id}` : "0"}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <input
+                  type="text"
+                  id="publish"
+                  value={publishValue}
+                  className="focus-none border hidden"
+                  readOnly
+                />
+                <button
+                  type="button"
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    publishLoading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  onClick={handlePublish}
+                  disabled={publishLoading}
+                >
+                  {publishLoading ? "Publishing..." : "Publish"}
+                </button>
+                <button
+                  type="reset"
+                  className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
+                >
+                  
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+
+                  className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+                    loading ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                  disabled={loading}
+                >
+                  {loading ? "Saving..." : "Save"}
+                </button>
+              </div>
           </div>
         </form>
       )}

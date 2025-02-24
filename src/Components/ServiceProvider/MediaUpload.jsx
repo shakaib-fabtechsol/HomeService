@@ -5,18 +5,21 @@ import upload from "../../assets/img/upload.png";
 import { useParams } from "react-router-dom";
 import fileicon from "../../assets/img/fileicon.png";
 import Loader from "../../Components/MUI/Loader";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
 
 const MediaUpload = ({ serviceId, setValue }) => {
-  const {dealid} =useParams()
-  const id=localStorage.getItem("id");
+  const { dealid } = useParams();
+  const id = localStorage.getItem("id");
   const [loading, setLoading] = useState(false);
-    const [isApiLoaded, setIsApiLoaded] = useState(false);
+  const [publishValue, setPublishValue] = useState(1);
+  const [publishLoading, setPublishLoading] = useState(false);
+  const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [file, setFile] = useState(null);
-  
+
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-console.log("preview",filePreview);
+  console.log("preview", filePreview);
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
@@ -52,24 +55,23 @@ console.log("preview",filePreview);
   useEffect(() => {
     if (dealid) {
       const token = localStorage.getItem("token");
-  
+
       if (!token) {
         console.error("No authentication token found. Please log in.");
         return;
       }
-  
+
       axios
         .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(async (response) => {
           const BasicInfo = response?.data?.deal?.[0];
-  
+
           if (BasicInfo?.image) {
             try {
-             
-              const imagePath = BasicInfo?.image; 
-              const imageUrl =  `https://homeservice.thefabulousshow.com/uploads/${imagePath}`;
+              const imagePath = BasicInfo?.image;
+              const imageUrl = `https://homeservice.thefabulousshow.com/uploads/${imagePath}`;
               setFilePreview(imageUrl);
               setShowPreview(true);
               setIsApiLoaded(true);
@@ -78,7 +80,6 @@ console.log("preview",filePreview);
               console.error("Error fetching or converting image:", error);
             }
           }
-
         })
         .catch((error) => {
           console.error("Error fetching deal data:", error);
@@ -88,9 +89,6 @@ console.log("preview",filePreview);
         });
     }
   }, [dealid]);
-  
-  
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -103,7 +101,7 @@ console.log("preview",filePreview);
       setLoading(false);
       return;
     }
-   
+
     if (
       file &&
       !["image/svg+xml", "image/png", "image/jpeg"].includes(file.type)
@@ -175,9 +173,27 @@ console.log("preview",filePreview);
     console.log("📦 MediaUpload Received Service ID:", serviceId);
   }, [serviceId]);
 
+  const handlePublish = async () => {
+    setPublishLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.get(
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      toast.success("Deal published successfully!");
+    } catch (error) {
+      toast.error("Error publishing the deal.");
+    } finally {
+      setPublishLoading(false);
+    }
+  };
+
   return (
     <div>
-    
       <form onSubmit={handleFormSubmit}>
         <input
           type="text"
@@ -255,23 +271,47 @@ console.log("preview",filePreview);
           </div>
         )}
 
-        <div className="col-span-12 mt-4 flex justify-end">
+        <div className="col-span-12 mt-4 flex justify-end gap-4">
+          <input
+            type="text"
+            id="Flatr"
+            className="focus-none border hidden"
+            readOnly
+          />
+          <input
+            type="text"
+            id="publish"
+            value={publishValue}
+            className="focus-none border hidden"
+            readOnly
+          />
           <button
             type="button"
-            className="border rounded-lg w-[150px] py-[10px] mr-4 font-semibold bg-white"
+            className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+              publishLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            onClick={handlePublish}
+            disabled={publishLoading}
+          >
+            {publishLoading ? "Publishing..." : "Publish"}
+          </button>
+          <button
+            type="reset"
+            className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
           >
             Cancel
           </button>
           <button
             type="submit"
+            className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             disabled={loading}
-            className="border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2]"
           >
-            {loading ? "Saving..." : "Save"}
+            {loading ? "Saving..." :"Save & Next"}
           </button>
         </div>
       </form>
-     
     </div>
   );
 };

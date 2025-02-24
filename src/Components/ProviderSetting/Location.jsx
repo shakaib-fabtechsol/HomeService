@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
 import Slider from "@mui/material/Slider";
+import Swal from "sweetalert2";
 import Loader from "../../Components/MUI/Loader";
 import {
   LoadScript,
@@ -22,6 +23,9 @@ const ServiceArea = () => {
   const [serviceType, setServiceType] = useState("location");
   const [location, setLocation] = useState("");
   const [locations, setLocations] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [publishValue, setPublishValue] = useState(1);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [isBulk, setIsBulk] = useState(false);
   const [bulkText, setBulkText] = useState("");
@@ -29,8 +33,7 @@ const ServiceArea = () => {
   const [value2, setValue2] = useState(10);
   const [lat, setLat] = useState(31.5204);
   const [lng, setLng] = useState(74.3587);
-  
-  const [loading, setLoading] = useState(false);
+
   const [map, setMap] = useState(null);
   const businessAutoCompleteRef = useRef(null);
 
@@ -213,7 +216,7 @@ const ServiceArea = () => {
     if (map && serviceType === "radius" && lat && lng) {
       const circle = new window.google.maps.Circle({
         center: { lat, lng },
-        radius: value2 * 1609.34, 
+        radius: value2 * 1609.34,
       });
       const bounds = circle.getBounds();
       map.setOptions({
@@ -232,7 +235,70 @@ const ServiceArea = () => {
     lat: typeof lat === "number" && !isNaN(lat) ? lat : 31.5204,
     lng: typeof lng === "number" && !isNaN(lng) ? lng : 74.3587,
   };
-  
+  const handlePublish = async (e) => {
+    e.preventDefault();
+    if (publishLoading) return;
+
+    const userId = localStorage.getItem("id");
+    if (!userId) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Service ID is required!",
+      });
+      return;
+    }
+
+    setPublishLoading(true);
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No token found. Please log in.",
+      });
+      setPublishLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(
+        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      console.log("API Response:", response.data);
+
+      if (response.status === 200) {
+        setLocations((prev) => ({ ...prev, publish: response.data.publish }));
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Setting Publish successfully.",
+          confirmButtonColor: "#0F91D2",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: response.data.message || "Failed to update deal.",
+          confirmButtonColor: "#D33",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating deal:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "There was an error updating the deal.",
+      });
+    } finally {
+      setPublishLoading(false);
+    }
+  };
 
   const renderFormContent = () => (
     <>
@@ -431,9 +497,9 @@ const ServiceArea = () => {
             zoom={10}
             mapContainerStyle={{ width: "100%", height: "400px" }}
           >
-          {(typeof lat === "number" && typeof lng === "number") && (
-  <Marker position={{ lat, lng }} />
-)}
+            {typeof lat === "number" && typeof lng === "number" && (
+              <Marker position={{ lat, lng }} />
+            )}
             {serviceType === "radius" && (
               <Circle
                 center={{ lat, lng }}
@@ -451,32 +517,45 @@ const ServiceArea = () => {
         </div>
       )}
 
-      <div className="flex justify-end mt-12">
-        <Button
-          type="reset"
+      <div className="col-span-12 mt-4 flex justify-end gap-4">
+        <input
+          type="text"
+          id="Flatr"
+          className="focus-none border hidden"
+          readOnly
+        />
+        <input
+          type="text"
+          id="publish"
+          value={publishValue}
+          className="focus-none border hidden"
+          readOnly
+        />
+        <button
+          type="button"
+          className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+            publishLoading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+          onClick={handlePublish}
+          disabled={publishLoading}
+        >
+          {publishLoading ? "Publishing..." : "Publish"}
+        </button>
+        <button
           onClick={resetForm}
-          variant="outlined"
-          sx={{ width: "150px", py: "10px", mr: 2 }}
+          className="border border-gray-300 rounded-lg w-[150px] py-[10px] font-semibold bg-white"
         >
           Cancel
-        </Button>
-        <Button
+        </button>
+        <button
           type="submit"
-          variant="contained"
-          sx={{
-            width: "150px",
-            py: "10px",
-            backgroundColor: "#0F91D2",
-            fontWeight: "bold",
-            "&:disabled": {
-              opacity: 0.5,
-              cursor: "not-allowed",
-            },
-          }}
+          className={`border rounded-lg w-[150px] py-[10px] text-white font-semibold bg-[#0F91D2] ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           disabled={loading}
         >
           {loading ? "Saving..." : "Save"}
-        </Button>
+        </button>
       </div>
     </>
   );

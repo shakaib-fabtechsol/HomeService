@@ -39,7 +39,6 @@ const MyDetail = () => {
     return errors;
   };
 
-  // Publish handler to update publish setting (0 -> 1)
   const handlePublish = async () => {
     if (loading) return;
 
@@ -81,7 +80,7 @@ const MyDetail = () => {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Setting updated successfully.",
+          text: "Setting Publish successfully.",
           confirmButtonColor: "#0F91D2",
         });
       } else {
@@ -479,6 +478,8 @@ const MyDetail = () => {
                 >
                   Cancel
                 </Button>
+
+                
                 <button
                   type="button"
                   onClick={handlePublish}
