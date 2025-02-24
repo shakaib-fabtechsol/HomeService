@@ -4,7 +4,6 @@ import axios from "axios";
 const SpecialHour = () => {
   const [formData, setFormData] = useState(null);
   const [specialHours, setSpecialHours] = useState([]);
-  const [regularHours, setRegularHours] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -80,58 +79,24 @@ const SpecialHour = () => {
 
   return (
     <>
-      {/* <div>
-        <h2 className="text-lg font-semibold mb-3">Special Hours</h2>
-        {specialHours.length > 0 ? (
-          specialHours.map((row, index) => (
-            <div key={index} className="py-5 border-b border-[#E9EAEB]">
-              <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                <div className="flex gap-3 items-center">
-                  <div>
-                    <p className="font-medium text-[#343434]">{row.dayName}</p>
-                  </div>
-                </div>
-                <div className="ms-auto text-right">
-                  <p className="font-semibold">{row.time}</p>
+      {specialHours.length > 0 ? (
+        specialHours.map((row, index) => (
+          <div key={index} className="py-5 border-b border-[#E9EAEB]">
+            <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
+              <div className="flex gap-3 items-center">
+                <div>
+                  <p className="font-medium text-[#343434]">{row.dayName}</p>
                 </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No special hours available.</p>
-        )}
-      </div> */}
-      <div className="mt-5">
-        <h2 className="text-lg font-semibold mb-3">Regular Hours</h2>
-        {regularHours.length > 0 ? (
-          regularHours.map((row, index) => (
-            <div key={index} className="py-5 border-b border-[#E9EAEB]">
-              <div className="flex items-center flex-wrap gap-3 justify-between py-3 px-4 bg-[#FAFAFA] min-h-[60px] rounded-[8px]">
-                <div className="flex gap-3 items-center">
-                  <div>
-                    <p className="font-medium text-[#343434]">{row.dayName}</p>
-                  </div>
-                </div>
-                <div className="ms-auto text-right">
-                  {row.dayStatus === "open" ? (
-                    <div>
-                      {row?.regularHour?.map((hour, index) => (
-                        <p key={index} className="font-semibold">
-                          {hour.start_time} - {hour.end_time}
-                        </p>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="font-semibold">Closed</p>
-                  )}
-                </div>
+              <div className="ms-auto text-right">
+                <p className="font-semibold">{row.time}</p>
               </div>
             </div>
-          ))
-        ) : (
-          <p className="text-gray-500">No regular hours available.</p>
-        )}
-      </div>
+          </div>
+        ))
+      ) : (
+        <p className="text-gray-500">No special hours available.</p>
+      )}
     </>
   );
 };
