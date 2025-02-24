@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useMemo} from "react";
 import ServiceBox from "./ServiceBox";
 import { CiSearch } from "react-icons/ci";
 import Loader from "../../Components/MUI/Loader";
@@ -45,24 +45,25 @@ const ProfileDeal = () => {
       : words.slice(0, wordLimit).join(" ") + "...";
   };
 
-  const services = formdata?.getDeal?.length
-    ? formdata.getDeal.map((deal) => ({
-        image: deal?.image
-          ? `https://homeservice.thefabulousshow.com/uploads/${deal.image}`
-          : "/default.png",
-        title: deal?.service_title || "No title available",
-        price: deal?.flat_final_list_price || 0,
-        description: truncateDescription(deal?.service_description, 5),
-        category: deal?.service_category || "No category available",
-    }))
-    : [];
+  const services = useMemo(() => {
+    return formdata?.getDeal?.map((deal) => ({
+      image: deal?.image
+      ? `https://homeservice.thefabulousshow.com/uploads/${deal.image}`
+      : "/default.png",
+      title: deal?.service_title || "No title available",
+      price: deal?.flat_final_list_price || 0,
+      description: truncateDescription(deal?.service_description, 5),
+      category: deal?.service_category || "No category available",
+    }));
+  }, [formdata]);
 
-  useEffect(() => {
-    const filteredServices = services.filter((service) =>
-      service.title.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredServices(filteredServices);
-  }, [searchQuery, services]);
+
+    useEffect(() => {
+      const filteredServices = services.filter((service) =>
+        service.title.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredServices(filteredServices);
+    }, [searchQuery, services]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
