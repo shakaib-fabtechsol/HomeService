@@ -82,13 +82,13 @@ function Settings() {
               scrollButtons="auto"
             >
               <Tab label="Personal Profile" />
-              <Tab label="Service Area" />
+              {/* <Tab label="Service Area" /> */}
               <Tab label="Business Profile " />
               <Tab label="Certifications & Hours" />
               <Tab label="Additional Info" />
               <Tab label="Social Profiles" />
-              <Tab label="Password" />
-              <Tab label="Channels for Conversations" />
+              {/* <Tab label="Password" />
+              <Tab label="Channels for Conversations" /> */}
               <Tab label="Payment/Payout Info" />
               <Tab label="Publish" />
             </Tabs>
@@ -101,9 +101,9 @@ function Settings() {
               <TabPanel value={value} index={0}>
                 <MyDetail />
               </TabPanel>
-              <TabPanel value={value} index={1}>
+              {/* <TabPanel value={value} index={1}>
                 <Location />
-              </TabPanel>
+              </TabPanel> */}
               <TabPanel value={value} index={2}>
                 <BusinessProfile />
               </TabPanel>
@@ -119,12 +119,12 @@ function Settings() {
               <TabPanel value={value} index={6}>
                 <Password />
               </TabPanel>
-              <TabPanel value={value} index={7}>
+              {/* <TabPanel value={value} index={7}>
                 <ChannelConversation />
-              </TabPanel>
-              <TabPanel value={value} index={8}>
+              </TabPanel> */}
+              {/* <TabPanel value={value} index={8}>
                 <Payment />
-              </TabPanel>
+              </TabPanel> */}
               <TabPanel value={value} index={9}>
                 <Publish />
               </TabPanel>
