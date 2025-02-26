@@ -7,7 +7,7 @@ import service2 from "../../assets/img/service2.png";
 import Loader from "../../Components/MUI/Loader";
 
 function ServiceBox({
-  tags = [],
+  category,
   image,
   publish,
   title,
@@ -68,16 +68,7 @@ function ServiceBox({
         {truncateDescription(description, 8) ?? "N/A"}
       </p>
       <p className="text-sm text-[#535862] mt-4">
-        {tags && tags.length > 0
-          ? tags.slice(0, 2).map((tag, index) => (
-              <span
-                key={index}
-                className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-2 rounded-full text-sm me-2"
-              >
-                {tag}
-              </span>
-            ))
-          : "No tags available"}
+       {category}
       </p>
     </div>
   );
@@ -163,9 +154,7 @@ function Services() {
                       : service.price1
                   }
                   description={service.service_description}
-                  tags={
-                    service.search_tags ? service.search_tags.split(",") : []
-                  }
+                  category={service.service_category}
                   image={service.image}
                   publish={service.publish}
                   dealid={service.id}
