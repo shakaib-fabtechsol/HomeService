@@ -104,19 +104,19 @@ function Settings() {
               {/* <TabPanel value={value} index={1}>
                 <Location />
               </TabPanel> */}
-              <TabPanel value={value} index={2}>
+              <TabPanel value={value} index={1}>
                 <BusinessProfile />
               </TabPanel>
-              <TabPanel value={value} index={3}>
+              <TabPanel value={value} index={2}>
                 <CertificationHour />
               </TabPanel>
-              <TabPanel value={value} index={4}>
+              <TabPanel value={value} index={3}>
                 <AdditionalPhoto />
               </TabPanel>
-              <TabPanel value={value} index={5}>
+              <TabPanel value={value} index={4}>
                 <SocialProfile />
               </TabPanel>
-              <TabPanel value={value} index={6}>
+              <TabPanel value={value} index={5}>
                 <Password />
               </TabPanel>
               {/* <TabPanel value={value} index={7}>
@@ -125,7 +125,7 @@ function Settings() {
               {/* <TabPanel value={value} index={8}>
                 <Payment />
               </TabPanel> */}
-              <TabPanel value={value} index={9}>
+              <TabPanel value={value} index={6}>
                 <Publish />
               </TabPanel>
             </>
