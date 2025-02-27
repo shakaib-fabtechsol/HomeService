@@ -89,7 +89,7 @@ function Settings() {
               <Tab label="Social Profiles" />
               {/* <Tab label="Password" />
               <Tab label="Channels for Conversations" /> */}
-              <Tab label="Payment/Payout Info" />
+              <Tab label="Passwords" />
               <Tab label="Publish" />
             </Tabs>
           </Box>
