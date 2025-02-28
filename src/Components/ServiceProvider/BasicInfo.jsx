@@ -62,29 +62,7 @@ function BasicInfo({ setServiceId, setValue }) {
     });
   };
 
-  const handleFocus = (e) => {
-    if (formData.fine_print.trim() === "") {
-      setFormData({ ...formData, fine_print: "• " });
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const bullet = "• ";
-      const { selectionStart, selectionEnd, value } = e.target;
-      const newValue =
-        value.substring(0, selectionStart) +
-        "\n" +
-        bullet +
-        value.substring(selectionEnd);
-      setFormData({ ...formData, fine_print: newValue });
-      setTimeout(() => {
-        e.target.selectionStart = e.target.selectionEnd =
-          selectionStart + bullet.length + 1;
-      }, 0);
-    }
-  };
+ 
 
   useEffect(() => {
     if (dealid) {
@@ -109,7 +87,7 @@ function BasicInfo({ setServiceId, setValue }) {
             service_category: BasicInfo.service_category || "",
             search_tags: BasicInfo.search_tags || "",
             service_description: BasicInfo.service_description || "",
-            fine_print: BasicInfo.fine_print || "",
+           
           });
           setTags(
             BasicInfo.search_tags ? BasicInfo.search_tags.split(",") : []
@@ -143,7 +121,7 @@ function BasicInfo({ setServiceId, setValue }) {
       service_category: e.target.Category.value,
       search_tags: tags.join(","),
       service_description: e.target.Description.value,
-      fine_print: e.target.FinePrint?.value || "",
+     
     };
 
     try {
@@ -378,28 +356,7 @@ function BasicInfo({ setServiceId, setValue }) {
                 </div>
               </div>
 
-              <div className="col-span-12 mt-4">
-                <div className="flex flex-col">
-                  <label htmlFor="FinePrint" className="font-semibold">
-                    Fine Print{" "}
-                    <span className="text-[13px] text-[#cdcdcd]">
-                      (Optional)
-                    </span>
-                  </label>
-                  <textarea
-                    id="FinePrint"
-                    className="myinput"
-                    placeholder="Add specific deliverables for this deal. For example: what is included & what is not included."
-                    rows={4}
-                    value={formData.fine_print}
-                    onChange={(e) =>
-                      setFormData({ ...formData, fine_print: e.target.value })
-                    }
-                    onKeyDown={handleKeyDown}
-                    onFocus={handleFocus}
-                  />
-                </div>
-              </div>
+           
 
               <div className="col-span-12 mt-4 flex justify-end gap-4">
                 <button
