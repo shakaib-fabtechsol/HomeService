@@ -64,10 +64,8 @@ function ServiceBox({
         <p className="mb-0 text-lg font-extrabold">{price ?? "N/A"}</p>
       </div>
 
-      <p className="text-sm text-[#535862] mt-2">
-        {truncateDescription(description, 8) ?? "N/A"}
-      </p>
-      <p className="text-sm text-[#535862] mt-4">
+     
+      <p className="text-sm text-[#535862]  mt-4">
        {category}
       </p>
     </div>
@@ -101,7 +99,7 @@ function Services() {
   }, []);
 
   const filteredServices = services.filter((service) =>
-    service.service_title.toLowerCase().includes(searchQuery.toLowerCase())
+    service?.service_title?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
