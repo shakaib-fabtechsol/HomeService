@@ -274,38 +274,7 @@ function ProfileDetails() {
                 </div>
               </div>
             </div>
-            <button
-              onClick={handlecontactOpen}
-              className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803] w-full lg:max-w-[300px] lg:fixed right-[20px] z-[99]"
-            >
-              <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
-              <span>Contact Pro</span>
-            </button>
-            <Modal
-              open={contactopen}
-              onClose={handlecontactClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              sx={{ m: 2 }}
-            >
-              <div className=" absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[400px] outline-none">
-                <div className="bg-white rounded-[12px] p-4 max-h-[calc(100dvh-200px)] overflow-y-auto scroll-x-hidden">
-                  <p className="text-lg font-semibold">Contact Pro</p>
-                  <div className="flex flex-col gap-3 mt-4">
-                    {modalContacts.map((contact, index) => (
-                      <Link
-                        key={index}
-                        className="bg-[#FB8803] text-white flex items-center justify-center gap-2 p-3 rounded-[8px] text-sm font-medium"
-                        to={contact.path}
-                      >
-                        <span className="text-[24px]">{contact.Icon}</span>
-                        <span>{contact.title}</span>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Modal>
+            
           </div>
 
           <div className="mt-6">
