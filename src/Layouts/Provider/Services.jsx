@@ -64,10 +64,9 @@ function ServiceBox({
         <p className="mb-0 text-lg font-extrabold">{price ?? "N/A"}</p>
       </div>
 
-     
-      <p className="text-sm text-[#535862]  mt-4">
-       {category}
-      </p>
+      <button className="bg-[#E7F4FB] text-[#0F91D2] px-4 py-1 mt-2 rounded-full">
+      {category}
+      </button>
     </div>
   );
 }
