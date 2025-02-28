@@ -102,6 +102,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
       return;
     }
   
+    // Validate file type if a file is selected
     if (
       file &&
       !["image/svg+xml", "image/png", "image/jpeg"].includes(file.type)
@@ -116,19 +117,20 @@ const MediaUpload = ({ serviceId, setValue }) => {
     }
   
     const formData = new FormData();
-    
-    // Only append ID if it's an edit operation
-    if (dealid) {
-      formData.append("id", dealid);
+  
+    // Append serviceId only during creation (not during edit)
+    if (!dealid && serviceId) {
+      formData.append("id", serviceId);
     }
   
+    // Append file if it exists
     if (file) {
       console.log("File being uploaded:", file);
       formData.append("image", file);
       formData.append("image_name", file.name);
     }
   
-   
+    // Determine the API endpoint based on whether it's an edit or create operation
     const url = dealid
       ? "https://homeservice.thefabulousshow.com/api/UpdateMediaUpload" // Edit
       : "https://homeservice.thefabulousshow.com/api/MediaUpload"; // Create
@@ -154,10 +156,10 @@ const MediaUpload = ({ serviceId, setValue }) => {
             : "Media created successfully.",
         }).then(() => {
           if (typeof setValue === "function") {
-            setValue(3);
+            setValue(3); // Move to the next step or perform any other action
           }
         });
-        handleRemoveFile(); 
+        handleRemoveFile(); // Clear the file input after successful upload
       } else {
         Swal.fire({
           icon: "error",
@@ -176,7 +178,6 @@ const MediaUpload = ({ serviceId, setValue }) => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
     console.log("📦 MediaUpload Received Service ID:", serviceId);
