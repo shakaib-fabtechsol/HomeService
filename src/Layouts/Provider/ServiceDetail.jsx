@@ -255,6 +255,9 @@ function ServiceDetail() {
             </Link>
           </div>
         </div>
+        {/* {
+          console.log(provider.businessProfile.business_name,"valueeee")
+        } */}
         <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
           <div className="col-span-12 xl:col-span-8">
             <div className="">
@@ -265,15 +268,16 @@ function ServiceDetail() {
                   alt=""
                   className="me-2 my-2 rounded-lg object-cover w-[100px] h-[100px] cursor-pointer"
                   style={{
-                    aspectRatio: "1/1", 
+                    aspectRatio: "1/1",
                   }}
                 />
                 <div className="my-2">
                   <div className="flex">
-                    <Link to ="/provider/ProfileDetails">
-                    <p className="font-semibold myhead me-2">
-                    {provider.businessProfile?.business_name}
-                    </p>
+                    <Link to="/provider/ProfileDetails">
+                      <p className="font-semibold myhead me-2">
+
+                        {provider.businessProfile.business_name}
+                      </p>
                     </Link>
                     <div className="flex">
                       <IoIosStar className="me-2 text-[#F8C600]" />
@@ -417,13 +421,20 @@ function ServiceDetail() {
                       </p>
                     </div>
                     <p className="text-sm myblack mt-2">
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                      egestas lacus. Phasellus accumsan fermentum dolor eu
-                      gravida. Vivamus dignissim augue sed orci interdum
-                      vehicula.
+                      {serviceDetails[0]?.fine_print
+                        ?.split("\n")
+                        .map((line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        ))}
                     </p>
-
+{
+  console.log("value", serviceDetails[0]?.
+    flat_estimated_service_time)
+    
+}
                     <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                       {serviceDetails[0]?.pricing_model === "Hourly" && (
                         <li>
@@ -439,7 +450,7 @@ function ServiceDetail() {
                         <li> {serviceDetails[0]?.estimated_service_timing1}</li>
                       )}{" "}
                       {/* You can add your custom logic here */}
-                      <li>Delivered Within 2 Days</li>
+                     
                     </ul>
                   </CustomTabPanel>
 
@@ -454,15 +465,19 @@ function ServiceDetail() {
                         </p>
                       </div>
                       <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
+                        {serviceDetails[0]?.fine_print
+                          ?.split("\n")
+                          .map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
                       </p>
+
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                         <li>{serviceDetails[0]?.estimated_service_timing2}</li>
-                        <li>Delivered Within 2 Days</li>
+                       
                       </ul>
                     </CustomTabPanel>
                   )}
@@ -478,15 +493,19 @@ function ServiceDetail() {
                         </p>
                       </div>
                       <p className="text-sm myblack mt-2">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Morbi tellus diam, dignissim tincidunt quam vel, rutrum
-                        egestas lacus. Phasellus accumsan fermentum dolor eu
-                        gravida. Vivamus dignissim augue sed orci interdum
-                        vehicula.
+                        {serviceDetails[0]?.fine_print
+                          ?.split("\n")
+                          .map((line, index) => (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          ))}
                       </p>
+
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
-                        <li> {serviceDetails[0]?.estimated_service_timing3}</li>
-                        <li>Delivered Within 2 Days</li>
+                        <li> {serviceDetails?.estimated_service_timing3}</li>
+                      
                       </ul>
                     </CustomTabPanel>
                   )}
@@ -527,11 +546,6 @@ function ServiceDetail() {
             {serviceDetails[0]?.service_description ||
               "No description available."}
           </p>
-          <h2 className="mt-4 text-xl myhead font-semibold">Fine Print</h2>
-          <p className="mt-2 myblack whitespace-pre-line">
-  {serviceDetails[0]?.fine_print || "No description available."}
-</p>
-
         </div>
       </div>
     </div>

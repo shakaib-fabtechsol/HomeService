@@ -15,10 +15,13 @@ const PricingPackaging = ({ serviceId, setValue }) => {
   const [publishValue, setPublishValue] = useState(1);
   const [publishLoading, setPublishLoading] = useState(false);
   const { dealid } = useParams();
+
+  const user_id = localStorage.getItem("id");
   const [formdata, setFormData] = useState({
     id: "",
     pricing_model: "",
     flat_rate_price: "",
+    fine_print: "",
     flat_by_now_discount: "",
     flat_final_list_price: "",
     flat_estimated_service_time: "",
@@ -47,40 +50,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
   });
 
   const [selectedRate, setSelectedRate] = useState("Flat");
-  const [flatRatePrice, setFlatRatePrice] = useState("");
-  const [buyNowDiscount, setBuyNowDiscount] = useState("");
-  const [finalListPrice, setFinalListPrice] = useState("");
-  const [estimatedServiceTime, setEstimatedServiceTime] = useState("");
-
-  const [hourlyRate, setHourlyRate] = useState("");
-  const [hourlyDiscount, setHourlyDiscount] = useState("");
-  const [hourlyFinalListPrice, setHourlyFinalListPrice] = useState("");
-  const [hourlyEstimatedServiceTime, setHourlyEstimatedServiceTime] =
-    useState("");
-
-  const [title1, settitle1] = useState("");
-  const [deliverable1, setdeliverable1] = useState("");
-  const [price1, setprice1] = useState("");
-  const [by_now_discount1, setby_now_discount1] = useState("");
-  const [final_list_price1, setfinal_list_price1] = useState("");
-  const [estimated_service_timing1, setestimated_service_timing1] =
-    useState("");
-
-  const [title2, settitle2] = useState("");
-  const [deliverable2, setdeliverable2] = useState("");
-  const [price2, setprice2] = useState("");
-  const [by_now_discount2, setby_now_discount2] = useState("");
-  const [final_list_price2, setfinal_list_price2] = useState("");
-  const [estimated_service_timing2, setestimated_service_timing2] =
-    useState("");
-
-  const [title3, settitle3] = useState("");
-  const [deliverable3, setdeliverable3] = useState("");
-  const [price3, setprice3] = useState("");
-  const [by_now_discount3, setby_now_discount3] = useState("");
-  const [final_list_price3, setfinal_list_price3] = useState("");
-  const [estimated_service_timing3, setestimated_service_timing3] =
-    useState("");
+  
 
   useEffect(() => {
     console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
@@ -110,7 +80,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
               estimated_service_time: BasicInfo.estimated_service_time || "",
 
               ...(BasicInfo.pricing_model === "Flat"
-                ? {
+                ? {  fine_print: BasicInfo.fine_print,
                     flat_rate_price: BasicInfo.flat_rate_price || "",
                     flat_by_now_discount: BasicInfo.flat_by_now_discount || "",
                     flat_final_list_price:
@@ -119,7 +89,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       BasicInfo.flat_estimated_service_time || "",
                   }
                 : BasicInfo.pricing_model === "Hourly"
-                ? {
+                ? {  fine_print: BasicInfo.fine_print,
                     hourly_rate: BasicInfo.hourly_rate || "",
                     discount: BasicInfo.discount || "",
                     hourly_final_list_price:
@@ -214,118 +184,126 @@ const PricingPackaging = ({ serviceId, setValue }) => {
 
     if (loading) return;
     setLoading(true);
+
     const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("No token found. Please log in.");
-      setLoading(false);
-      return;
+        toast.error("No token found. Please log in.");
+        setLoading(false);
+        return;
     }
 
     let formdata = {
-      id: serviceId,
-      pricing_model: selectedRate,
+        id: dealid,
+        pricing_model: selectedRate,
     };
 
     if (selectedRate === "Flat") {
-      formdata = {
-        ...formdata,
-        flat_rate_price: e.target.flat_rate_price?.value,
-        flat_by_now_discount: e.target.flat_by_now_discount?.value,
-        flat_final_list_price: e.target.flat_final_list_price?.value,
-        flat_estimated_service_time:
-          e.target.flat_estimated_service_time?.value,
-      };
+        formdata = {
+            ...formdata,
+            fine_print: e.target.FinePrint?.value || "",
+            flat_rate_price: e.target.flat_rate_price?.value,
+            flat_by_now_discount: e.target.flat_by_now_discount?.value,
+            flat_final_list_price: e.target.flat_final_list_price?.value,
+            flat_estimated_service_time: e.target.flat_estimated_service_time?.value,
+        };
     } else if (selectedRate === "Hourly") {
-      formdata = {
-        ...formdata,
-        hourly_rate: e.target.hourly_rate.value,
-        discount: e.target.discount ? e.target.discount?.value : null,
-        hourly_final_list_price: e.target.hourly_final_list_price?.value,
-        hourly_estimated_service_time:
-          e.target.hourly_estimated_service_time?.value,
-      };
+        formdata = {
+            ...formdata,
+            fine_print: e.target.FinePrint?.value || "",
+            hourly_rate: e.target.hourly_rate.value,
+            discount: e.target.discount ? e.target.discount?.value : null,
+            hourly_final_list_price: e.target.hourly_final_list_price?.value,
+            hourly_estimated_service_time: e.target.hourly_estimated_service_time?.value,
+        };
     } else if (selectedRate === "Custom") {
-      formdata = {
-        ...formdata,
-        title1: e.target.title1?.value,
-        deliverable1: e.target.deliverable1?.value,
-        price1: e.target.price1?.value,
-        by_now_discount1: e.target.by_now_discount1?.value,
-        final_list_price1: e.target.final_list_price1?.value,
-        estimated_service_timing1: e.target?.estimated_service_timing1?.value,
+        formdata = {
+            ...formdata,
+            title1: e.target.title1?.value,
+            deliverable1: e.target.deliverable1?.value,
+            price1: e.target.price1?.value,
+            by_now_discount1: e.target.by_now_discount1?.value,
+            final_list_price1: e.target.final_list_price1?.value,
+            estimated_service_timing1: e.target?.estimated_service_timing1?.value,
 
-        title2: e.target.title2?.value,
-        deliverable2: e.target.deliverable2?.value,
-        price2: e.target.price2?.value,
-        by_now_discount2: e.target.by_now_discount2?.value,
-        final_list_price2: e.target.final_list_price2?.value,
-        estimated_service_timing2: e.target?.estimated_service_timing2?.value,
+            title2: e.target.title2?.value,
+            deliverable2: e.target.deliverable2?.value,
+            price2: e.target.price2?.value,
+            by_now_discount2: e.target.by_now_discount2?.value,
+            final_list_price2: e.target.final_list_price2?.value,
+            estimated_service_timing2: e.target?.estimated_service_timing2?.value,
 
-        title3: e.target.title3?.value,
-        deliverable3: e.target.deliverable3?.value,
-        price3: e.target.price3?.value,
-        by_now_discount3: e.target.by_now_discount3?.value,
-        final_list_price3: e.target.final_list_price3?.value,
-        estimated_service_timing3: e.target?.estimated_service_timing3?.value,
-      };
+            title3: e.target.title3?.value,
+            deliverable3: e.target.deliverable3?.value,
+            price3: e.target.price3?.value,
+            by_now_discount3: e.target.by_now_discount3?.value,
+            final_list_price3: e.target.final_list_price3?.value,
+            estimated_service_timing3: e.target?.estimated_service_timing3?.value,
+        };
+    }
+
+    // Determine API endpoint based on ID presence
+    const endpoint = dealid
+        ? "https://homeservice.thefabulousshow.com/api/UpdatePriceAndPackage"
+        : "https://homeservice.thefabulousshow.com/api/PriceAndPackage";
+
+    if (dealid) {
+        formdata = { ...formdata, user_id  }; 
     }
 
     try {
-      const response = await fetch(
-        "https://homeservice.thefabulousshow.com/api/UpdatePriceAndPackage",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(formdata),
+        const response = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(formdata),
+        });
+
+        const textResponse = await response.text();
+        console.log("Response Text:", textResponse);
+
+        let result;
+        try {
+            result = JSON.parse(textResponse);
+        } catch (error) {
+            console.error("Error parsing response:", error);
+            throw new Error("Response is not JSON");
         }
-      );
 
-      const textResponse = await response.text();
-      console.log("Response Text:", textResponse);
+        if (response.status === 200) {
+            Swal.fire({
+                icon: "success",
+                title: "Success!",
+                text: dealid ? "Pricing details updated successfully." : "Pricing details saved successfully.",
+                confirmButtonColor: "#0F91D2",
+            }).then(() => {
+                setValue(2); // Switch to Pricing & Packages tab (index 1)
+            });
 
-      let result;
-      try {
-        result = JSON.parse(textResponse);
-      } catch (error) {
-        console.error("Error parsing response:", error);
-        throw new Error("Response is not JSON");
-      }
-
-      if (response.status === 200) {
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Pricing details saved successfully.",
-          confirmButtonColor: "#0F91D2",
-        }).then(() => {
-          setValue(2); // Switch to Pricing & Packages tab (index 1)
-        });
-
-        e.target.reset();
-        setSelectedRate("Flat");
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error!",
-          text: result.message || "Failed to update pricing details.",
-          confirmButtonColor: "#D33",
-        });
-      }
+            e.target.reset();
+            setSelectedRate("Flat");
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error!",
+                text: result.message || "Failed to update pricing details.",
+                confirmButtonColor: "#D33",
+            });
+        }
     } catch (error) {
-      console.error("Error updating pricing:", error);
-      Swal.fire({
-        icon: "error",
-        title: "Error!",
-        text: "An error occurred while updating pricing. Please try again.",
-        confirmButtonColor: "#D33",
-      });
+        console.error("Error updating pricing:", error);
+        Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "An error occurred while updating pricing. Please try again.",
+            confirmButtonColor: "#D33",
+        });
     } finally {
-      setLoading(false); // Ensure loading state is cleared
+        setLoading(false); // Ensure loading state is cleared
     }
-  };
+};
+
 
   const handleInputChange = (e, key) => {
     const rawValue = parseCurrency(e.target.value);
@@ -439,6 +417,31 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
   };
 
+  const handleFocus = (e) => {
+    if (formdata.fine_print.trim() === "") {
+      setFormData({ ...formdata, fine_print: "•" });
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const bullet = "• ";
+      const { selectionStart, selectionEnd, value } = e.target;
+      const newValue =
+        value.substring(0, selectionStart) +
+        "\n" +
+        bullet +
+        value.substring(selectionEnd);
+      setFormData({ ...formdata, fine_print: newValue });
+      setTimeout(() => {
+        e.target.selectionStart = e.target.selectionEnd =
+          selectionStart + bullet.length + 1;
+      }, 0);
+    }
+  };
+
+
   const handlePublish = async () => {
     if (publishLoading) return;
     setPublishLoading(true);
@@ -454,7 +457,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {
-        setFormData((prev) => ({ ...prev, publish: publishValue }));
+        setFormData((prev) => ({ ...prev, publish: publishValue  }));
         toast.success("Published successfully!");
         setPublishValue(1);
       }
@@ -619,6 +622,31 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                       </select>
                     </div>
                   </div>
+                  <div className="col-span-12 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="FinePrint" className="font-semibold">
+                        Fine Print{" "}
+                        <span className="text-[13px] text-[#cdcdcd]">
+                          (Optional)
+                        </span>
+                      </label>
+                      <textarea
+                        id="FinePrint"
+                        className="myinput"
+                        placeholder="Add specific deliverables for this deal. For example: what is included & what is not included."
+                        rows={4}
+                        value={formdata.fine_print}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            fine_print: e.target.value , // Ensure it's always set
+                          }))
+                        }
+                        onKeyDown={handleKeyDown}
+                        onFocus={handleFocus}
+                      />
+                    </div>
+                  </div>
                 </>
               )}
 
@@ -707,6 +735,31 @@ const PricingPackaging = ({ serviceId, setValue }) => {
                         <option value="1 week">1 week</option>
                         <option value="2 weeks">2 weeks</option>
                       </select>
+                    </div>
+                  </div>
+                  <div className="col-span-12 mt-4">
+                    <div className="flex flex-col">
+                      <label htmlFor="FinePrint" className="font-semibold">
+                        Fine Print{" "}
+                        <span className="text-[13px] text-[#cdcdcd]">
+                          (Optional)
+                        </span>
+                      </label>
+                      <textarea
+                        id="FinePrint"
+                        className="myinput"
+                        placeholder="Add specific deliverables for this deal. For example: what is included & what is not included."
+                        rows={4}
+                        value={formdata.fine_print}
+                        onChange={(e) =>
+                          setFormData((prev) => ({
+                            ...prev,
+                            fine_print: e.target.value , // Ensure it's always set
+                          }))
+                        }
+                        onKeyDown={handleKeyDown}
+                        onFocus={handleFocus}
+                      />
                     </div>
                   </div>
                 </>

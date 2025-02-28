@@ -94,14 +94,14 @@ const MediaUpload = ({ serviceId, setValue }) => {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
-
+  
     const token = localStorage.getItem("token");
     if (!token) {
       Swal.fire({ icon: "error", title: "No token found. Please log in." });
       setLoading(false);
       return;
     }
-
+  
     if (
       file &&
       !["image/svg+xml", "image/png", "image/jpeg"].includes(file.type)
@@ -114,60 +114,69 @@ const MediaUpload = ({ serviceId, setValue }) => {
       setLoading(false);
       return;
     }
-
+  
     const formData = new FormData();
-    formData.append("id", serviceId);
+    
+    // Only append ID if it's an edit operation
+    if (dealid) {
+      formData.append("id", dealid);
+    }
+  
     if (file) {
       console.log("File being uploaded:", file);
       formData.append("image", file);
-      formData.append("image_name", file.name); // Add the file name to the form data
+      formData.append("image_name", file.name);
     }
-
+  
+   
+    const url = dealid
+      ? "https://homeservice.thefabulousshow.com/api/UpdateMediaUpload" // Edit
+      : "https://homeservice.thefabulousshow.com/api/MediaUpload"; // Create
+  
     try {
-      const response = await fetch(
-        "https://homeservice.thefabulousshow.com/api/UpdateMediaUpload",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            // Do not set Content-Type header here, browser will handle it
-          },
-          body: formData,
-        }
-      );
-
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+  
       const result = await response.json();
       console.log("Response:", result);
-
+  
       if (response.status === 200) {
         Swal.fire({
           icon: "success",
           title: "Success!",
-          text: "Media saved successfully.",
+          text: dealid
+            ? "Media updated successfully."
+            : "Media created successfully.",
         }).then(() => {
           if (typeof setValue === "function") {
             setValue(3);
           }
         });
-        handleRemoveFile(); // Reset file input
+        handleRemoveFile(); 
       } else {
         Swal.fire({
           icon: "error",
           title: "Error!",
-          text: result.message || "Failed to update media.",
+          text: result.message || "Failed to process media request.",
         });
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Error!",
-        text: "An error occurred while updating media. Please try again.",
+        text: "An error occurred while processing media. Please try again.",
       });
       console.error("Error during media upload:", error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   useEffect(() => {
     console.log("📦 MediaUpload Received Service ID:", serviceId);

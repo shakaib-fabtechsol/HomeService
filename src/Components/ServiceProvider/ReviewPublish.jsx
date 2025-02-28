@@ -476,9 +476,9 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                     <div className="my-2">
                       <div className="flex">
                         <Link to="/provider/ProfileDetails">
-                        <p className="font-semibold myhead me-2">
-                          {provider.businessProfile?.business_name}
-                        </p>
+                          <p className="font-semibold myhead me-2">
+                            {provider.businessProfile?.business_name}
+                          </p>
                         </Link>
                         <div className="flex">
                           <IoIosStar className="me-2 text-[#F8C600]" />
@@ -537,7 +537,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                       </div>
                     </div>
                   </div>
-                  <Modal
+                  {/* <Modal
                     open={contactopen}
                     onClose={handlecontactClose}
                     aria-labelledby="modal-modal-title"
@@ -563,7 +563,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                         </div>
                       </div>
                     </div>
-                  </Modal>
+                  </Modal> */}
                 </div>
                 <div className=" ">
                   <img
@@ -631,16 +631,20 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                           </p>
                         </div>
                         <p className="text-sm myblack mt-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Morbi tellus diam, dignissim tincidunt quam vel,
-                          rutrum egestas lacus. Phasellus accumsan fermentum
-                          dolor eu gravida. Vivamus dignissim augue sed orci
-                          interdum vehicula.
+                          {formdata[0]?.fine_print
+                            ?.split("\n")
+                            .map((line, index) => (
+                              <React.Fragment key={index}>
+                                {line}
+                                <br />
+                              </React.Fragment>
+                            ))}
                         </p>
 
                         <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                           {formdata?.pricing_model === "Hourly" && (
                             <li>{formdata?.hourly_estimated_service_time}</li>
+                           
                           )}
                           {formdata?.pricing_model === "Flat" && (
                             <li>{formdata?.flat_estimated_service_time}</li>
@@ -649,7 +653,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                             <li> {formdata?.estimated_service_timing1}</li>
                           )}{" "}
                           {/* You can add your custom logic here */}
-                          <li>Delivered Within 2 Days</li>
+                         
                         </ul>
                       </CustomTabPanel>
 
@@ -663,16 +667,21 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                               {formdata?.price2}
                             </p>
                           </div>
+
                           <p className="text-sm myblack mt-2">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Morbi tellus diam, dignissim tincidunt quam
-                            vel, rutrum egestas lacus. Phasellus accumsan
-                            fermentum dolor eu gravida. Vivamus dignissim augue
-                            sed orci interdum vehicula.
+                            {formdata[0]?.fine_print
+                              ?.split("\n")
+                              .map((line, index) => (
+                                <React.Fragment key={index}>
+                                  {line}
+                                  <br />
+                                </React.Fragment>
+                              ))}
                           </p>
+
                           <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                             <li>{formdata?.estimated_service_timing2}</li>
-                            <li>Delivered Within 2 Days</li>
+                           
                           </ul>
                         </CustomTabPanel>
                       )}
@@ -688,27 +697,31 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                             </p>
                           </div>
                           <p className="text-sm myblack mt-2">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing
-                            elit. Morbi tellus diam, dignissim tincidunt quam
-                            vel, rutrum egestas lacus. Phasellus accumsan
-                            fermentum dolor eu gravida. Vivamus dignissim augue
-                            sed orci interdum vehicula.
+                            {formdata[0]?.fine_print
+                              ?.split("\n")
+                              .map((line, index) => (
+                                <React.Fragment key={index}>
+                                  {line}
+                                  <br />
+                                </React.Fragment>
+                              ))}
                           </p>
+
                           <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                             <li> {formdata?.estimated_service_timing3}</li>
-                            <li>Delivered Within 2 Days</li>
+                          
                           </ul>
                         </CustomTabPanel>
                       )}
                     </Box>
                   </div>
-                  <button
+                  {/* <button
                     onClick={handlecontactOpen}
                     className="flex mt-3 lg:mt-0 py-3 justify-center items-center px-6 font-semibold rounded-lg text-[#fff] bg-[#FB8803]"
                   >
                     <IoChatbubbleEllipsesOutline className="me-2 text-[#fff] text-xl" />
                     <span>Contact Pro</span>
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>
@@ -731,10 +744,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
                 Deal Description
               </h2>
               <p className="mt-2 myblack">{formdata.service_description}</p>
-              <h2 className="mt-4 text-xl myhead font-semibold ">Fine Print</h2>
-              <ul className="mt-4 myblack text-sm list-disc space-y-1 whitespace-pre-line pl-5">
-                {formdata.fine_print}
-              </ul>
             </div>
           </div>
           <form onSubmit={handleSubmit}>

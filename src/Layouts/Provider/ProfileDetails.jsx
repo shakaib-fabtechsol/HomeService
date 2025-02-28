@@ -132,6 +132,8 @@ function ProfileDetails() {
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";
+
+    console.log(imagePath)
   const regularHours = JSON.parse(
     formdata?.businessProfile[0]?.regular_hour || "[]"
   );
