@@ -275,8 +275,7 @@ function ServiceDetail() {
                   <div className="flex">
                     <Link to="/provider/ProfileDetails">
                       <p className="font-semibold myhead me-2">
-
-                        {provider.businessProfile.business_name}
+                        {provider.businessProfile?.business_name}
                       </p>
                     </Link>
                     <div className="flex">
@@ -430,11 +429,10 @@ function ServiceDetail() {
                           </React.Fragment>
                         ))}
                     </p>
-{
-  console.log("value", serviceDetails[0]?.
-    flat_estimated_service_time)
-    
-}
+                    {console.log(
+                      "value",
+                      serviceDetails[0]?.flat_estimated_service_time
+                    )}
                     <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                       {serviceDetails[0]?.pricing_model === "Hourly" && (
                         <li>
@@ -450,7 +448,6 @@ function ServiceDetail() {
                         <li> {serviceDetails[0]?.estimated_service_timing1}</li>
                       )}{" "}
                       {/* You can add your custom logic here */}
-                     
                     </ul>
                   </CustomTabPanel>
 
@@ -477,7 +474,6 @@ function ServiceDetail() {
 
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                         <li>{serviceDetails[0]?.estimated_service_timing2}</li>
-                       
                       </ul>
                     </CustomTabPanel>
                   )}
@@ -505,7 +501,6 @@ function ServiceDetail() {
 
                       <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                         <li> {serviceDetails?.estimated_service_timing3}</li>
-                      
                       </ul>
                     </CustomTabPanel>
                   )}

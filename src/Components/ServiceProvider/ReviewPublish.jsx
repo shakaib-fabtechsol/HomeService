@@ -66,8 +66,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   };
   const [contactopen, setcontactOpen] = React.useState(false);
 
-  const handlecontactOpen = () => setcontactOpen(true);
-  const handlecontactClose = () => setcontactOpen(false);
 
   const [formdata, setFormData] = useState({
     service_title: "",
@@ -108,28 +106,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
     estimated_service_timing3: "",
   });
 
-  const modalContacts = [
-    { path: "#", Icon: <FiPhone />, title: "Call Pro: (785) 712-6532" },
-    {
-      path: "#",
-      Icon: <BiMessageSquareDetail />,
-      title: "Text Pro: (708) 813-8989",
-    },
-    {
-      path: "#",
-      Icon: <BiMessageAltDetail />,
-      title: "Instant Chat",
-    },
-    { path: "#", Icon: <TbMailDown />, title: "Email Pro" },
-    { path: "#", Icon: <PiChats />, title: "Direct Form" },
-    {
-      path: "#",
-      Icon: <IoLocationOutline />,
-      title: "Get Directions",
-    },
-  ];
-
-  console.log("formdata", formdata);
+ 
 
   useEffect(() => {
     if (dealid) {
@@ -146,6 +123,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
+          setIsApiLoaded(false);
           console.log("BasicInfo:", BasicInfo);
           const imagePath = BasicInfo?.image;
           const imageUrl = imagePath
@@ -236,7 +214,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
   const fetchDeals = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -343,12 +321,10 @@ const ReviewPublish = ({ serviceId, setValue }) => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("id");
-
-        if (!token || !userId) return;
-
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${serviceId
+
+          }`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -356,19 +332,21 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
         console.log("API Response:", response.data);
         setProviderData(response.data);
+        setIsApiLoaded(true);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
+    setIsApiLoaded(false);
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
 
-    if (!formdata?.id) {
+    if (!dealid){
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -467,72 +445,20 @@ const ReviewPublish = ({ serviceId, setValue }) => {
               <div className="col-span-12 xl:col-span-8">
                 <div className="">
                   <div className="flex flex-wrap items-center">
-                    <img
-                      onClick={() => navigate("/provider/ProfileDetails")}
-                      src={imageUrl}
-                      alt=""
-                      className="me-2 my-2 rounded-lg max-w-[120px] cursor-pointer"
-                    />
+                  
                     <div className="my-2">
                       <div className="flex">
-                        <Link to="/provider/ProfileDetails">
-                          <p className="font-semibold myhead me-2">
-                            {provider.businessProfile?.business_name}
-                          </p>
-                        </Link>
+                       
                         <div className="flex">
-                          <IoIosStar className="me-2 text-[#F8C600]" />
-                          <p className="myblack text-sm">
-                            <span className="myhead font-semibold">4.9</span>
-                            (457)
-                          </p>
+                        
                         </div>
                       </div>
                       <div className="flex flex-wrap mt-2">
-                        <div className="flex items-center">
-                          <IoLocationOutline className="me-2 myblack" />
-                          <p className="myblack ">{provider?.user?.location}</p>
-                        </div>
+                       
                       </div>
                       <div className="flex mt-2 items-center">
                         <div className="flex mt-2 items-center">
-                          <div className="flex me-2">
-                            <FaRegCalendarAlt className="me-2" />
-                            <p className="text-sm myblack">
-                              {currentDayData ? (
-                                <>{currentDayData.day_name}:&nbsp;</>
-                              ) : (
-                                "No data available for today."
-                              )}
-                            </p>
-
-                            <p className="text-sm text-[#34A853] font-[300]">
-                              {currentDayData?.day_status === "open"
-                                ? "Available"
-                                : "Unavailable"}
-                            </p>
-                            <p className="text-sm ml-2 lg:ml-10 myblack">
-                              {currentDayData?.day_status === "open" ? (
-                                <>
-                                  Closed{" "}
-                                  {currentDayData.regular_hour[0].end_time}{" "}
-                                  {currentDayData.regular_hour[0].end_time.includes(
-                                    "AM"
-                                  ) ||
-                                  currentDayData.regular_hour[0].end_time.includes(
-                                    "PM"
-                                  )
-                                    ? ""
-                                    : currentDayData.regular_hour[0].end_time >=
-                                      12
-                                    ? "PM"
-                                    : "AM"}
-                                </>
-                              ) : (
-                                "Closed"
-                              )}
-                            </p>
-                          </div>
+                       
                         </div>
                       </div>
                     </div>
