@@ -21,9 +21,6 @@ import { IoIosStar } from "react-icons/io";
 import provider from "../../assets/img/provider.png";
 import axios from "axios"; // Importing axios
 import Swal from "sweetalert2";
-// Importing toast if you intend to use it, or replace it with Swal.
-import { toast } from "react-toastify";
-
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -54,8 +51,7 @@ function a11yProps(index) {
 }
 
 const ReviewPublish = ({ serviceId, setValue }) => {
-  const [tag, setTags] = useState([]);
-  const [pricingModel, setPricingModel] = useState("");
+
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [provider, setProviderData] = useState({});
   const { dealid } = useParams();
@@ -66,7 +62,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   const handleChange = (event, newValue) => {
     setValued(newValue);
   };
-  const [contactopen, setcontactOpen] = React.useState(false);
 
   const [formdata, setFormData] = useState({
     service_title: "",
@@ -110,20 +105,20 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   useEffect(() => {
     // Fetch deal_id from localStorage
     const deal_id = localStorage.getItem("deal_id");
-  
+
     if (!deal_id) {
       console.error("No deal ID found in localStorage.");
       return;
     }
-  
+
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No authentication token found. Please log in.");
       return;
     }
-  
+
     setLoading(true);
-  
+
     axios
       .get(`https://homeservice.thefabulousshow.com/api/Deal/${deal_id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -131,7 +126,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       .then((response) => {
         const deal = response?.data?.deal?.[0] || {};
         console.log(deal, "value");
-  
+
         const updatedData = {
           id: deal?.id || "",
           publish: deal?.publish || "",
@@ -147,7 +142,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           fine_print: deal?.fine_print || "",
           pricing_model: deal?.pricing_model || "",
         };
-  
+
         const pricingModel = deal?.pricing_model;
         if (pricingModel === "Flat") {
           updatedData.flat_rate_price = deal?.flat_rate_price || "";
@@ -175,7 +170,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
               deal?.[`estimated_service_timing${i}`] || "";
           }
         }
-  
+
         setFormData(updatedData);
         setIsApiLoaded(true);
       })
@@ -274,11 +269,11 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (loading) return;
-  
+
     // Determine if it's a create or edit operation
     const isEdit = !!dealid; // If dealid exists, it's an edit operation
     const id = isEdit ? dealid : serviceId; // Use dealid for edit, serviceId for create
-  
+
     if (!id) {
       Swal.fire({
         icon: "error",
@@ -287,9 +282,9 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       });
       return;
     }
-  
+
     setLoading(true);
-  
+
     const token = localStorage.getItem("token");
     if (!token) {
       Swal.fire({
@@ -300,21 +295,21 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       setLoading(false);
       return;
     }
-  
+
     try {
       const url = isEdit
         ? `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}` // Edit
         : `https://homeservice.thefabulousshow.com/api/DealPublish/${serviceId}`; // Create
-  
+
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       console.log("API Response:", response?.data);
-  
+
       if (response.status === 200) {
         navigate("/provider/services");
-  
+
         Swal.fire({
           icon: "success",
           title: "Success!",
@@ -343,6 +338,53 @@ const ReviewPublish = ({ serviceId, setValue }) => {
     }
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!token || !userId) return;
+
+        const response = await axios.get(
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("API Response:", response.data);
+        setProviderData(response.data?.businessProfile[0]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const imagePath = provider?.business_logo;
+  const imageUrl = imagePath
+    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    : "/default.png";
+  const regularHours =
+    provider && provider.length > 0
+      ? JSON.parse(provider.regular_hour || "[]")
+      : [];
+  const days = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const currentDay = days[new Date().getDay()];
+  const currentDayData = regularHours.find(
+    (item) => item.day_name === currentDay
+  );
+
   return (
     <>
       {dealid && !isApiLoaded ? (
@@ -359,17 +401,79 @@ const ReviewPublish = ({ serviceId, setValue }) => {
               <div className="col-span-12 xl:col-span-8">
                 <div className="">
                   <div className="flex flex-wrap items-center">
+                    <img
+                      onClick={() => navigate("/provider/ProfileDetails")}
+                      src={imageUrl}
+                      alt=""
+                      className="me-2 my-2 rounded-lg object-cover w-[100px] h-[100px] cursor-pointer"
+                      style={{
+                        aspectRatio: "1/1",
+                      }}
+                    />
                     <div className="my-2">
                       <div className="flex">
-                        <div className="flex"></div>
+                        <Link to="/provider/ProfileDetails">
+                          <p className="font-semibold myhead me-2">
+                            {provider?.business_name}
+                          </p>
+                        </Link>
+                        <div className="flex">
+                          <IoIosStar className="me-2 text-[#F8C600]" />
+                          <p className="myblack text-sm">
+                            <span className="myhead font-semibold">4.9</span>
+                            (457)
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex flex-wrap mt-2"></div>
+                      <div className="flex flex-wrap mt-2">
+                        <p className="myblack pe-3 me-3 border-e">
+                          House Cleaning
+                        </p>
+                        <div className="flex items-center">
+                          <IoLocationOutline className="me-2 myblack" />
+                          <p className="myblack ">{provider?.user?.location}</p>
+                        </div>
+                      </div>
                       <div className="flex mt-2 items-center">
-                        <div className="flex mt-2 items-center"></div>
+                        <div className="flex me-2">
+                          <FaRegCalendarAlt className="me-2" />
+                          <p className="text-sm myblack">
+                            {currentDayData ? (
+                              <>{currentDayData.day_name}:&nbsp;</>
+                            ) : (
+                              "No data available for today."
+                            )}
+                          </p>
+
+                          <p className="text-sm text-[#34A853] font-[300]">
+                            {currentDayData?.day_status === "open"
+                              ? "Available"
+                              : "Unavailable"}
+                          </p>
+                          <p className="text-sm ml-2 lg:ml-10 myblack">
+                            {currentDayData?.day_status === "open" ? (
+                              <>
+                                Closed {currentDayData.regular_hour[0].end_time}{" "}
+                                {currentDayData.regular_hour[0].end_time.includes(
+                                  "AM"
+                                ) ||
+                                currentDayData.regular_hour[0].end_time.includes(
+                                  "PM"
+                                )
+                                  ? ""
+                                  : currentDayData.regular_hour[0].end_time >=
+                                    12
+                                  ? "PM"
+                                  : "AM"}
+                              </>
+                            ) : (
+                              "Closed"
+                            )}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                 
                 </div>
                 <div className=" ">
                   <img
