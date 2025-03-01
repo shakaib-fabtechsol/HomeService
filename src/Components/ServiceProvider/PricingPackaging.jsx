@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 const PricingPackaging = ({ serviceId, setValue }) => {
+  
   const navigate = useNavigate();
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -193,7 +194,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
 
     let formdata = {
-        id: dealid,
+        id: serviceId,
         pricing_model: selectedRate,
     };
 

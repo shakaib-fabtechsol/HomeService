@@ -138,7 +138,7 @@ function ServiceDetail() {
         );
 
         console.log("API Response:", response.data);
-        setProviderData(response.data);
+        setProviderData(response.data?.businessProfile[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -147,13 +147,13 @@ function ServiceDetail() {
     fetchData();
   }, []);
 
-  const imagePath = provider?.user?.personal_image;
+  const imagePath = provider?.business_logo;
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";
   const regularHours =
-    provider?.businessProfile && provider.businessProfile.length > 0
-      ? JSON.parse(provider.businessProfile[0].regular_hour || "[]")
+    provider && provider.length > 0
+      ? JSON.parse(provider.regular_hour || "[]")
       : [];
   const days = [
     "Sunday",
@@ -275,7 +275,7 @@ function ServiceDetail() {
                   <div className="flex">
                     <Link to="/provider/ProfileDetails">
                       <p className="font-semibold myhead me-2">
-                        {provider.businessProfile?.business_name}
+                        {provider?.business_name}
                       </p>
                     </Link>
                     <div className="flex">

@@ -141,6 +141,7 @@ function BasicInfo({ setServiceId, setValue }) {
       if (response.status === 200) {
         console.log("Service ID:", response.data.deal.id);
         setServiceId(response.data.deal.id);
+        localStorage.setItem("deal_id",response.data.deal.id)
         Swal.fire({
           icon: "success",
           title: dealid ? "Updated Successfully!" : "Created Successfully!",
