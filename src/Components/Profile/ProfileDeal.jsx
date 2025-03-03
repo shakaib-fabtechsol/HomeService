@@ -24,7 +24,6 @@ const ProfileDeal = () => {
           }
         );
 
-        console.log(response.data);
         setFormData(response.data);
         setIsApiLoaded(true);
         setLoading(false);

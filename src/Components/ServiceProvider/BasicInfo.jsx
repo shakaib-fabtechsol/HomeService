@@ -78,7 +78,6 @@ function BasicInfo({ setServiceId, setValue }) {
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
-          console.log("BasicInfo:", BasicInfo);
           setFormData({
             id: BasicInfo.id || "",
             service_title: BasicInfo.service_title || "",
@@ -137,9 +136,7 @@ function BasicInfo({ setServiceId, setValue }) {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(response);
       if (response.status === 200) {
-        console.log("Service ID:", response.data.deal.id);
         setServiceId(response.data.deal.id);
         localStorage.setItem("deal_id",response.data.deal.id)
         Swal.fire({
@@ -248,7 +245,6 @@ function BasicInfo({ setServiceId, setValue }) {
                     />
                     Commercial
                   </label>
-                  {console.log("formdata", formData.residential)}
                   <label className="flex">
                     <input
                       type="checkbox"

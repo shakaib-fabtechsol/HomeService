@@ -19,11 +19,9 @@ const MediaUpload = ({ serviceId, setValue }) => {
 
   const [filePreview, setFilePreview] = useState(null);
   const [showPreview, setShowPreview] = useState(false);
-  console.log("preview", filePreview);
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
-      console.log("File selected:", uploadedFile);
       setFile(uploadedFile);
       setFilePreview(URL.createObjectURL(uploadedFile));
       setShowPreview(false);
@@ -34,7 +32,6 @@ const MediaUpload = ({ serviceId, setValue }) => {
     e.preventDefault();
     const uploadedFile = e.dataTransfer.files[0];
     if (uploadedFile) {
-      console.log("File dropped:", uploadedFile);
       setFile(uploadedFile);
       setFilePreview(URL.createObjectURL(uploadedFile));
       setShowPreview(false);
@@ -125,7 +122,6 @@ const MediaUpload = ({ serviceId, setValue }) => {
   
     // Append file if it exists
     if (file) {
-      console.log("File being uploaded:", file);
       formData.append("image", file);
       formData.append("image_name", file.name);
     }
@@ -145,7 +141,6 @@ const MediaUpload = ({ serviceId, setValue }) => {
       });
   
       const result = await response.json();
-      console.log("Response:", result);
   
       if (response.status === 200) {
         Swal.fire({
@@ -180,7 +175,6 @@ const MediaUpload = ({ serviceId, setValue }) => {
   };
 
   useEffect(() => {
-    console.log("📦 MediaUpload Received Service ID:", serviceId);
   }, [serviceId]);
 
   const handlePublish = async () => {

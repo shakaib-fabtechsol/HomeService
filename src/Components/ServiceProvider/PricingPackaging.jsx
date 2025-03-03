@@ -54,7 +54,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
   
 
   useEffect(() => {
-    console.log("📦 PricingPackaging Received Service ID:", serviceId); // ✅ Debugging
   }, [serviceId]);
 
   useEffect(() => {
@@ -72,7 +71,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         })
         .then((response) => {
           const BasicInfo = response?.data?.deal[0];
-          console.log("BasicInfo:", BasicInfo);
 
           if (BasicInfo) {
             setFormData({
@@ -262,7 +260,6 @@ const PricingPackaging = ({ serviceId, setValue }) => {
         });
 
         const textResponse = await response.text();
-        console.log("Response Text:", textResponse);
 
         let result;
         try {

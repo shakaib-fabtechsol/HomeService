@@ -51,7 +51,6 @@ const Social = () => {
     <div>
       {socialPlatforms.map(({ name, key, avatar }, index) => {
         const link = socialData?.[key];
-        console.log(socialData);
         return (
           link && (
             <div key={index} className="py-5 border-b border-[#E9EAEB]">

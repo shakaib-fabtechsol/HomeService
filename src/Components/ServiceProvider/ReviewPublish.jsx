@@ -55,7 +55,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [provider, setProviderData] = useState({});
   const { dealid } = useParams();
-  console.log(dealid);
   const [value, setValued] = useState(0);
   const deal_id = localStorage.getItem("deal_id");
 
@@ -125,7 +124,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       })
       .then((response) => {
         const deal = response?.data?.deal?.[0] || {};
-        console.log(deal, "value");
 
         const updatedData = {
           id: deal?.id || "",
@@ -187,7 +185,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
   const navigate = useNavigate();
   useEffect(() => {
-    console.log("📦 ReviewPublish Received Service ID:", serviceId);
   }, [serviceId]);
 
   useEffect(() => {
@@ -264,7 +261,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
       .finally(() => setLoading(false));
   }, [dealid]);
 
-  console.log("formdata", formdata);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -305,7 +301,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("API Response:", response?.data);
 
       if (response.status === 200) {
         navigate("/provider/services");
@@ -353,7 +348,6 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           }
         );
 
-        console.log("API Response:", response.data);
         setProviderData(response.data?.businessProfile[0]);
       } catch (error) {
         console.error("Error fetching data:", error);

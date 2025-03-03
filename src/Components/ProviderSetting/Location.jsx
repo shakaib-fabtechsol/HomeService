@@ -137,7 +137,6 @@ const ServiceArea = () => {
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log(response?.data);
       toast.success("Service area saved successfully!");
     } catch (err) {
       console.error("Error:", err);
@@ -166,7 +165,6 @@ const ServiceArea = () => {
         );
 
         const BasicInfo = response?.data?.businessProfile[0];
-        console.log(BasicInfo, "valuee");
 
         if (serviceType === "location") {
           setLocation(BasicInfo?.business_location || "");
@@ -270,7 +268,6 @@ const ServiceArea = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setLocations((prev) => ({ ...prev, publish: response.data.publish }));
@@ -569,7 +566,6 @@ const ServiceArea = () => {
             <LoadScript
               googleMapsApiKey={GOOGLE_API_KEY}
               libraries={libraries}
-              onLoad={() => console.log("Google Maps API Loaded")}
             >
               {renderFormContent()}
             </LoadScript>

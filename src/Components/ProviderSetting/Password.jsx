@@ -107,7 +107,6 @@ const Password = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));
@@ -136,43 +135,6 @@ const Password = () => {
       setPublishLoading(false);
     }
   };
-
-  //     const token = localStorage.getItem("token");
-  //     if (!token) {
-  //       toast.error("No token found. Please log in.");
-  //       return;
-  //     }
-
-  //     try {
-  //       const response1 = await axios.post(
-  //         "https://homeservice.thefabulousshow.com/api/UpdatePassword",
-  //         {},  // You may add request body here if necessary
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         }
-  //       );
-
-  //       const BasicInfo = response1.data?.deal;
-  //       console.log(BasicInfo);
-
-  //       if (BasicInfo) {
-  //         setFormData({
-  //           current_password: BasicInfo.current_password,
-  //           password: BasicInfo.password,
-  //           confirm_password: BasicInfo.confirm_password,  
-  //         });
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching data:", error);
-  //       toast.error("Failed to fetch data.");
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, []);
 
   return (
     <div>

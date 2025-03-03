@@ -110,7 +110,6 @@ function ProfileDetails() {
           }
         );
 
-        console.log("API Response:", response.data);
         setFormData(response.data);
         setIsApiLoaded(true);
         setLoading(false);
@@ -125,15 +124,12 @@ function ProfileDetails() {
   const setting =
     formdata?.businessProfile?.[0]?.user_id || "No Data Available";
 
-  console.log("User ID:", setting);
-  console.log("Complete Data:", formdata?.businessProfile[0]?.business_name);
 
   const imagePath = formdata?.businessProfile[0]?.business_logo;
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";
 
-    console.log(imagePath)
   const regularHours = JSON.parse(
     formdata?.businessProfile[0]?.regular_hour || "[]"
   );

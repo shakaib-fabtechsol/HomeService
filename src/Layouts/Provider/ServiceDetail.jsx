@@ -110,7 +110,6 @@ function ServiceDetail() {
           .then((response) => {
             const model = serviceDetails?.pricing_model || "Hourly";
             setPricingModel(model);
-            console.log("model", model);
             setServiceDetails(response.data.deal);
             setLoading(false);
           })
@@ -137,7 +136,6 @@ function ServiceDetail() {
           }
         );
 
-        console.log("API Response:", response.data);
         setProviderData(response.data?.businessProfile[0]);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -255,9 +253,6 @@ function ServiceDetail() {
             </Link>
           </div>
         </div>
-        {/* {
-          console.log(provider.businessProfile.business_name,"valueeee")
-        } */}
         <div className="grid mt-4 grid-cols-1 md:grid-cols-12 gap-4">
           <div className="col-span-12 xl:col-span-8">
             <div className="">
@@ -403,7 +398,6 @@ function ServiceDetail() {
                       )}
                     </Tabs>
                   </Box>
-                  {console.log("valueee", serviceDetails?.pricing_model)}
                   <CustomTabPanel value={value} index={0}>
                     <div className="flex justify-between">
                       <h2 className="text-2xl font-medium myhead">
@@ -429,10 +423,7 @@ function ServiceDetail() {
                           </React.Fragment>
                         ))}
                     </p>
-                    {console.log(
-                      "value",
-                      serviceDetails[0]?.flat_estimated_service_time
-                    )}
+                    
                     <ul className="mt-4 myblack text-sm list-disc space-y-1 pl-5">
                       {serviceDetails[0]?.pricing_model === "Hourly" && (
                         <li>

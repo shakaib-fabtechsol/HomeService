@@ -110,7 +110,6 @@ function ProfileDetails() {
           }
         );
 
-        console.log("API Response:", response.data);
         setFormData(response.data);
         setIsApiLoaded(true);
         setLoading(false);
@@ -158,7 +157,6 @@ function ProfileDetails() {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));
@@ -190,7 +188,6 @@ function ProfileDetails() {
   };
 
   const imagePath = formdata?.businessProfile[0]?.business_logo;
-  console.log("valueee", imagePath);
   const imageUrl = imagePath
     ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
     : "/default.png";

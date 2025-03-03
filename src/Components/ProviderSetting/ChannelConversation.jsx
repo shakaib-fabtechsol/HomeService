@@ -110,15 +110,7 @@ const ChannelConversation = () => {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
 
-      if (!token) {
-        console.log("No token found.");
-        return;
-      }
 
-      if (!id) {
-        console.log("No id found in localStorage.");
-        return;
-      }
 
       const data = { id: id };
 
@@ -134,7 +126,6 @@ const ChannelConversation = () => {
         );
 
         const BasicInfo = response.data.conversation;
-        console.log(BasicInfo, "value");
 
         if (BasicInfo) {
           setFormData({
@@ -169,9 +160,7 @@ const ChannelConversation = () => {
           setLoading(false);
         }
 
-        console.log("Response:", response.data);
       } catch (err) {
-        console.log("Error:", err);
       }
     };
 
@@ -213,7 +202,6 @@ const ChannelConversation = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));

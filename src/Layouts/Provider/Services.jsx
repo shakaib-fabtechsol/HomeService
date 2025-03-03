@@ -26,9 +26,7 @@ function ServiceBox({
 
   const imageToShow = imageUrl || defaultimg;
 
-  {
-    console.log("publish", publish);
-  }
+
 
   const truncateDescription = (desc, wordLimit = 20) => {
     if (!desc) return "No description available";
@@ -88,7 +86,6 @@ function Services() {
       })
       .then((response) => {
         setServices(response.data.deals);
-        console.log("imagesResponse", response.data.deals);
         setLoading(false); // Stop loading after data is received
       })
       .catch((error) => {
@@ -132,7 +129,6 @@ function Services() {
             <span>Create New</span>
           </Link>
         </div>
-        {console.log("value", filteredServices)}
 
         {loading ? (
           <Loader />

@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 
 const CertificationHour = () => {
   const userId = localStorage.getItem("id");
-  console.log("userID", userId);
   const [loading, setLoading] = useState(false);
   const [publishValue, setPublishValue] = useState(1);
   const [publishLoading, setPublishLoading] = useState(false);
@@ -71,7 +70,6 @@ const CertificationHour = () => {
   const updatespecialSchedule = (index, updatedFields) => {
     const updatedSchedule = [...specialSchedule];
     updatedSchedule[index] = { ...updatedSchedule[index], ...updatedFields };
-    console.log("Updated Schedule:", updatedSchedule); // Debugging
     setSpecialSchedule(updatedSchedule);
   };
   const deleteSlot = (index) => {
@@ -127,7 +125,6 @@ const CertificationHour = () => {
         },
       ];
 
-      console.log("response data", response.data?.businessProfile);
       const businessProfile = response.data?.businessProfile;
 
       if (businessProfile && businessProfile.length > 0) {
@@ -160,7 +157,6 @@ const CertificationHour = () => {
               ? JSON.parse(profile.special_hour)
               : profile.special_hour;
         }
-        console.log(formattedScheduleSpecial);
         const transformedScheduleSpecial = formattedScheduleSpecial.map(
           (item) => ({
             text: item.text,
@@ -215,7 +211,6 @@ const CertificationHour = () => {
     if (loading) return;
 
     const token = localStorage.getItem("token");
-    console.log("token:", token);
 
     if (!token) {
       toast.error("No token found. Please log in.");
@@ -266,7 +261,6 @@ const CertificationHour = () => {
         }
       );
 
-      console.log("Success:", response.data);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -311,7 +305,6 @@ const CertificationHour = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));

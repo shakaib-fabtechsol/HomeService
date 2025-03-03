@@ -39,7 +39,6 @@ function NewDeals() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    console.log(" NewDeals Updated Service ID:", serviceId); 
   }, [serviceId]);
 
   const handleChange = (event, newValue) => {

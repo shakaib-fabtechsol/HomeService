@@ -8,7 +8,6 @@ const Vedio = () => {
     video: "",
   });
 
-  console.log(formdata);
 
   useEffect(() => {
     const fetchData = async () => {

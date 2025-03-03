@@ -31,12 +31,10 @@ function Login () {
       );
 
 
-      console.log("response",response);
       if (response.data.token) {
         localStorage.setItem ('token', response.data.token);
         localStorage.setItem ('role', response.data.user.role);
         localStorage.setItem("id",response.data?.user?.id);
-        console.log("Stored ID:", localStorage.getItem("id"));
         const userRole = response.data.user.role;
 
         if (userRole === 2) {

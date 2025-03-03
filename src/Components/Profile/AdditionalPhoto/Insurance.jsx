@@ -16,7 +16,6 @@ const TeacherPhoto = () => {
           }
         );
 
-        console.log("API Response:", response.data); // Debugging
         setFormData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
