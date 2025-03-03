@@ -19,7 +19,7 @@ function ServiceBox({
     document.title = "Services";
   }, []);
   const imageUrl = image
-    ? `https://homeservice.thefabulousshow.com/uploads/${image}`
+    ? `216.37.42.152/uploads/${image}`
     : null;
 
   const defaultimg = "/vite.svg";
@@ -79,7 +79,7 @@ function Services() {
     setLoading(true); // Start loading
 
     axios
-      .get("https://homeservice.thefabulousshow.com/api/Deals", {
+      .get("216.37.42.152/api/Deals", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

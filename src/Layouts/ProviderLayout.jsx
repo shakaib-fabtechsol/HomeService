@@ -46,7 +46,7 @@ function ProviderLayout() {
 
       try {
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `216.37.42.152/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` }, // Include token if needed
           }
@@ -98,7 +98,7 @@ function ProviderLayout() {
   ];
 
   const imageUrl = userData?.personal_image
-    ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`
+    ? `216.37.42.152/uploads/${userData?.personal_image}`
     : null;
 
   const defaultimg = "/dummy.png";

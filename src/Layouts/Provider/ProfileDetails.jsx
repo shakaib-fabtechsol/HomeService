@@ -104,7 +104,7 @@ function ProfileDetails() {
         if (!token || !userId) return;
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `216.37.42.152/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -127,7 +127,7 @@ function ProfileDetails() {
 
   const imagePath = formdata?.businessProfile[0]?.business_logo;
   const imageUrl = imagePath
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    ? `216.37.42.152/uploads/${imagePath}`
     : "/default.png";
 
   const regularHours = JSON.parse(

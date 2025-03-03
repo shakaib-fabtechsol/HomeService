@@ -66,7 +66,7 @@ const MyDetail = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `216.37.42.152/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -128,7 +128,7 @@ const MyDetail = () => {
         });
         data.append("id", userId);
         await axios.post(
-          "https://homeservice.thefabulousshow.com/api/MyDetails",
+          "216.37.42.152/api/MyDetails",
           data,
           {
             headers: {
@@ -159,7 +159,7 @@ const MyDetail = () => {
       }
       try {
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `216.37.42.152/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -169,7 +169,7 @@ const MyDetail = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+            ? `216.37.42.152/uploads/${imagePath}`
             : "/default.png";
           const selectedSalesRep = options.find(
             (option) => option.value === BasicInfo?.sales_representative

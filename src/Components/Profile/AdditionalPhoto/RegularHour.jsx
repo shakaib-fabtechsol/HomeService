@@ -11,7 +11,7 @@ const RegularHour = () => {
         const userId = localStorage.getItem("id");
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `216.37.42.152/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
