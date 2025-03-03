@@ -229,7 +229,7 @@ function ProviderLayout() {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: 1,
           width: { xs: "100%", sm: `calc(100% - ${drawerWidth}px)` },
           fontFamily: "inter",
         }}
