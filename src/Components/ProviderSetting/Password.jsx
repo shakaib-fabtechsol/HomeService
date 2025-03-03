@@ -46,7 +46,7 @@ const Password = () => {
       });
 
       const response = await axios.post(
-        "216.37.42.152/api/UpdatePassword",
+        "http://216.37.42.152:8004/api/UpdatePassword",
         data,
         {
           headers: {
@@ -101,7 +101,7 @@ const Password = () => {
 
     try {
       const response = await axios.get(
-        `216.37.42.152/api/SettingPublish/${userId}`,
+        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

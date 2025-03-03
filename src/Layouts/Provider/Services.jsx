@@ -19,7 +19,7 @@ function ServiceBox({
     document.title = "Services";
   }, []);
   const imageUrl = image
-    ? `216.37.42.152/uploads/${image}`
+    ? `http://216.37.42.152:8004/uploads/${image}`
     : null;
 
   const defaultimg = "/vite.svg";
@@ -79,7 +79,7 @@ function Services() {
     setLoading(true); // Start loading
 
     axios
-      .get("216.37.42.152/api/Deals", {
+      .get("http://216.37.42.152:8004/api/Deals", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -87,7 +87,7 @@ const ChannelConversation = () => {
       }
 
       const response = await axios.post(
-        "216.37.42.152/api/AddConversation",
+        "http://216.37.42.152:8004/api/AddConversation",
         data,
         {
           headers: {
@@ -116,7 +116,7 @@ const ChannelConversation = () => {
 
       try {
         const response = await axios.post(
-          "216.37.42.152/api/AddConversation",
+          "http://216.37.42.152:8004/api/AddConversation",
           data,
           {
             headers: {
@@ -196,7 +196,7 @@ const ChannelConversation = () => {
 
     try {
       const response = await axios.get(
-        `216.37.42.152/api/SettingPublish/${userId}`,
+        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

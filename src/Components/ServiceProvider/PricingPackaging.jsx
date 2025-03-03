@@ -66,7 +66,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       }
 
       axios
-        .get(`216.37.42.152/api/Deal/${dealid}`, {
+        .get(`http://216.37.42.152:8004/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -242,8 +242,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
 
     // Determine API endpoint based on ID presence
     const endpoint = dealid
-        ? "216.37.42.152/api/UpdatePriceAndPackage"
-        : "216.37.42.152/api/PriceAndPackage";
+        ? "http://216.37.42.152:8004/api/UpdatePriceAndPackage"
+        : "http://216.37.42.152:8004/api/PriceAndPackage";
 
     if (dealid) {
         formdata = { ...formdata, user_id  }; 
@@ -451,7 +451,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
     try {
       const response = await axios.get(
-        `216.37.42.152/api/DealPublish/${dealid}`,
+        `http://216.37.42.152:8004/api/DealPublish/${dealid}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {

@@ -45,7 +45,7 @@ const AdditionalPhoto = () => {
 
       try {
         const response = await axios.get(
-          `216.37.42.152/api/UserDetails/${userId}`,
+          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -58,19 +58,19 @@ const AdditionalPhoto = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.vehicle_photo;
           const imageUrl = imagePath
-            ? `216.37.42.152/uploads/${imagePath}`
+            ? `http://216.37.42.152:8004/uploads/${imagePath}`
             : "/default.png";
           const imagePath2 = BasicInfo[0]?.facility_photo;
           const imageUrl2 = imagePath
-            ? `216.37.42.152/uploads/${imagePath2}`
+            ? `http://216.37.42.152:8004/uploads/${imagePath2}`
             : "/default.png";
           const imagePath4 = BasicInfo[0]?.project_photo;
           const imageUrl4 = imagePath
-            ? `216.37.42.152/uploads/${imagePath4}`
+            ? `http://216.37.42.152:8004/uploads/${imagePath4}`
             : "/default.png";
           const imagePath3 = BasicInfo[0]?.technician_photo;
           const imageUrl3 = imagePath
-            ? `216.37.42.152/uploads/${imagePath3}`
+            ? `http://216.37.42.152:8004/uploads/${imagePath3}`
             : "/default.png";
 
           setFormData({
@@ -116,7 +116,7 @@ const AdditionalPhoto = () => {
       });
 
       const response = await axios.post(
-        "216.37.42.152/api/AdditionalPhotos",
+        "http://216.37.42.152:8004/api/AdditionalPhotos",
         data,
         {
           headers: {
@@ -164,7 +164,7 @@ const AdditionalPhoto = () => {
 
     try {
       const response = await axios.get(
-        `216.37.42.152/api/SettingPublish/${userId}`,
+        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

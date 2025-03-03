@@ -66,7 +66,7 @@ const MyDetail = () => {
 
     try {
       const response = await axios.get(
-        `216.37.42.152/api/SettingPublish/${userId}`,
+        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -128,7 +128,7 @@ const MyDetail = () => {
         });
         data.append("id", userId);
         await axios.post(
-          "216.37.42.152/api/MyDetails",
+          "http://216.37.42.152:8004/api/MyDetails",
           data,
           {
             headers: {
@@ -159,7 +159,7 @@ const MyDetail = () => {
       }
       try {
         const response = await axios.get(
-          `216.37.42.152/api/UserDetails/${userId}`,
+          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -169,7 +169,7 @@ const MyDetail = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
-            ? `216.37.42.152/uploads/${imagePath}`
+            ? `http://216.37.42.152:8004/uploads/${imagePath}`
             : "/default.png";
           const selectedSalesRep = options.find(
             (option) => option.value === BasicInfo?.sales_representative

@@ -56,7 +56,7 @@ const Payment = () => {
       });
 
       const response = await axios.post(
-        "216.37.42.152/api/AddPaymentDetails",
+        "http://216.37.42.152:8004/api/AddPaymentDetails",
         data,
         {
           headers: {
@@ -92,7 +92,7 @@ const Payment = () => {
 
       try {
         const response = await axios.post(
-          "216.37.42.152/api/AddPaymentDetails",
+          "http://216.37.42.152:8004/api/AddPaymentDetails",
           data,
           {
             headers: {
@@ -153,7 +153,7 @@ const Payment = () => {
 
     try {
       const response = await axios.get(
-        `216.37.42.152/api/SettingPublish/${userId}`,
+        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
