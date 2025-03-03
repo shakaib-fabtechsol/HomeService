@@ -56,7 +56,7 @@ const Payment = () => {
       });
 
       const response = await axios.post(
-        "http://216.37.42.152:8004/api/AddPaymentDetails",
+        "https://homeservice.thefabulousshow.com/api/AddPaymentDetails",
         data,
         {
           headers: {
@@ -92,7 +92,7 @@ const Payment = () => {
 
       try {
         const response = await axios.post(
-          "http://216.37.42.152:8004/api/AddPaymentDetails",
+          "https://homeservice.thefabulousshow.com/api/AddPaymentDetails",
           data,
           {
             headers: {
@@ -153,7 +153,7 @@ const Payment = () => {
 
     try {
       const response = await axios.get(
-        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
+        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
