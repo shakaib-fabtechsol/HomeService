@@ -18,10 +18,7 @@ const SpecialHour = () => {
           }
         );
 
-        console.log(
-          "API Response:",
-          response.data?.businessProfile[0]?.special_hour
-        );
+        
 
         setFormData(response.data?.businessProfile[0]?.special_hour);
 
@@ -32,7 +29,6 @@ const SpecialHour = () => {
               ? JSON.parse(response.data?.businessProfile[0]?.special_hour)
               : response.data?.businessProfile[0]?.special_hour;
         }
-        console.log("Formatted Schedule Special:", formattedScheduleSpecial);
         const transformedScheduleSpecial = formattedScheduleSpecial.map(
           (item) => ({
             dayName: item.text,
@@ -42,10 +38,7 @@ const SpecialHour = () => {
           })
         );
 
-        console.log(
-          "Transformed Schedule Special:",
-          transformedScheduleSpecial
-        );
+        
         setSpecialHours(transformedScheduleSpecial);
 
         let formattedScheduleRegular = [];
@@ -55,7 +48,6 @@ const SpecialHour = () => {
               ? JSON.parse(response.data?.businessProfile[0]?.regular_hour)
               : response.data?.businessProfile[0]?.regular_hour;
         }
-        console.log("Formatted Schedule Regular:", formattedScheduleRegular);
         const transformedScheduleRegular = formattedScheduleRegular.map(
           (item) => ({
             dayName: item.day_name,
@@ -64,10 +56,6 @@ const SpecialHour = () => {
           })
         );
 
-        console.log(
-          "Transformed Schedule Regular:",
-          transformedScheduleRegular
-        );
         setRegularHours(transformedScheduleRegular);
       } catch (error) {
         console.error("Error fetching data:", error);

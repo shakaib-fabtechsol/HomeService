@@ -19,7 +19,6 @@ import {
 
 const BusinessProfile = () => {
   const userId = localStorage.getItem("id");
-  console.log("userID", userId);
   const [isApiLoaded, setIsApiLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [publishValue, setPublishValue] = useState(1);
@@ -51,7 +50,6 @@ const BusinessProfile = () => {
 
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
 
       if (!token) {
         toast.error("No token found. Please log in.");
@@ -68,9 +66,7 @@ const BusinessProfile = () => {
           }
         );
 
-        console.log("Response Data:", response.data?.businessProfile);
         const BasicInfo = response?.data?.businessProfile;
-        console.log("BasicInformation", BasicInfo[0]);
 
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.business_logo;
@@ -108,7 +104,6 @@ const BusinessProfile = () => {
     e.preventDefault();
     if (loading) return;
     const token = localStorage.getItem("token");
-    console.log("token:", token);
 
     if (!token) {
       toast.error("No token found. Please log in.");
@@ -134,7 +129,6 @@ const BusinessProfile = () => {
         }
       );
 
-      console.log("Success:", response.data);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -256,7 +250,6 @@ const BusinessProfile = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));
@@ -409,10 +402,7 @@ const BusinessProfile = () => {
                       </select>
                     </div>
                   </div>
-                  {console.log(
-                    "valueeee",
-                    formData?.business_secondary_categories
-                  )}
+                  
                   <div className="grid sm:grid-cols-3 gap-2 max-w-[1000px] mt-4">
                     <div>
                       <label

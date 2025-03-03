@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 const AdditionalPhoto = () => {
   const navigate = useNavigate();
   const userId = localStorage.getItem("id");
-  console.log("userID", userId);
   const [loading, setLoading] = useState(false);
    const [publishValue, setPublishValue] = useState(1);
    const [publishLoading, setPublishLoading] = useState(false);
@@ -38,7 +37,6 @@ const AdditionalPhoto = () => {
 
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-      console.log("Token:", token);
 
       if (!token) {
         toast.error("No token found. Please log in.");
@@ -55,9 +53,7 @@ const AdditionalPhoto = () => {
           }
         );
 
-        console.log("Response Data:", response.data?.businessProfile);
         const BasicInfo = response?.data?.businessProfile;
-        console.log("BasicInformation", BasicInfo[0]);
 
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.vehicle_photo;
@@ -102,7 +98,6 @@ const AdditionalPhoto = () => {
     if (loading) return;
 
     const token = localStorage.getItem("token");
-    console.log("token:", token);
 
     if (!token) {
       toast.error("No token found. Please log in.");
@@ -131,7 +126,6 @@ const AdditionalPhoto = () => {
         }
       );
 
-      console.log("Success:", response.data);
       toast.success("Profile updated successfully!");
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -176,7 +170,6 @@ const AdditionalPhoto = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));

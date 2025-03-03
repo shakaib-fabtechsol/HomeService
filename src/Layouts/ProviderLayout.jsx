@@ -51,7 +51,6 @@ function ProviderLayout() {
             headers: { Authorization: `Bearer ${token}` }, // Include token if needed
           }
         );
-        console.log("Fetched User Data:", response?.data?.user);
         setUserData(response.data?.user);
       } catch (err) {
         console.error("Error fetching user data:", err);
@@ -97,7 +96,6 @@ function ProviderLayout() {
       link: "/provider/support",
     },
   ];
-  console.log(userData?.personal_image);
 
   const imageUrl = userData?.personal_image
     ? `https://homeservice.thefabulousshow.com/uploads/${userData?.personal_image}`

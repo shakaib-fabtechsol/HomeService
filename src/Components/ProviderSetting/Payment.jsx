@@ -84,10 +84,7 @@ const Payment = () => {
         return;
       }
 
-      if (!id) {
-        console.log("No id found in localStorage.");
-        return;
-      }
+
 
       const data = {
         id: id,
@@ -105,7 +102,6 @@ const Payment = () => {
         );
 
         const BasicInfo = response.data?.payment;
-        console.log(BasicInfo, "value");
 
         if (BasicInfo) {
           setFormData({
@@ -121,7 +117,6 @@ const Payment = () => {
           setLoading(false);
         }
       } catch (err) {
-        console.log("Error:", err);
         toast.error("An error occurred while fetching data.");
       }
     };
@@ -164,7 +159,6 @@ const Payment = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         setFormData((prev) => ({ ...prev, publish: response.data.publish }));

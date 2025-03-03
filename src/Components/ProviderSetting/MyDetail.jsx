@@ -72,7 +72,6 @@ const MyDetail = () => {
         }
       );
 
-      console.log("API Response:", response.data);
 
       if (response.status === 200) {
         // Optionally update local state if needed:
