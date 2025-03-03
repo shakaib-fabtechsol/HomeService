@@ -73,7 +73,7 @@ function BasicInfo({ setServiceId, setValue }) {
       }
 
       axios
-        .get(`http://216.37.42.152:8004/api/Deal/${dealid}`, {
+        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -130,7 +130,7 @@ function BasicInfo({ setServiceId, setValue }) {
         updatedFormData.id = dealid;
       }
       response = await axios.post(
-        "http://216.37.42.152:8004/api/BasicInfo",
+        "https://homeservice.thefabulousshow.com/api/BasicInfo",
         updatedFormData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -175,7 +175,7 @@ function BasicInfo({ setServiceId, setValue }) {
     }
     try {
       const response = await axios.get(
-        `http://216.37.42.152:8004/api/DealPublish/${dealid}`,
+        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {

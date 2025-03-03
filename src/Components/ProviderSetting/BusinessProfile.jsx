@@ -58,7 +58,7 @@ const BusinessProfile = () => {
 
       try {
         const response = await axios.get(
-          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
+          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const BusinessProfile = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.business_logo;
           const imageUrl = imagePath
-            ? `http://216.37.42.152:8004/uploads/${imagePath}`
+            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
             : "/default.png";
 
           const secondaryCategories =
@@ -119,7 +119,7 @@ const BusinessProfile = () => {
       });
 
       const response = await axios.post(
-        "http://216.37.42.152:8004/api/BusinessProfile",
+        "https://homeservice.thefabulousshow.com/api/BusinessProfile",
         data,
         {
           headers: {
@@ -244,7 +244,7 @@ const BusinessProfile = () => {
 
     try {
       const response = await axios.get(
-        `http://216.37.42.152:8004/api/SettingPublish/${userId}`,
+        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
