@@ -18,7 +18,7 @@ const ProfileDeal = () => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("id");
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -47,7 +47,7 @@ const ProfileDeal = () => {
   const services = useMemo(() => {
     return formdata?.getDeal?.map((deal) => ({
       image: deal?.image
-      ? `https://homeservice.thefabulousshow.com/uploads/${deal.image}`
+      ? `http://216.37.42.152:8004/uploads/${deal.image}`
       : "/default.png",
       title: deal?.service_title || "No title available",
       price: deal?.flat_final_list_price || 0,

@@ -33,7 +33,7 @@ function PrivacyPolicy() {
 
     try {
       const response = await axios.post(
-        `https://homeservice.thefabulousshow.com/api/UpdateUser?id=${userId}&terms=${
+        `http://216.37.42.152:8004/api/UpdateUser?id=${userId}&terms=${
           termsAccepted ? 1 : 0
         }`
       );

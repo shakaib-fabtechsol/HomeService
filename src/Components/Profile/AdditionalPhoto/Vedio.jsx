@@ -15,7 +15,7 @@ const Vedio = () => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("id");
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -36,7 +36,7 @@ const Vedio = () => {
     <>
       <div className="video-container">
         <video
-          src={`https://homeservice.thefabulousshow.com/uploads/${data}`}
+          src={`http://216.37.42.152:8004/uploads/${data}`}
           controls
           width="50%"
           height="500"

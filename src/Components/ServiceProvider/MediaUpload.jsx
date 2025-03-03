@@ -59,7 +59,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
       }
 
       axios
-        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+        .get(`http://216.37.42.152:8004/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then(async (response) => {
@@ -68,7 +68,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
           if (BasicInfo?.image) {
             try {
               const imagePath = BasicInfo?.image;
-              const imageUrl = `https://homeservice.thefabulousshow.com/uploads/${imagePath}`;
+              const imageUrl = `http://216.37.42.152:8004/uploads/${imagePath}`;
               setFilePreview(imageUrl);
               setShowPreview(true);
               setIsApiLoaded(true);
@@ -128,8 +128,8 @@ const MediaUpload = ({ serviceId, setValue }) => {
   
     // Determine the API endpoint based on whether it's an edit or create operation
     const url = dealid
-      ? "https://homeservice.thefabulousshow.com/api/UpdateMediaUpload" // Edit
-      : "https://homeservice.thefabulousshow.com/api/MediaUpload"; // Create
+      ? "http://216.37.42.152:8004/api/UpdateMediaUpload" // Edit
+      : "http://216.37.42.152:8004/api/MediaUpload"; // Create
   
     try {
       const response = await fetch(url, {
@@ -182,7 +182,7 @@ const MediaUpload = ({ serviceId, setValue }) => {
     try {
       const token = localStorage.getItem("token");
       await axios.get(
-        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        `http://216.37.42.152:8004/api/DealPublish/${dealid}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

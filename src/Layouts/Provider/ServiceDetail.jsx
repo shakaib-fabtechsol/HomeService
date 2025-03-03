@@ -102,7 +102,7 @@ function ServiceDetail() {
 
       if (token) {
         axios
-          .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+          .get(`http://216.37.42.152:8004/api/Deal/${dealid}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -130,7 +130,7 @@ function ServiceDetail() {
         if (!token || !userId) return;
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `http://216.37.42.152:8004/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -147,7 +147,7 @@ function ServiceDetail() {
 
   const imagePath = provider?.business_logo;
   const imageUrl = imagePath
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    ? `http://216.37.42.152:8004/uploads/${imagePath}`
     : "/default.png";
   const regularHours =
     provider && provider.length > 0
@@ -193,7 +193,7 @@ function ServiceDetail() {
       preConfirm: () => {
         return axios
           .get(
-            `https://homeservice.thefabulousshow.com/api/DeleteDeal/${dealId}`,
+            `http://216.37.42.152:8004/api/DeleteDeal/${dealId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -218,7 +218,7 @@ function ServiceDetail() {
 
   const imagePath1 = serviceDetails[0]?.image;
   const imageUrl1 = imagePath1
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath1}`
+    ? `http://216.37.42.152:8004/uploads/${imagePath1}`
     : "/default.png";
   return (
     <div className="pmain">
