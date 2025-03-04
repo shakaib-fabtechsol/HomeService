@@ -69,7 +69,7 @@ const SocialProfile = () => {
       };
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/Social",
+        "https://backend.homeprodeals.com/api/Social",
         payload,
         {
           headers: {
@@ -140,7 +140,7 @@ const SocialProfile = () => {
       };
      
       const response = await axios.post(
-        `https://homeservice.thefabulousshow.com/api/SocialDelete`,
+        `https://backend.homeprodeals.com/api/SocialDelete`,
         data, // Pass data directly in the body of the POST request
         {
           headers: {

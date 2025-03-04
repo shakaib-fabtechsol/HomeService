@@ -119,7 +119,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
     setLoading(true);
 
     axios
-      .get(`https://homeservice.thefabulousshow.com/api/Deal/${deal_id}`, {
+      .get(`https://backend.homeprodeals.com/api/Deal/${deal_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -130,7 +130,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           publish: deal?.publish || "",
           imagePath: deal?.image || "",
           image: deal?.image
-            ? `https://homeservice.thefabulousshow.com/uploads/${deal.image}`
+            ? `https://backend.homeprodeals.com/uploads/${deal.image}`
             : "/default.png",
           commercial: deal?.commercial || "0",
           residential: deal?.residential || "0",
@@ -199,7 +199,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
     setLoading(true);
 
     axios
-      .get(`https://homeservice.thefabulousshow.com/api/Deal/${deal_id}`, {
+      .get(`https://backend.homeprodeals.com/api/Deal/${deal_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -210,7 +210,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
           publish: deal?.publish || "",
           imagePath: deal?.image || "",
           image: deal?.image
-            ? `https://homeservice.thefabulousshow.com/uploads/${deal.image}`
+            ? `https://backend.homeprodeals.com/uploads/${deal.image}`
             : "/default.png",
           commercial: deal?.commercial || "0",
           residential: deal?.residential || "0",
@@ -294,8 +294,8 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
     try {
       const url = isEdit
-        ? `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}` // Edit
-        : `https://homeservice.thefabulousshow.com/api/DealPublish/${serviceId}`; // Create
+        ? `https://backend.homeprodeals.com/api/DealPublish/${dealid}` // Edit
+        : `https://backend.homeprodeals.com/api/DealPublish/${serviceId}`; // Create
 
       const response = await axios.get(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -342,7 +342,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
         if (!token || !userId) return;
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -359,7 +359,7 @@ const ReviewPublish = ({ serviceId, setValue }) => {
 
   const imagePath = provider?.business_logo;
   const imageUrl = imagePath
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    ? `https://backend.homeprodeals.com/uploads/${imagePath}`
     : "/default.png";
   const regularHours =
     provider && provider.length > 0

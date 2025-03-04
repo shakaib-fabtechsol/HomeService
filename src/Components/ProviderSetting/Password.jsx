@@ -46,7 +46,7 @@ const Password = () => {
       });
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/UpdatePassword",
+        "https://backend.homeprodeals.com/api/UpdatePassword",
         data,
         {
           headers: {
@@ -101,7 +101,7 @@ const Password = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

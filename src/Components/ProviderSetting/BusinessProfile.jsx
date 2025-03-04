@@ -58,7 +58,7 @@ const BusinessProfile = () => {
 
       try {
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -71,7 +71,7 @@ const BusinessProfile = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo[0]?.business_logo;
           const imageUrl = imagePath
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+            ? `https://backend.homeprodeals.com/uploads/${imagePath}`
             : "/default.png";
 
           const secondaryCategories =
@@ -119,7 +119,7 @@ const BusinessProfile = () => {
       });
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/BusinessProfile",
+        "https://backend.homeprodeals.com/api/BusinessProfile",
         data,
         {
           headers: {
@@ -244,7 +244,7 @@ const BusinessProfile = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

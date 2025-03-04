@@ -66,7 +66,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
       }
 
       axios
-        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+        .get(`https://backend.homeprodeals.com/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -242,8 +242,8 @@ const PricingPackaging = ({ serviceId, setValue }) => {
 
     // Determine API endpoint based on ID presence
     const endpoint = dealid
-        ? "https://homeservice.thefabulousshow.com/api/UpdatePriceAndPackage"
-        : "https://homeservice.thefabulousshow.com/api/PriceAndPackage";
+        ? "https://backend.homeprodeals.com/api/UpdatePriceAndPackage"
+        : "https://backend.homeprodeals.com/api/PriceAndPackage";
 
     if (dealid) {
         formdata = { ...formdata, user_id  }; 
@@ -451,7 +451,7 @@ const PricingPackaging = ({ serviceId, setValue }) => {
     }
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        `https://backend.homeprodeals.com/api/DealPublish/${dealid}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {

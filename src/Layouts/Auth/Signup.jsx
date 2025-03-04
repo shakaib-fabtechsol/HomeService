@@ -40,7 +40,7 @@ function Signup () {
   
     try {
       const response = await axios.post(
-        'https://homeservice.thefabulousshow.com/api/Register',
+        'https://backend.homeprodeals.com/api/Register',
         userData
       );
   

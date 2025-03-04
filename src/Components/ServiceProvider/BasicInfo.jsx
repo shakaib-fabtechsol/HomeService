@@ -73,7 +73,7 @@ function BasicInfo({ setServiceId, setValue }) {
       }
 
       axios
-        .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+        .get(`https://backend.homeprodeals.com/api/Deal/${dealid}`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
@@ -130,7 +130,7 @@ function BasicInfo({ setServiceId, setValue }) {
         updatedFormData.id = dealid;
       }
       response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/BasicInfo",
+        "https://backend.homeprodeals.com/api/BasicInfo",
         updatedFormData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -175,7 +175,7 @@ function BasicInfo({ setServiceId, setValue }) {
     }
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/DealPublish/${dealid}`,
+        `https://backend.homeprodeals.com/api/DealPublish/${dealid}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       if (response.status === 200) {

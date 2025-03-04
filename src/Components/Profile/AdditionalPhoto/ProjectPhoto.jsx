@@ -10,7 +10,7 @@ const TeacherPhoto = () => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("id");
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -34,7 +34,7 @@ const TeacherPhoto = () => {
     <div className="w-64 h-64">
     { image ? (
       <img
-        src={`https://homeservice.thefabulousshow.com/uploads/${image}`}
+        src={`https://backend.homeprodeals.com/uploads/${image}`}
         alt="Facility"
         className="w-full h-full object-cover rounded-lg shadow"
       />
