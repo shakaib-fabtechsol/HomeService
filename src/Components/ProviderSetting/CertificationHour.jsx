@@ -101,7 +101,7 @@ const CertificationHour = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+        `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -168,13 +168,13 @@ const CertificationHour = () => {
         );
 
         const insuranceCertificate = profile.insurance_certificate
-          ? `https://homeservice.thefabulousshow.com/uploads/${profile.insurance_certificate}`
+          ? `https://backend.homeprodeals.com/uploads/${profile.insurance_certificate}`
           : "/default.png";
         const licenseCertificate = profile.license_certificate
-          ? `https://homeservice.thefabulousshow.com/uploads/${profile.license_certificate}`
+          ? `https://backend.homeprodeals.com/uploads/${profile.license_certificate}`
           : "/default.png";
         const awardCertificate = profile.award_certificate
-          ? `https://homeservice.thefabulousshow.com/uploads/${profile.award_certificate}`
+          ? `https://backend.homeprodeals.com/uploads/${profile.award_certificate}`
           : "/default.png";
 
         setFormData({
@@ -251,7 +251,7 @@ const CertificationHour = () => {
       });
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/AddCertificateHours",
+        "https://backend.homeprodeals.com/api/AddCertificateHours",
         data,
         {
           headers: {
@@ -299,7 +299,7 @@ const CertificationHour = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

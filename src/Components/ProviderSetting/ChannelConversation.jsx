@@ -87,7 +87,7 @@ const ChannelConversation = () => {
       }
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/AddConversation",
+        "https://backend.homeprodeals.com/api/AddConversation",
         data,
         {
           headers: {
@@ -116,7 +116,7 @@ const ChannelConversation = () => {
 
       try {
         const response = await axios.post(
-          "https://homeservice.thefabulousshow.com/api/AddConversation",
+          "https://backend.homeprodeals.com/api/AddConversation",
           data,
           {
             headers: {
@@ -196,7 +196,7 @@ const ChannelConversation = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

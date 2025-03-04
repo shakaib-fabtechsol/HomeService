@@ -12,7 +12,7 @@ const SpecialHour = () => {
         const userId = localStorage.getItem("id");
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

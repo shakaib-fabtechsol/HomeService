@@ -56,7 +56,7 @@ const Payment = () => {
       });
 
       const response = await axios.post(
-        "https://homeservice.thefabulousshow.com/api/AddPaymentDetails",
+        "https://backend.homeprodeals.com/api/AddPaymentDetails",
         data,
         {
           headers: {
@@ -92,7 +92,7 @@ const Payment = () => {
 
       try {
         const response = await axios.post(
-          "https://homeservice.thefabulousshow.com/api/AddPaymentDetails",
+          "https://backend.homeprodeals.com/api/AddPaymentDetails",
           data,
           {
             headers: {
@@ -153,7 +153,7 @@ const Payment = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }

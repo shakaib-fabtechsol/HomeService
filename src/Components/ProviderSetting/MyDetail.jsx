@@ -66,7 +66,7 @@ const MyDetail = () => {
 
     try {
       const response = await axios.get(
-        `https://homeservice.thefabulousshow.com/api/SettingPublish/${userId}`,
+        `https://backend.homeprodeals.com/api/SettingPublish/${userId}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -128,7 +128,7 @@ const MyDetail = () => {
         });
         data.append("id", userId);
         await axios.post(
-          "https://homeservice.thefabulousshow.com/api/MyDetails",
+          "https://backend.homeprodeals.com/api/MyDetails",
           data,
           {
             headers: {
@@ -159,7 +159,7 @@ const MyDetail = () => {
       }
       try {
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -169,7 +169,7 @@ const MyDetail = () => {
         if (BasicInfo) {
           const imagePath = BasicInfo?.personal_image;
           const imageUrl = imagePath
-            ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+            ? `https://backend.homeprodeals.com/uploads/${imagePath}`
             : "/default.png";
           const selectedSalesRep = options.find(
             (option) => option.value === BasicInfo?.sales_representative

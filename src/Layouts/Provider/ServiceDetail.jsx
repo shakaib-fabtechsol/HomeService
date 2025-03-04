@@ -102,7 +102,7 @@ function ServiceDetail() {
 
       if (token) {
         axios
-          .get(`https://homeservice.thefabulousshow.com/api/Deal/${dealid}`, {
+          .get(`https://backend.homeprodeals.com/api/Deal/${dealid}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -130,7 +130,7 @@ function ServiceDetail() {
         if (!token || !userId) return;
 
         const response = await axios.get(
-          `https://homeservice.thefabulousshow.com/api/UserDetails/${userId}`,
+          `https://backend.homeprodeals.com/api/UserDetails/${userId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -147,7 +147,7 @@ function ServiceDetail() {
 
   const imagePath = provider?.business_logo;
   const imageUrl = imagePath
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath}`
+    ? `https://backend.homeprodeals.com/uploads/${imagePath}`
     : "/default.png";
   const regularHours =
     provider && provider.length > 0
@@ -193,7 +193,7 @@ function ServiceDetail() {
       preConfirm: () => {
         return axios
           .get(
-            `https://homeservice.thefabulousshow.com/api/DeleteDeal/${dealId}`,
+            `https://backend.homeprodeals.com/api/DeleteDeal/${dealId}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -218,7 +218,7 @@ function ServiceDetail() {
 
   const imagePath1 = serviceDetails[0]?.image;
   const imageUrl1 = imagePath1
-    ? `https://homeservice.thefabulousshow.com/uploads/${imagePath1}`
+    ? `https://backend.homeprodeals.com/uploads/${imagePath1}`
     : "/default.png";
   return (
     <div className="pmain">
